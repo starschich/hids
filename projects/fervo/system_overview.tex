@@ -66,17 +66,19 @@
 \end{frame}
 
 
-\begin{frame}{Link overview}
+\begin{frame}{Utah/Nevada Industrial Grid (UNIG)}
   \centering
   \renewcommand{\arraystretch}{1.3}
-  \begin{tabular}{@{}lll@{}}
+  \begin{tabular}{@{}lccc@{}}
+    \multicolumn{1}{c}{\textbf{Connection}} & \multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Topology}} & \multicolumn{1}{c}{\textbf{Rating}} \\
+    \noalign{\hrule height 1.2pt}
+    \makecell[l]{Fennec-Stratos \\ Howell, UT → Wells, NV} & Tungsten & SMP & 1000 MW \\
     \hline
-    \textbf{Connection} & \textbf{Topology} & \textbf{Rating} \\
+    \makecell[l]{Kit-Corsac \\ Hazen, NV → Dixie Valley, NV}  & Copper& \makecell[c]{DSMP\\BIP} & 3000 MW \\
     \hline
-    Fennec-Stratos & SMP & 1000 MW \\
-    Kit-Corsac & DSMP or BIP & 3000 MW \\
-    Marble-Corsac & SMP & 1000 MW \\
-    Swift Blanford & DSMP or BIP & 3000 MW \\
+    \makecell[l]{Marble-Corsac \\ Pronto, NV → Hazen, NV}  & Quartz  & SMP & 1000 MW \\
+    \hline
+    \makecell[l]{Swift-Blanford \\ Deseret, UT → Cherry Creek, NV}  & Galena  &  \makecell[c]{DSMP\\BIP} & 3000 MW \\
     \hline
   \end{tabular}
 \end{frame}
