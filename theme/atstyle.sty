@@ -17,7 +17,11 @@
 \RequirePackage{calc}
 \RequirePackage{graphicx}
 \RequirePackage{makecell}               % multi-line table cells (\makecell)
-\usetikzlibrary{calc}
+\RequirePackage{booktabs}               % \toprule \midrule \bottomrule
+\RequirePackage{colortbl}               % \rowcolor
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{calc,positioning,arrows.meta,fit,backgrounds}
 
 % ---- SVG / figure inclusion ---------------------------------
 % By default we embed PDF versions of the SVGs via \includegraphics,
