@@ -1,0 +1,231 @@
+% =============================================================
+%  Chapter — AC Power Transmission and PSCAD (Module 02)
+%  Figures in ./fig  (EMF & SVG converted to cropped PDF, PNG copied).
+% =============================================================
+\newcommand{\acfig}[1]{chapters/ac-transmission/fig/#1}
+
+\sectionslide{AC Power Transmission}{Power exchange, cables and PSCAD}
+
+\begin{frame}{Power exchange in the AC grid}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.5\textheight,keepaspectratio]{\acfig{image4.pdf}}\\[0.3em]
+      
+    \end{column}
+    \begin{column}{0.52\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.34\textheight,keepaspectratio]{\acfig{image6.png}}\\[0.4em]
+      \topoimg[width=\linewidth,height=0.34\textheight,keepaspectratio]{\acfig{image5.png}}\\[0.4em]
+      {\color{atGray}\footnotesize IEC TR 63363-1:2022}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Power exchange}
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}l c c c c@{}}
+    \textbf{Parameter} & \textbf{Case 1} & \textbf{Case 2} & \textbf{Case 3} & \textbf{Case 4} \\
+    \hline
+    $P_S$ & 1000\,MW & 1500\,MW & 1000\,MW & $-1000$\,MW \\
+    $U_E$ & 230\,kV & 230\,kV & 230\,kV & 230\,kV \\
+    $U_S$ & 232\,kV & 232\,kV & 240\,kV & 232\,kV \\
+    $R_S$ & 0.144\,$\Omega$ & 0.144\,$\Omega$ & 0.144\,$\Omega$ & 0.144\,$\Omega$ \\
+    $X_S$ & 1.15\,$\Omega$ & 1.15\,$\Omega$ & 1.15\,$\Omega$ & 1.15\,$\Omega$ \\
+    $\delta$ & 1.19$^\circ$ & 1.816$^\circ$ & 1.081$^\circ$ & $-1.319^\circ$ \\
+    $Q_S$ & 288\,MVAr & 239\,MVAr & 905\,MVAr & 541\,MVAr \\
+    \hline
+  \end{tabular}
+
+  \vspace{0.6em}
+  \begin{itemize}
+    \setlength{\itemsep}{0.2em}
+    \item Active power transmission requires reactive power.
+    \item Higher AC voltage increases the reactive-power demand.
+    \item Changing the power-flow direction also changes the reactive-power demand.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Power exchange --- active vs. reactive}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.48\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.56\textheight,keepaspectratio]{\acfig{image7.png}}\\[0.3em]
+      {\footnotesize Active power vs.\ voltage difference}
+    \end{column}
+    \begin{column}{0.48\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.56\textheight,keepaspectratio]{\acfig{image8.png}}\\[0.3em]
+      {\footnotesize Active power vs.\ phase difference}
+    \end{column}
+  \end{columns}
+  \vspace{0.3em}
+  {\color{atGray}\footnotesize Active power is transmitted via phase difference; reactive power via voltage amplitude.}
+\end{frame}
+
+\begin{frame}{Power transmission in the AC grid}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.56\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.66\textheight,keepaspectratio]{\acfig{image9.pdf}}
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item AC power transmission principles shown with a simple AC network.
+        \item The grid is connected to the load with impedance $Z_L$ via an
+              AC cable of length $L_{cable}$.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Transmission line as 2-port units}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.54\textwidth}
+      \renewcommand{\arraystretch}{1.25}
+      \begin{tabular}{@{}l l c c@{}}
+        \textbf{Param.} & & \textbf{OHL} & \textbf{Cable (XLPE)} \\
+        \hline
+        $C'_L$ & nF/km & 10 & 180--420 \\
+        $R'_L$ & $\Omega$/km & 0.1--1 & 0.1--1 \\
+        $X'_L$ & mH/km & 1 & 0.31--1.42 \\
+        $G'_L$ & \textmu S/km & 0.05 & 1 \\
+        \hline
+      \end{tabular}
+      \vspace{0.5em}
+      \begin{itemize}
+        \setlength{\itemsep}{0.2em}
+        \item AC line represented by a $\pi$-section model.
+        \item Cables are dominated by capacitance.
+        \item OHL are dominated by inductance.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.42\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.4\textheight,keepaspectratio]{\acfig{image10.pdf}}\\[0.4em]
+      {\footnotesize Example cable parameters:\\
+      $C'_L=190$\,nF/km, $R'_L=22$\,m$\Omega$/km, $X'_L=1.35$\,mH/km}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---- three load-case slides ---------------------------------
+\begin{frame}{Power transmission --- no load connected}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.40\textwidth}
+      \renewcommand{\arraystretch}{1.2}
+      \begin{tabular}{@{}l r@{}}
+        \textbf{Param.} & \textbf{Value} \\
+        \hline
+        $U_{S,LL}$ & 230\,kV (1.0\,p.u.) \\
+        $I_S$ & 1060\,A \\
+        $P_S$ & 2.2\,MW \\
+        $Q_S$ & $-421$\,MVAr \\
+        $U_{R,LL}$ & 1.22\,p.u. \\
+        $I_R$ & 0\,A \\
+        $L_{cable}$ & 60\,mi \\
+        \hline
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.56\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.5\textheight,keepaspectratio]{\acfig{image11.pdf}}\\[0.3em]
+      {\footnotesize Connecting an AC cable creates significant current flow and reactive-power demand.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Power transmission --- reactive compensation}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.40\textwidth}
+      \renewcommand{\arraystretch}{1.2}
+      \begin{tabular}{@{}l r@{}}
+        \textbf{Param.} & \textbf{Value} \\
+        \hline
+        $U_{S,LL}$ & 230\,kV (1.0\,p.u.) \\
+        $I_S$ & 40\,A \\
+        $P_S$ & 2.2\,MW \\
+        $Q_S$ & $-14.4$\,MVAr \\
+        $I_R$ & 830\,A \\
+        $Q_R$ & $-277$\,MVAr \\
+        $Q_{comp}$ & 400\,MVAr \\
+        \hline
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.56\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.5\textheight,keepaspectratio]{\acfig{image12.pdf}}\\[0.3em]
+      {\footnotesize An uncompensated cable connection is usually not allowed; a shunt reactor $Q_{comp}$ is required.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Power transmission --- with load}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.40\textwidth}
+      \renewcommand{\arraystretch}{1.2}
+      \begin{tabular}{@{}l r@{}}
+        \textbf{Param.} & \textbf{Value} \\
+        \hline
+        $U_{S,LL}$ & 230\,kV (1.0\,p.u.) \\
+        $I_S$ & 1340\,A \\
+        $P_S$ & 511\,MW \\
+        $Q_S$ & $-150$\,MVAr \\
+        $U_{R,LL}$ & 1.06\,p.u. \\
+        $I_R$ & 1180\,A \\
+        $P_R$ & 500\,MW \\
+        \hline
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.56\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.5\textheight,keepaspectratio]{\acfig{image13.pdf}}\\[0.3em]
+      {\footnotesize Power transmission reduces the voltage rise and the reactive-power demand.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Power transmission --- reactive power \& current vs.\ active power}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.48\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.6\textheight,keepaspectratio]{\acfig{image14.png}}\\[0.3em]
+      {\footnotesize Reactive power vs.\ active power}
+    \end{column}
+    \begin{column}{0.48\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.6\textheight,keepaspectratio]{\acfig{image16.png}}\\[0.3em]
+      {\footnotesize AC current vs.\ active power}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{2-port units --- calculations}
+  \centering
+  \topoimg[width=0.8\linewidth,height=0.28\textheight,keepaspectratio]{\acfig{image18.png}}\\[0.5em]
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.24\textwidth}\centering
+      {\footnotesize Wave impedance}\\[0.2em]
+      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image19.png}}
+    \end{column}
+    \begin{column}{0.24\textwidth}\centering
+      {\footnotesize Propagation}\\[0.2em]
+      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image20.png}}
+    \end{column}
+    \begin{column}{0.24\textwidth}\centering
+      {\footnotesize Voltage along line}\\[0.2em]
+      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image21.png}}
+    \end{column}
+    \begin{column}{0.24\textwidth}\centering
+      {\footnotesize 2-port parameters}\\[0.2em]
+      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image22.png}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Link collection}
+  \textbf{Overhead line (OHL) conductor data}
+  \begin{itemize}
+    \item {\footnotesize southwire.com/wire-cable/bare-aluminum-overhead-transmission-distribution}
+  \end{itemize}
+  \textbf{AC cable data}
+  \begin{itemize}
+    \item {\footnotesize new.abb.com --- XLPE submarine cable systems (2GM5007)}
+  \end{itemize}
+  \textbf{PSCAD tutorials and information}
+  \begin{itemize}
+    \item {\footnotesize pscad.com/knowledge-base/topic-281}
+    \item {\footnotesize pscad.com/knowledge-base/article/44}
+  \end{itemize}
+\end{frame}
