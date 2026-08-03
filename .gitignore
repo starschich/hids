@@ -1,4 +1,8 @@
-# LaTeX build artifacts
+# =============================================================
+#  HIDS repository — ignore rules
+# =============================================================
+
+# LaTeX build artifacts (any subfolder)
 *.aux
 *.log
 *.nav
@@ -13,11 +17,12 @@
 *.blg
 *.dvi
 
-# Compiled main output (regenerated from source)
-#/presentation.pdf
+# Compiled deck output (regenerated from source)
+presentation/presentation.pdf
 
 # Editor / OS
 .DS_Store
 *.swp
 
-# Note: figure PDFs under chapters/ are build inputs and ARE tracked.
+# Note: figure PDFs under presentation/chapters/**/fig(ures)/ are build
+#       inputs and ARE tracked.

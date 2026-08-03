@@ -1,0 +1,23 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.nav
+*.snm
+*.toc
+*.out
+*.vrb
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.dvi
+
+# Compiled main output (regenerated from source)
+#/presentation.pdf
+
+# Editor / OS
+.DS_Store
+*.swp
+
+# Note: figure PDFs under chapters/ are build inputs and ARE tracked.
