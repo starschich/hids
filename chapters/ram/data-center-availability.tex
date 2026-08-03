@@ -11,23 +11,45 @@
 \definecolor{edge}{HTML}{8A94A6}     % connectors
 
 \tikzset{
-  box/.style   ={draw=edge, rounded corners=3pt, minimum width=2.6cm,
-                 minimum height=1.05cm, align=center, font=\scriptsize,
+  box/.style   ={draw=edge, rounded corners=3pt, minimum width=2.1cm,
+                 minimum height=0.85cm, align=center, font=\scriptsize,
                  fill=surf, thick},
   redbox/.style={box, draw=accent, double, double distance=1.3pt, line width=0.7pt},
   load/.style  ={draw=accent, line width=1.4pt, rounded corners=3pt,
-                 minimum width=2.4cm, minimum height=1.25cm, align=center,
+                 minimum width=2.0cm, minimum height=1.0cm, align=center,
                  font=\scriptsize\bfseries, fill=surf2},
   cont/.style  ={box, minimum width=6.2cm, minimum height=0.95cm},
   redcont/.style={cont, draw=accent, double, double distance=1.3pt, line width=0.7pt},
   flow/.style  ={-{Latex[length=2mm]}, edge, thick},
   tag/.style   ={font=\tiny\bfseries, text=accent},
+  andgate/.style={draw=edge, circle, fill=surf, thick, inner sep=1pt,
+                  minimum size=0.95cm, font=\tiny\bfseries, text=edge, align=center},
 }
 
-\sectionslide{Data Center Availability}{Calculation methodology \& topology comparison (Tier III vs.\ Tier IV)}
+% \sectionslide{Data Center Availability}{Calculation methodology \& topology comparison (Tier III vs.\ Tier IV)}
 
 % ============================================================
-\intermezzo{Methodology}{Availability, nines and reliability block diagrams}
+\intermezzo{Data Center Availability}{Calculation methodology \& topology comparison}
+
+\begin{frame}{Abbreviations}
+  \centering
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{CRAH} & Computer Room Air Handler \\
+    \textbf{FMEA} & Failure Mode and Effects Analysis \\
+    \textbf{MTBF} & Mean Time Between Failures \\
+    \textbf{MTTR} & Mean Time To Repair \\
+    \textbf{MV / LV} & Medium / Low Voltage \\
+    \textbf{PDU}  & Power Distribution Unit \\
+    \textbf{RBD}  & Reliability Block Diagram \\
+    \textbf{TIA}  & Telecommunications Industry Association (TIA-942) \\
+    \textbf{UPS}  & Uninterruptible Power Supply \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+
 
 \begin{frame}{What ``availability'' means}
   Availability is the fraction of time a facility (or system) can deliver IT load
@@ -87,194 +109,209 @@
       \end{block}
   \end{columns}
 
-  \vspace{0.5em}
-  \begin{alertblock}{$N{+}1$ unit group (tolerates one failure)}
-    \[ A_{\text{grp}} = A^{N+1} + (N{+}1)\,A^{N}(1-A) \]
-  \end{alertblock}
+  % \vspace{0.5em}
+  % \begin{alertblock}{$N{+}1$ unit group (tolerates one failure)}
+  %   \[ A_{\text{grp}} = A^{N+1} + (N{+}1)\,A^{N}(1-A) \]
+  % \end{alertblock}
 \end{frame}
+
 
 \begin{frame}{Modeling assumptions}
+  \textbf{Frameworks}
+    \begin{itemize}
+      \item Uptime Institute Tier standard (I--IV)
+      \item TIA-942 infrastructure standard
+      \item RBD, FMEA, Monte Carlo for complex topologies
+    \end{itemize}
+  \vspace{1em}
+  \textbf{Scope}
+    \begin{itemize}
+      \item Facility \emph{infrastructure} availability
+      \item Facility $=$ Power path $\times$ Cooling path
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Reading the topology diagrams}
   \begin{columns}[T]
-    \column{0.52\textwidth}
-      \textbf{Per-unit availabilities} (illustrative, single-unit MTBF/MTTR)
-      \vspace{0.3em}
-      \footnotesize
-      \renewcommand{\arraystretch}{1.15}
-      \begin{tabular}{lc}
-        \toprule
-        Component & $A_{\text{unit}}$ \\
-        \midrule
-        Utility feed      & 0.99900 \\
-        Generator         & 0.99500 \\
-        UPS module        & 0.99950 \\
-        MV switchgear     & 0.99999 \\
-        LV switchgear     & 0.99998 \\
-        PDU               & 0.99995 \\
-        Busway            & 0.99999 \\
-        Chiller           & 0.99500 \\
-        Pump              & 0.99900 \\
-        CRAH unit         & 0.99900 \\
-        \bottomrule
-      \end{tabular}
-    \column{0.48\textwidth}
-      \textbf{Frameworks}
+    \column{0.5\textwidth}
+      \textbf{Redundancy notation}
       \begin{itemize}
-        \item Uptime Institute Tier standard (I--IV)
-        \item TIA-942 infrastructure standard
-        \item RBD, FMEA, Monte Carlo for complex topologies
+        \item $N$ --- just enough capacity, no spare
+        \item $N{+}1$ --- one spare unit
+        \item $2N$ --- fully duplicated
       \end{itemize}
-      \vspace{0.6em}
-      \textbf{Scope}
+    \column{0.5\textwidth}
+      \textbf{Border legend}
+      \vspace{0.4em}
+
       \begin{itemize}
-        \item Facility \emph{infrastructure} availability
-        \item Planned maintenance excluded (concurrently maintainable)
-        \item Facility $=$ Power path $\times$ Cooling path
+        \item \textcolor{accent}{\rule{0.55em}{0.55em}}\; \textbf{Double border} $=N{+}1$ redundant stage
+        \item \textcolor{edge}{\rule{0.55em}{0.55em}}\; \textbf{Single border} $=$ single (concurrently maintainable) path
       \end{itemize}
-  \end{columns}
-\end{frame}
-
-% ============================================================
-\intermezzo{Tier III}{$N{+}1$, concurrently maintainable}
-
-\begin{frame}{Tier III topology - $N{+}1$}
-  \centering
-  \includegraphics[width=0.98\textwidth,height=0.66\textheight,keepaspectratio]{chapters/ram/fig/rbd_tier3.pdf}
-
-  \vspace{0.5em}
-  {\footnotesize
-   \textcolor{accent}{\rule{0.55em}{0.55em}} double border $=N{+}1$ redundant stage
-   \quad$\bullet$\quad single border $=$ single (concurrently maintainable) path.}
-\end{frame}
-
-\begin{frame}{Tier III results}
-  \centering
-  \renewcommand{\arraystretch}{1.2}
-  \begin{tabular}{lcc}
-    \toprule
-    \textbf{Stage} & \textbf{Availability} & \textbf{Downtime / yr} \\
-    \midrule
-    Source (Utility $\parallel$ Gen) & 99.9995\,\% & 2.6 min \\
-    UPS ($N{+}1$)                    & 99.9998\,\% & 0.8 min \\
-    Distribution (series)            & 99.9910\,\% & 47 min  \\
-    \addlinespace
-    \textbf{Power path}              & \textbf{99.9904\,\%} & \textbf{51 min} \\
-    \midrule
-    Chillers ($N{+}1$)               & 99.9851\,\% & 78 min \\
-    Pumps ($N{+}1$)                  & 99.9994\,\% & 3 min  \\
-    CRAH ($N{+}1$)                   & 99.9994\,\% & 3 min  \\
-    \addlinespace
-    \textbf{Cooling path}            & \textbf{99.9839\,\%} & \textbf{85 min} \\
-    \midrule
-    \rowcolor{surf2}
-    \textbf{Facility} $=$ Power $\times$ Cooling & \textbf{99.974\,\%} & \textbf{$\approx$ 135 min (2.26 h)} \\
-    \bottomrule
-  \end{tabular}
-
-  \vspace{0.8em}
-  \small The single distribution path is the weakest link, capping the power path at $\approx$ four nines.
-\end{frame}
-
-% ============================================================
-\intermezzo{Tier IV}{$2N$, fault tolerant}
-
-\begin{frame}{Tier IV topology --- $2N$, fault tolerant}
-  \centering
-  \includegraphics[width=0.98\textwidth,height=0.66\textheight,keepaspectratio]{chapters/ram/fig/rbd_tier4.pdf}
-
-  \vspace{0.5em}
-  {\footnotesize Every stage duplicated end-to-end (\textcolor{accent}{$2N$}) --- no single non-redundant link;
-   unavailable only if \emph{both} A and B fail.}
-\end{frame}
-
-\begin{frame}{Tier IV results}
-  \centering
-  \renewcommand{\arraystretch}{1.25}
-  \begin{tabular}{lcc}
-    \toprule
-    \textbf{Subsystem} & \textbf{Availability} & \textbf{Downtime / yr} \\
-    \midrule
-    Power --- per side (series string) & 99.8905\,\% & --- \\
-    \rowcolor{surf}
-    Power --- $2N$ ($A \parallel B$)   & 99.99988\,\% & $<$ 1 min \\
-    \addlinespace
-    Cooling --- per side (series string) & 99.3011\,\% & --- \\
-    \rowcolor{surf}
-    Cooling --- $2N$ ($A \parallel B$) & 99.99512\,\% & 26 min \\
-    \midrule
-    \rowcolor{surf2}
-    \textbf{Facility} $=$ Power $\times$ Cooling & \textbf{99.995\,\%} & \textbf{$\approx$ 26 min} \\
-    \bottomrule
-  \end{tabular}
-
-  \vspace{0.8em}
-  \small Paralleling two full paths, $A = 1-(1-A_{\text{path}})^2$, \emph{squares} each side's
-  unavailability. Cooling is now the limiting path (single-side chillers are the weakest string).
-\end{frame}
-
-% ============================================================
-\intermezzo{Comparison \& Conclusions}{}
-
-\begin{frame}{Tier III vs.\ Tier IV}
-  \begin{columns}[c]
-    \column{0.52\textwidth}
-      \renewcommand{\arraystretch}{1.3}
-      \footnotesize
-      \begin{tabular}{lcc}
-        \toprule
-         & \textbf{Tier III} & \textbf{Tier IV} \\
-         & ($N{+}1$) & ($2N$) \\
-        \midrule
-        Redundancy   & unit-level & full path \\
-        Distribution & single path & dual A/B \\
-        Fault tolerant & no & yes \\
-        Availability & 99.974\,\% & 99.995\,\% \\
-        Downtime/yr  & $\approx$135 min & $\approx$26 min \\
-        \bottomrule
-      \end{tabular}
 
       \vspace{0.8em}
-      \begin{block}{Result}
-        \centering $2N$ delivers $\approx\,$\textbf{5$\times$} less downtime.
-      \end{block}
-    \column{0.48\textwidth}
       \centering
       \begin{tikzpicture}
-        \begin{axis}[
-            ybar, width=5.2cm, height=4.6cm,
-            ymin=0, ymax=150,
-            ylabel={Downtime (min/yr)},
-            symbolic x coords={Tier III, Tier IV},
-            xtick=data, bar width=18pt,
-            nodes near coords, nodes near coords style={font=\scriptsize},
-            enlarge x limits=0.5,
-            tick label style={font=\scriptsize},
-            label style={font=\scriptsize},
-          ]
-          \addplot[fill=surf2, draw=accent] coordinates {(Tier III,135) (Tier IV,26)};
-        \end{axis}
+        \node[redbox] (r) at (0,1.4) {$N{+}1$ stage};
+        \node[box]    (s) at (0,0)   {single path};
       \end{tikzpicture}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Caveats}
-  \begin{itemize}
-    \item \textbf{Illustrative values.} Per-unit figures are industry-typical, not site-measured;
-          swap in real MTBF/MTTR before use.
-    \item \textbf{Human error \& common-cause failures dominate} real outages --- calculated
-          availability is optimistic versus observed.
-    \item \textbf{Define ``down'' explicitly.} Total loss vs.\ partial capacity vs.\ SLA breach;
-          dual-corded (A/B) IT loads complicate single-path loss.
-    \item \textbf{Infrastructure $\neq$ IT service availability.} State which layer is measured.
-    \item \textbf{Planned maintenance excluded} --- the point of concurrent maintainability (Tier III+).
-  \end{itemize}
+\begin{frame}{Tier I topology}
+  \centering
+  \resizebox{0.94\textwidth}{!}{%
+  \begin{tikzpicture}
+    \node[box] (S) at (0,1.7)  {Source\\{\tiny Utility $\parallel$ Gen}};
+    \node[box] (U) at (2.7,1.7){UPS\\{\tiny 1 module ($N$)}};
+    \node[box] (D) at (5.4,1.7){Distribution\\{\tiny single path}};
+    \node[box] (C) at (0,0)   {Chiller\\{\tiny 1 unit ($N$)}};
+    \node[box] (P) at (2.7,0) {Pump\\{\tiny 1 unit ($N$)}};
+    \node[box] (R) at (5.4,0) {CRAH\\{\tiny 1 unit ($N$)}};
+    \node[load] (L) at (8.9,0.85){IT Load\\{\tiny 99.671\%}};
+    \node[andgate] (A) at (7,0.85) {AND};
+    \draw[flow] (S) -- (U);   \draw[flow] (U) -- (D);
+    \draw[flow] (C) -- (P);   \draw[flow] (P) -- (R);
+    \draw[flow] (D.east) -| (A.north);
+    \draw[flow] (R.east) -| (A.south);
+    \draw[flow] (A.east) -- (L.west);
+    \node[tag, anchor=west] at (-2.3,1.7) {POWER};
+    \node[tag, anchor=west] at (-2.3,0)   {COOL};
+  \end{tikzpicture}}
+
+  \vspace{0.5em}
+  {\footnotesize 
+    \begin{itemize}
+      \item No redundancy anywhere
+      \item Single distribution path
+      \item \emph{Not} concurrently maintainable - planned maintenance requires a shutdown
+    \end{itemize}
+  }
 \end{frame}
 
-\begin{frame}{Takeaways}
-  \begin{itemize}
-    \setlength{\itemsep}{0.5em}
-    \item $A = \dfrac{\mathrm{MTBF}}{\mathrm{MTBF}+\mathrm{MTTR}}$; build up from an RBD.
-    \item Series multiplies (lowers); parallel/redundancy squares unavailability (raises).
-    \item Tier III $\approx$ 99.974\,\% $\,\to\,$ Tier IV $\approx$ 99.995\,\%: $\approx 5\times$ less downtime.
-    \item The weakest non-redundant link sets the ceiling.
-  \end{itemize}
+\begin{frame}{Tier II topology}
+  \centering
+  \resizebox{0.94\textwidth}{!}{%
+  \begin{tikzpicture}
+    \node[box] (S) at (0,1.7)  {Source\\{\tiny Utility $\parallel$ Gen}};
+    \node[redbox] (U) at (2.7,1.7){UPS\\{\tiny 1 module ($N$)}};
+    \node[box] (D) at (5.4,1.7){Distribution\\{\tiny single path}};
+    \node[redbox] (C) at (0,0)   {Chillers\\{\tiny 1 unit ($N$)}};
+    \node[redbox] (P) at (2.7,0) {Pumps\\{\tiny 1 unit ($N$)}};
+    \node[redbox] (R) at (5.4,0) {CRAH\\{\tiny 1 unit ($N$)}};
+    \node[load] (L) at (8.9,0.85){IT Load\\{\tiny 99.741\%}};
+    \node[andgate] (A) at (7,0.85) {AND};
+    \draw[flow] (S) -- (U);   \draw[flow] (U) -- (D);
+    \draw[flow] (C) -- (P);   \draw[flow] (P) -- (R);
+    \draw[flow] (D.east) -| (A.north);
+    \draw[flow] (R.east) -| (A.south);
+    \draw[flow] (A.east) -- (L.west);
+    \node[tag, anchor=west] at (-2.3,1.7) {POWER};
+    \node[tag, anchor=west] at (-2.3,0)   {COOL};
+  \end{tikzpicture}}
+
+  \vspace{0.5em}
+  {\footnotesize 
+    \begin{itemize}
+      \item Redundant capacity components ($N{+}1$) but a single, non-redundant distribution path
+      \item \emph{Not} concurrently maintainable
+      \item Same component RBD as Tier III, the difference is planned-maintenance downtime
+    \end{itemize}
+  }  
 \end{frame}
+
+
+\begin{frame}{Tier III topology}
+  \centering
+  \resizebox{0.94\textwidth}{!}{%
+  \begin{tikzpicture}
+    \node[box] (S) at (0,1.7)  {Source\\{\tiny Utility $\parallel$ Gen}};
+    \node[redbox] (U) at (2.7,1.7){UPS\\{\tiny 1 module ($N$)}};
+    \node[box] (D) at (5.4,1.7){Distribution\\{\tiny single path}};
+    \node[redbox] (C) at (0,0)   {Chillers\\{\tiny 1 unit ($N$)}};
+    \node[redbox] (P) at (2.7,0) {Pumps\\{\tiny 1 unit ($N$)}};
+    \node[redbox] (R) at (5.4,0) {CRAH\\{\tiny 1 unit ($N$)}};
+    \node[load] (L) at (8.9,0.85){IT Load\\{\tiny 99.982\%}};
+    \node[andgate] (A) at (7,0.85) {AND};
+    \draw[flow] (S) -- (U);   \draw[flow] (U) -- (D);
+    \draw[flow] (C) -- (P);   \draw[flow] (P) -- (R);
+    \draw[flow] (D.east) -| (A.north);
+    \draw[flow] (R.east) -| (A.south);
+    \draw[flow] (A.east) -- (L.west);
+    \node[tag, anchor=west] at (-2.3,1.7) {POWER};
+    \node[tag, anchor=west] at (-2.3,0)   {COOL};
+  \end{tikzpicture}}
+
+  \vspace{0.5em}
+  {\footnotesize 
+    \begin{itemize}
+      \item Redundant capacity components ($N{+}1$) but a single, non-redundant distribution path
+      \item Concurrently maintainable
+      \item Same component RBD as Tier III, the difference is planned-maintenance downtime
+    \end{itemize}
+  }
+
+\end{frame}
+
+
+% ============================================================
+
+\begin{frame}{Tier IV topology}
+  \centering
+  \resizebox{0.94\textwidth}{!}{%
+  \begin{tikzpicture}
+    % power 2N
+    \node[redcont] (PA) at (0,2) {Path A:\; Source $\to$ UPS $\to$ Distribution};
+    \node[redcont] (PB) at (0,0.6) {Path B:\; Source $\to$ UPS $\to$ Distribution};
+    \node[box, minimum width=1.7cm] (PW) at (6.0,1.3) {Power\\{\tiny A $\parallel$ B}};
+    \node[redcont] (CA) at (0,-0.6)  {Path A:\; Chiller $\to$ Pump $\to$ CRAH};
+    \node[redcont] (CB) at (0,-2) {Path B:\; Chiller $\to$ Pump $\to$ CRAH};
+    \node[box, minimum width=1.7cm] (CW) at (6.0,-1.3) {Cooling\\{\tiny A $\parallel$ B}};
+    \node[andgate] (A) at (8,0) {AND};
+    \node[load] (L) at (10,0) {IT Load\\{\tiny 99.995\%}};
+    \draw[flow] (PW.east) -| (A.north);
+    \draw[flow] (CW.east) -| (A.south);
+    \draw[flow] (A.east) -- (L.west);
+    \draw[flow] (PA.east) -| (PW.north);
+    \draw[flow] (PB.east) -| (PW.south);
+    \draw[flow] (CA.east) -| (CW.north);
+    \draw[flow] (CB.east) -| (CW.south);
+
+    % \draw[flow] (CW.east) -| (9.9,0.95);
+    % \draw[flow] (9.9,0.95) -- (L.west);
+    % \node[font=\tiny, text=edge] at (9.9,1.25) {AND};
+  \end{tikzpicture}}
+  \vspace{0.5em}
+  {\footnotesize
+    \begin{itemize}
+      \item Every stage duplicated end-to-end (\textcolor{accent}{$2N$})
+      \item No single non-redundant link
+      \item Unavailable only if \emph{both} A and B fail
+    \end{itemize}
+   }
+\end{frame}
+
+% ============================================================
+% \intermezzo{Comparison \& Conclusions}{}
+
+\begin{frame}{Tier Comparison}
+  \centering
+  % \renewcommand{\arraystretch}{1.3}
+  % \scriptsize
+  \begin{tabular}{lcccc}
+    \toprule
+      & \textbf{I} & \textbf{II} & \textbf{III} & \textbf{IV} \\
+      & ($N$) & ($N{+}1$) & ($N{+}1$) & ($2N$) \\
+    \midrule
+    Redundancy     & none   & unit   & unit   & full path \\
+    Distribution   & single & single & single & dual A/B \\
+    Conc.\ maint.  & no     & no     & yes    & yes \\
+    Fault tolerant & no     & no     & no     & yes \\
+    Availability   & 99.671\,\% & 99.741\,\% & 99.982\,\% & 99.995\,\% \\
+    Downtime/yr    & $\approx$28.8 h & $\approx$22 h & $\approx$1.6 h & $\approx$26.3 min \\
+    \bottomrule
+  \end{tabular}
+
+ \end{frame}
+

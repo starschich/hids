@@ -7,8 +7,9 @@
 %  Note: time values are expressed in decimal hours
 %        (e.g. 6 h 30 min = 6.5 h).
 % =============================================================
-\sectionslide{Performance Reporting}{Availability definitions \& formulas — CIGRE TB 956}
 
+% ---- Outage terms -------------------------------------------
+\intermezzo{Performance Reporting}{Availability definitions \& formulas — CIGRE TB 956}
 
 \begin{frame}{Scope of reporting}
   \begin{block}{CIGRE TB 956 (2025) — supersedes TB 590}
@@ -50,8 +51,7 @@
 % \end{frame}
 
 
-% ---- Outage terms -------------------------------------------
-\intermezzo{Terms and Definitions}{}
+
 
 \begin{frame}{Outage classifications}
   \begin{block}{Outage}
@@ -191,3 +191,62 @@
           (MWh), referred to the point at which $P_m$ is defined.
   \end{itemize}
 \end{frame}
+
+
+% --------------------------------------------------
+\intermezzo{HVDC projects}{Guarantees and Liquidated damages}
+
+\begin{frame}{Typical values for a HVDC project}
+  \centering
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{llcc}
+    \toprule
+    \textbf{Metric} & \textbf{Description} & \textbf{Typical value} & \textbf{Guaranteed} \\
+    \midrule
+    FEU & Forced Energy Unavailability     & 0.2 - 1.0\,\%      &  0.5\,\%\\
+    SEU & Scheduled Energy Unavailability  & 1 - 3\,\%          &  1.0\,\%\\
+    FOR & Forced Outage Rate (pole) & $\approx$ 4 - 8 / yr &  2 - 3 / yr\\
+        & Forced Outage Rate (bipole)      & $\lesssim$ 0.5 / yr  &  0.1 / yr\\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{1em}
+  {\color{atGray}\footnotesize
+    \begin{itemize}
+      \item Indicative ranges from CIGRE biennial HVDC reliability surveys.
+      \item Actual figures vary with technology (LCC vs.\ VSC), scheme age, and transmission medium — long overhead lines raise forced-outage counts, cable schemes lower them.
+      \item For bipole outages values of 0.05 / y have been guaranteed, but the values do no account the real performance and it is assumed that liquidated damages are included in commercial risk.
+    \end{itemize}   
+  }
+\end{frame}
+
+\begin{frame}{Liquidated damages — FOR \& SEU}
+  \centering
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{llcc}
+    \toprule
+    \textbf{Metric} & \textbf{Penalty rate}\\
+    \midrule
+    FOR & 0.1 - 1.2 Mio. \$\\
+    FEU & 75 - 600 tsd. \$\\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{1em}
+  \begin{itemize}
+    \setlength{\itemsep}{0.3em}
+    \item Penalties (liquidated damages) apply when the measured value exceeds the contractually guaranteed threshold.
+    \item Typically assessed per unit of excess
+    \begin{itemize}
+      \item FOR: additional forced outage
+      \item FEU: addional 0.1\,\% of unavailability
+    \end{itemize}
+    \item The cap liquidated damages is in the range of 3-5\,\% of the contract value
+  \end{itemize}
+
+\end{frame}
+
+
+
+
+
