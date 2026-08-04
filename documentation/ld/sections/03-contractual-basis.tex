@@ -34,6 +34,44 @@ values that an OEM can realistically stand behind:
         uncertainty.
 \end{itemize}
 
+\subsection{RTEi availability-planning inputs}
+Additional availability-planning data provided by RTE International (RTEi) gives
+configuration-specific forced-outage rates and repair times:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}l X c c@{}}
+  \toprule
+  \textbf{Configuration} & \textbf{Outage type} & \textbf{FOR} & \textbf{MTTR} \\
+  \midrule
+  SMP            & Station / pole outage & 0.8 / (yr$\cdot$station) & 4--24\,h \\
+  BIP with DMR   & Pole outage           & 0.8 / (yr$\cdot$station) & 4--24\,h \\
+  BIP with DMR   & Bipole (full) outage  & 0.04--0.06 / yr          & --- \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{Pole/station outages are frequent but shallow.} At
+        $\approx$0.8 per year and station, a pole or single-station forced outage
+        is expected roughly once a year, but with a short repair time
+        (MTTR 4--24\,h) and, for a bipole, only a \emph{partial} (single-pole)
+        loss of capacity.
+  \item \textbf{Bipole (full) outages are rare.} A forced bipole outage rate of
+        0.04--0.06 per year corresponds to \textbf{one event every 15--25
+        years} --- more optimistic than the $\approx$0.1/yr ($\approx$1 in 10
+        years) figure used elsewhere in this report, and consistent with the DMR
+        configuration's redundancy.
+  \item \textbf{Implication for LDs.} The high pole-outage frequency drives FOR
+        exposure and repair logistics, while the bipole full-outage rate governs
+        the deep-unavailability events that dominate the data-center availability
+        case. Both should be reflected separately in the guarantee and LD
+        structure.
+\end{itemize}
+
+{\color{atGray}\footnotesize Source: RTE International (RTEi) availability
+planning.}
+
 \subsection{Monitoring period}
 \begin{itemize}\setlength{\itemsep}{0.2em}
   \item A monitoring period of \textbf{3 years} is typical.
