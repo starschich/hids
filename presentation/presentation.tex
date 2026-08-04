@@ -5,7 +5,7 @@
 %  Structure:
 %    presentation.tex          <- this file: metadata + orchestration
 %    theme/atstyle.sty         <- template: palette, theme, commands
-%    chapters/*.tex            <- one file per overview item
+%    design/*.tex            <- one file per overview item
 %
 %  Compile (run twice for nav/refs):
 %    pdflatex presentation.tex
@@ -38,7 +38,7 @@
 % ---- Title slide --------------------------------------------
 \titleslide
 
-% ---- Overview (chapters listed below live in chapters/) -----
+% ---- Overview (chapters listed below live in design/) -----
 %\begin{frame}{Overview}
 %  \begin{itemize}
 %    \setlength{\itemsep}{0.7em}
@@ -52,39 +52,39 @@
 %\end{frame}
 
 % ---- Chapters -----------------------------------------------
-%\input{chapters/01-transmission-bottleneck}
-%\input{chapters/02-multiterminal-hvdc}
-%\input{chapters/03-capacity-roadmap}
-%\input{chapters/04-who-we-serve}
-%\input{chapters/05-the-team}
+%\input{design/01-transmission-bottleneck}
+%\input{design/02-multiterminal-hvdc}
+%\input{design/03-capacity-roadmap}
+%\input{design/04-who-we-serve}
+%\input{design/05-the-team}
 
 % ---- Projects -----------------------------------------------
-% \input{chapters/system-configuration/system_overview}
+\input{design/system-configuration/system_overview}
 
-% \input{chapters/hvdc-topologies/hvdc-topologies}
-% \input{chapters/loadflow/loadflow}
+% \input{design/hvdc-topologies/hvdc-topologies}
+% \input{design/loadflow/loadflow}
 
 % Fervo
 % \input{projects/fervo/system_overview}
 
 % ---- Design -----------------------------------------------
 
-% \input{chapters/terminal/components/components}
-% \input{chapters/insulation-coordination/insulation-coordination}
-% \input{chapters/ac-transmission/ac-transmission}
-% \input{chapters/hvdc-topologies/dc-power-transmission}
-% \input{chapters/c-and-p/c-and-p}
-\input{chapters/ram/ram}
+% \input{design/terminal/components/components}
+% \input{design/insulation-coordination/insulation-coordination}
+% \input{design/ac-transmission/ac-transmission}
+% \input{design/hvdc-topologies/dc-power-transmission}
+% \input{design/c-and-p/c-and-p}
+% \input{design/ram/ram}
 
 % ---- Standardization bodies ------------
-% \input{chapters/standardization/standardizaton}
+% \input{design/standardization/standardizaton}
 
 % ---- RAM -------------------
-% \input{chapters/transmission-line/DC cable/dc-cable}
+% \input{design/transmission-line/DC cable/dc-cable}
 
 
 % ---- Closing slide ------------------------------------------
-%\input{chapters/closing-slide.tex}
+%\input{design/closing-slide.tex}
 
 % ---- Projects -----------------------------------------------
 \end{document}

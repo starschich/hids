@@ -35,7 +35,7 @@ The repository is organized into three top-level areas:
 Browse to the area that matches what you need. To build the presentation, open
 `presentation/` and compile `presentation.tex` (run `pdflatex` twice for
 navigation and references). Each chapter lives in its own folder under
-`presentation/chapters/`, with its figures in a local `fig/` (or `figures/`)
+`presentation/design/`, with its figures in a local `fig/` (or `figures/`)
 subfolder.
 
 ## Contributing
