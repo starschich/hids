@@ -1,0 +1,41 @@
+\section{Liquidated damages mechanism}
+
+\subsection{Definition and trigger}
+Liquidated damages are a pre-agreed sum, stated in the supply contract, payable
+by the OEM when a measured performance metric \emph{exceeds} its contractually
+guaranteed threshold over the monitoring period. They provide commercial
+certainty and avoid disputes over the quantum of actual loss.
+
+Assessment is typically \textbf{per unit of excess}:
+\begin{itemize}\setlength{\itemsep}{0.2em}
+  \item \textbf{FOR} --- per additional forced outage above the guarantee.
+  \item \textbf{FEU} --- per increment (e.g.\ each additional 0.1\,\%) of forced
+        energy unavailability above the guarantee.
+\end{itemize}
+
+\subsection{Market ranges}
+Indicative LD rates for a HVDC scheme of order 1\,GW:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+  \toprule
+  \textbf{Metric} & \textbf{Penalty rate} & \textbf{Notes} \\
+  \midrule
+  FOR (per outage) & \$0.1--1.2\,M & per additional forced outage \\
+  FEU              & \$75--600\,k  & per additional 0.1\,\% unavailability \\
+  \textbf{LD cap}  & 3--5\,\%      & of contract value \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Market context}
+\begin{itemize}\setlength{\itemsep}{0.2em}
+  \item The high end of each range reflects demanding customers in a buyer's
+        market; the low end reflects supplier-favourable conditions.
+  \item Caps have compressed over time: 3--5\,\% today versus 10--20\,\% in the
+        buyer's market of $\sim$20 years ago.
+  \item LDs are a \emph{sole-remedy} cap on operational performance in most
+        contracts; the interaction with defect-liability and termination
+        remedies must be checked case by case.
+\end{itemize}

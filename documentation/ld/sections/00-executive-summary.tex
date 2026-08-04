@@ -1,0 +1,40 @@
+\section{Executive summary}
+
+This report examines \textbf{liquidated damages (LD) tied to availability and
+performance guarantees} for HVDC transmission systems, and how they should be
+framed for American Terawatt's projects supplying large industrial and
+data-center loads.
+
+For an HVDC scheme, the commercially relevant guarantees are \emph{operational}:
+the fraction of energy the link can transmit over a reporting period. The
+industry standard for measuring this is CIGRE Technical Brochure~956 (2025),
+which defines forced and scheduled energy unavailability (FEU, SEU) and the
+forced outage rate (FOR). When the measured value exceeds the contractually
+guaranteed threshold, liquidated damages become payable.
+
+\textbf{Key points}
+\begin{itemize}
+  \item \textbf{Guaranteed values (realistic, OEM-backable):} FEU $\approx$
+        0.5\,\%, SEU $\approx$ 1\,\%, and a bipolar forced-outage rate of order
+        1 per 10 years. Very aggressive figures (e.g.\ 1 bipolar outages per 20 years) are
+        \emph{commercially driven, not technically justified}, and no OEM will
+        guarantee them with high penalty costs.
+  \item \textbf{LD market ranges (\raise.17ex\hbox{$\scriptstyle\sim$}1\,GW project):}
+        \$0.1--1.2\,M per additional forced outage; \$75--600\,k per increment
+        of forced energy unavailability; overall LD cap of 3--5\,\% of contract
+        value in the last years. Prior to that, LD cap of up to 20\,\% were very common.
+  \item \textbf{Availability gap:} a single HVDC link cannot, on its own, meet a
+        data-center Tier~III target ($\approx$99.982\,\%). Meeting it requires
+        redundancy (dual full-capacity circuits), on-site back-up generation, or
+        a negotiated availability target — all of which shape the LD position.
+  \item \textbf{LD design principles:} LDs should be expressed as a percentage
+        of OEM supply value, set high enough to \emph{incentivise the OEM to
+        fix problems}, and understood as a behavioural lever rather than full
+        recovery of loss.
+\end{itemize}
+
+\textbf{Recommendation.} Base the LD position on a defensible economic argument
+--- the unavailability charges American Terawatt faces under its power purchase
+agreement (PPA) and the cost of the battery capacity required to compensate for
+forced-unavailability events --- and argue for an LD cap linked to that overall
+PPA liability rather than defaulting to the standard 3--5\,\%.

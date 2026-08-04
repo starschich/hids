@@ -1,0 +1,47 @@
+\section{Conclusions and recommendations}
+
+\subsection{Conclusions}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item Availability and performance guarantees --- measured per CIGRE TB~956 as
+        FEU, SEU and FOR --- are the commercially decisive terms for an HVDC
+        supply contract serving data-center load.
+  \item Realistically guaranteeable values are FEU $\approx$0.5\,\%,
+        SEU $\approx$1\,\% and a bipole FOR of order 1/year; more aggressive
+        figures are commercial, not technical, commitments.
+  \item A single HVDC link cannot meet a Tier~III data-center target unaided, so
+        the LD regime must be designed together with the redundancy and storage
+        strategy, not after it.
+  \item Standard LD ranges (\$0.1--1.2\,M per outage, \$75--600\,k per FEU
+        increment, 3--5\,\% cap) are the starting point, not the target.
+\end{itemize}
+
+\subsection{Recommendations}
+\begin{enumerate}\setlength{\itemsep}{0.25em}
+  \item Set LDs as a percentage of OEM supply value, sized to incentivise
+        remediation.
+  \item Anchor the LD basis to PPA unavailability charges and to battery
+        replacement cost.
+  \item Argue for an LD cap linked to the overall PPA liability rather than the
+        default 3--5\,\%.
+  \item Adopt a 3-year (best-3-of-4) monitoring period.
+\end{enumerate}
+
+\subsection{Open action items}
+\begin{itemize}\setlength{\itemsep}{0.2em}
+  \item Research the PPA unavailability penalties charged by the data center, to
+        use as the LD basis.
+  \item Model the battery-replacement cost as a concrete LD justification.
+  \item Complete the overall availability model (HVDC $+$ batteries $+$ on-site
+        generation).
+\end{itemize}
+
+\section*{References}
+\begin{enumerate}\setlength{\itemsep}{0.15em}
+  \item CIGRE Technical Brochure~956 (2025), \emph{Protocol for reporting the
+        operational performance of HVDC systems} (supersedes TB~590).
+  \item IEC 60633:2019; IEC TR 62672:2018.
+  \item Meisingset \emph{et al.}, \emph{Three-terminal hybrid HVDC
+        interconnector for offshore wind}, CIGRE 2026, Paper~B4 PS1 11874.
+  \item American Terawatt --- internal review with R.~Rosenqvist, weekly session
+        30~July~2026; R\&D team weekly sync, 29~July~2026.
+\end{enumerate}

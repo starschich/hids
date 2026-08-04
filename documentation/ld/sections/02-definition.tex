@@ -1,0 +1,47 @@
+\section{Performance measurement framework (CIGRE TB 956)}
+
+CIGRE Technical Brochure~956 (2025), which supersedes TB~590, defines a
+standardised protocol for reporting the annual operational performance of HVDC
+systems. The reporting period is the calendar year; only events causing a loss
+of transfer capability are counted. These definitions are the basis on which
+availability guarantees --- and hence liquidated damages --- are written.
+
+\subsection{Outage classification}
+\begin{itemize}\setlength{\itemsep}{0.2em}
+  \item \textbf{Scheduled outage} --- planned or deferrable (e.g.\ preventive
+        maintenance).
+  \item \textbf{Forced outage} --- equipment unavailable outside a scheduled
+        state, whether by protective trip or other forced derating.
+  \item \textbf{Forced Outage Rate (FOR)} --- number of complete or partial
+        forced outages of a converter (or pole) per unit of operating time.
+\end{itemize}
+
+\subsection{Capacity and duration}
+\begin{itemize}\setlength{\itemsep}{0.2em}
+  \item \textbf{Rated capacity} $P_m$ --- maximum continuous capacity (MW),
+        excluding redundant equipment.
+  \item \textbf{Outage capacity} $P_o$ --- the capacity reduction an outage
+        would cause at $P_m$.
+  \item \textbf{Outage Derating Factor} $\mathrm{ODF}=\dfrac{P_o}{P_m}$ ---
+        1 for a full outage, between 0 and 1 for a partial loss.
+  \item \textbf{Equivalent Outage Duration} $\mathrm{EOD}=\mathrm{AOD}\times
+        \mathrm{ODF}$ --- actual outage duration weighted by the derating.
+\end{itemize}
+
+\subsection{Availability and unavailability}
+With period hours $\mathrm{PH}$ (8760\,h/yr) and equivalent outage hours
+$\mathrm{EOH}=\sum\mathrm{EOD}$:
+\[
+  \mathrm{EU}\,(\%) = \frac{\mathrm{EOH}}{\mathrm{PH}}\times 100,
+  \qquad
+  \mathrm{EA}\,(\%) = 100 - \mathrm{EU}.
+\]
+Unavailability is split by cause into \textbf{Forced} (FEU) and \textbf{Scheduled}
+(SEU) energy unavailability:
+\[
+  \mathrm{FEU}=\frac{\mathrm{EFOH}}{\mathrm{PH}}\times 100,
+  \qquad
+  \mathrm{SEU}=\frac{\mathrm{ESOH}}{\mathrm{PH}}\times 100.
+\]
+FEU, SEU and FOR are the metrics against which performance guarantees are
+typically written.

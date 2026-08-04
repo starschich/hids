@@ -1,0 +1,86 @@
+\section{Availability gap and data-center context}
+
+The LD position cannot be set in isolation from the end-customer requirement.
+Data-center loads are specified against the Uptime Institute tier framework, and
+there is a structural gap between what a single HVDC link delivers and what those
+frameworks demand.
+
+\subsection{The tier requirement}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item The industry norm for large data centers is \textbf{Tier~III}
+        ($\approx$99.982\,\% availability, $\approx$1.6\,h downtime/year).
+  \item Tier~IV (full redundancy) is generally reserved for financial
+        institutions and is not the target here.
+  \item Banks and project financiers require this availability analysis as a
+        condition of financing.
+\end{itemize}
+
+\subsection{The gap}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item A single HVDC link \textbf{cannot} meet the Tier~III requirement on its
+        own.
+  \item Even dual symmetrical-monopole configurations must include
+        \textbf{tower/line failure} in the availability calculation --- a factor
+        confirmed by the DC-line development team, whose assumed tower-failure
+        rate was significantly higher than expected, and one that is easily
+        overlooked (it is not always captured in single-contingency studies, but
+        most ISOs include it in their evaluation of a double circuit).
+\end{itemize}
+
+\subsection{Tower failure and corridor sharing}
+Where redundancy is provided by two circuits, tower failure becomes a key
+consideration:
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{Tower spacing.} If both circuits share a structure, a single
+        tower failure takes out both. The towers (or lines) must therefore be
+        spaced far enough apart that a \emph{falling tower does not affect the
+        adjacent circuit}.
+  \item \textbf{Shared corridor.} Spacing alone is not sufficient: as long as
+        both circuits remain in the \textbf{same corridor / right-of-way}, a
+        \textbf{total outage remains possible from a common-cause event} such as
+        wildfire or another natural disaster. A wildfire, for example, can take
+        out a parallel circuit hundreds of metres --- even a mile --- away
+        through smoke/pollution flashover; a tornado through a shared corridor
+        has historically taken out both bipoles in the same right-of-way
+        (Manitoba experience, which led to the third bipole being routed
+        separately).
+  \item \textbf{Implication.} In areas of significant wildfire or severe-weather
+        risk, true redundancy may require \emph{separate corridors} or
+        \emph{undergrounding} the circuits --- at a significant cable cost
+        premium, though still potentially cheaper than local generation.
+\end{itemize}
+
+\subsection{Mitigation paths}
+\begin{enumerate}\setlength{\itemsep}{0.2em}
+  \item \textbf{Dual HVDC circuits}, each sized for full capacity (cf.\ the
+        Johan Sverdrup~II approach).
+  \item \textbf{On-site back-up generation} --- effective but costly and a
+        challenge to the scheme's green credentials.
+  \item \textbf{Negotiate the availability target down} with the data center ---
+        feasibility depends on the counterparty and its financing.
+\end{enumerate}
+
+The chosen mitigation directly shapes the LD regime: the more the redundancy
+strategy relies on the HVDC supplier's performance, the more weight the LDs must
+carry.
+
+\subsection{Manned vs.\ unmanned converter station}
+Some operators argue that permanently manning a converter station improves
+availability, since staff on site can respond faster to an event. In practice
+this benefit is doubtful for a single project:
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{Motivation.} It is very difficult to keep qualified personnel
+        motivated at a converter station: genuine incidents are rare and the
+        role is largely routine maintenance, so skilled staff become bored and
+        do not stay.
+  \item \textbf{Skills.} Those willing to remain in such a role tend not to be
+        the people who can provide a proper response in a real emergency; and
+        once skilled staff leave, replacements have little of the requisite
+        expertise --- so a permanently manned station adds cost without reliably
+        adding capability.
+  \item \textbf{Better approach.} Retain \emph{access} to skilled personnel with
+        a plan to mobilise them quickly to the site, and/or an OEM service-level
+        agreement covering maintenance, rather than permanently manning the
+        station. Building an in-house maintenance team only becomes worthwhile
+        across a portfolio of multiple DC projects.
+\end{itemize}

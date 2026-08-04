@@ -1,0 +1,45 @@
+% =============================================================
+%  Liquidated Damages (LD) — Report
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex ld.tex   (run twice for ToC / references)
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives one level up in ../template
+\usepackage{../template/atreport}
+
+% ---- Report metadata ----------------------------------------
+\reporttitle{Liquidated Damages}
+\reportsubtitle{Availability \& performance guarantees for HVDC systems}
+\reportauthor{American Terawatt}
+\reportdocnumber{ATW-REP-LD-001}
+\reportrevision{0.2}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Confidential}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{\today}{Eugen Starschich}{Initial docuemnt}
+  % \revrow{0.2}{\today}{American Terawatt}{Drafted from RAM performance material (CIGRE TB~956) and internal review (30~Jul~2026).}
+}
+
+\newpage
+\tableofcontents
+\clearpage
+
+% ---- Body ---------------------------------------------------
+\input{sections/00-executive-summary}
+\input{sections/01-introduction}
+\input{sections/02-definition}
+\input{sections/03-contractual-basis}
+\input{sections/04-mechanisms}
+% \input{sections/05-calculation}
+\input{sections/06-caps-limitations}
+\input{sections/07-risk-mitigation}
+\input{sections/08-conclusions}
+
+\end{document}

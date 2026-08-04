@@ -1,0 +1,49 @@
+\section{Calculation methodology}
+
+\subsection{From outages to unavailability}
+Over the reporting period the forced energy unavailability follows directly from
+the equivalent forced outage hours:
+\[
+  \mathrm{FEU}\,(\%) = \frac{\mathrm{EFOH}}{\mathrm{PH}}\times 100,
+  \qquad
+  \mathrm{EFOH} = \sum \mathrm{EFOD} = \sum \bigl(\mathrm{AOD}\times\mathrm{ODF}\bigr).
+\]
+
+\subsection{Liquidated damages}
+For each guaranteed metric with rate $r$, measured value $m$, guarantee $g$ and
+cap $C$:
+\[
+  \mathrm{LD} = \min\!\Bigl( r \times \underbrace{(m-g)^+}_{\text{excess}},\; C \Bigr),
+  \qquad (x)^+ = \max(x,0).
+\]
+The total LD is the sum over the FOR and FEU components, subject to the overall
+cap (3--5\,\% of contract value).
+
+\subsection{Worked example (illustrative)}
+Consider a 1\,GW scheme with a guaranteed $\mathrm{FEU}=0.5\,\%$ that measures
+$0.8\,\%$ over the monitoring period, at a rate of \$300\,k per 0.1\,\% excess:
+\[
+  \mathrm{LD}_{\mathrm{FEU}} = \$300\text{k} \times \frac{0.8-0.5}{0.1}
+  = \$300\text{k}\times 3 = \$0.9\,\text{M}.
+\]
+If two forced outages occur against a guarantee of one, at \$0.5\,M per outage,
+$\mathrm{LD}_{\mathrm{FOR}} = \$0.5\,\text{M}$. The combined \$1.4\,M is then
+capped at the contractual maximum (e.g.\ 4\,\% of a \$200\,M supply value $=$
+\$8\,M, so the cap does not bind here).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l r r@{}}
+  \toprule
+  \textbf{Component} & \textbf{Basis} & \textbf{LD} \\
+  \midrule
+  FEU (0.3\,\% excess) & 3 $\times$ \$300\,k & \$0.90\,M \\
+  FOR (1 extra outage) & 1 $\times$ \$0.5\,M & \$0.50\,M \\
+  \midrule
+  \textbf{Total (pre-cap)} & & \textbf{\$1.40\,M} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+{\color{atGray}\footnotesize Figures are illustrative; will be replaced with project
+rates, guarantees and the actual OEM supply value.}

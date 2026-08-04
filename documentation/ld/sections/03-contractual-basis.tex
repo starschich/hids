@@ -1,0 +1,45 @@
+\section{Guaranteed performance values}
+
+\subsection{Typical vs.\ guaranteed}
+Indicative ranges from the CIGRE biennial HVDC reliability surveys, together with
+values that an OEM can realistically stand behind:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}l X c c@{}}
+  \toprule
+  \textbf{Metric} & \textbf{Description} & \textbf{Typical} & \textbf{Guaranteed} \\
+  \midrule
+  FEU & Forced energy unavailability    & 0.2--1.0\,\%      & $\approx$0.5\,\% \\
+  SEU & Scheduled energy unavailability & 1--3\,\%          & $\approx$1.0\,\% \\
+  FOR & Forced outage rate (pole)       & 4--8 / yr         & 2--3 / yr \\
+      & Forced outage rate (bipole)     & $\lesssim$0.5 / yr & $\approx$0.1 / yr \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Interpretation}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item Actual figures vary with technology (LCC vs.\ VSC), scheme age and
+        transmission medium: long overhead lines raise forced-outage counts,
+        cable schemes lower them.
+  \item SEU is driven mainly by valve-maintenance duration and can be reduced by
+        multi-shift working during outages.
+  \item Very aggressive bipole figures (e.g.\ 0.1 outages/year, or 1 in 20 years)
+        have been \emph{guaranteed on some projects but are commercially driven,
+        not technically justified}; the residual exposure is effectively carried
+        as commercial risk through the LD regime.
+  \item VSC bipolar schemes with a dedicated metallic return are still rare, so
+        CIGRE survey data for them is limited --- guarantees carry more
+        uncertainty.
+\end{itemize}
+
+\subsection{Monitoring period}
+\begin{itemize}\setlength{\itemsep}{0.2em}
+  \item A monitoring period of \textbf{3 years} is typical.
+  \item A robust buyer approach (common in North American projects) is to
+        \textbf{extend to 4 years and count the best 3 of 4}, protecting against
+        a single anomalous year.
+  \item A simple mean/median-over-the-period approach is generally too risky for
+        the buyer and should be avoided.
+\end{itemize}
