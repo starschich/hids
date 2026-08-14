@@ -1,0 +1,44 @@
+\section{Functional requirements}
+
+\emph{Requirements are numbered FR-x for traceability. Values are dummy.}
+
+\subsection{Power transfer and control}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{FR-1} The system shall transmit active power continuously in
+        both directions from 0 to $\pm$100\,\% of rated power.
+  \item \textbf{FR-2} Active-power set-point ramp rate shall be adjustable from
+        \emph{[10]} to \emph{[999]}\,MW/min.
+  \item \textbf{FR-3} One station shall control DC voltage; the other shall
+        control active power (P/Q mode) or AC voltage/frequency (U/f mode).
+  \item \textbf{FR-4} Independent reactive-power / AC-voltage control shall be
+        available at each PCC within the $Q$ range of Section~2.
+\end{itemize}
+
+\subsection{Operating modes}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{FR-5} Grid-following (GFL) P/Q control for connection to strong
+        grids (SCR $\ge$ \emph{[2]}).
+  \item \textbf{FR-6} Grid-forming (GFM) / U-f control for weak-grid or
+        islanded operation (SCR $<$ \emph{[2]}).
+  \item \textbf{FR-7} Reduced-capacity operation: on a single-pole outage the
+        healthy pole shall continue at up to \emph{[50]}\,\% capacity.
+\end{itemize}
+
+\subsection{Dynamic performance and grid support}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{FR-8} Fault ride-through in accordance with the applicable grid
+        code for AC faults on the network side of the converter transformer.
+  \item \textbf{FR-9} Fast frequency response and synthetic inertia (GFM mode).
+  \item \textbf{FR-10} Reactive-current injection during AC voltage dips.
+\end{itemize}
+
+\subsection{Protection and control}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{FR-11} Full AC and DC protection with redundant (2-out-of-3)
+        measurement and duplicated control \& protection.
+  \item \textbf{FR-12} DC fault detection and clearance strategy per the DC
+        protection philosophy \emph{[reference]}.
+  \item \textbf{FR-13} Remote operation from a central control room; the station
+        shall be capable of unmanned operation.
+  \item \textbf{FR-14} Black-start capability \emph{[required / not required]}.
+\end{itemize}

@@ -1,0 +1,46 @@
+% =============================================================
+%  HVDC System — Functional Specification
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex functional-spec.tex   (run twice for ToC)
+%
+%  NOTE: contains DUMMY / placeholder values — replace before use.
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives in the repo-level template folder
+\usepackage{../../template/atreport}
+
+% ---- Document metadata --------------------------------------
+\reporttitle{HVDC System\\Functional Specification}
+\reportsubtitle{Private Industrial Power Grid}
+\reportauthor{Eugen Starschich}
+\reportdocnumber{ATW-SPEC-HVDC-001}
+\reportrevision{0.1}
+\reportstatus{Draft (dummy data)}
+\reportdate{\today}
+\reportconfidentiality{Confidential}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{\today}{E. Starschich}{Initial draft}
+}
+
+\newpage
+\tableofcontents
+\clearpage
+
+\input{sections/01-introduction}
+\input{sections/02-system-overview}
+\input{sections/02a-ac-data}
+% \input{sections/03-functional-requirements}
+\input{sections/04-performance-requirements}
+% \input{sections/05-interfaces}
+\input{sections/06-environmental}
+%\input{sections/07-testing-acceptance}
+%\input{sections/08-standards}
+\input{sections/09-timeline}
+
+\end{document}

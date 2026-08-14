@@ -1,0 +1,46 @@
+\section{Performance requirements}
+
+\subsection{Availability}
+\label{sec:availability}
+
+\subsubsection{Data-center availability requirement}
+The transmission system supplies data-center loads, whose availability is
+specified against the Uptime Institute tier framework. It is assumed that a
+\textbf{Tier~III} requirement applies. Tier~III describes a
+\emph{concurrently maintainable} facility: every element of the power (and
+cooling) path can be maintained or replaced without interrupting supply to the
+load, achieved through redundant capacity components and multiple distribution
+paths (with one path active at a time). In availability terms, Tier~III
+corresponds to about \textbf{99.982\,\%} availability --- roughly
+\textbf{1.6\,hours} of downtime per year.
+
+A single HVDC link cannot, on its own, meet this target; achieving it requires
+redundancy at system level (e.g.\ dual full-capacity circuits) together with
+battery storage and, where necessary, on-site generation. The availability of
+the HVDC system is one contributor to the overall facility availability and is
+specified below.
+
+\subsubsection{Guaranteed values}
+Operational performance shall be measured per CIGRE TB~956. Guaranteed values
+are given in Table~\ref{tab:availability-guarantees}.
+
+\begin{table}[htbp]
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\linewidth}{@{}l X r@{}}
+    \toprule
+    \textbf{Metric} & \textbf{Description} & \textbf{Guaranteed} \\
+    \midrule
+    FEU & Forced energy unavailability     & $\le$0.5\,\% \\
+    SEU & Scheduled energy unavailability  & $\le$1.0\,\% \\
+    FOR & Forced outage rate SMP         & $\le$2 / yr \\
+    FOR & Forced outage rate BIP (single pole) & $\le$2 / yr \\
+    FOR & Forced outage rate BIP (bipole)      & $\le$0.1 / yr \\
+    EA  & Energy availability              & $\ge$98.5\,\% \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Guaranteed availability and performance values.}
+  \label{tab:availability-guarantees}
+\end{table}
+
+Monitoring period should be 3 years, extendable to 4 with best 3 out of 4 years.
+

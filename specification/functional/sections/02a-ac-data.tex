@@ -1,0 +1,94 @@
+\section{AC data}
+\label{sec:ac-data}
+The AC system data is flexible and is not fixed at the time of issue of this
+specification. A nominal AC voltage of 230\,kV has been selected as a compromise
+between the insulation requirements, which grow with the system voltage
+(clearances, creepage, BIL and the resulting station and tower footprint), and
+the current requirements, which grow as the voltage is reduced (conductor and
+busbar sizing, switchgear and transformer current ratings, and losses). The
+supplier is encouraged to propose an alternative AC voltage where this results
+in a significant cost or performance benefit.
+
+The interconnection requirements follow IEEE~2800. The steady-state parameters
+at the point of measurement (POM) are given in
+Table~\ref{tab:ac-steady-state}. The insulation coordination for the 230\,kV
+system follows IEEE~1313.1 and IEEE~C57.12.00 and is given in
+Table~\ref{tab:ac-insulation}.
+
+
+\begin{table}[htbp]
+  % \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X l@{}}
+    \toprule
+    \multicolumn{1}{c}{} & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c@{}}{\textbf{Value}} \\
+    \midrule
+    Nominal system voltage & kV  & 230\\
+    Min. c & kV  & 230\\
+
+    \bottomrule
+  \end{tabularx}
+  \caption{AC voltage} \label{tab:ac-voltage}
+\end{table}
+
+\begin{table}[htbp]
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X l@{}}
+    \toprule
+    \multicolumn{1}{@{}c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Description}} &
+    \multicolumn{1}{c@{}}{\textbf{Value}} \\
+    \midrule
+    $U_{n}$      & Nominal AC system voltage (phase--phase, rms) & 230\,kV \\
+    $U_{m}$      & Maximum continuous system voltage             & 242\,kV \\
+    $f_{n}$      & Nominal AC system frequency                   & 60\,Hz \\
+    ---          & Number of phases / phase sequence             & 3, ABC \\
+    ---          & Neutral earthing                              & Effectively earthed
+                                                                   ($X_{0}/X_{1}\le 3$,
+                                                                   $R_{0}/X_{1}\le 1$) \\
+    $\Delta U$   & Continuous operating voltage range at POM     & 0.90--1.05\,pu \\
+    $\Delta f$   & Continuous operating frequency range at POM   & 58.8--61.2\,Hz \\
+    $\mathrm{d}f/\mathrm{d}t$ & Rate-of-change-of-frequency withstand & $\pm$5\,Hz/s
+                                                                   (measured over 0.1\,s) \\
+    $Q$          & Reactive capability at rated $P$              & $\pm$0.329\,pu
+                                                                   (0.95 lead/lag) \\
+    $u_{2}$      & Continuous negative-sequence voltage unbalance & $\le$1\,\% \\
+    $\mathrm{THD}_{u}$ & Voltage total harmonic distortion (IEEE~519, $>$161\,kV) & $\le$1.5\,\%
+                                                                   (individual $\le$1.0\,\%) \\
+    $P_{st}$     & Short-term flicker severity (IEEE~1453)       & $\le$0.35 \\
+    $I_{sc}$     & Short-circuit level at POM                    & \emph{[TBC]} \\
+    \bottomrule
+  \end{tabularx}
+  \caption{AC steady-state parameters at the POM according to IEEE~2800
+    (preliminary).}
+  \label{tab:ac-steady-state}
+\end{table}
+
+\begin{table}[htbp]
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X l@{}}
+    \toprule
+    \multicolumn{1}{@{}c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Description}} &
+    \multicolumn{1}{c@{}}{\textbf{Value}} \\
+    \midrule
+    $U_{n}$   & Nominal system voltage                                    & 230\,kV \\
+    $U_{m}$   & Maximum system voltage (insulation class)                 & 242\,kV \\
+    COG       & Coefficient of earthing (effectively earthed system)      & $\le$1.4 \\
+    BIL       & Lightning impulse withstand, 1.2/50\,$\mu$s               & 900\,kV peak \\
+    ---       & Chopped-wave withstand (1.1\,$\times$\,BIL)               & 990\,kV peak \\
+    BSL       & Switching impulse withstand, 250/2500\,$\mu$s             & 745\,kV peak \\
+    ---       & Power-frequency short-duration withstand, 1\,min dry      & 395\,kV rms \\
+    $U_{c}$   & Surge arrester MCOV ($\ge U_{m}/\sqrt{3}$)                & 144\,kV rms \\
+    $U_{r}$   & Surge arrester duty-cycle rating                          & 180\,kV rms \\
+    ---       & Minimum specific creepage distance                        & 25\,mm/kV
+                                                                            (\emph{[TBC]},
+                                                                            per site
+                                                                            pollution class) \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Insulation coordination for the 230\,kV AC system according to
+    IEEE~1313.1 and IEEE~C57.12.00 (preliminary).}
+  \label{tab:ac-insulation}
+\end{table}
+
+Concept verification studies are ongoing. The operating range values given in
+Table~\ref{tab:ac-steady-state} and Table~\ref{tab:ac-insulation} are
+preliminary and will be adjusted based on the outcome of this investigation.
