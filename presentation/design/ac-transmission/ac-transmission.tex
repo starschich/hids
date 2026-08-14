@@ -6,6 +6,30 @@
 
 \sectionslide{AC Power Transmission}{Power exchange, cables and PSCAD}
 
+\begin{frame}{Abbreviations}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      {\small
+      \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
+        AC    & Alternating current \\
+        DC    & Direct current \\
+        OHL   & Overhead line \\
+        PCC   & Point of common coupling \\
+        RMS   & Root mean square \\
+      \end{tabularx}}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      {\small
+      \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
+        SCL   & Short-circuit level \\
+        VSC   & Voltage-sourced converter \\
+        XLPE  & Cross-linked polyethylene \\
+        p.u.  & Per unit \\
+      \end{tabularx}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
 \begin{frame}{Power exchange in the AC grid}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.44\textwidth}\centering
@@ -13,11 +37,29 @@
       
     \end{column}
     \begin{column}{0.52\textwidth}\centering
-      \topoimg[width=\linewidth,height=0.34\textheight,keepaspectratio]{\acfig{image6.png}}\\[0.4em]
-      \topoimg[width=\linewidth,height=0.34\textheight,keepaspectratio]{\acfig{image5.png}}\\[0.4em]
+      {\small
+      \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.6em}}X@{}}
+        $P_S$ & is the export active power of the VSC converter station at PCC\\
+        $Q_S$ & is the export reactive power of the VSC converter station at PCC\\
+        $U_S$ & is the RMS value of the fundamental frequency component of the line-to-line AC voltage of the VSC converter station at PCC\\
+        $U_E$ & is the equivalent AC voltage of the AC grid, corresponding to a SCL at PCC\\
+        $R_S$ & is the equivalent resistance of the SCL impedance at PCC\\
+        $X_S$ & is the equivalent reactance of the SCL impedance at PCC\\
+        $\delta$ & is the phase angle difference between AC voltages $U_S$ and $U_E$\\
+      \end{tabularx}}\\[0.3em]
       {\color{atGray}\footnotesize IEC TR 63363-1:2022}
     \end{column}
   \end{columns}
+\end{frame}
+
+\begin{frame}{Power exchange in the AC grid}
+  \centering
+  \topoimg[width=\linewidth,height=0.4\textheight,keepaspectratio]{\acfig{image4.pdf}}\\[0.3em]
+  \vspace{1em}     
+  $P_S = \frac{U_S}{R_{S}^{2}+X_{S}^{2}} \cdot \left[ \left ( U_S - U_E \cdot \cos \delta \right )  \cdot R_S + U_E \cdot X_S \cdot \sin \delta \right]$\\
+  \vspace{1em}
+  $Q_S = \frac{U_S}{R_{S}^{2}+X_{S}^{2}} \cdot \left[ \left ( U_S - U_E \cdot \cos \delta \right )  \cdot X_S - U_E \cdot R_S \cdot \sin \delta \right]$\\
+
 \end{frame}
 
 \begin{frame}{Power exchange}
@@ -210,6 +252,47 @@
     \begin{column}{0.24\textwidth}\centering
       {\footnotesize 2-port parameters}\\[0.2em]
       \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image22.png}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{2-port units - calculations}
+
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.45\textwidth}\centering
+      \topoimg[width=0.8\linewidth,height=0.6\textheight,keepaspectratio]{\acfig{image18.png}}
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      Wave impedance\\
+      $\begin{aligned}[t]
+        \underline{\gamma}&=\alpha+j\cdot\beta =\sqrt{\underline{Z}'\cdot\underline{Y}'}\\[0.4em]
+                          &=\sqrt{\left(R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)\right)\cdot\left(G'+j \cdot \omega \cdot C'\right)}
+       \end{aligned}$\\[2em]
+      Propagation\\
+      $\begin{aligned}[t]
+         \underline{Z}_w &= \sqrt{\frac{\underline{Z}'}{\underline{Y}'}} = \sqrt{\frac{R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)}{G' + j\cdot\omega\cdot C'}}
+       \end{aligned}$\\
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{2-port units - calculations}
+
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.45\textwidth}\centering
+      \topoimg[width=0.8\linewidth,height=0.6\textheight,keepaspectratio]{\acfig{image18.png}}
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      Voltage along line\\
+      $\begin{aligned}[t]
+        \underline{\gamma}&=\alpha+j\cdot\beta =\sqrt{\underline{Z}'\cdot\underline{Y}'}\\[0.4em]
+                          &=\sqrt{\left(R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)\right)\cdot\left(G'+j \cdot \omega \cdot C'\right)}
+       \end{aligned}$\\[2em]
+      Propagation\\
+      $\begin{aligned}[t]
+         \underline{Z}_w &= \sqrt{\frac{\underline{Z}'}{\underline{Y}'}} = \sqrt{\frac{R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)}{G' + j\cdot\omega\cdot C'}}
+       \end{aligned}$\\
+      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image19.png}}
     \end{column}
   \end{columns}
 \end{frame}

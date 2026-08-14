@@ -1,11 +1,97 @@
 % =============================================================
-%  Chapter — HVDC Topologies
-%  Assets (SVG source + PDF build) live in this same subfolder.
+%  Chapter — System Overview
+%  Combined from design/system-configuration/system_overview.tex
+%  and projects/fervo/system_overview.tex.
+%  Assets live in design/system-configuration/ and projects/fervo/.
 % =============================================================
 %\sectionslide{System Overview}{}
 
 
+% ---- System configuration -----------------------------------
+\begin{frame}{System configuration}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{1\textwidth}
+      \centering
+        % \topoimg[width=\linewidth,height=0.85\textheight,keepaspectratio]{design/system-configuration/system_overview_poi_1}
+        % \topoimg[width=\linewidth,height=0.85\textheight,keepaspectratio]{design/system-configuration/system_overview_poi_2}
+        \topoimg[width=\linewidth,height=0.85\textheight,keepaspectratio]{projects/fervo/system_overview}
 
+      \end{column}
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}{System configuration}
+  \begin{itemize}
+    \setlength{\itemsep}{0.5em}
+    \item \textbf{Power} 2 projects with $1000MW$ and 2 projects with $3000MW$ power transmission requirements
+    \item \textbf{DC line} 100 - 200 miles, with priority to OHL, but cable sections can be implemented to accelerate the permission process.
+    \item \textbf{Generation} Geothermal power plants is the main generation source. Additional generation sources might be implemented once the transmission system is established.
+    % \item \textbf{Load} - The main load are data centers. The interconnection voltage to the data centers to be defined ($36kV$ or $800V$).
+    \item \textbf{Load} The main load are data centers.
+    \item \textbf{BESS} Battery storage is assumed for backup and for datacenter load flicker compensation.
+    \item \textbf{AC Chopper} For fault ride through, installation of the AC chopper might be required.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{System configuration}
+  \begin{itemize}
+    \setlength{\itemsep}{0.5em}
+    \item Islanded operation with no interconnection to the AC grid
+    \item Generation is build out in $300MW$ steps and is defined by the water availability \\ $\Rightarrow$ Staged buildout of the transmission system is beneficial
+    \item High realiability requirements by datacenters
+    % \item Execution time is critical
+    \item Standardized hardware design approach to reduce hardware lead times and configuration variations
+    \item Building up C\&P capabilities for system integration and project execution time reduction
+    \item \textbf{Reduction of execution time is very critical}
+  \end{itemize}
+\end{frame}
+
+
+% % ---- HVDC configurations ------------------------------------
+% \begin{frame}{HVDC Configuration - Dual SMP}
+%   \begin{columns}[c,onlytextwidth]
+%     \begin{column}{0.46\textwidth}
+%       \centering
+%       \topoimg[width=\linewidth]{design/system-configuration/dsmp}
+%     \end{column}
+%     \begin{column}{0.50\textwidth}
+%       \vspace{0.5em}
+%       \begin{itemize}
+%         \setlength{\itemsep}{0.7em}
+%         \item \textbf{Topology} - Dual Symmetrical Monopole with $\pm400kV$
+%         \item \textbf{DC Line} - DC cable and OHL can be utilized with the given current rating
+%         \item \textbf{Stages} - Two $1500MW$ stages
+%         \item \textbf{Flexibility} - Design can be used for configurations with $1000MW$ rating
+%       \end{itemize}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
+
+
+% \begin{frame}{HVDC Configuration - BIP}
+%   \begin{columns}[c,onlytextwidth]
+%     \begin{column}{0.46\textwidth}
+%       \centering
+%       \topoimg[width=\linewidth]{design/system-configuration/bip}
+%     \end{column}
+%     \begin{column}{0.50\textwidth}
+%       \vspace{0.5em}
+%       \begin{itemize}
+%         \setlength{\itemsep}{0.7em}
+%         \item \textbf{Topology} - Bipole with $\pm525kV$
+%         \item \textbf{DC Line} - OHL can be utilized with the given current rating but parallel cables are required
+%         \item \textbf{Stages} - Two $1500MW$ stages
+%         \item \textbf{Flexibility} - Limited flexibility as asymmetrical configuration is not economical for most requirements
+%       \end{itemize}
+%     \end{column}
+%   \end{columns}
+% \end{frame}
+
+
+
+% ---- Project topologies -------------------------------------
 \begin{frame}{1GW - Symmetrical Monopole (SMP)}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.46\textwidth}
@@ -36,6 +122,7 @@
         \setlength{\itemsep}{0.7em}
         \item \textbf{Topology} - DSMP with $\pm400kV$
         \item \textbf{DC Line} - Four symmetrical conductors
+        \item \textbf{Modularization} - Same design as for the 1GW configuration can be used
       \end{itemize}
     \end{column}
   \end{columns}
@@ -55,10 +142,10 @@
         \item \textbf{Topology} - Bipole with $\pm525kV$
         \item \textbf{DC Line}
         \begin{itemize}
-          \item Two high voltage conductors (HV) and one dedicated metallic return conductor (DMR).
+          % \item Two high voltage conductors (HV) and one dedicated metallic return conductor (DMR).
           \item In case of cable applications, parallel cables are required due to high current rating.
-          \item The voltage rating of the DMR depends on the conductor resign and must be refined once the DC line parameters are availabe.
-          \item For conductor optimization a lower current rating of the DMR can be applied.
+          % \item The voltage rating of the DMR depends on the conductor resign and must be refined once the DC line parameters are availabe.
+          % \item For conductor optimization a lower current rating of the DMR can be applied.
         \end{itemize}
       \end{itemize}
     \end{column}
@@ -66,45 +153,87 @@
 \end{frame}
 
 
-\begin{frame}{Utah/Nevada Industrial Grid (UNIG)}
-  \centering
-  \renewcommand{\arraystretch}{1.3}
-  \begin{tabular}{@{}lccc@{}}
-    \multicolumn{1}{c}{\textbf{Connection}} & \multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Topology}} & \multicolumn{1}{c}{\textbf{Rating}} \\
-    \noalign{\hrule height 1.2pt}
-    \makecell[l]{Fennec-Stratos \\ Howell, UT → Wells, NV} & Tungsten & SMP & 1000 MW \\
-    \hline
-    \makecell[l]{Kit-Corsac \\ Hazen, NV → Dixie Valley, NV}  & Copper& \makecell[c]{DSMP\\BIP} & 3000 MW \\
-    \hline
-    \makecell[l]{Marble-Corsac \\ Pronto, NV → Hazen, NV}  & Quartz  & SMP & 1000 MW \\
-    \hline
-    \makecell[l]{Swift-Blanford \\ Deseret, UT → Cherry Creek, NV}  & Galena  &  \makecell[c]{DSMP\\BIP} & 3000 MW \\
-    \hline
-  \end{tabular}
+% \begin{frame}{Utah/Nevada Industrial Grid (UNIG)}
+%   \centering
+%   \renewcommand{\arraystretch}{1.3}
+%   \begin{tabular}{@{}lccc@{}}
+%     \multicolumn{1}{c}{\textbf{Connection}} & \multicolumn{1}{c}{\textbf{Name}} & \multicolumn{1}{c}{\textbf{Topology}} & \multicolumn{1}{c}{\textbf{Rating}} \\
+%     \noalign{\hrule height 1.2pt}
+%     \makecell[l]{Fennec-Stratos \\ Howell, UT → Wells, NV} & Tungsten & SMP & 1000 MW \\
+%     \hline
+%     \makecell[l]{Kit-Corsac \\ Hazen, NV → Dixie Valley, NV}  & Copper& \makecell[c]{DSMP\\BIP} & 3000 MW \\
+%     \hline
+%     \makecell[l]{Marble-Corsac \\ Pronto, NV → Hazen, NV}  & Quartz  & SMP & 1000 MW \\
+%     \hline
+%     \makecell[l]{Swift-Blanford \\ Deseret, UT → Cherry Creek, NV}  & Galena  &  \makecell[c]{DSMP\\BIP} & 3000 MW \\
+%     \hline
+%   \end{tabular}
+% \end{frame}
+
+
+
+% ---- Working packages ---------------------------------------
+% \begin{frame}{Working Packages}
+\begin{frame}{Working Packages Ongoing}
+  \begin{itemize}
+  \setlength{\itemsep}{0.5em}
+  \item \textbf{DC line}
+    \begin{itemize}
+      \item DC route definition and DC line design
+
+    \end{itemize}
+
+    \item \textbf{Network Control \& Protection}
+    \begin{itemize}
+      \item Operation concept definition
+      \item Offline studies for concept verification
+      \item Development of models for performance design and verification
+      \item Definition of performance verification tests and evaluation criteria
+      % \item Control hardware definition
+    \end{itemize}
+
+    % \item \textbf{HVDC concept evaluation}
+    % \begin{itemize}
+    %   \item Technical evaluation of HVDC concepts
+    %   \item Commercial evaluation of HVDC concepts
+    %   \item OEMs should be approached with only one concept
+    % \end{itemize}
+\end{itemize}
 \end{frame}
 
 
 % \begin{frame}{Working Packages}
 %   \begin{itemize}
 %   \setlength{\itemsep}{0.5em}
-%   \item \textbf{DC line}
+%   \item \textbf{Project execution}
 %     \begin{itemize}
-%       \item Local company is working on DC route definition and DC line design
+%       \item Converter specification to receive a binding offer (FEED phase avoided to reduce the execution time)
+%       \item Supplier evaluation and selection (it is expected that suppliers from Asia might be more suitable for our approach)
+%       \item Testlab buildout for real time simulations
+%       \item Project execution support (Owners Engineer)
+%     \end{itemize}
+% \end{itemize}
+% \end{frame}
+
+
+% \begin{frame}{Working Packages\\ HVDC configuration by build size and phasing}
+%   \begin{itemize}
+%   \setlength{\itemsep}{0.5em}
+%   \item Recommended configuration for $300MW$, $500MW$, $1GW$, $2GW$, $3GW$
+%     \begin{itemize}
+%       \item Monopole vs bipole by capacity
+%       \item Voltage class by size and distance: $\pm320kV$, $\pm400kV$, $\pm525kV$
 
 %     \end{itemize}
-%   \item \textbf{Network Control \& Protection}
+
+%     \item Modular expansion path from first stage to GW scale
 %     \begin{itemize}
-%       \item Operation concept definition
-%       \item Offline studies for concept verification
-%       \item Development of models for performance design and verification
-%       \item Definition of performance verification tests and evaluation criteria
-%       \item Control hardware definition
-%     \end{itemize}
-%   \item \textbf{HVDC concept evaluation}
-%     \begin{itemize}
-%       \item Technical evaluation of HVDC concepts
-%       \item Commercial evaluation of HVDC concepts
-%       \item OEMs should be approached with only one concept
+%       \item Oversizing on day 1 vs future expansion
+%       \item Oversizing for redundancy
+%       \item Expansion from $300-500MW$ initial build to $1-2GW$
+%       \item Design approach for staged customer commitments
+%       \item Cost and schedule penalties from deferred expansion
+%       \item Avoiding stranded capex
 %     \end{itemize}
 % \end{itemize}
 % \end{frame}
