@@ -1,9 +1,41 @@
 \section{Introduction}
 
 \subsection{Purpose}
+\label{sec:unig}
 This functional specification defines the functional and performance
 requirements for the HVDC transmission system to be supplied for the
 \emph{Utah/Nevada Industrial Grid (UNIG)} scheme and is the basis for HVDC system supplier selection.
+
+American Terawatt is developing the Utah/Nevada Industrial Grid (UNIG), a
+private industrial grid that connects clean firm generation in Utah, Nevada and
+the wider region directly to hyperscale data-center load. Discussions with
+generators are ongoing to unlock 8--10\,GW+ of clean firm power for this demand.
+Transmission buildout has not kept pace with demand growth in Nevada and Utah,
+leaving clean generation without a path to market; UNIG is intended to close
+that gap outside the conventional interconnection process.
+
+UNIG is built in stages. The first stage comprises four point-to-point HVDC
+links based on a standardized HVDC design. In the second stage these links are
+networked by additional station-to-station links to form a meshed system,
+giving higher availability and greater flexibility in routing power from
+generation to load. The resulting conceptual network is shown in
+Figure~\ref{fig:unig-overview}.
+
+The second stage should not have an impact on the time schedule of the Phase 1 development and it is understood that 
+terminal modifications from Phase 1 are necessary to allow the Phase 2 configuration.
+
+The project is executed on an accelerated schedule. The 30\,\% design and
+routing studies are underway and are expected to be completed by the end of
+November~2026. The requirements, in particular the standardized hardware design and the staged buildout capability,
+follow directly from the schedule given in Section~\ref{sec:timeline}.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\linewidth]{fig/unig_overview}
+  \caption{UNIG conceptual diagram.}
+  \label{fig:unig-overview}
+\end{figure}
 
 \subsection{Scope}
 \label{sec:scope}
@@ -11,10 +43,7 @@ The scope of supply is the HVDC terminals, together with any additional
 equipment that the supplier considers necessary for the integration of the
 HVDC system into the grid.
 
-The DC line route and the DC tower design are under development and are not
-fixed at the time of issue of this specification. The resulting DC line
-parameters will be provided as they become available; for the associated dates
-refer to Section~\ref{sec:timeline}.
+
 
 \subsection{Key project characteristics and design drivers}
 The following characteristics drive the design and execution of the scheme and

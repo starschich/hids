@@ -13,9 +13,8 @@ Figure~\ref{fig:system-overview-poi1}.
 \end{figure}
 
 \subsection{Transmission schemes}
-Two HVDC schemes are currently under investigation. The schemes differ in their
-power rating, which results in different transmission topologies. An overview of the technical parameters is
-given in Table~\ref{tab:system-ratings}.
+The transmission system will utilise two HVDC schemes. The schemes differ in their power rating, which might result in 
+different transmission topologies. An overview of the technical parameters is given in Table~\ref{tab:system-ratings}.
 
 % \begin{center}
 
@@ -29,7 +28,7 @@ given in Table~\ref{tab:system-ratings}.
     $P_{AC\_Rec}$ & Rated active power (AC rectifier) & 1000\,MW & 3000\,MW \\
     $Q_{AC\_Rec}$ & Rated active power (AC rectifier) & $\pm$330 MVAr & $\pm$ 990 MVAr \\
     $U_{DC}$      & Rated DC voltage (pole--ground)   & $\pm$400\,kV & $\pm$400\,kV, $\pm$525\,kV \\
-    Config.       & Transmission configuration        & SMP & DSMP, BIP with DMR \\
+    Config.       & Transmission configuration        & SMP & DSMP or BIP with DMR \\
     $L$           & DC line length                    & $\sim$200\,mi & $\sim$200\,mi \\
     $f$           & AC system frequency               & 60\,Hz & 60\,Hz \\
     \bottomrule
@@ -38,7 +37,7 @@ given in Table~\ref{tab:system-ratings}.
   \label{tab:system-ratings}
 \end{table}
 
-For the reactive power an initial power factor of $\cos \phi = 0.95$ was defined. As thesystem investigations are ongoing,
+For the reactive power an initial power factor of $\cos \phi = 0.95$ was defined. As the system investigations are ongoing,
 it is expected that the reactive power requiremetns can be significantly reduced.
 
 % \end{center}
@@ -52,50 +51,51 @@ in case of significant savings with smaller DC voltage set-up such as $\pm$320\,
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{fig/config_smp.pdf}
+  \includegraphics[width=0.7\linewidth]{fig/config_smp.pdf}
   \caption{Symmetrical monopole (SMP) configuration.}
   \label{fig:config-smp}
 \end{figure}
 
 
 \subsubsection{Scheme 2}
-For the 3000\,MW Scheme~2, two transmission configurations are considered: the
-dual symmetrical monopole (DSMP, Figure~\ref{fig:config-dsmp}) and the bipole
-with dedicated metallic return (BIP, Figure~\ref{fig:config-bip}). The DSMP
-configuration is assumed to provide higher availability and greater flexibility
-for the staged buildout of the transmission line. The decision between the DSMP
-and BIP configurations will be based on the price difference in the converter
-and DC line costs.
+For the 3000\,MW Scheme~2, two transmission configurations are considered: 
+\begin{enumerate}
+  \item Dual symmetrical monopole (DSMP, Figure~\ref{fig:config-dsmp}) with $\pm$400\,kV DC voltage
+  \item Bipole with dedicated metallic return (BIP, Figure~\ref{fig:config-bip}) with $\pm$525\,kV DC voltage
+\end{enumerate}
+
+The DSMP configuration is assumed to provide higher availability and greater flexibility
+for the staged buildout of the transmission line. Furthermore, the same converter configuration can be used for Scheme 1, 
+taking into account an overrating of the Scheme 1 configuration.\\
+The decision between the DSMP and BIP configurations will be based on the price difference in the converter and DC line costs.
 
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\linewidth]{fig/config_dsmp.pdf}
+  \includegraphics[width=0.7\linewidth]{fig/config_dsmp.pdf}
   \caption{Dual symmetrical monopole (DSMP) configuration.}
   \label{fig:config-dsmp}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\linewidth]{fig/config_bip.pdf}
+  \includegraphics[width=0.7\linewidth]{fig/config_bip.pdf}
   \caption{Bipole with dedicated metallic return (BIP) configuration.}
   \label{fig:config-bip}
 \end{figure}
 
 
 
-\subsection{Generator}
-The generation connected to the HVDC system is provided by geothermal
-generators supplied by Turboden. Individual generator units are sized
-at app. 50\,MW.
+\subsection{Generation at rectifier}
+Organic Rankine Cycle (ORC) power generation systems will be used as the primary generation source. With Individual generator units being sized
+at app. 40\,MW.
 
-American Terawatt will provide a generator-system equivalent to be used for
-EMT-type studies and performance verification, together with an RSCAD model for
+American Terawatt will provide a generator-system equivalent to be used for EMT-type studies and performance verification, together with an RSCAD model for
 hardware-in-the-loop (HIL) testing.
 
-\subsection{Load}
-The load connected to the HVDC system consists of data-center loads,
-which are characterised by power fluctuation.
+\subsection{Load at inverter}
+The load connected to the HVDC system consists of data-center loads, which are characterised by power fluctuation. The system configuration 
+will include compensation devices such as E-STATCOM or BESS which will compensate the power fluctuations. 
 
 American Terawatt will provide a data-center load equivalent to be used for
 EMT-type studies and performance verification, together with an RSCAD model for
