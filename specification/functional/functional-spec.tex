@@ -7,8 +7,17 @@
 % =============================================================
 \documentclass[11pt,a4paper]{article}
 
-% Shared style lives in the repo-level template folder
-\usepackage{../../template/atreport}
+% ---- Template selection -------------------------------------
+% Shared styles live in the repo-level template folder.
+%   classic    = atreport.sty          (original AT report style, A4)
+%   brand      = atreportbrand.sty     (rebuild of the Word layout, Letter)
+%   house      = atreporthouse.sty     (derived AT house template #1, Letter)
+%   corporate  = atreportcorporate.sty (derived AT house template #2, Letter)
+% Switch by uncommenting one of the lines below.
+% \usepackage[house]{../../template/attemplate}
+% \usepackage[classic]{../../template/attemplate}
+% \usepackage[brand]{../../template/attemplate}
+\usepackage[corporate]{../../template/attemplate}
 
 % ---- Document metadata --------------------------------------
 \reporttitle{HVDC System\\Functional Specification}
@@ -17,15 +26,16 @@
 \reportauthor{Eugen Starschich}
 \reportdocnumber{ATW-SPEC-HVDC-001}
 \reportconfidentiality{Confidential}
-\reportrevision{0.2}
+\reportrevision{0.3}
 
 \begin{document}
 
 \makecover
 
 \revisionhistory{
-  \revrow{0.1}{August 16, 2026}{E. Starschich}{Initial draft}
-  \revrow{0.2}{\today}{E. Starschich}{Implementing first review comments}
+  % \revrow{0.1}{August 16, 2026}{E. Starschich}{Initial draft}
+  % \revrow{0.2}{\today}{E. Starschich}{Internat review comments}
+  \revrow{0.3}{\today}{E. Starschich}{For review}
 }
 
 \newpage

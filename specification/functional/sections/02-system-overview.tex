@@ -26,7 +26,7 @@ different transmission topologies. An overview of the technical parameters is gi
     \multicolumn{1}{c}{\textbf{Scheme 1}} & \multicolumn{1}{c@{}}{\textbf{Scheme 2}} \\
     \midrule
     $P_{AC\_Rec}$ & Rated active power (AC rectifier) & 1000\,MW & 3000\,MW \\
-    $Q_{AC\_Rec}$ & Rated active power (AC rectifier) & $\pm$330 MVAr & $\pm$ 990 MVAr \\
+    $Q_{AC\_Rec}$ & Rated reactive power (AC rectifier) & $\pm$330 MVAr & $\pm$ 990 MVAr \\
     $U_{DC}$      & Rated DC voltage (pole--ground)   & $\pm$400\,kV & $\pm$400\,kV, $\pm$525\,kV \\
     Config.       & Transmission configuration        & SMP & DSMP or BIP with DMR \\
     $L$           & DC line length                    & $\sim$200\,mi & $\sim$200\,mi \\
@@ -46,8 +46,8 @@ it is expected that the reactive power requirements can be significantly reduced
 
 \subsubsection{Scheme 1}
 The anticipated transmission configuration for Scheme 1 is a symmetrical monopole with a DC voltage rating of $\pm$400\,kV (SMP, Figure~\ref{fig:config-smp}). The 400\,kV is 
-considered to be the most economical solution for the transmission line considering converter and DC line costs. HVDC supplier is encouraged to alternative solutions 
-in case of significant savings with smaller DC voltage set-up such as $\pm$320\,kV.
+considered to be the most economical solution for the transmission line considering converter and DC line costs. HVDC supplier is encouraged to propose alternative solutions 
+in case of significant savings with smaller DC voltage set-ups such as $\pm$320\,kV.
 
 \begin{figure}[htbp]
   \centering
@@ -88,7 +88,7 @@ The decision between the DSMP and BIP configurations will be based on the price 
 
 \subsection{Generation at rectifier}
 Organic Rankine Cycle (ORC) power generation systems will be used as the primary generation source. The individual generator units will be sized
-at app. 40\,MW.
+at approx. 40\,MW.
 
 American Terawatt will provide a generator-system equivalent to be used for EMT-type studies and performance verification, together with an RSCAD model for
 hardware-in-the-loop (HIL) testing.
