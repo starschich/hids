@@ -1,0 +1,348 @@
+% =============================================================
+%  atreportbrand.sty
+%  American Terawatt report style — BRAND variant
+%  (photo cover, sidebar, yellow-green accents; after the
+%   "UNIG Functional Spec revised" Word layout)
+%
+%  Provides the same public interface as atreport.sty:
+%    \reporttitle \reportsubtitle \reportauthor \reportdocnumber
+%    \reportrevision \reportstatus \reportdate \reportconfidentiality
+%    \makecover \revisionhistory \revrow
+%
+%  Assets expected in  <this folder>/assets/ :
+%    cover_photo.jpg  wordmark.png  logo.png  mark.png
+% =============================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{atreportbrand}[2026/08/18 American Terawatt brand report style]
+
+% ---- packages ------------------------------------------------
+% Brand typography (Untitled Sans when compiled with lualatex/xelatex
+% and the font files are installed; Helvetica otherwise). This variant
+% used Helvetica scaled to 0.94, so that stays the fallback scaling.
+\providecommand{\atHelvetScaled}{0.94}
+\RequirePackage{../../template/atfonts}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage[table,dvipsnames]{xcolor}
+\RequirePackage{geometry}
+\RequirePackage{graphicx}
+\RequirePackage{eso-pic}
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\RequirePackage{fancyhdr}
+\RequirePackage{lastpage}
+\RequirePackage{titlesec}
+\RequirePackage{tocloft}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{array}
+\RequirePackage{caption}
+\RequirePackage{etoolbox}
+\RequirePackage{enumitem}
+\RequirePackage{textcomp}
+\RequirePackage{microtype}
+\RequirePackage[hidelinks]{hyperref}
+
+% ---- asset path ---------------------------------------------
+% Resolved relative to the main document; adjust if the template
+% folder is moved.
+\providecommand{\atassetpath}{../../template/assets/}
+\newcommand{\atasset}[1]{\atassetpath#1}
+
+% ---- brand palette ------------------------------------------
+\definecolor{atdark}{RGB}{69,69,69}       % headings, sidebar, table head
+\definecolor{ataccent}{RGB}{206,235,17}   % yellow-green
+\definecolor{atrule}{RGB}{218,240,76}     % rules (lighter accent)
+\definecolor{atrow}{RGB}{227,226,216}     % table zebra row
+\definecolor{atred}{RGB}{196,50,10}       % run-in emphasis
+\definecolor{atgrey}{RGB}{110,110,110}
+
+% ---- page geometry ------------------------------------------
+% Letter, wide left margin to clear the sidebar.
+\geometry{letterpaper,
+          left=1.14in, right=0.85in,
+          top=1.20in, bottom=1.10in,
+          headheight=26pt, headsep=20pt, footskip=28pt}
+
+\newlength{\atsidebarwidth}
+\setlength{\atsidebarwidth}{0.475in}
+
+% ---- document metadata --------------------------------------
+\newcommand{\atTitle}{}\newcommand{\reporttitle}[1]{\renewcommand{\atTitle}{#1}}
+\newcommand{\atSubtitle}{}\newcommand{\reportsubtitle}[1]{\renewcommand{\atSubtitle}{#1}}
+\newcommand{\atAuthor}{}\newcommand{\reportauthor}[1]{\renewcommand{\atAuthor}{#1}}
+\newcommand{\atDocNumber}{}\newcommand{\reportdocnumber}[1]{\renewcommand{\atDocNumber}{#1}}
+\newcommand{\atRevision}{}\newcommand{\reportrevision}[1]{\renewcommand{\atRevision}{#1}}
+\newcommand{\atStatus}{}\newcommand{\reportstatus}[1]{\renewcommand{\atStatus}{#1}}
+\newcommand{\atDate}{\today}\newcommand{\reportdate}[1]{\renewcommand{\atDate}{#1}}
+\newcommand{\atConfidentiality}{Confidential}
+\newcommand{\reportconfidentiality}[1]{\renewcommand{\atConfidentiality}{#1}}
+
+% Running-head text: the document title with line breaks removed.
+\newcommand{\atRunningTitle}{}
+\newcommand{\atsetrunningtitle}{%
+  \begingroup
+    \renewcommand{\\}{ }%
+    \protected@xdef\atRunningTitle{\atTitle}%
+  \endgroup}
+
+% ---- letterspacing helper -----------------------------------
+\newcommand{\atls}[2][170]{\textls*[#1]{#2}}
+\newcommand{\atcaps}[2][170]{\textls*[#1]{\MakeUppercase{#2}}}
+
+% =============================================================
+%  Page furniture: sidebar
+% =============================================================
+\newif\ifatcoverpage \atcoverpagefalse
+
+\newcommand{\atdrawsidebar}{%
+  \ifatcoverpage\else
+    \begin{tikzpicture}[remember picture,overlay]
+      % dark strip
+      \fill[atdark] (current page.north west) rectangle
+        ($(current page.south west)+(\atsidebarwidth,0)$);
+      % accent grid over the strip, below the mark
+      \begin{scope}
+        \clip ($(current page.north west)+(0,-0.55in)$) rectangle
+              ($(current page.south west)+(\atsidebarwidth,0.20in)$);
+        \foreach \i in {0,...,80}{%
+          \draw[ataccent,line width=0.5pt]
+            ($(current page.north west)+(0,-0.55in-\i*0.155in)$) --
+            ($(current page.north east)+(0,-0.55in-\i*0.155in)$);}
+        \foreach \j in {1,2,3}{%
+          \draw[ataccent,line width=0.5pt]
+            ($(current page.north west)+(\j*0.125in,0)$) --
+            ($(current page.south west)+(\j*0.125in,0)$);}
+      \end{scope}
+      % mark, top of the strip
+      \node[anchor=north west,inner sep=0pt]
+        at ($(current page.north west)+(0.10in,-0.13in)$)
+        {\includegraphics[width=0.26in]{\atasset{mark}}};
+      % rotated tagline, lower part of the strip
+      \ifdefempty{\atSubtitle}{}{%
+        \node[anchor=west,rotate=90,inner sep=0pt,
+              text=ataccent,font=\fontsize{7}{8}\selectfont]
+          at ($(current page.south west)+(0.335in,1.00in)$)
+          {\atcaps[190]{\atSubtitle}};}
+    \end{tikzpicture}%
+  \fi}
+\AddToShipoutPictureBG{\atdrawsidebar}
+
+% =============================================================
+%  Page furniture: header / footer
+% =============================================================
+\renewcommand{\headrule}{\vskip2pt{\color{atrule}\hrule height 1.1pt}}
+\renewcommand{\footrule}{{\color{atgrey!50}\hrule height 0.4pt}\vskip6pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\fancypagestyle{atbrand}{%
+  \fancyhf{}%
+  \fancyhead[L]{\raisebox{-2pt}{\includegraphics[height=11pt]{\atasset{logo}}}}%
+  \fancyhead[R]{\color{atdark}\fontsize{8}{10}\selectfont\atcaps{\atRunningTitle}}%
+  \fancyfoot[L]{\color{atdark}\fontsize{8}{10}\selectfont\atConfidentiality}%
+  \fancyfoot[R]{\color{atdark}\fontsize{8}{10}\selectfont
+                Page \thepage\ of \pageref{LastPage}}%
+}
+\pagestyle{atbrand}
+\AtBeginDocument{\atsetrunningtitle\pagestyle{atbrand}}
+% plain pages (first page of the body, floats-only pages) keep the same look
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[L]{\raisebox{-2pt}{\includegraphics[height=11pt]{\atasset{logo}}}}%
+  \fancyhead[R]{\color{atdark}\fontsize{8}{10}\selectfont\atcaps{\atRunningTitle}}%
+  \fancyfoot[L]{\color{atdark}\fontsize{8}{10}\selectfont\atConfidentiality}%
+  \fancyfoot[R]{\color{atdark}\fontsize{8}{10}\selectfont
+                Page \thepage\ of \pageref{LastPage}}%
+}
+
+% =============================================================
+%  Headings
+% =============================================================
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\titleformat{\section}[hang]
+  {\color{atdark}\bfseries\fontsize{15}{18}\selectfont}
+  {\thesection}{0.6em}{}
+  [{\vskip2pt\color{atrule}\titlerule[1.1pt]}]
+\titlespacing*{\section}{0pt}{18pt plus 4pt minus 2pt}{9pt}
+
+\titleformat{\subsection}[hang]
+  {\color{atdark}\bfseries\fontsize{11.5}{14}\selectfont}
+  {\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{13pt plus 3pt minus 2pt}{4pt}
+
+\titleformat{\subsubsection}[hang]
+  {\color{atdark}\bfseries\fontsize{10.5}{13}\selectfont}
+  {\thesubsubsection}{0.6em}{}
+\titlespacing*{\subsubsection}{0pt}{11pt plus 3pt minus 2pt}{3pt}
+
+% Every top-level section (a "chapter" in this document's terms) starts
+% on a new page. titlesec calls \<name>break before each heading if that
+% macro exists, so defining \sectionbreak is all that is needed -- no
+% \clearpage in the document body. LaTeX does not emit a blank page when
+% \clearpage is issued on an already-empty page, so the first section
+% after the table of contents does not gain one.
+\newcommand{\sectionbreak}{\clearpage}
+
+% run-in emphasis used for design-driver style lists
+\newcommand{\atlead}[1]{{\color{atred}\bfseries #1}}
+
+% ---- lists --------------------------------------------------
+\setlist[itemize]{leftmargin=1.4em, itemsep=0.25em, topsep=0.3em}
+\setlist[enumerate]{leftmargin=1.6em, itemsep=0.25em, topsep=0.3em}
+\renewcommand{\labelitemi}{\textcolor{atdark}{\small\raisebox{0.15ex}{\rule{0.5ex}{0.5ex}}}}
+
+% ---- body text ----------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{7pt plus 2pt minus 1pt}
+\linespread{1.06}
+
+% =============================================================
+%  Table of contents
+% =============================================================
+\renewcommand{\contentsname}{Content}
+\renewcommand{\cfttoctitlefont}{\color{atdark}\bfseries\fontsize{17}{20}\selectfont\MakeUppercase}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{14pt}
+
+\renewcommand{\cftsecfont}{\color{atdark}\bfseries}
+\renewcommand{\cftsecpagefont}{\color{atdark}\bfseries}
+\renewcommand{\cftsecleader}{\hfill}
+\renewcommand{\cftsecafterpnum}{\par\vskip3pt
+  {\color{atgrey!45}\hrule height 0.4pt}\vskip1pt}
+\renewcommand{\cftsubsecfont}{\color{atdark}}
+\renewcommand{\cftsubsecpagefont}{\color{atdark}}
+\renewcommand{\cftsubsecleader}{\hfill}
+\renewcommand{\cftsubsecafterpnum}{\par\vskip3pt
+  {\color{atgrey!30}\hrule height 0.4pt}\vskip1pt}
+\renewcommand{\cftsubsubsecfont}{\color{atdark}}
+\renewcommand{\cftsubsubsecpagefont}{\color{atdark}}
+\renewcommand{\cftsubsubsecleader}{\hfill}
+\renewcommand{\cftsubsubsecafterpnum}{\par\vskip3pt
+  {\color{atgrey!30}\hrule height 0.4pt}\vskip1pt}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{0pt}
+\setlength{\cftsubsubsecindent}{0pt}
+\setlength{\cftsecnumwidth}{2.4em}
+\setlength{\cftsubsecnumwidth}{2.4em}
+\setlength{\cftsubsubsecnumwidth}{2.9em}
+
+% =============================================================
+%  Captions, tables and figures
+% =============================================================
+% Captions are centred (both single- and multi-line: singlelinecheck
+% must be TRUE so short captions are centred rather than flush left,
+% and justification=centering handles the ones that wrap), with the
+% "Figure N:" / "Table N:" label part set bold.
+\captionsetup{font={small,color=atdark},labelfont={small,bf,color=atdark},
+              labelsep=colon,justification=centering,
+              singlelinecheck=true,skip=5pt}
+\arrayrulecolor{atdark}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\aboverulesep}{0pt}
+\setlength{\belowrulesep}{0pt}
+
+% zebra body rows (row 1 = header row, row 2 = first data row stays white,
+% row 3 shaded, and so on)
+\AtBeginEnvironment{tabular}{\rowcolors{2}{atrow}{}}
+\AtBeginEnvironment{tabularx}{\rowcolors{2}{atrow}{}}
+
+% dark header row, to be used as the first row of a table:
+%   \atheadrow{Parameter & Unit & Value}
+\newcommand{\atheadrow}[1]{%
+  \rowcolor{atdark}\color{white}\bfseries\fontsize{8.5}{11}\selectfont #1}
+% and for a single cell in a hand-built header row:
+\newcommand{\atheadcell}[1]{{\color{white}\bfseries\fontsize{8.5}{11}\selectfont #1}}
+% "to be decided" marker in brand red
+\newcommand{\attbd}{{\color{atred}\bfseries TBD}}
+
+% =============================================================
+%  Cover page
+% =============================================================
+% Metadata line: only the fields that are actually set are printed,
+% separated by dots.
+\newcommand{\at@metasep}{}
+\newcommand{\at@meta}[1]{%
+  \ifdefempty{#1}{}{\at@metasep #1\gdef\at@metasep{\quad$\cdot$\quad}}}
+\newcommand{\atcovermeta}{%
+  \gdef\at@metasep{}%
+  \at@meta{\atDocNumber}%
+  \ifdefempty{\atRevision}{}{\at@metasep Rev.~\atRevision
+    \gdef\at@metasep{\quad$\cdot$\quad}}%
+  \at@meta{\atStatus}%
+  \at@meta{\atDate}}
+\newcommand{\atcovergrid}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \foreach \i in {1,2,3}{%
+      \draw[ataccent,line width=0.4pt,opacity=0.60]
+        ($(current page.north west)+(\i*2.05in,0)$) --
+        ($(current page.south west)+(\i*2.05in,0)$);}
+    \foreach \j in {1,2,3,4}{%
+      \draw[ataccent,line width=0.4pt,opacity=0.60]
+        ($(current page.north west)+(0,-\j*1.90in)$) --
+        ($(current page.north east)+(0,-\j*1.90in)$);}
+    % small crosses at the intersections
+    \foreach \i in {1,2,3}{\foreach \j in {1,2,3,4}{%
+      \draw[ataccent,line width=0.8pt,opacity=0.75]
+        ($(current page.north west)+(\i*2.05in-0.055in,-\j*1.90in)$) --
+        ($(current page.north west)+(\i*2.05in+0.055in,-\j*1.90in)$);
+      \draw[ataccent,line width=0.8pt,opacity=0.75]
+        ($(current page.north west)+(\i*2.05in,-\j*1.90in-0.055in)$) --
+        ($(current page.north west)+(\i*2.05in,-\j*1.90in+0.055in)$);}}
+  \end{tikzpicture}}
+
+\newcommand{\makecover}{%
+  \begingroup
+  \atcoverpagetrue
+  \atsetrunningtitle
+  \thispagestyle{empty}%
+  % full-bleed photo
+  \AddToShipoutPictureBG*{%
+    \put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]%
+              {\atasset{cover_photo}}}}%
+  \AddToShipoutPictureFG*{\atcovergrid}%
+  % wordmark
+  \AddToShipoutPictureFG*{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=north west,inner sep=0pt]
+        at ($(current page.north west)+(0.60in,-0.75in)$)
+        {\includegraphics[width=7.30in]{\atasset{wordmark}}};
+    \end{tikzpicture}}%
+  \null\vfill
+  \begin{center}
+    {\color{white}\bfseries\fontsize{25}{31}\selectfont \atTitle\par}
+    \vskip 10pt
+    {\color{ataccent}\bfseries\fontsize{10.5}{13}\selectfont
+     \atcaps[200]{\atSubtitle}\par}
+  \end{center}
+  \vskip 1.9in
+  \begin{center}
+    {\color{white!85}\fontsize{8}{10}\selectfont\atcovermeta\par}
+  \end{center}
+  \vfill
+  \noindent
+  {\color{white!85}\fontsize{8}{10}\selectfont
+   \atcaps{\atConfidentiality}\hfill\atcaps{American Terawatt, Inc.}}%
+  \vskip 6pt
+  \clearpage
+  \endgroup}
+
+% =============================================================
+%  Revision history
+% =============================================================
+\newcommand{\revrow}[4]{#1 & #2 & #3 & #4 \\}
+\newcommand{\revisionhistory}[1]{%
+  \section*{Revision history}%
+  \begingroup
+  \small
+  \begin{tabularx}{\linewidth}{@{}l l l X@{}}
+    \atheadrow{Rev. & Date & Author & Description}\\
+    #1
+    \bottomrule
+  \end{tabularx}
+  \endgroup
+  \vskip 6pt}
+
+\endinput

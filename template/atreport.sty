@@ -12,10 +12,9 @@
 \ProvidesPackage{atreport}[2026/08/03 American Terawatt report style]
 
 % ---- Packages -----------------------------------------------
-\RequirePackage[T1]{fontenc}
-\RequirePackage[utf8]{inputenc}
-\RequirePackage{helvet}                 % Helvetica-like sans
-\renewcommand{\familydefault}{\sfdefault}
+% Brand typography (Untitled Sans when compiled with lualatex/xelatex
+% and the font files are installed; Helvetica otherwise). See atfonts.sty.
+\RequirePackage{../../template/atfonts}
 \RequirePackage[a4paper,margin=2.5cm,headheight=16pt,headsep=18pt,footskip=28pt]{geometry}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -89,7 +88,12 @@
 \newcommand{\sectionbreak}{\clearpage}
 
 % ---- Captions ------------------------------------------------
-\captionsetup{font=small, labelfont={bf,color=atInk}, textfont={color=atGray}}
+% Captions are centred (both single- and multi-line: singlelinecheck
+% must be TRUE so short captions are centred rather than flush left,
+% and justification=centering handles the ones that wrap), with the
+% "Figure N:" / "Table N:" label part set bold.
+\captionsetup{font=small, labelfont={bf,color=atInk}, textfont={color=atGray},
+              justification=centering, singlelinecheck=true}
 
 % ---- Lists ---------------------------------------------------
 \setlist[itemize]{leftmargin=1.4em, itemsep=0.25em, topsep=0.3em}

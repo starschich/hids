@@ -1,0 +1,342 @@
+% =============================================================
+%  atreporthouse.sty
+%  American Terawatt report style — HOUSE variant
+%
+%  Package form of americanterawatt.cls (the derived LaTeX house
+%  template): Charcoal/Energy palette, 10pt Helvetica body, Energy
+%  section rules, side netting on every body page, table heads white
+%  on Charcoal with Beige bands.
+%
+%  Two interfaces are available:
+%
+%  1) the atreport interface, so the same document body works with
+%     every template variant:
+%       \reporttitle \reportsubtitle \reportauthor \reportdocnumber
+%       \reportrevision \reportstatus \reportdate \reportconfidentiality
+%       \makecover \revisionhistory \revrow
+%
+%  2) the native house interface from americanterawatt.cls:
+%       \atTitle \atSubtitle \atEyebrow \atCover \atNetting \atBackCover
+%       \atDriver \atTBD \atTBC \atFigureSlot \atSource \atCaption
+%       \atRule \atHead \atHline \atTotalRow  and the attable environment
+%
+%  Assets expected in  <this folder>/assets-house/ :
+%    at-cover.png  at-back.png  at-rail.png  at-lockup.png
+% =============================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{atreporthouse}[2026/08/18 American Terawatt house report style]
+
+% ---- packages -----------------------------------------------
+% Brand typography (Untitled Sans when compiled with lualatex/xelatex
+% and the font files are installed; Helvetica otherwise). See atfonts.sty.
+\RequirePackage{../../template/atfonts}
+% House body size is 10pt regardless of the class option.
+\IfFileExists{fontsize.sty}{\RequirePackage[fontsize=10pt]{fontsize}}{}
+\RequirePackage[letterpaper,top=0.75in,bottom=0.75in,left=1.13in,right=0.75in,
+                headsep=14pt,footskip=26pt]{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage[table,dvipsnames]{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{eso-pic}
+\RequirePackage{fancyhdr}
+\RequirePackage{lastpage}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{booktabs}
+\RequirePackage{titlesec}
+\RequirePackage{tocloft}
+\RequirePackage{enumitem}
+\RequirePackage{setspace}
+\RequirePackage{caption}
+\RequirePackage{environ}
+\RequirePackage{etoolbox}
+\RequirePackage{textcomp}
+\RequirePackage[hidelinks]{hyperref}
+
+% ---- asset path ---------------------------------------------
+% Resolved relative to the main document; adjust if the template
+% folder is moved.
+\providecommand{\athouseassetpath}{../../template/assets-house/}
+\newcommand{\athouseasset}[1]{\athouseassetpath#1}
+
+% ---- palette ------------------------------------------------
+\definecolor{atCharcoal}{HTML}{454545}
+\definecolor{atEnergy}{HTML}{CEEB11}
+\definecolor{atOrange}{HTML}{C4320A}
+\definecolor{atSlate}{HTML}{95AFC1}
+\definecolor{atSand}{HTML}{CCA87C}
+\definecolor{atStone}{HTML}{948A81}
+\definecolor{atWarmGrey}{HTML}{C0B8B0}
+\definecolor{atBeige}{HTML}{E3E2D8}
+
+\AtBeginDocument{\color{atCharcoal}}
+\renewcommand{\baselinestretch}{1.16}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{7pt plus 2pt minus 1pt}
+
+% =============================================================
+%  Document metadata
+% =============================================================
+% native house setters
+\newcommand{\atTitle}[1]{\def\@atTitle{#1}}
+\newcommand{\atSubtitle}[1]{\def\@atSubtitle{#1}}
+\newcommand{\atEyebrow}[1]{\def\@atEyebrow{#1}}
+\atTitle{[Document title]}
+\atSubtitle{}
+\atEyebrow{}
+\newcommand{\atStrapline}{AMERICA'S PRIVATE INDUSTRIAL POWER GRID}
+\newcommand{\atConfidential}{Confidential, not for public disclosure}
+
+% atreport-compatible setters mapped onto the house metadata
+\newcommand{\at@DocNumber}{}
+\newcommand{\at@Revision}{}
+\newcommand{\at@Status}{}
+\newcommand{\at@Author}{}
+\newcommand{\at@Date}{\today}
+\newcommand{\reporttitle}[1]{\atTitle{#1}}
+\newcommand{\reportsubtitle}[1]{\atSubtitle{#1}}
+\newcommand{\reportauthor}[1]{\renewcommand{\at@Author}{#1}}
+\newcommand{\reportdocnumber}[1]{\renewcommand{\at@DocNumber}{#1}}
+\newcommand{\reportrevision}[1]{\renewcommand{\at@Revision}{#1}}
+\newcommand{\reportstatus}[1]{\renewcommand{\at@Status}{#1}}
+\newcommand{\reportdate}[1]{\renewcommand{\at@Date}{#1}}
+\newcommand{\reportconfidentiality}[1]{\renewcommand{\atConfidential}{#1}}
+
+% Header eyebrow: the title with line breaks flattened, unless the
+% document sets \atEyebrow explicitly.
+\AtBeginDocument{%
+  \ifdefempty{\@atEyebrow}{%
+    \begingroup
+      \renewcommand{\\}{ }%
+      \protected@xdef\@atEyebrow{\@atTitle}%
+    \endgroup}{}}
+
+% =============================================================
+%  Side netting (every body page)
+% =============================================================
+\newif\ifat@net \at@netfalse
+\newcommand{\atNetting}{\global\at@nettrue}
+\newcommand{\atNoNetting}{\global\at@netfalse}
+\AddToShipoutPictureBG{%
+  \ifat@net
+    \put(0,0){\includegraphics[width=0.44in,height=\paperheight]%
+             {\athouseasset{at-rail.png}}}%
+  \fi}
+
+% =============================================================
+%  Header and footer
+% =============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\includegraphics[height=9pt]{\athouseasset{at-lockup.png}}}
+\fancyhead[R]{\footnotesize\color{atStone}\MakeUppercase{\@atEyebrow}}
+\fancyfoot[L]{\footnotesize\color{atCharcoal}\atConfidential}
+\fancyfoot[R]{\footnotesize\color{atCharcoal}Page \thepage\ of \pageref{LastPage}}
+\newcommand{\atRule}{\vspace{-6pt}{\color{atEnergy}\rule{\linewidth}{1pt}}}
+\renewcommand{\headrule}{{\color{atEnergy}\rule{\headwidth}{1pt}}}
+\renewcommand{\footrule}{{\color{atWarmGrey}\rule{\headwidth}{0.5pt}}}
+% body pages that LaTeX would set as "plain" keep the house furniture
+\fancypagestyle{plain}{}
+
+% =============================================================
+%  Headings
+% =============================================================
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\titleformat{\section}
+  {\bfseries\fontsize{14pt}{16pt}\selectfont\color{atCharcoal}}
+  {\thesection\hspace{12pt}}{0pt}{}[{\color{atEnergy}\titlerule[1pt]}]
+\titleformat{\subsection}
+  {\bfseries\fontsize{11pt}{13pt}\selectfont\color{atCharcoal}}
+  {\thesubsection\hspace{6pt}}{0pt}{}
+\titleformat{\subsubsection}
+  {\bfseries\fontsize{10pt}{12pt}\selectfont\color{atOrange}}
+  {\thesubsubsection\hspace{6pt}}{0pt}{}
+\titlespacing{\section}{0pt}{18pt}{10pt}
+\titlespacing{\subsection}{0pt}{14pt}{4pt}
+\titlespacing{\subsubsection}{0pt}{12pt}{2pt}
+
+% Every top-level section (a "chapter" in this document's terms) starts
+% on a new page. titlesec calls \<name>break before each heading if that
+% macro exists, so defining \sectionbreak is all that is needed -- no
+% \clearpage in the document body. LaTeX does not emit a blank page when
+% \clearpage is issued on an already-empty page, so the first section
+% after the table of contents does not gain one.
+\newcommand{\sectionbreak}{\clearpage}
+
+% Burnt Orange driver label with no number
+\newcommand{\atDriver}[1]{\par\vspace{10pt}\noindent
+  {\bfseries\color{atOrange}#1}\par\vspace{2pt}}
+
+% ---- lists --------------------------------------------------
+\setlist[itemize]{leftmargin=18pt,itemsep=2pt,topsep=8pt}
+\setlist[enumerate]{leftmargin=18pt,itemsep=2pt,topsep=8pt}
+\renewcommand{\labelitemi}{\textcolor{atEnergy}{\rule[0.25ex]{0.45ex}{0.45ex}}}
+
+% =============================================================
+%  Table of contents
+% =============================================================
+\renewcommand{\contentsname}{Content}
+\renewcommand{\cfttoctitlefont}{%
+  \bfseries\fontsize{14pt}{16pt}\selectfont\color{atCharcoal}\MakeUppercase}
+\renewcommand{\cftaftertoctitle}{%
+  \par\vskip4pt{\color{atEnergy}\hrule height 1pt}}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{10pt}
+\renewcommand{\cftsecfont}{\bfseries\color{atCharcoal}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{atCharcoal}}
+\renewcommand{\cftsecleader}{\hfill}
+\renewcommand{\cftsecafterpnum}{\par\vskip3pt
+  {\color{atWarmGrey}\hrule height 0.5pt}\vskip1pt}
+\renewcommand{\cftsubsecfont}{\color{atCharcoal}}
+\renewcommand{\cftsubsecpagefont}{\color{atCharcoal}}
+\renewcommand{\cftsubsecleader}{\hfill}
+\renewcommand{\cftsubsubsecfont}{\color{atCharcoal}}
+\renewcommand{\cftsubsubsecpagefont}{\color{atCharcoal}}
+\renewcommand{\cftsubsubsecleader}{\hfill}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{0pt}
+\setlength{\cftsubsubsecindent}{0pt}
+\setlength{\cftsecnumwidth}{2.4em}
+\setlength{\cftsubsecnumwidth}{2.4em}
+\setlength{\cftsubsubsecnumwidth}{2.9em}
+\setlength{\cftbeforesecskip}{4pt}
+
+% =============================================================
+%  Tables
+% =============================================================
+% Numeric columns are right-aligned; units belong in the column header.
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcommand{\atHead}[1]{\textbf{\footnotesize\color{white}\MakeUppercase{#1}}}
+% attable: styled table; the first row is the header row.
+% (\NewEnviron is used so that tabularx sees a complete body.)
+\NewEnviron{attable}[1]{%
+  \begingroup
+  \renewcommand{\arraystretch}{1.35}\rowcolors{2}{}{atBeige}%
+  \begin{tabularx}{\linewidth}{#1}
+  \rowcolor{atCharcoal}\color{white}\BODY
+  \end{tabularx}%
+  \endgroup}
+\newcommand{\atHline}{\arrayrulecolor{atWarmGrey}\hline\arrayrulecolor{atCharcoal}}
+\newcommand{\atTotalRow}{\rowcolor{atWarmGrey}}
+\newcommand{\atTBD}{{\bfseries\color{atOrange}TBD}}
+\newcommand{\atTBC}{{\bfseries\color{atOrange}TBC}}
+\newcommand{\atSource}[1]{\par\vspace{4pt}{\footnotesize #1}\par\vspace{12pt}}
+\newcommand{\atCaption}[1]{\par\vspace{4pt}{\footnotesize #1}\par\vspace{12pt}}
+
+% House look for plain booktabs tables in the document body:
+% Warm Grey hairlines and Beige alternate bands.
+\arrayrulecolor{atWarmGrey}
+\renewcommand{\arraystretch}{1.35}
+\setlength{\aboverulesep}{0pt}
+\setlength{\belowrulesep}{0pt}
+\AtBeginEnvironment{tabular}{\rowcolors{2}{}{atBeige}}
+\AtBeginEnvironment{tabularx}{\rowcolors{2}{}{atBeige}}
+
+% ---- captions -----------------------------------------------
+% Captions are centred (both single- and multi-line: singlelinecheck
+% must be TRUE so short captions are centred rather than flush left,
+% and justification=centering handles the ones that wrap), with the
+% "Figure N:" / "Table N:" label part set bold.
+\captionsetup{font={footnotesize,color=atCharcoal},
+              labelfont={footnotesize,bf,color=atCharcoal},
+              labelsep=colon,justification=centering,
+              singlelinecheck=true,skip=4pt}
+
+% ---- figure placeholder -------------------------------------
+\newcommand{\atFigureSlot}[2][170pt]{%
+  \par\vspace{6pt}\noindent
+  \fcolorbox{atWarmGrey}{atBeige}{%
+    \parbox[c][#1][c]{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
+    {\centering\ttfamily\footnotesize #2}}\par}
+
+% =============================================================
+%  Cover
+% =============================================================
+\newcommand{\atCover}{%
+  \begin{titlepage}
+  \atNoNetting
+  \newgeometry{margin=0pt}
+  \thispagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0pt] at (current page.north west)
+      {\includegraphics[width=\paperwidth,height=\paperheight]%
+       {\athouseasset{at-cover.png}}};
+    \node[anchor=center,align=center,text=white,
+          font=\bfseries\fontsize{30pt}{36pt}\selectfont]
+      at ([yshift=-1.2in]current page.center) {\@atTitle};
+    \node[anchor=center,align=center,text=atEnergy,
+          font=\bfseries\fontsize{11pt}{13pt}\selectfont]
+      at ([yshift=-2.3in]current page.center)
+      {\ifdefempty{\@atSubtitle}{\atStrapline}{\MakeUppercase{\@atSubtitle}}};
+    \node[anchor=south west,inner xsep=1.1in,inner ysep=0.75in]
+      at (current page.south west)
+      {\fontsize{8pt}{10pt}\selectfont\color{atWarmGrey}\at@covermeta};
+    \node[anchor=south west,inner xsep=1.1in,inner ysep=0.55in]
+      at (current page.south west)
+      {\fontsize{8pt}{10pt}\selectfont\color{atWarmGrey}%
+       \MakeUppercase{\atConfidential}};
+    \node[anchor=south east,inner xsep=0.85in,inner ysep=0.55in]
+      at (current page.south east)
+      {\fontsize{8pt}{10pt}\selectfont\color{atWarmGrey}%
+       \MakeUppercase{American Terawatt, Inc.}};
+  \end{tikzpicture}
+  \restoregeometry
+  \end{titlepage}%
+  \setcounter{page}{2}%
+  \atNetting}
+
+% cover metadata line: only the fields that are set are printed
+\newcommand{\at@metasep}{}
+\newcommand{\at@metaitem}[1]{%
+  \ifdefempty{#1}{}{\at@metasep #1\gdef\at@metasep{\quad\textbullet\quad}}}
+\newcommand{\at@covermeta}{%
+  \gdef\at@metasep{}%
+  \at@metaitem{\at@DocNumber}%
+  \ifdefempty{\at@Revision}{}{\at@metasep Rev.~\at@Revision
+    \gdef\at@metasep{\quad\textbullet\quad}}%
+  \at@metaitem{\at@Status}%
+  \at@metaitem{\at@Date}}
+
+% atreport interface
+\newcommand{\makecover}{\atCover}
+
+% =============================================================
+%  Back cover
+% =============================================================
+\newcommand{\atBackCover}{%
+  \clearpage
+  \atNoNetting
+  \label{atLastPage}
+  \newgeometry{margin=0pt}
+  \thispagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0pt] at (current page.north west)
+      {\includegraphics[width=\paperwidth,height=\paperheight]%
+       {\athouseasset{at-back.png}}};
+  \end{tikzpicture}
+  \restoregeometry}
+
+% =============================================================
+%  Revision history
+% =============================================================
+\newcommand{\revrow}[4]{#1 & #2 & #3 & #4 \\}
+\newcommand{\revisionhistory}[1]{%
+  \section*{Revision history}%
+  \begingroup
+  \renewcommand{\arraystretch}{1.35}\rowcolors{2}{}{atBeige}%
+  \begin{tabularx}{\linewidth}{@{}p{0.07\linewidth} p{0.17\linewidth}
+                               p{0.20\linewidth} L@{}}
+    \rowcolor{atCharcoal}\color{white}
+    \atHead{Rev.} & \atHead{Date} & \atHead{Author} & \atHead{Description}\\
+    #1
+  \end{tabularx}%
+  \endgroup
+  \par\vspace{12pt}}
+
+\endinput

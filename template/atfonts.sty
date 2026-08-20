@@ -1,0 +1,138 @@
+% =============================================================
+%  atfonts.sty
+%  American Terawatt brand typography — shared by every template
+%  variant (classic / brand / house / corporate).
+%
+%  Brand face: Untitled Sans (Klim Type Foundry), weights
+%  Light / Regular / Medium / Bold.
+%
+%  WHAT THIS FILE DOES
+%  -------------------
+%  Untitled Sans is an OpenType face, so it can only be loaded by
+%  LuaLaTeX or XeLaTeX (via fontspec). pdfLaTeX cannot use .otf/.ttf
+%  files directly. Rather than force a change of engine on every
+%  document, this file decides at load time:
+%
+%    * LuaLaTeX / XeLaTeX  AND  font files present  -> Untitled Sans
+%    * anything else                                -> Helvetica (helvet),
+%                                                      i.e. the previous
+%                                                      behaviour, unchanged
+%
+%  So a document still compiles with `pdflatex` exactly as before, and
+%  switching to `lualatex` picks up the brand face with no edits.
+%  \ifatbrandfont / \atbrandfontname let a document report which of the
+%  two is actually in use.
+%
+%  INSTALLING THE FONT
+%  -------------------
+%  Drop the four files into  <this folder>/fonts/  named:
+%
+%      UntitledSans-Light.otf     (or .ttf)
+%      UntitledSans-Regular.otf
+%      UntitledSans-Medium.otf
+%      UntitledSans-Bold.otf
+%
+%  and compile with lualatex. Italic files are optional -- see the
+%  AutoFakeSlant note below.
+%
+%  IMPORTANT — the trial files supplied as "americanterawattuntitledsans.zip"
+%  are NOT usable for a real document, for two independent reasons:
+%
+%   1. They are Klim *test* fonts (internal family name "Test Untitled
+%      Sans", licence https://klim.co.nz/licences/test-fonts/), which
+%      cover evaluation and mockups only -- not a published document.
+%   2. They are subsetted to 67 characters: space , - . 0-9 A-Z a-z and
+%      nothing else. This document also needs  : ( ) / + = % ; < > [ ]
+%      _ deg +- . - -- ' " * ~ <= >=  and more -- 27 distinct characters
+%      over ~160 occurrences, including every caption colon, every
+%      parenthesis, the apostrophe in "AMERICA'S ... POWER GRID" and the
+%      +- in the voltage tables.
+%
+%  Retail (licensed, full-character-set) files are needed before the
+%  brand face can actually set this document. Until they are in place
+%  the fonts/ folder should stay empty, and Helvetica is used.
+% =============================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{atfonts}[2026/08/20 American Terawatt brand typography]
+
+\RequirePackage{iftex}
+
+% Where the brand font files live, relative to the main document.
+% Override by defining \atfontpath before this package is loaded.
+\providecommand{\atfontpath}{../../template/fonts/}
+% Helvetica fallback scaling; the brand variant sets 0.94 before loading.
+\providecommand{\atHelvetScaled}{1.0}
+
+\newif\ifatbrandfont \atbrandfontfalse
+\newcommand{\atbrandfontname}{Helvetica (fallback)}
+
+% ---- is the brand face actually usable here? ------------------
+% Needs a Unicode engine AND the font files on disk. Both .otf and
+% .ttf are accepted; .otf wins if both are present.
+\def\at@fontext{}
+\ifpdftex\else
+  \IfFileExists{\atfontpath UntitledSans-Regular.otf}{\def\at@fontext{.otf}}{%
+    \IfFileExists{\atfontpath UntitledSans-Regular.ttf}{\def\at@fontext{.ttf}}{}}%
+\fi
+
+\ifx\at@fontext\empty
+  % ---------------------------------------------------------------
+  %  Fallback: Helvetica, exactly as the templates did before.
+  % ---------------------------------------------------------------
+  % T1 is right in both cases here: without fontspec we are in legacy
+  % 8-bit font mode even on a Unicode engine. inputenc is only needed
+  % (and only valid) under pdfTeX -- Lua/XeTeX read UTF-8 natively.
+  \RequirePackage[T1]{fontenc}
+  \ifpdftex\RequirePackage[utf8]{inputenc}\fi
+  \RequirePackage[scaled=\atHelvetScaled]{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+  % Semantic weight commands still exist so template and document code
+  % can be written once. Helvetica has no Light or Medium, so Light maps
+  % to regular and Medium to bold-ish weight via the normal series.
+  \newcommand{\atLightFace}{\normalfont}
+  \newcommand{\atMediumFace}{\normalfont\bfseries}
+\else
+  % ---------------------------------------------------------------
+  %  Brand face: Untitled Sans via fontspec.
+  % ---------------------------------------------------------------
+  \RequirePackage{fontspec}
+  \atbrandfonttrue
+  \renewcommand{\atbrandfontname}{Untitled Sans}
+  % AutoFakeSlant: the supplied weight set has no italic files, and this
+  % document does use \emph / \textit. Without this, fontspec would fall
+  % back to upright and the emphasis would vanish silently. A real italic
+  % file (UntitledSans-RegularItalic) should replace this when available
+  % -- a sheared upright is a stand-in, not a substitute.
+  \setsansfont{UntitledSans}[
+    Path            = \atfontpath ,
+    Extension       = \at@fontext ,
+    UprightFont     = *-Regular ,
+    BoldFont        = *-Bold ,
+    FontFace        = {l}{n}{*-Light} ,
+    AutoFakeSlant   = 0.15 ,
+    Ligatures       = TeX ]
+  \setmainfont{UntitledSans}[
+    Path            = \atfontpath ,
+    Extension       = \at@fontext ,
+    UprightFont     = *-Regular ,
+    BoldFont        = *-Bold ,
+    AutoFakeSlant   = 0.15 ,
+    Ligatures       = TeX ]
+  \newfontfamily\at@lightfamily{UntitledSans}[
+    Path = \atfontpath , Extension = \at@fontext ,
+    UprightFont = *-Light , BoldFont = *-Regular ,
+    AutoFakeSlant = 0.15 , Ligatures = TeX ]
+  \newfontfamily\at@mediumfamily{UntitledSans}[
+    Path = \atfontpath , Extension = \at@fontext ,
+    UprightFont = *-Medium , BoldFont = *-Bold ,
+    AutoFakeSlant = 0.15 , Ligatures = TeX ]
+  \newcommand{\atLightFace}{\at@lightfamily}
+  \newcommand{\atMediumFace}{\at@mediumfamily}
+  \renewcommand{\familydefault}{\sfdefault}
+\fi
+
+% Text-command forms of the two extra weights.
+\newcommand{\atlight}[1]{{\atLightFace #1}}
+\newcommand{\atmedium}[1]{{\atMediumFace #1}}
+
+\endinput
