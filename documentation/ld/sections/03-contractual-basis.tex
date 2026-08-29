@@ -1,22 +1,25 @@
 \section{Guaranteed performance values}
 
 \subsection{Typical vs.\ guaranteed}
-Indicative ranges from the CIGRE biennial HVDC reliability surveys, together with
-values that an OEM can realistically stand behind:
+Table~\ref{tab:typ-gua-raliability} provides indicative ranges from the CIGRE biennial HVDC 
+reliability surveys as well as guaranteed values for converter stations 
+that an OEM can realistically stand behind.
 
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabularx}{\linewidth}{@{}l X c c@{}}
-  \toprule
-  \textbf{Metric} & \textbf{Description} & \textbf{Typical} & \textbf{Guaranteed} \\
-  \midrule
-  FEU & Forced energy unavailability    & 0.2--1.0\,\%      & $\approx$0.5\,\% \\
-  SEU & Scheduled energy unavailability & 1--3\,\%          & $\approx$1.0\,\% \\
-  FOR & Forced outage rate (pole)       & 4--8 / yr         & 2--3 / yr \\
-      & Forced outage rate (bipole)     & $\lesssim$0.5 / yr & $\approx$0.1 / yr \\
-  \bottomrule
-\end{tabularx}
-\end{center}
+\begin{table}[htbp]
+      \centering
+      \begin{tabular}{@{}l l c c@{}}
+      \toprule
+      \multicolumn{1}{@{}c}{\textbf{Metric}} & \multicolumn{1}{c}{\textbf{Description}} &
+      \textbf{Typical} & \textbf{Guaranteed} \\
+      \midrule
+      FEU & Forced energy unavailability    & 0.2--1.0\,\%      & $\approx$0.5\,\% \\
+      SEU & Scheduled energy unavailability & 1--3\,\%          & $\approx$1.0\,\% \\
+      \multirow{2}{*}{FOR} & Forced outage rate (pole)   & 4--8 / yr          & 2--3 / yr \\
+                           & Forced outage rate (bipole) & $\lesssim$0.5 / yr & $\approx$0.1 / yr \\
+      \bottomrule
+      \end{tabular}
+      \caption{Typical and guaranteed reliability values} \label{tab:typ-gua-raliability}
+\end{table}
 
 \subsection{Interpretation}
 \begin{itemize}\setlength{\itemsep}{0.25em}
@@ -36,20 +39,22 @@ values that an OEM can realistically stand behind:
 
 \subsection{RTEi availability-planning inputs}
 Additional availability-planning data provided by RTE International (RTEi) gives
-configuration-specific forced-outage rates and repair times:
+configuration-specific forced-outage rates and repair times presented in Table~\ref{tab:rtei-raliability}.
 
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabularx}{\linewidth}{@{}l X c c@{}}
-  \toprule
-  \textbf{Configuration} & \textbf{Outage type} & \textbf{FOR} & \textbf{MTTR} \\
-  \midrule
-  SMP            & Station / pole outage & 0.8 / (yr$\cdot$station) & 4--24\,h \\
-  BIP with DMR   & Pole outage           & 0.8 / (yr$\cdot$station) & 4--24\,h \\
-  BIP with DMR   & Bipole (full) outage  & 0.04--0.06 / yr          & --- \\
-  \bottomrule
-\end{tabularx}
-\end{center}
+
+\begin{table}[htbp]
+      \centering
+      \begin{tabular}{@{}l l c c@{}}
+      \toprule
+      \textbf{Configuration} & \textbf{Outage type} & \textbf{FOR} & \textbf{MTTR} \\
+      \midrule
+      SMP            & Station / pole outage & 0.8 / (yr$\cdot$station) & 4--24\,h \\
+      BIP with DMR   & Pole outage           & 0.8 / (yr$\cdot$station) & 4--24\,h \\
+      BIP with DMR   & Bipole (full) outage  & 0.04--0.06 / yr          & --- \\
+      \bottomrule
+      \end{tabular}
+      \caption{RTEi availability planning rules} \label{tab:rtei-raliability}
+\end{table}
 
 \begin{itemize}\setlength{\itemsep}{0.25em}
   \item \textbf{Pole/station outages are frequent but shallow.} At
@@ -69,7 +74,7 @@ configuration-specific forced-outage rates and repair times:
         structure.
 \end{itemize}
 
-{\color{atGray}\footnotesize Source: RTE International (RTEi) availability
+{\footnotesize Source: RTE International (RTEi) availability
 planning.}
 
 \subsection{Monitoring period}
