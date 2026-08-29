@@ -62,7 +62,13 @@
 \newcommand{\atcorpasset}[1]{\atcorpassetpath#1}
 
 % ---- palette --------------------------------------------------
-\definecolor{atCharcoal}{HTML}{454545}
+\definecolor{atCharcoal}{HTML}{454545}  % brand charcoal (kept for reference)
+% Text colour. The template originally set all body copy, headings, ToC
+% entries, captions, the cover title and the header/footer in atCharcoal
+% (#454545, a dark grey); these now use plain black. atStone and atSlate
+% are deliberate accents (cover subtitle, metadata line, table heads) and
+% are left alone -- change them here too if they should also go black.
+\definecolor{atText}{HTML}{000000}
 \definecolor{atEnergy}{HTML}{CEEB11}
 \definecolor{atSlate}{HTML}{4E7288}
 \definecolor{atSand}{HTML}{CCA87C}
@@ -70,7 +76,7 @@
 \definecolor{atWarmGrey}{HTML}{C0B8B0}
 \definecolor{atBeige}{HTML}{E3E2D8}
 
-\AtBeginDocument{\color{atCharcoal}}
+\AtBeginDocument{\color{atText}}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{7pt plus 2pt minus 1pt}
 
@@ -197,7 +203,7 @@
       % word ("AMERICA'S") off the bottom of the page.
       \node[anchor=west,rotate=90,inner sep=0pt]
         at ([xshift=0.5\at@railwidth,yshift=0.90in]current page.south west)
-        {\fontsize{7}{9}\selectfont\bfseries\color{atCharcoal}\atStrapline};
+        {\fontsize{7}{9}\selectfont\bfseries\color{atText}\atStrapline};
     \end{tikzpicture}}%
   \fi}
 
@@ -207,10 +213,10 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\includegraphics[height=9pt]{\atcorpasset{at-wordmark.png}}}
-\fancyhead[R]{\fontsize{8}{10}\selectfont\color{atCharcoal}%
+\fancyhead[R]{\fontsize{8}{10}\selectfont\color{atText}%
               \MakeUppercase{\@atRunningHead}}
-\fancyfoot[L]{\fontsize{8}{10}\selectfont\color{atCharcoal}\atConfidential}
-\fancyfoot[R]{\fontsize{8}{10}\selectfont\color{atCharcoal}%
+\fancyfoot[L]{\fontsize{8}{10}\selectfont\color{atText}\atConfidential}
+\fancyfoot[R]{\fontsize{8}{10}\selectfont\color{atText}%
               Page \thepage\ of \pageref{LastPage}}
 \renewcommand{\headrule}{{\color{atSand}\rule{\headwidth}{1pt}}}
 \renewcommand{\footrule}{{\color{atWarmGrey}\rule{\headwidth}{0.5pt}}}
@@ -224,10 +230,10 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 \titleformat{\section}
-  {\bfseries\fontsize{14}{17}\selectfont\color{atCharcoal}}
+  {\bfseries\fontsize{14}{17}\selectfont\color{atText}}
   {\thesection\hspace{14pt}}{0pt}{}[{\color{atWarmGrey}\titlerule[1pt]}]
 \titleformat{\subsection}
-  {\bfseries\fontsize{11}{13}\selectfont\color{atCharcoal}}
+  {\bfseries\fontsize{11}{13}\selectfont\color{atText}}
   {\thesubsection\hspace{6pt}}{0pt}{}
 \titleformat{\subsubsection}
   {\bfseries\fontsize{10}{12}\selectfont\color{atSlate}}
@@ -258,18 +264,18 @@
 % =============================================================
 \renewcommand{\contentsname}{Content}
 \renewcommand{\cfttoctitlefont}{%
-  \bfseries\fontsize{14pt}{17pt}\selectfont\color{atCharcoal}\MakeUppercase}
+  \bfseries\fontsize{14pt}{17pt}\selectfont\color{atText}\MakeUppercase}
 \renewcommand{\cftaftertoctitle}{%
   \par\vskip4pt{\color{atWarmGrey}\hrule height 1pt}}
 \setlength{\cftbeforetoctitleskip}{0pt}
 \setlength{\cftaftertoctitleskip}{12pt}
-\renewcommand{\cftsecfont}{\bfseries\color{atCharcoal}}
-\renewcommand{\cftsecpagefont}{\bfseries\color{atCharcoal}}
+\renewcommand{\cftsecfont}{\bfseries\color{atText}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{atText}}
 \renewcommand{\cftsecleader}{\hfill}
 \renewcommand{\cftsecafterpnum}{\par\vskip3pt
   {\color{atWarmGrey}\hrule height 0.5pt}\vskip1pt}
-\renewcommand{\cftsubsecfont}{\color{atCharcoal}}
-\renewcommand{\cftsubsecpagefont}{\color{atCharcoal}}
+\renewcommand{\cftsubsecfont}{\color{atText}}
+\renewcommand{\cftsubsecpagefont}{\color{atText}}
 \renewcommand{\cftsubsecleader}{\hfill}
 \renewcommand{\cftsubsubsecfont}{\color{atSlate}}
 \renewcommand{\cftsubsubsecpagefont}{\color{atSlate}}
@@ -311,7 +317,6 @@
   \begingroup
   \renewcommand{\arraystretch}{1.35}%
   \arrayrulecolor{atWarmGrey}%
-  \rowcolors{2}{}{atBeige}%
   \begin{tabularx}{\linewidth}{#1}
   \BODY
   \end{tabularx}%
@@ -323,21 +328,20 @@
 \newcommand{\atCaption}[1]{\par\vspace{5pt}{\fontsize{8}{11}\selectfont #1}\par\vspace{14pt}}
 
 % House look for plain booktabs tables in the document body:
-% Warm Grey hairlines and Beige alternate bands.
+% Warm Grey hairlines. (Alternating Beige row bands removed -- rows are
+% separated by rules instead.)
 \arrayrulecolor{atWarmGrey}
 \renewcommand{\arraystretch}{1.35}
 \setlength{\aboverulesep}{0pt}
 \setlength{\belowrulesep}{0pt}
-\AtBeginEnvironment{tabular}{\rowcolors{2}{}{atBeige}}
-\AtBeginEnvironment{tabularx}{\rowcolors{2}{}{atBeige}}
 
 % ---- captions ---------------------------------------------------
 % Captions are centred (both single- and multi-line: singlelinecheck
 % must be TRUE so short captions are centred rather than flush left,
 % and justification=centering handles the ones that wrap), with the
 % "Figure N:" / "Table N:" label part set bold.
-\captionsetup{font={footnotesize,color=atCharcoal},
-              labelfont={footnotesize,bf,color=atCharcoal},
+\captionsetup{font={footnotesize,color=atText},
+              labelfont={footnotesize,bf,color=atText},
               labelsep=colon,justification=centering,
               singlelinecheck=true,skip=5pt}
 
@@ -368,11 +372,11 @@
           {\bfseries\fontsize{8.5}{11}\selectfont\color{atSlate}%
            \MakeUppercase{\@atEyebrow}}\\[20pt]}%
         {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
-         \bfseries\fontsize{40}{42}\selectfont\color{atCharcoal}\@atTitle}\\[8pt]
+         \bfseries\fontsize{40}{42}\selectfont\color{atText}\@atTitle}\\[8pt]
         {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
          \fontsize{22}{26}\selectfont\color{atStone}\@atSubtitle}\\[26pt]
         \ifdefempty{\@atAbstract}{}{%
-          \parbox{4.4in}{\fontsize{10.5}{17}\selectfont\color{atCharcoal}%
+          \parbox{4.4in}{\fontsize{10.5}{17}\selectfont\color{atText}%
                          \@atAbstract}}
       \end{minipage}};
     \node[anchor=south west,inner sep=0pt,xshift=0.80in,yshift=0.75in]
@@ -456,7 +460,6 @@
   \begingroup
   \renewcommand{\arraystretch}{1.35}%
   \arrayrulecolor{atWarmGrey}%
-  \rowcolors{2}{}{atBeige}%
   \begin{tabularx}{\linewidth}{@{}P{0.07\linewidth} P{0.17\linewidth}
                                P{0.20\linewidth} L@{}}
     \atHead{Rev.} & \atHead{Date} & \atHead{Author} & \atHead{Description}\\
