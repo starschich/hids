@@ -1,0 +1,233 @@
+% =============================================================
+%  Chapter — Short-Circuit Current
+%  Figures in ./fig  (generated from short_circuit.py, cropped PDF).
+%  Model: AC transient with decaying DC offset in an R-L circuit.
+% =============================================================
+\newcommand{\scfig}[1]{design/short-circuit/fig/#1}
+
+\sectionslide{Short-Circuit Current}{AC transient with decaying DC offset}
+
+
+% ---- Symbols ----
+\begin{frame}{Symbols}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}p{1.6cm}p{9.5cm}@{}}
+    \textbf{Sym.} & \textbf{Description} \\
+    \hline
+    $u(t)$        & Source voltage, $u(t)=\hat{U}\sin(\omega t+\alpha)$ \\
+    $\hat{U}$     & Peak source voltage, $\hat{U}=\sqrt{2}\,U_{\mathrm{rms}}$ \\
+    $R,\;L$       & Circuit resistance and inductance \\
+    $X$           & Reactance, $X=\omega L$ \\
+    $Z$           & Impedance magnitude, $Z=\sqrt{R^{2}+X^{2}}$ \\
+    $\varphi$     & Impedance angle, $\varphi=\arctan(X/R)$ \\
+    $\alpha$      & Voltage phase at fault instant (switching angle) \\
+    $\tau$        & DC time constant, $\tau=L/R=X/(\omega R)$ \\
+    $i_p$         & Peak (making) current \\
+    $\kappa$      & Asymmetry factor, $\kappa=i_p/(\sqrt{2}\,I_k'')$ \\
+  \end{tabular}
+\end{frame}
+
+% ---- Abbreviations ----
+\begin{frame}{Abbreviations}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}p{1.7cm}p{9.5cm}@{}}
+    \textbf{Abbr.} & \textbf{Meaning} \\
+    \hline
+    AC   & Alternating current \\
+    DC   & Direct current \\
+    RMS  & Root mean square \\
+    SCC  & Short-circuit current \\
+    X/R  & Reactance-to-resistance ratio \\
+  \end{tabular}
+\end{frame}
+
+
+% ---- Physical model ----
+\begin{frame}{The short-circuit current model}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.5em}
+        \item A bolted fault on an $R$--$L$ branch fed from an ideal AC source
+              $u(t)=\hat{U}\sin(\omega t+\alpha)$.
+        \item The current is the sum of a \textbf{symmetrical AC} component and a
+              decaying \textbf{DC (aperiodic)} component:
+      \end{itemize}
+      \vspace{0.6em}
+      \[ i(t)=\frac{\hat U}{Z}\Big[\underbrace{\sin(\omega t+\alpha-\varphi)}_{\text{AC}}
+              -\underbrace{\sin(\alpha-\varphi)\,e^{-t/\tau}}_{\text{DC}}\Big] \]
+    \end{column}
+    \begin{column}{0.5\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.62\textheight,keepaspectratio]{\scfig{waveform.pdf}}\\[0.2em]
+      {\color{atGray}\footnotesize Worst-case fault at voltage zero ($\alpha=0$).}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Why the DC offset appears ----
+\begin{frame}{Origin of the DC offset}
+  \begin{itemize}
+    \setlength{\itemsep}{0.6em}
+    \item The current through an inductor \textbf{cannot change instantaneously}
+          ($u_L=L\,\mathrm{d}i/\mathrm{d}t$), so at the fault instant $i(0)$ must
+          equal its pre-fault value (zero for a fault from no load).
+    \item The steady-state AC term alone would start at $\tfrac{\hat U}{Z}\sin(\alpha-\varphi)\neq 0$.
+    \item The DC term is exactly the offset needed to satisfy the initial condition;
+          it is the source-free (natural) response of the loop and decays with $\tau=L/R$.
+    \item The resistance $R$ dissipates the associated energy $\Rightarrow$ exponential decay.
+  \end{itemize}
+\end{frame}
+
+
+% ---- Key derived quantities ----
+\begin{frame}{Key quantities}
+  \renewcommand{\arraystretch}{1.4}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \begin{tabularx}{\linewidth}{@{}lX@{}}
+        Impedance      & $Z=\sqrt{R^{2}+X^{2}}$ \\
+        Impedance angle& $\varphi=\arctan\!\big(X/R\big)$ \\
+        AC peak        & $\hat{I}_{\mathrm{ac}}=\hat U/Z$ \\
+        AC rms         & $I_k''=U_{\mathrm{rms}}/Z$ \\
+        DC time const. & $\tau=L/R=X/(\omega R)$ \\
+      \end{tabularx}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{block}{Drivers of asymmetry}
+        \begin{itemize}
+          \item Switching angle $\alpha$ sets the \emph{size} of the DC offset.
+          \item $X/R$ ratio sets \emph{how long} it persists ($\tau$).
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Switching angle & peak making current ----
+\begin{frame}{Switching angle and peak (making) current}
+  \begin{itemize}
+    \setlength{\itemsep}{0.5em}
+    \item DC offset is \textbf{maximal} when $\alpha-\varphi=\pm\pi/2$
+          (fault at a voltage zero for an inductive circuit) and \textbf{vanishes}
+          when $\alpha-\varphi=0$ (fault at voltage peak).
+    \item The first peak, the \textbf{peak making current}, reaches up to nearly
+          twice the symmetrical AC peak for a high $X/R$:
+  \end{itemize}
+  \vspace{0.4em}
+  \[ i_p=\kappa\,\sqrt{2}\,I_k'', \qquad
+     \kappa=1.02+0.98\,e^{-3R/X}\ \ (\text{IEC }60909),\ \ 1\le\kappa\le 2 \]
+  \vspace{0.2em}
+  \begin{center}
+    {\color{atGray}\footnotesize
+    Example (230\,kV, $X/R=15$): $I_k''\approx 11.0$\,kA rms, $\kappa\approx 1.8$,
+    $i_p\approx 28.3$\,kA.}
+  \end{center}
+\end{frame}
+
+
+% ---- Same SCR, different X/R (Grid A vs Grid B) ----
+
+\begin{frame}{Same fault level, different X/R}
+\begin{tabular}{@{}l c c@{}}
+        & Far from source & \makecell[c]{Close to source \\ (generator, \\ synchronous condenser)} \\
+        & High $R$, lower $X$& Low $R$, high $X$\\
+        \midrule
+        SCR & $20$ & $20$ \\
+        Sym. fault current $I_k''$& $25\,kA_{rms}$ & $25\,kA_{rms}$ \\
+        X/R & $8$ & $40$ \\
+         $\tau=\dfrac{X/R}{2 \cdot \pi \cdot f}$ & $\dfrac{8}{2\pi\cdot 50\,Hz}=25.5\,ms$ & $\dfrac{40}{2 \cdot \pi \cdot 50\,Hz}=127.3\,ms$
+    % asdf & High $R$ &
+
+  \end{tabular}
+
+  \begin{block}{}
+    \small Same SCR and same symmetrical fault current — but Grid DC offset of the grid close to source
+    lasts $\sim\!5\times$ longer, giving a higher first current peak and more
+    first-cycle stress on equipment.
+  \end{block}  
+\end{frame}
+
+
+% ---- Comparison waveform ----
+\begin{frame}{Same SCR, very different first-cycle stress}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.6\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.66\textheight,keepaspectratio]{\scfig{scr_xr_compare.pdf}}
+    \end{column}
+    \begin{column}{0.38\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.6em}
+        \item Both curves share the same $I_{\mathrm{sym}}$ (same $\sqrt2\,I_{\mathrm{sym}}$ envelope).
+        \item Higher X/R (Grid B) $\rightarrow$ slower DC decay $\rightarrow$
+              higher peak making current.
+        \item $i_p$: $\approx 60$ kA (X/R\,=\,8) vs $\approx 68$ kA (X/R\,=\,40).
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Why X/R rises near machines; SCR vs X/R ----
+\begin{frame}{SCR vs.\ X/R}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \textbf{\color{atBlack}Why X/R rises near machines}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item Generators and synchronous condensers have high reactance $X$.
+        \item Their winding resistance $R$ is very low.
+        \item Closer electrical distance $\rightarrow$ more of their reactance is
+              seen at the fault $\rightarrow$ X/R increases.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{\color{atBlack}Two independent measures}
+      \begin{itemize}
+        \setlength{\itemsep}{0.5em}
+        \item \textbf{SCR} tells you \emph{how much} fault current is available.
+        \item \textbf{X/R} tells you \emph{how long} the asymmetry survives.
+      \end{itemize}
+      \vspace{0.4em}
+      \begin{block}{}
+        \small Two substations can have identical fault levels but place very
+        different stresses on protection equipment.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Energy view ----
+\begin{frame}{Energy stored in the reactance}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.56\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.66\textheight,keepaspectratio]{\scfig{energy.pdf}}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.6em}
+        \item $W_L=\tfrac{1}{2}L\,i(t)^2$ — energy scales with \emph{current squared}.
+        \item Zero at $t=0$ (current cannot jump), then the asymmetric first
+              half-cycle drives it well above the steady-state peak.
+        \item The excess is dissipated in $R$ over $\tau$ as the offset decays.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Takeaways ----
+\begin{frame}{Summary}
+  \begin{itemize}
+    \setlength{\itemsep}{0.6em}
+    \item SCC = symmetrical AC component $+$ decaying DC offset.
+    \item The DC offset enforces continuity of inductor current; it decays with
+          $\tau=L/R$ as $R$ dissipates the energy.
+    \item $\alpha$ sets the magnitude of the offset (worst case at voltage zero);
+          $X/R$ sets its persistence.
+    \item Peak making current $i_p=\kappa\sqrt{2}I_k''$ sizes the mechanical and
+          thermal withstand of breakers and busbars.
+  \end{itemize}
+\end{frame}
