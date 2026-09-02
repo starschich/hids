@@ -19,20 +19,21 @@ different transmission topologies. An overview of the technical parameters is gi
 % \begin{center}
 
 \begin{table}[htbp]
-  \renewcommand{\arraystretch}{1.3}
-  \begin{tabularx}{\linewidth}{@{}l X l l@{}}
+  \centering
+  % \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}l l l l@{}}
     \toprule
     \multicolumn{1}{@{}c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Description}} &
     \multicolumn{1}{c}{\textbf{Scheme 1}} & \multicolumn{1}{c@{}}{\textbf{Scheme 2}} \\
     \midrule
-    $P_{AC\_Rec}$ & Rated active power (AC rectifier) & 1000\,MW & 3000\,MW \\
-    $Q_{AC\_Rec}$ & Rated reactive power (AC rectifier) & $\pm$330 MVAr & $\pm$ 990 MVAr \\
-    $U_{DC}$      & Rated DC voltage (pole--ground)   & $\pm$400\,kV & $\pm$400\,kV, $\pm$525\,kV \\
-    Config.       & Transmission configuration        & SMP & DSMP or BIP with DMR \\
+    $P_{AC\_Rec}$ & Rated active power (AC rectifier) & 3000\,MW & 1000\,MW \\
+    $Q_{AC\_Rec}$ & Rated reactive power (AC rectifier) & $\pm$ 990 MVAr & $\pm$330 MVAr \\
+    $U_{DC}$      & Rated DC voltage (pole--ground)   & $\pm$400\,kV, $\pm$525\,kV & $\pm$400\,kV \\
+    Config.       & Transmission configuration        & DSMP or BIP with DMR & SMP \\
     $L$           & DC line length                    & $\sim$200\,mi & $\sim$200\,mi \\
     $f$           & AC system frequency               & 60\,Hz & 60\,Hz \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
   \caption{HVDC configuration: Scheme 1 and Scheme 2.}
   \label{tab:system-ratings}
 \end{table}
@@ -41,33 +42,22 @@ For the reactive power an initial power factor of $\cos \phi = 0.95$ was defined
 it is expected that the reactive power requirements can be significantly reduced.
 
 % \end{center}
+\pagebreak
 
 \subsection{HVDC topologies}
 
 \subsubsection{Scheme 1}
-The anticipated transmission configuration for Scheme 1 is a symmetrical monopole with a DC voltage rating of $\pm$400\,kV (SMP, Figure~\ref{fig:config-smp}). The 400\,kV is 
-considered to be the most economical solution for the transmission line considering converter and DC line costs. HVDC supplier is encouraged to propose alternative solutions 
-in case of significant savings with smaller DC voltage set-ups such as $\pm$320\,kV.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.7\linewidth]{fig/config_smp.pdf}
-  \caption{Symmetrical monopole (SMP) configuration.}
-  \label{fig:config-smp}
-\end{figure}
-
-
-\subsubsection{Scheme 2}
-For the 3000\,MW Scheme~2, two transmission configurations are considered: 
+For the 3000\,MW Scheme~1, two transmission configurations are considered: 
 \begin{enumerate}
   \item Dual symmetrical monopole (DSMP, Figure~\ref{fig:config-dsmp}) with $\pm$400\,kV DC voltage
   \item Bipole with dedicated metallic return (BIP, Figure~\ref{fig:config-bip}) with $\pm$525\,kV DC voltage
 \end{enumerate}
 
 The DSMP configuration is assumed to provide higher availability and greater flexibility
-for the staged buildout of the transmission line. Furthermore, the same converter configuration can be used for Scheme 1, 
-taking into account an overrating of the Scheme 1 configuration.\\
-The decision between the DSMP and BIP configurations will be based on the price difference in the converter and DC line costs.
+for the staged buildout of the transmission line. Furthermore, the same converter configuration can be used for Scheme 2, 
+taking into account an overrating of the Scheme 2 configuration. The DC voltage of $\pm$400\,kV was selected two allow DC cable sections 
+without installation of parallel cables.\\
+The DSMP configuration is the preferred topology. The BIP configuration will be used only in case of signigicant DC line price reduction.
 
 
 \begin{figure}[htbp]
@@ -84,7 +74,17 @@ The decision between the DSMP and BIP configurations will be based on the price 
   \label{fig:config-bip}
 \end{figure}
 
+\subsubsection{Scheme 2}
+The anticipated transmission configuration for Scheme 2 is a symmetrical monopole with a DC voltage rating of $\pm$400\,kV (SMP, Figure~\ref{fig:config-smp}). 
+The $\pm$400\,kV voltage selection is based on the Scheme 1 configuration, as this voltage level would allow to use the same converter configuration for both schemes. 
+In case of BIP topology application for Scheme 1, a DC voltage of $\pm$320\,kV should be used.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\linewidth]{fig/config_smp.pdf}
+  \caption{Symmetrical monopole (SMP) configuration.}
+  \label{fig:config-smp}
+\end{figure}
 
 \subsection{Generation at rectifier}
 Organic Rankine Cycle (ORC) power generation systems will be used as the primary generation source. The individual generator units will be sized
