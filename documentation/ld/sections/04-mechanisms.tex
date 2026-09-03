@@ -1,7 +1,7 @@
 \section{Liquidated damages mechanism}
 
 \subsection{Definition and trigger}
-Liquidated damages are a pre-agreed sum, stated in the supply contract, payable
+Liquidated damages are a pre-agreed sum, stated in the EPC contract, payable
 by the OEM when a measured performance metric \emph{exceeds} its contractually
 guaranteed threshold over the monitoring period. They provide commercial
 certainty and avoid disputes over the quantum of actual loss.
@@ -16,18 +16,34 @@ Assessment is typically \textbf{per unit of excess}:
 \subsection{Market ranges}
 Indicative LD rates for a HVDC scheme of order 1\,GW:
 
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabularx}{\linewidth}{@{}l l X@{}}
-  \toprule
-  \textbf{Metric} & \textbf{Penalty rate} & \textbf{Notes} \\
-  \midrule
-  FOR (per outage) & \$0.1--1.2\,M & per additional forced outage \\
-  FEU              & \$75--600\,k  & per additional 0.1\,\% unavailability \\
-  \textbf{LD cap}  & 3--5\,\%      & of contract value \\
-  \bottomrule
-\end{tabularx}
-\end{center}
+% \begin{center}
+% % \renewcommand{\arraystretch}{1.35}
+% \begin{table}{\linewidth}{@{}l l l@{}}
+%   \toprule
+%   \textbf{Metric} & \textbf{Penalty rate} & \textbf{Notes} \\
+%   \midrule
+%   FOR (per outage) & \$0.1--1.2\,M & per additional forced outage \\
+%   FEU              & \$75--600\,k  & per additional 0.1\,\% unavailability \\
+%   \textbf{LD cap}  & 3--5\,\%      & of contract value \\
+%   \bottomrule
+  
+% \end{table}
+% \end{center}
+
+\begin{table}[htbp]
+      \centering
+      \begin{tabular}{@{}l l c@{}}
+            \toprule
+            \textbf{Metric} & \textbf{Penalty rate} & \textbf{Notes} \\
+            \midrule
+            FOR (per outage) & \$0.1--1.2\,M & per additional forced outage \\
+            FEU              & \$75--600\,k  & per additional 0.1\,\% unavailability \\
+            \textbf{LD cap}  & 3--5\,\%      & of contract value \\
+            \bottomrule
+      \end{tabular}
+      \caption{Indicative LD range} \label{tab:ld-range}
+\end{table}
+
 
 \subsection{Market context}
 \begin{itemize}\setlength{\itemsep}{0.2em}

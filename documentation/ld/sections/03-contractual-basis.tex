@@ -23,18 +23,21 @@ that an OEM can realistically stand behind.
 
 \subsection{Interpretation}
 \begin{itemize}\setlength{\itemsep}{0.25em}
-  \item Actual figures vary with technology (LCC vs.\ VSC), scheme age and
-        transmission medium: long overhead lines raise forced-outage counts,
-        cable schemes lower them.
-  \item SEU is driven mainly by valve-maintenance duration and can be reduced by
-        multi-shift working during outages.
-  \item Very aggressive bipole figures (e.g.\ 0.1 outages/year, or 1 in 20 years)
-        have been \emph{guaranteed on some projects but are commercially driven,
-        not technically justified}; the residual exposure is effectively carried
-        as commercial risk through the LD regime.
-  \item VSC bipolar schemes with a dedicated metallic return are still rare, so
-        CIGRE survey data for them is limited --- guarantees carry more
-        uncertainty.
+      \item The scope of OEM guarantees is limited to the converter stations 
+            whereas reporting to the CIGRE surveys covers both converter stations and the DC line. 
+      \item Actual figures vary with technology (LCC vs.\ VSC), project scheme age and
+            transmission medium: long overhead lines raise forced-outage counts,
+            cable schemes lower them.
+      \item SEU is driven mainly by valve-maintenance duration and can be reduced by
+            multi-shift working during outages. However, personnel with the requisite skills 
+            for valve maintenance may not be available for multi-shift work.
+      \item Very aggressive bipole figures (e.g.\ 0.1 outages/year, or 1 in 20 years)
+            have been \emph{guaranteed on some projects but are commercially driven,
+            not technically justified}; the residual exposure is effectively carried
+            as commercial risk through the LD regime.
+      \item VSC bipolar schemes with a dedicated metallic return are still rare, so
+            CIGRE survey data for them is limited --- guarantees carry more
+            uncertainty.
 \end{itemize}
 
 \subsection{RTEi availability-planning inputs}
@@ -79,10 +82,13 @@ planning.}
 
 \subsection{Monitoring period}
 \begin{itemize}\setlength{\itemsep}{0.2em}
-  \item A monitoring period of \textbf{3 years} is typical.
-  \item A robust buyer approach (common in North American projects) is to
-        \textbf{extend to 4 years and count the best 3 of 4}, protecting against
-        a single anomalous year.
-  \item A simple mean/median-over-the-period approach is generally too risky for
-        the buyer and should be avoided.
+      \item A monitoring period of \textbf{3 years} is typical.
+      \item A robust approach (common in North American projects) is to extend the monitoring period by one additional year if there 
+            is a single anomalous year during the initial 3-year monitoring period, and then evaluate the performance during the 
+            best 3 of 4 years against the guarantees.
+      \item A simple mean/median-over-the-period approach provides limited financial incentive for an OEM to promptly 
+            assign resources and address an issue that causes poor availability performance during an anomalous year. 
+            By offering a path for the OEM to avoid LDs by extending the monitoring period by one year and then evaluating 
+            performance during the best 3 out of 4 years, the OEM has a strong financial incentive to assign resources and expedite the 
+            resolution of a performance issue.
 \end{itemize}
