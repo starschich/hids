@@ -157,60 +157,80 @@
     \endgroup}{}}
 
 % =============================================================
-%  Edge bar (every body page)
+%  Edge bar: neon mesh (every body page)
 % =============================================================
-%  Per the design system's Edge Bar device
-%  (design.amwatt.vercel.app/foundations/lattice): "A 36-pixel
-%  Energy-coloured vertical rail runs down the left edge, carrying the
-%  logomark and rotated capital letters. This device belongs to
-%  presentation and print -- not to product interfaces."
+%  A fine square grid down the left page edge, drawn in Energy.
 %
-%  This replaces the Sand grid netting that came from the vendor
-%  americanterawatt.cls. Two notes on why that had to go:
-%    * Sand is not a colour token in the DS at all -- it appears only as
-%      a dark-theme warning tone -- so the old rail was off-system.
-%    * The fine 0.11in grid was not the DS lattice either. The lattice is
-%      a 165.58px-pitch grid with a star at every intersection, Energy
-%      coloured, and the DS allows only one per page ("it is a signature,
-%      and a signature loses its force when repeated"). A full-height
-%      rail of it on every page would breach that, so the edge bar is a
-%      solid Energy field instead.
+%  This is the mesh rail restored, but in the design system's Energy
+%  accent rather than the vendor template's Sand. It replaced a solid
+%  Energy field, which read far too heavy down the full page height.
 %
-%  36px at the DS's 96dpi reference = 0.375in. Everything on the bar is
-%  positioned from \at@railwidth, so changing that one length moves the
-%  bar, the mark and the strapline together.
+%  Geometry comes from the original vendor bitmap (assets-corporate/
+%  at-rail.png, since archived): 0.11in pitch, 0.48pt strokes. The mesh
+%  needs a whole number of cells across, so the rail is 4 cells = 0.44in
+%  wide -- not the DS Edge Bar's 36px/0.375in, which would cut the
+%  fourth column mid-cell. Everything on the rail is positioned from
+%  \at@railwidth, so that one length moves the mesh, the mark and the
+%  strapline together.
+%
+%  \at@railopacity is the one knob for how loud the neon reads: 0.25 is
+%  a whisper, 0.40 (default) is clearly Energy without shouting, 0.60 is
+%  about as strong as it can go before the mark stops reading against
+%  it. The DS asks for 40-60% wherever the lattice sits behind text.
+%
+%  The rules are stroked as separate vertical and horizontal paths, not
+%  as one TikZ \grid. PDF applies constant alpha per path, so a single
+%  self-overlapping grid path renders every crossing at the same alpha
+%  as the rules; two sets of paths composite, which puts the slightly
+%  darker dot back at each crossing the way the original bitmap had it.
+%
+%  Row/column counts derive from \paperheight and the lengths below
+%  (over-counted by one row and clipped), so the rail survives a change
+%  of paper size.
 \newif\ifat@net \at@netfalse
 \newcommand{\atNetting}{\global\at@nettrue}
 \newcommand{\atNoNetting}{\global\at@netfalse}
 
-\newlength{\at@railwidth}\setlength{\at@railwidth}{0.375in}
+\newlength{\at@railwidth}\setlength{\at@railwidth}{0.44in}
+\newlength{\at@railstep} \setlength{\at@railstep}{0.11in}
+\providecommand{\at@railopacity}{0.40}
+
+\newcommand{\at@railmesh}{%
+  \begingroup
+  \edef\at@railcols{\the\numexpr\number\dimexpr\at@railwidth\relax
+                    /\number\dimexpr\at@railstep\relax\relax}%
+  \edef\at@railrows{\the\numexpr\number\dimexpr\paperheight\relax
+                    /\number\dimexpr\at@railstep\relax+1\relax}%
+  \begin{tikzpicture}[x=\at@railstep,y=\at@railstep,
+                      atAccent,opacity=\at@railopacity,line width=0.48pt]
+    \useasboundingbox (0,0) rectangle (\at@railwidth,\paperheight);
+    \clip (0,0) rectangle (\at@railwidth,\paperheight);
+    \foreach \i in {0,...,\at@railcols}{%
+      \draw (\i,0) -- (\i,\at@railrows);}%
+    \foreach \j in {0,...,\at@railrows}{%
+      \draw (0,\j) -- (\at@railcols,\j);}%
+  \end{tikzpicture}%
+  \endgroup}
 
 \AddToShipoutPictureBG{%
   \ifat@net
-    % the Energy field itself
-    \put(0,0){\begin{tikzpicture}
-      \useasboundingbox (0,0) rectangle (\at@railwidth,\paperheight);
-      \fill[atAccent] (0,0) rectangle (\at@railwidth,\paperheight);
-    \end{tikzpicture}}%
+    \put(0,0){\at@railmesh}%
     \put(0,0){\begin{tikzpicture}[remember picture,overlay]
-      % Logomark, centred across the bar. anchor=north centres the box on
-      % the anchor, so the shift must be to the bar's centreline
+      % Logomark, centred across the rail. anchor=north centres the box
+      % on the anchor, so the shift must be to the rail's centreline
       % (0.5*\at@railwidth) -- padding the image inside the node instead
       % would move it only half as far and leave it straddling the edge.
-      % The mark is dark ink, which is also what the DS requires of
-      % anything sitting on Energy (--fg-on-accent: "always ink, never
-      % white" -- white lands around 1.5:1 and is unreadable).
       \node[anchor=north,inner sep=0pt]
         at ([xshift=0.5\at@railwidth,yshift=-0.28in]current page.north west)
-        {\includegraphics[width=0.185in]{\atcorpasset{at-mark.pdf}}};
-      % Rotated capitals. anchor=west (not south) under rotate=90 puts the
-      % START of the line at the anchor and runs it upward, so yshift is
-      % literally the clear distance from the bottom edge to the first
-      % letter. Set in the DS Label style (Geist Mono, caps, tracked) via
-      % \atLabelFace, in ink on the Energy ground.
+        {\includegraphics[width=0.20in]{\atcorpasset{at-mark.pdf}}};
+      % Rotated capitals. anchor=west (not south) under rotate=90 puts
+      % the START of the line at the anchor and runs it upward, so yshift
+      % is literally the clear distance from the bottom edge to the first
+      % letter. Ink on white now that the ground is a light mesh rather
+      % than a solid Energy field.
       \node[anchor=west,rotate=90,inner sep=0pt]
         at ([xshift=0.5\at@railwidth,yshift=0.90in]current page.south west)
-        {\atLabelFace\fontsize{6.5}{8}\selectfont\color{atFgOnAccent}%
+        {\atLabelFace\fontsize{6.5}{8}\selectfont\color{atFg}%
          \MakeUppercase{\atStrapline}};
     \end{tikzpicture}}%
   \fi}
