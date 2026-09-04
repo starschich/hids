@@ -1,24 +1,71 @@
 \section{AC data}
 \label{sec:ac-data}
-The nominal AC voltage for the generation and load side are 230\,kV. Although not connected to the AC grid, the interconnection requirements should follow the requirements defined in IEEE~2800 and PRC-029-2.
-The steady-state voltage levels are given in Table~\ref{tab:ac-voltage}, temporary voltage range in Figure~\ref{fig:ac-frt} and the transient 
-voltage range in Table~\ref{tab:ac-insulation}.
+The nominal AC voltage for the generation and load side are 230\,kV. Although not connected to the AC grid, the interconnection requirements should follow the requirements defined in IEEE~2800 and \mbox{PRC-029-2}.
+The AC system data are collected in Table~\ref{tab:ac-data}, covering the
+steady-state and transient voltage levels, the frequency range and the
+short-circuit levels. The temporary voltage range is shown separately in
+Figure~\ref{fig:ac-frt}.
 
-Concept verification studies are ongoing. The voltage and frequency range will be adapted to take into account the islanded 
+Concept verification studies are ongoing. The voltage and frequency range will be adapted to take into account the islanded
 network configuration.
 
+The continuous frequency range corresponds to the ``no trip'' range of
+\mbox{PRC-029-2}, within which the converter shall remain connected and in continuous
+operation at rated power without any restriction. Outside this range, the
+frequency ride-through capability shall follow the duration-dependent
+requirements of \mbox{PRC-029-2}. As noted above, the range will be reviewed once the
+concept verification studies for the islanded network configuration are
+completed.
+
+The short-circuit levels apply at the AC terminals of each station and are
+subject to confirmation by the ongoing concept verification studies.
+
+% One table for the whole section, divided into areas by a rule plus a bold
+% heading row. The Rectifier and Inverter columns run the full length of the
+% table; where a quantity has no separate value per station the same value is
+% repeated in both columns, so every row is explicit about what applies at
+% each end rather than leaving it to a spanned cell.
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{@{}l c c@{}}
+  \begin{tabular}{@{}l c c c@{}}
     \toprule
-    & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c@{}}{\textbf{Value}} \\
+    \textbf{Parameter} & \textbf{Unit}
+      & \multicolumn{1}{c}{\textbf{Rectifier}}
+      & \multicolumn{1}{c@{}}{\textbf{Inverter}} \\
     \midrule
-    Nominal system voltage & kV  & 230\\
-    Minimum continuous system voltage & kV  & 207 (0.9 p.u.)\\
-    Maximum continuous system voltage & kV  & 242 (1.05 p.u.)\\
+    \multicolumn{4}{@{}l}{\textbf{Voltage}}\\
+    \addlinespace[2pt]
+    Nominal system voltage            & kV  & 230              & 230\\
+    Minimum continuous system voltage & kV  & 207 (0.9 p.u.)   & 207 (0.9 p.u.)\\
+    Maximum continuous system voltage & kV  & 242 (1.05 p.u.)  & 242 (1.05 p.u.)\\
+    \midrule
+    \multicolumn{4}{@{}l}{\textbf{Transient voltage}}\\
+    \addlinespace[2pt]
+    Switching impulse withstand voltage & kV & 850  & 850\\
+    Lightning impulse withstand voltage & kV & 1050 & 1050\\
+    \midrule
+    \multicolumn{4}{@{}l}{\textbf{Frequency}}\\
+    \addlinespace[2pt]
+    Rated frequency              & Hz  & 60   & 60\\
+    Minimum continuous frequency & Hz  & 58.8 & 58.8\\
+    Maximum continuous frequency & Hz  & 61.2 & 61.2\\
+    % ---- negative / zero sequence: uncomment to reinstate ----
+    % \midrule
+    % \multicolumn{4}{@{}l}{\textbf{Sequence components}}\\
+    % \addlinespace[2pt]
+    % Negative sequence for system performance & \%  & 1     & 1\\
+    % Negative sequence for system design      & \%  & 2     & 2\\
+    % Zero sequence for system design          & \%  & < 0.5 & < 0.5\\
+    \midrule
+    \multicolumn{4}{@{}l}{\textbf{Short-circuit level}}\\
+    \addlinespace[2pt]
+    Minimum short-circuit level & MVA & SCR > 2 & SCR < 1\\
+    Maximum short-circuit level & MVA & TBD     & SCR = 1\\
+    Minimum X/R ratio           & --- & TBD     & TBD\\
+    Maximum X/R ratio           & --- & TBD     & TBD\\
     \bottomrule
   \end{tabular}
-  \caption{AC voltage} \label{tab:ac-voltage}
+  \caption{AC system data} \label{tab:ac-data}
 \end{table}
 
 
@@ -28,80 +75,3 @@ network configuration.
   \caption{Temporary voltage range}
   \label{fig:ac-frt}
 \end{figure}
-
-
-\begin{table}[htbp]
-  \centering
-  \begin{tabular}{@{}l c c@{}}
-    \toprule
-    & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c@{}}{\textbf{Value}} \\
-    \midrule
-    Switching impulse withstand voltage & kV & 850\\
-    Lightning impulse withstand voltage & kV & 1050\\
-    \bottomrule
-  \end{tabular}
-  \caption{Transient voltages} \label{tab:ac-insulation}
-\end{table}
-
-The AC frequency range is given in Table~\ref{tab:ac-frequency}. The continuous
-frequency range corresponds to the ``no trip'' range of PRC-029-2, within which
-the converter shall remain connected and in continuous operation at rated power
-without any restriction. Outside this range, the frequency ride-through
-capability shall follow the duration-dependent requirements of PRC-029-2.
-As noted above, the range will be
-reviewed once the concept verification studies for the islanded network
-configuration are completed.
-
-\begin{table}[htbp]
-  \centering
-  \begin{tabular}{@{}l c c@{}}
-    \toprule
-    & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c@{}}{\textbf{Value}} \\
-    \midrule
-    Rated frequency & Hz  & 60\\
-    Minimum continuous frequency & Hz  & 58.8\\
-    Maximum continuous frequency & Hz  & 61.2\\
-    \bottomrule
-  \end{tabular}
-  \caption{AC frequency} \label{tab:ac-frequency}
-\end{table}
-
-% The negative and zero sequence to be considered for the converter performance and design are given in Table~\ref{tab:ac-sequence}
-
-% \begin{table}[htbp]
-%   \centering
-%   \begin{tabular}{@{}l c c@{}}
-%     \toprule
-%     & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c@{}}{\textbf{Value}} \\
-%     \midrule
-%     Negative sequence for system performance & \% & 1\\
-%     Negative sequence for system design & \% & 2\\
-%     Zero sequence for system design & \% & < 0.5\\
-%     \bottomrule
-%   \end{tabular}
-%   \caption{AC sequences} \label{tab:ac-sequence}
-% \end{table}
-
-
-
-
-
-
-The short-circuit levels to be considered at the AC terminals of each station
-are given in Table~\ref{tab:ac-short-circuit}. The values are subject to confirmation by the ongoing concept
-verification studies.
-
-\begin{table}[htbp]
-  \centering
-  \begin{tabular}{@{}l c c c@{}}
-    \toprule
-    & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c}{\textbf{Rectifier}} & \multicolumn{1}{c@{}}{\textbf{Inverter}} \\
-    \midrule
-    Minimum short-circuit level & MVA & SCR > 2 & SCR < 1\\
-    Maximum short-circuit level & MVA & TBD & SCR = 1\\
-    Minimum X/R ratio & --- & TBD & TBD\\
-    Maximum X/R ratio & --- & TBD & TBD\\
-    \bottomrule
-  \end{tabular}
-  \caption{AC short-circuit levels} \label{tab:ac-short-circuit}
-\end{table}
