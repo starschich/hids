@@ -1,56 +1,38 @@
 % =============================================================
-%  attemplate.sty — template selector for American Terawatt reports
+%  attemplate.sty — entry point for American Terawatt reports
 %
-%  Usage in the main document (paths are relative to the main .tex):
+%  Usage in the main document (path is relative to the main .tex):
 %
-%      \usepackage[classic]{../../template/attemplate}     % atreport.sty
-%      \usepackage[brand]{../../template/attemplate}       % atreportbrand.sty
-%      \usepackage[house]{../../template/attemplate}       % atreporthouse.sty
-%      \usepackage[corporate]{../../template/attemplate}   % atreportcorporate.sty
+%      \usepackage{../../template/attemplate}
 %
-%  All four templates provide the same public interface:
+%  Public interface (provided by atreportcorporate.sty):
 %    \reporttitle \reportsubtitle \reportauthor \reportdocnumber
 %    \reportrevision \reportstatus \reportdate \reportconfidentiality
 %    \makecover \revisionhistory \revrow
-%  so switching requires changing this one option only.
+%
+%  HISTORY
+%  -------
+%  This file used to be a selector between four house styles
+%  (classic / brand / house / corporate) chosen by a package option,
+%  plus a block of compatibility shims that let one document body
+%  compile under any of them. Only `corporate' was ever used, so the
+%  other three styles and their asset folders were archived and this
+%  file reduced to a plain wrapper. The shims went with them: none of
+%  the macros they covered (\atheadrow, \atlead, \atDriver, \atTBD,
+%  \atSource, \atBackCover and the rest) is referenced by the document.
+%
+%  The option form still works -- \usepackage[corporate]{...} -- so
+%  existing documents need no edit; any other option is reported.
 % =============================================================
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{attemplate}[2026/08/19 American Terawatt template selector]
+\ProvidesPackage{attemplate}[2026/09/03 American Terawatt report template]
 
-\def\at@variant{classic}
-\DeclareOption{classic}{\def\at@variant{classic}}
-\DeclareOption{brand}{\def\at@variant{brand}}
-\DeclareOption{house}{\def\at@variant{house}}
-\DeclareOption{corporate}{\def\at@variant{corporate}}
-\DeclareOption*{\PackageWarning{attemplate}{Unknown template `\CurrentOption'}}
-\def\at@brandname{brand}
-\def\at@housename{house}
-\def\at@corpname{corporate}
-\ExecuteOptions{classic}
+\DeclareOption{corporate}{}
+\DeclareOption*{\PackageWarning{attemplate}{%
+  Unknown template `\CurrentOption'. Only `corporate' remains; the
+  classic, brand and house variants were archived}}
 \ProcessOptions\relax
 
-\ifx\at@variant\at@brandname
-  \RequirePackage{../../template/atreportbrand}
-\else\ifx\at@variant\at@housename
-  \RequirePackage{../../template/atreporthouse}
-\else\ifx\at@variant\at@corpname
-  \RequirePackage{../../template/atreportcorporate}
-\else
-  \RequirePackage{../../template/atreport}
-\fi\fi\fi
-
-% ---- compatibility shims ------------------------------------
-% Variant-only helpers get plain fallbacks, so section files that use
-% them still compile under every template.
-\providecommand{\atheadrow}[1]{\textbf{#1}}
-\providecommand{\atheadcell}[1]{\textbf{#1}}
-\providecommand{\atlead}[1]{\textbf{#1}}
-\providecommand{\attbd}{\textbf{TBD}}
-\providecommand{\atDriver}[1]{\par\medskip\noindent\textbf{#1}\par}
-\providecommand{\atTBD}{\textbf{TBD}}
-\providecommand{\atTBC}{\textbf{TBC}}
-\providecommand{\atSource}[1]{\par\vspace{4pt}{\footnotesize #1}\par\vspace{8pt}}
-\providecommand{\atCaption}[1]{\par\vspace{4pt}{\footnotesize #1}\par\vspace{8pt}}
-\providecommand{\atBackCover}{}
+\RequirePackage{../../template/atreportcorporate}
 
 \endinput

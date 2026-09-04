@@ -1,23 +1,17 @@
 % =============================================================
 %  HVDC System — Functional Specification
 %  Uses the shared American Terawatt report style.
-%  Compile:  pdflatex functional-spec.tex   (run twice for ToC)
+%  Compile:  lualatex functional-spec.tex   (run twice for ToC)
 %
 %  NOTE: contains DUMMY / placeholder values — replace before use.
 % =============================================================
 \documentclass[11pt,a4paper]{article}
 
-% ---- Template selection -------------------------------------
+% ---- Template -----------------------------------------------
 % Shared styles live in the repo-level template folder.
-%   classic    = atreport.sty          (original AT report style, A4)
-%   brand      = atreportbrand.sty     (rebuild of the Word layout, Letter)
-%   house      = atreporthouse.sty     (derived AT house template #1, Letter)
-%   corporate  = atreportcorporate.sty (derived AT house template #2, Letter)
-% Switch by uncommenting one of the lines below.
-% \usepackage[house]{../../template/attemplate}
-% \usepackage[classic]{../../template/attemplate}
-% \usepackage[brand]{../../template/attemplate}
-\usepackage[corporate]{../../template/attemplate}
+% Compile with lualatex (or xelatex) for the brand faces (Archivo +
+% Geist Mono); pdflatex also works but falls back to Helvetica.
+\usepackage{../../template/attemplate}
 
 % ---- Document metadata --------------------------------------
 \reporttitle{HVDC System\\Functional Specification}

@@ -1,36 +1,41 @@
 % =============================================================
 %  atreportcorporate.sty
-%  American Terawatt report style — CORPORATE variant
+%  American Terawatt report style
 %
-%  Package form of the second "americanterawatt.cls" house template:
-%  white cover (no photo), Charcoal body, Slate blue table heads and
-%  sub-heads, Warm Grey hairlines, Sand grid netting down the left
-%  page edge.
+%  Originally the package form of the second "americanterawatt.cls"
+%  house template; since aligned to the design system at
+%  design.amwatt.vercel.app. White cover, ink body copy, Label-style
+%  (Geist Mono, caps, tracked) table heads on a subtle ground, hairline
+%  borders, and the Energy edge bar down the left page edge.
 %
-%  Two interfaces are available:
+%  This is now the only report style -- the classic, brand and house
+%  variants were archived. Two command sets are available:
 %
-%  1) the atreport interface, so the same document body works with
-%     every template variant:
+%  1) the portable interface, which is what documents should use:
 %       \reporttitle \reportsubtitle \reportauthor \reportdocnumber
 %       \reportrevision \reportstatus \reportdate \reportconfidentiality
 %       \makecover \revisionhistory \revrow
 %
-%  2) the native interface from this template's americanterawatt.cls:
+%  2) the native interface inherited from americanterawatt.cls:
 %       \atTitle \atSubtitle \atEyebrow \atRunningHead \atAbstract
 %       \atCover \atNetting \atDriver \atTBD \atTBC \atFigureSlot
 %       \atSource \atCaption  and the attable environment
+%     Nothing in the current document uses these; they are kept so the
+%     inherited vendor markup still compiles.
 %
 %  Assets expected in  <this folder>/assets-corporate/ :
-%    at-logo.png  at-wordmark.png  at-mark.png
-%  (at-rail.png is no longer used -- the left-edge grid rail is drawn as
-%   vector artwork in \at@railgrid below.)
+%    at-logo.pdf  at-wordmark.pdf  at-mark.pdf
+%  All three are vector PDFs. The .png twins that used to be referenced
+%  here were archived -- same artwork, same aspect ratios, but raster.
+%  The left edge bar needs no asset at all; it is drawn as vector.
 % =============================================================
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{atreportcorporate}[2026/08/19 American Terawatt corporate report style]
 
 % ---- packages -----------------------------------------------
-% Brand typography (Untitled Sans when compiled with lualatex/xelatex
-% and the font files are installed; Helvetica otherwise). See atfonts.sty.
+% Brand typography (Archivo + Geist Mono when compiled with
+% lualatex/xelatex and the font files are installed; Helvetica
+% otherwise). See atfonts.sty.
 \RequirePackage{../../template/atfonts}
 \IfFileExists{fontsize.sty}{\RequirePackage[fontsize=10pt]{fontsize}}{}
 \RequirePackage[letterpaper,top=0.72in,bottom=0.72in,left=1.15in,right=0.85in,
@@ -61,22 +66,32 @@
 \providecommand{\atcorpassetpath}{../../template/assets-corporate/}
 \newcommand{\atcorpasset}[1]{\atcorpassetpath#1}
 
-% ---- palette --------------------------------------------------
-\definecolor{atCharcoal}{HTML}{454545}  % brand charcoal (kept for reference)
-% Text colour. The template originally set all body copy, headings, ToC
-% entries, captions, the cover title and the header/footer in atCharcoal
-% (#454545, a dark grey); these now use plain black. atStone and atSlate
-% are deliberate accents (cover subtitle, metadata line, table heads) and
-% are left alone -- change them here too if they should also go black.
-\definecolor{atText}{HTML}{000000}
-\definecolor{atEnergy}{HTML}{CEEB11}
-\definecolor{atSlate}{HTML}{4E7288}
-\definecolor{atSand}{HTML}{CCA87C}
-\definecolor{atStone}{HTML}{948A81}
-\definecolor{atWarmGrey}{HTML}{C0B8B0}
-\definecolor{atBeige}{HTML}{E3E2D8}
+% ---- palette: design-system tokens ---------------------------
+% Named after the semantic tokens in design.amwatt.vercel.app
+% /foundations/color (light theme) so a future design-system revision
+% maps one-to-one onto this block. The DS forbids hard-coding hexes in
+% favour of semantic tokens; these definitions are the LaTeX equivalent
+% of that token layer, and nothing below this block should introduce a
+% raw hex.
+%
+%   token            hex       DS role
+\definecolor{atFg}          {HTML}{121212} % --fg            body and heading text
+\definecolor{atFgMuted}     {HTML}{635E56} % --fg-muted      secondary text, captions
+\definecolor{atFgSubtle}    {HTML}{79746B} % --fg-subtle     placeholders, disabled
+\definecolor{atFgOnAccent}  {HTML}{121212} % --fg-on-accent  text on Energy: always ink
+\definecolor{atBg}          {HTML}{FCFCFC} % --bg            page ground (paper stays white in print)
+\definecolor{atBgSubtle}    {HTML}{F6F6F4} % --bg-subtle     table headers, recessed panels
+\definecolor{atBgMuted}     {HTML}{DBD8D2} % --bg-muted      inactive chips, track fills
+\definecolor{atBorder}      {HTML}{E4E3DA} % --border        default hairline
+\definecolor{atBorderStrong}{HTML}{9C8F83} % --border-strong emphasised dividers
+\definecolor{atAccent}      {HTML}{CEEB11} % --accent        Energy: the edge bar
+\definecolor{atAccentFg}    {HTML}{5E7400} % --accent-fg     Energy as text or icon
+\definecolor{atInfo}        {HTML}{5089A6} % --info          Slate: neutral status only
+\definecolor{atSuccess}     {HTML}{5F8E00} % --success
+\definecolor{atWarning}     {HTML}{D7B718} % --warning
+\definecolor{atDanger}      {HTML}{EA553E} % --danger
 
-\AtBeginDocument{\color{atText}}
+\AtBeginDocument{\color{atFg}}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{7pt plus 2pt minus 1pt}
 
@@ -97,10 +112,9 @@
 \newcommand{\atStrapline}{AMERICA'S PRIVATE INDUSTRIAL POWER GRID}
 \newcommand{\atConfidential}{Confidential, not for public disclosure}
 
-% atreport-compatible setters mapped onto the native metadata.
-% \reporttitle sets \atTitle; \reportsubtitle sets \atSubtitle (as in
-% the classic/brand/house variants, where the "subtitle" is the line
-% shown under the title, e.g. "Private Industrial Power Grid").
+% Portable setters mapped onto the native metadata. \reporttitle sets
+% \atTitle; \reportsubtitle sets \atSubtitle -- the line shown under the
+% title, e.g. "Private Industrial Power Grid".
 \newcommand{\at@DocNumber}{}
 \newcommand{\at@Revision}{}
 \newcommand{\at@Status}{}
@@ -128,82 +142,61 @@
     \endgroup}{}}
 
 % =============================================================
-%  Sand grid netting (every body page)
+%  Edge bar (every body page)
 % =============================================================
+%  Per the design system's Edge Bar device
+%  (design.amwatt.vercel.app/foundations/lattice): "A 36-pixel
+%  Energy-coloured vertical rail runs down the left edge, carrying the
+%  logomark and rotated capital letters. This device belongs to
+%  presentation and print -- not to product interfaces."
+%
+%  This replaces the Sand grid netting that came from the vendor
+%  americanterawatt.cls. Two notes on why that had to go:
+%    * Sand is not a colour token in the DS at all -- it appears only as
+%      a dark-theme warning tone -- so the old rail was off-system.
+%    * The fine 0.11in grid was not the DS lattice either. The lattice is
+%      a 165.58px-pitch grid with a star at every intersection, Energy
+%      coloured, and the DS allows only one per page ("it is a signature,
+%      and a signature loses its force when repeated"). A full-height
+%      rail of it on every page would breach that, so the edge bar is a
+%      solid Energy field instead.
+%
+%  36px at the DS's 96dpi reference = 0.375in. Everything on the bar is
+%  positioned from \at@railwidth, so changing that one length moves the
+%  bar, the mark and the strapline together.
 \newif\ifat@net \at@netfalse
 \newcommand{\atNetting}{\global\at@nettrue}
 \newcommand{\atNoNetting}{\global\at@netfalse}
 
-% Rail geometry. These are the single source of truth for the rail's
-% width and grid pitch: the grid, the mark and the strapline are all
-% positioned from them, so changing \at@railwidth moves everything
-% together and keeps the centring correct.
-\newlength{\at@railwidth}\setlength{\at@railwidth}{0.44in}
-\newlength{\at@railstep} \setlength{\at@railstep}{0.11in}
-
-% The rail used to be a 132x3300 px raster (assets-corporate/at-rail.png).
-% It is a plain square grid, so it is drawn as true vector artwork here
-% instead -- resolution-independent, no asset file, and it rescales with
-% the lengths above. Geometry and colour were reverse-engineered from the
-% original bitmap: 0.11in pitch, 0.48pt strokes, atSand at 25% opacity on
-% white (the PNG's line pixels measured rgb(242,234,223), which is
-% exactly atSand at 25% over white).
-%
-% The rules are stroked as separate vertical and horizontal paths rather
-% than as one TikZ \grid on purpose. PDF applies constant alpha per path,
-% so a single self-overlapping grid path renders every crossing at the
-% same 25% as the rules -- whereas the original bitmap has visibly darker
-% dots at the crossings. Two sets of paths composite (25% over 25% =
-% 43.75%), which restores that texture. It is still a little lighter than
-% the source bitmap's crossings (~69%); no single stroke alpha can match
-% both the rules and the crossings, so the rules -- by far the dominant
-% element -- are the ones matched exactly.
-%
-% Row/column counts are derived from \paperheight and the lengths above
-% (over-counted by one row and clipped), so the rail also survives a
-% change of paper size.
-\newcommand{\at@railgrid}{%
-  \begingroup
-  \edef\at@railcols{\the\numexpr\number\dimexpr\at@railwidth\relax
-                    /\number\dimexpr\at@railstep\relax\relax}%
-  \edef\at@railrows{\the\numexpr\number\dimexpr\paperheight\relax
-                    /\number\dimexpr\at@railstep\relax+1\relax}%
-  \begin{tikzpicture}[x=\at@railstep,y=\at@railstep,
-                      atSand,opacity=0.25,line width=0.48pt]
-    \useasboundingbox (0,0) rectangle (\at@railwidth,\paperheight);
-    \clip (0,0) rectangle (\at@railwidth,\paperheight);
-    \foreach \i in {0,...,\at@railcols}{%
-      \draw (\i,0) -- (\i,\at@railrows);}%
-    \foreach \j in {0,...,\at@railrows}{%
-      \draw (0,\j) -- (\at@railcols,\j);}%
-  \end{tikzpicture}%
-  \endgroup}
+\newlength{\at@railwidth}\setlength{\at@railwidth}{0.375in}
 
 \AddToShipoutPictureBG{%
   \ifat@net
-    \put(0,0){\at@railgrid}%
+    % the Energy field itself
+    \put(0,0){\begin{tikzpicture}
+      \useasboundingbox (0,0) rectangle (\at@railwidth,\paperheight);
+      \fill[atAccent] (0,0) rectangle (\at@railwidth,\paperheight);
+    \end{tikzpicture}}%
     \put(0,0){\begin{tikzpicture}[remember picture,overlay]
-      % Mark centred across the rail. The rail is 0.44in wide, so its
-      % centreline is at x=0.22in: shifting the anchor there and letting
-      % anchor=north centre the box on it is what actually centres the
-      % mark. (It was previously padded with \hspace{0.22in} inside an
-      % anchor=north node, which centres the box on the PAGE EDGE and so
-      % left the mark straddling the rail's left edge, clipped by the
-      % paper edge -- the padding shifted the image only half as far as
-      % intended.)
+      % Logomark, centred across the bar. anchor=north centres the box on
+      % the anchor, so the shift must be to the bar's centreline
+      % (0.5*\at@railwidth) -- padding the image inside the node instead
+      % would move it only half as far and leave it straddling the edge.
+      % The mark is dark ink, which is also what the DS requires of
+      % anything sitting on Energy (--fg-on-accent: "always ink, never
+      % white" -- white lands around 1.5:1 and is unreadable).
       \node[anchor=north,inner sep=0pt]
-        at ([xshift=0.5\at@railwidth,yshift=-0.30in]current page.north west)
-        {\includegraphics[width=0.20in]{\atcorpasset{at-mark.png}}};
-      % Rotated strapline on the rail. anchor=west (not south) is what
-      % makes the placement predictable under rotate=90: the START of
-      % the text sits exactly at the anchor and the line runs upward,
-      % so yshift is literally the clear distance from the bottom edge
-      % to the first letter. With anchor=south the node was positioned
-      % by the middle of its length instead, which pushed the leading
-      % word ("AMERICA'S") off the bottom of the page.
+        at ([xshift=0.5\at@railwidth,yshift=-0.28in]current page.north west)
+        {\includegraphics[width=0.185in]{\atcorpasset{at-mark.pdf}}};
+      % Rotated capitals. anchor=west (not south) under rotate=90 puts the
+      % START of the line at the anchor and runs it upward, so yshift is
+      % literally the clear distance from the bottom edge to the first
+      % letter. Set in the DS Label style (Geist Mono, caps, tracked) via
+      % \atLabelFace, in ink on the Energy ground.
       \node[anchor=west,rotate=90,inner sep=0pt]
         at ([xshift=0.5\at@railwidth,yshift=0.90in]current page.south west)
-        {\fontsize{7}{9}\selectfont\bfseries\color{atText}\atStrapline};
+        {\atLabelFace\fontsize{6.5}{8}\selectfont\color{atFgOnAccent}%
+         \MakeUppercase{\atStrapline}};
     \end{tikzpicture}}%
   \fi}
 
@@ -212,14 +205,17 @@
 % =============================================================
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\includegraphics[height=9pt]{\atcorpasset{at-wordmark.png}}}
-\fancyhead[R]{\fontsize{8}{10}\selectfont\color{atText}%
+\fancyhead[L]{\includegraphics[height=9pt]{\atcorpasset{at-wordmark.pdf}}}
+% Running head and footer are instrumentation, not prose: DS Label
+% style (Geist Mono, caps, tracked) in secondary ink.
+\fancyhead[R]{\atLabelFace\fontsize{7.5}{10}\selectfont\color{atFgMuted}%
               \MakeUppercase{\@atRunningHead}}
-\fancyfoot[L]{\fontsize{8}{10}\selectfont\color{atText}\atConfidential}
-\fancyfoot[R]{\fontsize{8}{10}\selectfont\color{atText}%
-              Page \thepage\ of \pageref{LastPage}}
-\renewcommand{\headrule}{{\color{atSand}\rule{\headwidth}{1pt}}}
-\renewcommand{\footrule}{{\color{atWarmGrey}\rule{\headwidth}{0.5pt}}}
+\fancyfoot[L]{\atLabelFace\fontsize{7.5}{10}\selectfont\color{atFgMuted}%
+              \MakeUppercase{\atConfidential}}
+\fancyfoot[R]{\atLabelFace\fontsize{7.5}{10}\selectfont\color{atFgMuted}%
+              \MakeUppercase{Page \thepage\ of \pageref{LastPage}}}
+\renewcommand{\headrule}{{\color{atBorderStrong}\rule{\headwidth}{1pt}}}
+\renewcommand{\footrule}{{\color{atBorder}\rule{\headwidth}{0.5pt}}}
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{0.5pt}
 \fancypagestyle{plain}{}
@@ -230,13 +226,13 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 \titleformat{\section}
-  {\bfseries\fontsize{14}{17}\selectfont\color{atText}}
-  {\thesection\hspace{14pt}}{0pt}{}[{\color{atWarmGrey}\titlerule[1pt]}]
+  {\bfseries\fontsize{14}{17}\selectfont\color{atFg}}
+  {\thesection\hspace{14pt}}{0pt}{}[{\color{atBorder}\titlerule[1pt]}]
 \titleformat{\subsection}
-  {\bfseries\fontsize{11}{13}\selectfont\color{atText}}
+  {\bfseries\fontsize{11}{13}\selectfont\color{atFg}}
   {\thesubsection\hspace{6pt}}{0pt}{}
 \titleformat{\subsubsection}
-  {\bfseries\fontsize{10}{12}\selectfont\color{atSlate}}
+  {\bfseries\fontsize{10}{12}\selectfont\color{atFg}}
   {\thesubsubsection\hspace{6pt}}{0pt}{}
 \titlespacing{\section}{0pt}{20pt}{12pt}
 \titlespacing{\subsection}{0pt}{15pt}{5pt}
@@ -252,33 +248,33 @@
 
 % unnumbered Slate driver label
 \newcommand{\atDriver}[1]{\par\vspace{11pt}\noindent
-  {\bfseries\color{atSlate}#1}\par\vspace{3pt}}
+  {\bfseries\color{atFg}#1}\par\vspace{3pt}}
 
 % ---- lists ----------------------------------------------------
 \setlist[itemize]{leftmargin=18pt,itemsep=3pt,topsep=9pt}
 \setlist[enumerate]{leftmargin=18pt,itemsep=3pt,topsep=9pt}
-\renewcommand{\labelitemi}{\textcolor{atSlate}{\rule[0.25ex]{0.45ex}{0.45ex}}}
+\renewcommand{\labelitemi}{\textcolor{atFg}{\rule[0.25ex]{0.45ex}{0.45ex}}}
 
 % =============================================================
 %  Table of contents
 % =============================================================
 \renewcommand{\contentsname}{Content}
 \renewcommand{\cfttoctitlefont}{%
-  \bfseries\fontsize{14pt}{17pt}\selectfont\color{atText}\MakeUppercase}
+  \bfseries\fontsize{14pt}{17pt}\selectfont\color{atFg}\MakeUppercase}
 \renewcommand{\cftaftertoctitle}{%
-  \par\vskip4pt{\color{atWarmGrey}\hrule height 1pt}}
+  \par\vskip4pt{\color{atBorder}\hrule height 1pt}}
 \setlength{\cftbeforetoctitleskip}{0pt}
 \setlength{\cftaftertoctitleskip}{12pt}
-\renewcommand{\cftsecfont}{\bfseries\color{atText}}
-\renewcommand{\cftsecpagefont}{\bfseries\color{atText}}
+\renewcommand{\cftsecfont}{\bfseries\color{atFg}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{atFg}}
 \renewcommand{\cftsecleader}{\hfill}
 \renewcommand{\cftsecafterpnum}{\par\vskip3pt
-  {\color{atWarmGrey}\hrule height 0.5pt}\vskip1pt}
-\renewcommand{\cftsubsecfont}{\color{atText}}
-\renewcommand{\cftsubsecpagefont}{\color{atText}}
+  {\color{atBorder}\hrule height 0.5pt}\vskip1pt}
+\renewcommand{\cftsubsecfont}{\color{atFg}}
+\renewcommand{\cftsubsecpagefont}{\color{atFg}}
 \renewcommand{\cftsubsecleader}{\hfill}
-\renewcommand{\cftsubsubsecfont}{\color{atSlate}}
-\renewcommand{\cftsubsubsecpagefont}{\color{atSlate}}
+\renewcommand{\cftsubsubsecfont}{\color{atFg}}
+\renewcommand{\cftsubsubsecpagefont}{\color{atFg}}
 \renewcommand{\cftsubsubsecleader}{\hfill}
 \setlength{\cftsecindent}{0pt}
 \setlength{\cftsubsecindent}{0pt}
@@ -299,38 +295,50 @@
 % pushes it onto an overfull second line, leaving the header looking
 % mis-aligned; \raggedright lets the word simply sit on the first line.
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
-% Header cell: colors its own cell with \cellcolor and sets white text
-% directly, rather than relying on \rowcolor for the header row.
-% \rowcolor shifts a narrow first p{}/X-type column's baseline down by
-% one line when combined with colortbl (a colortbl + tabularx
-% interaction, reproducible even with single-line, unstretched cells),
-% which left a short all-caps label like "REV." floating below the
-% rest of the header row. \cellcolor per cell does not have this bug.
-\newcommand{\atHead}[1]{\cellcolor{atSlate}\textbf{\fontsize{8}{10}\selectfont
-                        \color{white}\MakeUppercase{#1}}}
+% Numeric column. DS table component: "Right-align numeric columns and
+% request tabular figures with tabular-nums, so digits line up column
+% over column." \atTabularFigures is the Numbers=Monospaced font feature
+% under the brand faces and a no-op in the Helvetica fallback, so the
+% same column type is safe under every engine.
+\newcolumntype{N}{>{\atTabularFigures}r}
+% Header cell. Per the DS table component, a header is "Label Small caps
+% on a subtle background": Geist Mono, uppercase, tracked, ink text on
+% --bg-subtle. The previous white-on-Slate band is gone -- Slate is
+% --info in the DS, a status colour, not a table treatment.
+%
+% The cell still colours itself with \cellcolor rather than the row with
+% \rowcolor: \rowcolor shifts a narrow first p{}/X-type column's
+% baseline down by one line when combined with colortbl (a colortbl +
+% tabularx interaction, reproducible even with single-line, unstretched
+% cells), which left a short label like "REV." floating below the rest of
+% the header row. \cellcolor per cell does not have this bug.
+\newcommand{\atHead}[1]{\cellcolor{atBgSubtle}%
+                        {\atLabelFace\fontsize{7.5}{10}\selectfont
+                         \color{atFg}\MakeUppercase{#1}}}
 % attable: styled table; the first row is the header row (built from
-% \atHead cells, which supply their own Slate background).
+% \atHead cells, which supply their own --bg-subtle background).
 % (\NewEnviron is used so tabularx sees a complete body, avoiding the
 % "File ended while scanning use of \TX@get@body" error that
 % \newenvironment{...}{\begin{tabularx}...}{\end{tabularx}} causes.)
 \NewEnviron{attable}[1]{%
   \begingroup
   \renewcommand{\arraystretch}{1.35}%
-  \arrayrulecolor{atWarmGrey}%
+  \arrayrulecolor{atBorder}%
   \begin{tabularx}{\linewidth}{#1}
   \BODY
   \end{tabularx}%
   \endgroup}
-\newcommand{\atTotalRow}{\rowcolor{atWarmGrey}}
-\newcommand{\atTBD}{{\bfseries\color{atSlate}TBD}}
-\newcommand{\atTBC}{{\bfseries\color{atSlate}TBC}}
+\newcommand{\atTotalRow}{\rowcolor{atBorder}}
+% Outstanding-value markers are neutral status -> --info (Slate).
+\newcommand{\atTBD}{{\bfseries\color{atInfo}TBD}}
+\newcommand{\atTBC}{{\bfseries\color{atInfo}TBC}}
 \newcommand{\atSource}[1]{\par\vspace{5pt}{\fontsize{8}{11}\selectfont #1}\par\vspace{14pt}}
 \newcommand{\atCaption}[1]{\par\vspace{5pt}{\fontsize{8}{11}\selectfont #1}\par\vspace{14pt}}
 
 % House look for plain booktabs tables in the document body:
 % Warm Grey hairlines. (Alternating Beige row bands removed -- rows are
 % separated by rules instead.)
-\arrayrulecolor{atWarmGrey}
+\arrayrulecolor{atBorder}
 \renewcommand{\arraystretch}{1.35}
 \setlength{\aboverulesep}{0pt}
 \setlength{\belowrulesep}{0pt}
@@ -339,16 +347,17 @@
 % Captions are centred (both single- and multi-line: singlelinecheck
 % must be TRUE so short captions are centred rather than flush left,
 % and justification=centering handles the ones that wrap), with the
-% "Figure N:" / "Table N:" label part set bold.
-\captionsetup{font={footnotesize,color=atText},
-              labelfont={footnotesize,bf,color=atText},
+% "Figure N:" / "Table N:" label part set bold. Caption text is
+% secondary copy, so it takes --fg-muted rather than --fg.
+\captionsetup{font={footnotesize,color=atFgMuted},
+              labelfont={footnotesize,bf,color=atFgMuted},
               labelsep=colon,justification=centering,
               singlelinecheck=true,skip=5pt}
 
 % ---- figure placeholder ------------------------------------------
 \newcommand{\atFigureSlot}[2][170pt]{%
   \par\vspace{8pt}\noindent
-  \fcolorbox{atWarmGrey}{atBeige}{%
+  \fcolorbox{atBorder}{atBgSubtle}{%
     \parbox[c][#1][c]{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}%
     {\centering\ttfamily\fontsize{8}{12}\selectfont #2}}\par}
 
@@ -363,30 +372,39 @@
   \begin{tikzpicture}[remember picture,overlay]
     \node[anchor=north west,inner sep=0pt,xshift=0.80in,yshift=-0.75in]
       at (current page.north west)
-      {\includegraphics[width=1.10in]{\atcorpasset{at-logo.png}}};
+      {\includegraphics[width=1.10in]{\atcorpasset{at-logo.pdf}}};
     \node[anchor=north west,inner sep=0pt,xshift=0.80in,yshift=-4.20in]
       at (current page.north west)
       {\begin{minipage}{6.20in}
-        {\color{atSand}\rule{\linewidth}{1pt}}\\[22pt]
+        % \raggedright and the hyphenation penalties MUST be set for the
+        % whole minipage, not inside a group around each line. TeX reads
+        % these paragraph parameters at the point the paragraph is
+        % broken, which for a \\-separated line is *after* any group
+        % around its text has closed -- so a per-line group sets them,
+        % then loses them again before they are ever used. (That is why
+        % the title came back justified and hyphenated as
+        % "Specifica-tion" the moment Archivo made the line wider than
+        % Helvetica did: the earlier per-line fix had never actually
+        % been in force.)
+        \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
+        {\color{atBorderStrong}\rule{\linewidth}{1pt}}\\[22pt]
         \ifdefempty{\@atEyebrow}{}{%
-          {\bfseries\fontsize{8.5}{11}\selectfont\color{atSlate}%
+          {\atLabelFace\fontsize{8.5}{11}\selectfont\color{atFgMuted}%
            \MakeUppercase{\@atEyebrow}}\\[20pt]}%
-        {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
-         \bfseries\fontsize{40}{42}\selectfont\color{atText}\@atTitle}\\[8pt]
-        {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
-         \fontsize{22}{26}\selectfont\color{atStone}\@atSubtitle}\\[26pt]
+        {\bfseries\fontsize{40}{42}\selectfont\color{atFg}\@atTitle}\\[8pt]
+        {\fontsize{22}{26}\selectfont\color{atFgMuted}\@atSubtitle}\\[26pt]
         \ifdefempty{\@atAbstract}{}{%
-          \parbox{4.4in}{\fontsize{10.5}{17}\selectfont\color{atText}%
+          \parbox{4.4in}{\fontsize{10.5}{17}\selectfont\color{atFg}%
                          \@atAbstract}}
       \end{minipage}};
     \node[anchor=south west,inner sep=0pt,xshift=0.80in,yshift=0.75in]
       at (current page.south west)
       {\begin{minipage}{6.20in}
-        {\color{atWarmGrey}\rule{\linewidth}{0.5pt}}\\[12pt]
+        {\color{atBorder}\rule{\linewidth}{0.5pt}}\\[12pt]
         \at@buildcovermeta
         \ifdefempty{\at@metatext}{}{%
-          {\fontsize{8.5}{11}\selectfont\color{atStone}\at@metatext}}\hfill
-        {\bfseries\fontsize{7.5}{10}\selectfont\color{atStone}%
+          {\fontsize{8.5}{11}\selectfont\color{atFgMuted}\at@metatext}}\hfill
+        {\bfseries\fontsize{7.5}{10}\selectfont\color{atFgMuted}%
                \MakeUppercase{\atConfidential}}
       \end{minipage}};
   \end{tikzpicture}
@@ -454,15 +472,31 @@
 % =============================================================
 %  Revision history
 % =============================================================
-\newcommand{\revrow}[4]{#1 & #2 & #3 & #4 \\}
+% Rows are separated by hairlines, never by alternating fills -- the DS
+% table component "explicitly avoids zebra striping" in favour of "a
+% bottom border that drops on the last row". \revrow therefore emits its
+% rule BEFORE the row, skipping the first one, which leaves a separator
+% between every pair of rows and none trailing the last. The flag is a
+% plain \if rather than an accumulated macro so there is no
+% deferred-expansion trap.
+\newif\ifat@firstrevrow
+\newcommand{\revrow}[4]{%
+  \ifat@firstrevrow
+    \global\at@firstrevrowfalse
+  \else
+    \hline
+  \fi
+  #1 & #2 & #3 & #4 \\}
 \newcommand{\revisionhistory}[1]{%
   \section*{Revision history}%
   \begingroup
+  \global\at@firstrevrowtrue
   \renewcommand{\arraystretch}{1.35}%
-  \arrayrulecolor{atWarmGrey}%
+  \arrayrulecolor{atBorder}%
   \begin{tabularx}{\linewidth}{@{}P{0.07\linewidth} P{0.17\linewidth}
                                P{0.20\linewidth} L@{}}
     \atHead{Rev.} & \atHead{Date} & \atHead{Author} & \atHead{Description}\\
+    \hline
     #1
   \end{tabularx}%
   \endgroup
