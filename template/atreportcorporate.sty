@@ -37,6 +37,21 @@
 % lualatex/xelatex and the font files are installed; Helvetica
 % otherwise). See atfonts.sty.
 \RequirePackage{../../template/atfonts}
+% Typography helpers this file uses from atfonts.sty, provided
+% defensively. \providecommand leaves them untouched when atfonts.sty
+% already defines them, so this costs nothing when the two files are in
+% step -- but it keeps THIS file compiling when they are not. Older
+% copies of atfonts.sty (before the Archivo rewrite) define only
+% \atLightFace and \atMediumFace, and without the two lines below the
+% build dies with "Undefined control sequence \atLabelFace" once per
+% table head and page header -- 64 times in this document.
+%
+% These were previously covered by a block of \providecommand shims in
+% attemplate.sty. That block was removed as unused, which was true of
+% the document body but NOT of this template: the shims were also the
+% only thing keeping the two files loosely coupled.
+\providecommand{\atLabelFace}{\bfseries}
+\providecommand{\atTabularFigures}{}
 \IfFileExists{fontsize.sty}{\RequirePackage[fontsize=10pt]{fontsize}}{}
 \RequirePackage[letterpaper,top=0.72in,bottom=0.72in,left=1.15in,right=0.85in,
                 headsep=16pt,footskip=26pt]{geometry}
@@ -212,8 +227,13 @@
               \MakeUppercase{\@atRunningHead}}
 \fancyfoot[L]{\atLabelFace\fontsize{7.5}{10}\selectfont\color{atFgMuted}%
               \MakeUppercase{\atConfidential}}
+% NB: the caps here are written literally rather than via
+% \MakeUppercase. \MakeUppercase uppercases EVERYTHING in its argument,
+% including the label name inside \pageref -- \pageref{LastPage} became
+% \pageref{LASTPAGE}, an undefined reference, so every footer printed
+% "PAGE n OF ??" and the log carried 13 undefined-reference warnings.
 \fancyfoot[R]{\atLabelFace\fontsize{7.5}{10}\selectfont\color{atFgMuted}%
-              \MakeUppercase{Page \thepage\ of \pageref{LastPage}}}
+              PAGE \thepage\ OF \pageref{LastPage}}
 \renewcommand{\headrule}{{\color{atBorderStrong}\rule{\headwidth}{1pt}}}
 \renewcommand{\footrule}{{\color{atBorder}\rule{\headwidth}{0.5pt}}}
 \renewcommand{\headrulewidth}{1pt}
