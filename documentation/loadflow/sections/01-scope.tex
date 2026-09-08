@@ -1,0 +1,107 @@
+\section{Scope and conventions}
+
+\subsection{Purpose}
+This document records the calculation process behind the \textbf{Load Flow} tab
+of the HVDC calculation workbook. The tab answers one question for a
+point-to-point HVDC link: \emph{given the AC power to be delivered at the
+receiving end, what DC current flows, what voltage arrives at the receiving
+converter, and what does the link cost in losses?} Two conductor arrangements
+are covered --- the \textbf{symmetrical monopole} and the \textbf{bipole with a
+dedicated metallic return (DMR)} --- together with the reduced-capacity
+operating case of a bipole that has lost one pole.
+
+The intent is a screening-level tool: closed-form, one operating point at a
+time, transparent enough to check by hand, and consistent with the loss
+calculation already carried in the \textbf{Losses} tab of the same workbook.
+It is not a substitute for a network study; Section~\ref{sec:assumptions} lists
+what is deliberately left out.
+
+\subsection{Direction and reference conventions}
+Power flows from the \textbf{rectifier} (sending station) to the
+\textbf{inverter} (receiving station). Three conventions fix the problem and
+are used throughout:
+
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Power is defined at the receiving end}, at the AC terminals of
+        the inverter station. This is the quantity a transmission service
+        agreement or an interconnection request is written against, so it is
+        the natural input; everything upstream --- current, line losses,
+        sending-end power --- is then a result rather than an assumption.
+  \item \textbf{DC voltage is regulated at the rectifier DC terminals.} The
+        nominal pole-to-ground voltage $V_{d}$ holds at the sending station and
+        the receiving-end voltage comes out lower by the resistive drop of the
+        line.
+  \item \textbf{Converter station losses are a fraction of station
+        throughput}, applied per station, rather than a fixed number of
+        megawatts.
+\end{enumerate}
+
+Conventions (1) and (2) sit at opposite ends of the line, which is what makes
+the current an implicit rather than an explicit quantity: the sending-end power
+depends on the line loss, the line loss depends on the current, and the current
+depends on the sending-end power. Section~\ref{sec:solution} closes that loop
+in one step instead of iterating.
+
+\subsection{Notation}
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l l X@{}}
+    \toprule
+    \textbf{Symbol} & \textbf{Unit} & \textbf{Quantity} \\
+    \midrule
+    $P_{ac,inv}$   & MW            & AC power at the receiving end (inverter AC terminals) --- \emph{input} \\
+    $P_{ac,rec}$   & MW            & AC power drawn at the sending end (rectifier AC terminals) \\
+    $P_{dc,inv}$   & MW            & DC power at the inverter DC terminals \\
+    $P_{dc,rec}$   & MW            & DC power at the rectifier DC terminals \\
+    $V_{d}$        & kV            & DC voltage pole-to-ground at the rectifier --- \emph{input} \\
+    $V_{d,inv}$    & kV            & DC voltage pole-to-ground at the inverter \\
+    $I_{d}$        & kA            & DC pole current, operating value \\
+    $I_{rated}$    & kA            & DC pole current including design margin \\
+    $L$            & mi            & DC line length \\
+    $r'_{HV}$      & $\Omega$/1000\,ft & Specific resistance of one HV subconductor \\
+    $n_{HV}$       & ---           & Subconductors per pole (bundle count) \\
+    $R_{HV}$       & $\Omega$      & Resistance of one pole conductor over the whole length \\
+    $r'_{DMR}$     & $\Omega$/1000\,ft & Specific resistance of one DMR subconductor \\
+    $n_{DMR}$      & ---           & Subconductors in the DMR bundle \\
+    $R_{DMR}$      & $\Omega$      & Resistance of the DMR over the whole length \\
+    $R_{loop}$     & $\Omega$      & Resistance of the complete current path (out and return) \\
+    $p_{rec}$      & ---           & Rectifier station loss fraction of throughput \\
+    $p_{inv}$      & ---           & Inverter station loss fraction of throughput \\
+    $m$            & ---           & Margin applied to the DC current for rating purposes \\
+    $P_{loss,line}$& MW            & Total resistive loss of the DC line \\
+    $\eta$         & ---           & Overall AC-to-AC efficiency of the link \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Notation used in the load flow calculation.}
+  \label{tab:notation}
+\end{table}
+
+\subsection{Units}
+The calculation is carried in the engineering units the workbook uses, and the
+unit set is self-consistent without conversion factors provided currents are
+handled in kiloamperes:
+\[
+  [\mathrm{kV}]\times[\mathrm{kA}] = \mathrm{MW},
+  \qquad
+  [\Omega]\times[\mathrm{kA}]^{2} = \mathrm{MW}.
+\]
+Currents are \emph{reported} in amperes, which is why the spreadsheet formulas
+carry factors of $1000$ and $1/1000$ around the current cell. Every equation in
+this document uses $I_{d}$ in kiloamperes.
+
+The one genuine conversion concerns the conductor data. Conductor tables give
+DC resistance per 1000\,ft, and that is the form entered in the workbook, so the
+factor
+\[
+  \frac{5280\ \mathrm{ft/mi}}{1000\ \mathrm{ft}} = 5.28
+\]
+converts specific resistance to $\Omega$/mi before multiplying by the line
+length in miles.
+
+{\color{atFgMuted}\footnotesize Note: the corresponding input row on the
+\textbf{Losses} tab is labelled $\Omega$/mi, but the $5.28$ factor in its loss
+formula shows the value entered there is in fact $\Omega$/1000\,ft (Bluebird
+ACSR, $\approx 0.00801\,\Omega$/1000\,ft). The Load Flow tab labels the row
+$\Omega$/1000\,ft; the label on the Losses tab should be corrected to match.}

@@ -1,0 +1,93 @@
+\section{Assumptions, limitations and open items}
+\label{sec:assumptions}
+
+\subsection{Assumptions}
+\begin{table}[htbp]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l X@{}}
+    \toprule
+    \textbf{Assumption} & \textbf{Consequence and justification} \\
+    \midrule
+    Purely resistive DC line
+      & No inductance or capacitance appears in the equations. Correct for a
+        steady-state DC flow; line charging and inductance matter only for
+        transients and fault studies. \\
+    Constant conductor resistance
+      & The specific resistance is taken at the temperature of the conductor
+        table. Resistance rises roughly 0.4\,\%/K for aluminium, so a hot-day
+        loss figure is a few percent higher than reported here. Handled by
+        choosing conductor data at the design temperature. \\
+    Ideal voltage regulation at the rectifier
+      & $V_{d}$ holds exactly at the sending terminals irrespective of
+        loading. Real control holds it within a droop band. \\
+    Station losses proportional to throughput
+      & No no-load term, so light-load efficiency is overstated and full-load
+        efficiency is representative. Adequate for screening; a two-term
+        model ($p_{0} + p_{1}P$) is the natural refinement. \\
+    Balanced bipole carries no DMR current
+      & Pole currents are taken as exactly equal. In service a small
+        unbalance flows in the DMR; its loss contribution is second order
+        (the square of a few percent of $I_{d}$). \\
+    One pole out at unchanged pole current
+      & Keeps the outage case inside the ratings established for normal
+        operation. An alternative case at unchanged \emph{power} would double
+        the pole current and require its own rating basis. \\
+    Single operating point
+      & The tab evaluates one dispatch, not a duty cycle. Annual energy losses
+        require a loading profile and a separate loss-energy calculation. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Assumptions underlying the load flow calculation.}
+  \label{tab:assumptions}
+\end{table}
+
+\subsection{Outside the scope}
+The calculation deliberately stops short of the following, each of which
+belongs to a study rather than to a spreadsheet cell:
+
+\begin{itemize}\setlength{\itemsep}{0.3em}
+  \item \textbf{Reactive power and AC-side voltage.} Only active power crosses
+        the converter boundary in this model. Converter reactive capability and
+        AC network voltage support are covered by the AC calculations on the
+        Power tab and, ultimately, by interconnection studies.
+  \item \textbf{Ground and electrode return.} Only metallic return is
+        modelled. A bipole operating with earth return has a different loop
+        resistance and a set of electrode, corrosion and interference
+        constraints that sit outside a load flow.
+  \item \textbf{Thermal rating of the conductor.} The tab reports the current
+        that flows; whether the conductor can carry it continuously at the
+        ambient and wind conditions of the route is an ampacity calculation.
+  \item \textbf{Converter overload and short-term ratings.} The margin of
+        Equation~\eqref{eq:margin} is a continuous rating margin, not an
+        overload capability.
+  \item \textbf{Multi-terminal and intermediate taps.} The equations assume a
+        two-terminal, point-to-point link.
+  \item \textbf{Dynamics.} Control response, ramp rates, pole-block transients
+        and the transition into the one-pole-out condition are all outside a
+        steady-state flow.
+\end{itemize}
+
+\subsection{Open items}
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{DMR conductor selection.} The reference case uses a single
+        Bluebird conductor as a placeholder and the outage-case loss is
+        sensitive to it (Section~\ref{sec:reference}). To be replaced with the
+        selected DMR conductor and bundle.
+  \item \textbf{Unit label on the Losses tab.} The specific resistance row is
+        labelled $\Omega$/mi but holds $\Omega$/1000\,ft; the $5.28$ factor in
+        the loss formula confirms it. The label should be corrected so the two
+        tabs read consistently.
+  \item \textbf{Converter loss figure.} 0.8\,\% per station is a generic
+        VSC-class value. To be replaced with vendor loss curves, at which
+        point the two-term loss model of Table~\ref{tab:assumptions} becomes
+        worthwhile.
+  \item \textbf{Temperature basis for conductor resistance.} To be stated
+        explicitly alongside the conductor data, so the reported losses carry
+        a defined temperature.
+  \item \textbf{Loss-energy evaluation.} A loading profile and an annual
+        loss-energy figure are the natural extension, since it is energy
+        rather than peak loss that enters an economic comparison of voltage
+        levels and conductor sizes.
+\end{enumerate}

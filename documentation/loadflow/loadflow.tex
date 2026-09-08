@@ -1,0 +1,46 @@
+% =============================================================
+%  HVDC Load Flow — Report
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex loadflow.tex   (run twice for ToC / references)
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives in the repo-level template folder
+\usepackage[corporate]{../../template/attemplate}
+\usepackage{multirow}
+
+% TikZ libraries used by the configuration diagrams in Section 2
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,fit}
+
+% ---- Report metadata ----------------------------------------
+\reporttitle{HVDC Load Flow}
+\reportsubtitle{DC power flow, current and losses for symmetrical monopole and bipole configurations}
+\reportauthor{Eugen Starschich}
+\reportdocnumber{ATW-REP-LF-001}
+\reportrevision{0.1}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Confidential}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{Sep. 8, 2026}{Eugen Starschich}{Initial document}
+}
+
+\newpage
+\tableofcontents
+\clearpage
+
+% ---- Body ---------------------------------------------------
+\input{sections/01-scope}
+\input{sections/02-configurations}
+\input{sections/03-model}
+\input{sections/04-solution}
+\input{sections/05-implementation}
+\input{sections/06-reference-case}
+\input{sections/07-assumptions}
+
+\end{document}

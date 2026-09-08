@@ -1,0 +1,131 @@
+\section{Solution of the load flow}
+\label{sec:solution}
+
+\subsection{Why the current is not explicit}
+If both the power and the voltage were specified at the same end of the line,
+the current would follow from a division. They are not: power is fixed at the
+receiving end and voltage at the sending end, and the two are separated by a
+loss that itself depends on the current. Substituting the target power into
+Equation~\eqref{eq:flow} gives a quadratic in $I_{d}$ rather than a linear
+relation. It is a quadratic that can be solved in closed form, so no iteration
+is needed --- which is what keeps the calculation a single row of the
+spreadsheet.
+
+\subsection{Two poles energised (symmetrical monopole, balanced bipole)}
+Start from the required DC power at the inverter, Equation~\eqref{eq:inv}:
+\begin{equation}
+  P_{dc,inv} = \frac{P_{ac,inv}}{1-p_{inv}} .
+  \label{eq:step1}
+\end{equation}
+Insert it into Equation~\eqref{eq:flow} with $k=2$ and collect terms:
+\begin{equation}
+  R_{loop}\,I_{d}^{\,2} - 2 V_{d}\,I_{d} + P_{dc,inv} = 0 .
+  \label{eq:quadratic}
+\end{equation}
+The roots are
+\[
+  I_{d} = \frac{2V_{d} \pm \sqrt{4V_{d}^{2} - 4R_{loop}P_{dc,inv}}}{2R_{loop}}
+        = \frac{V_{d} \pm \sqrt{V_{d}^{2} - R_{loop}P_{dc,inv}}}{R_{loop}},
+\]
+and the operating point is the \textbf{lower} root:
+\begin{equation}
+  \boxed{\;
+  I_{d} = \frac{V_{d} - \sqrt{V_{d}^{2} - R_{loop}\,P_{dc,inv}}}{R_{loop}}
+  \;}
+  \label{eq:current}
+\end{equation}
+with $V_{d}$ in kV, $R_{loop}$ in $\Omega$, $P_{dc,inv}$ in MW and $I_{d}$ in
+kA.
+
+Both roots deliver the same power to the inverter, but they do it at different
+efficiencies: the upper root is the high-current solution on the far side of
+the line's maximum power point, where more current is pushed through the line
+only to burn the extra in $I^{2}R$. It is not an operating point any converter
+control would choose, and it lies far outside the current rating of the
+conductors. The lower root is the physical one.
+
+\subsection{Maximum transferable power}
+The square root in Equation~\eqref{eq:current} becomes imaginary when the
+requested power exceeds what the line can deliver at that voltage. The limit
+follows from $\mathrm{d}P_{dc,inv}/\mathrm{d}I_{d} = 0$ applied to
+Equation~\eqref{eq:flow}:
+\begin{equation}
+  I_{d}\big|_{P_{max}} = \frac{k\,V_{d}}{2R_{loop}},
+  \qquad
+  P_{max} = \frac{k^{2}V_{d}^{2}}{4R_{loop}} =
+  \begin{cases}
+    \dfrac{V_{d}^{2}}{R_{loop}}   & \text{two poles energised,}\\[6pt]
+    \dfrac{V_{d}^{2}}{4R_{loop}}  & \text{one pole out.}
+  \end{cases}
+  \label{eq:pmax}
+\end{equation}
+$P_{max}$ is reported as a solvability check, not as a capability: at that
+point half the sending-end power is dissipated in the line. For any sensible
+design it sits an order of magnitude above the rating, and a real link is
+limited by conductor thermal rating and valve current long before it. Its
+practical use is diagnostic --- a \verb|#NUM!| in the current row means the
+requested power, voltage and resistance combination has no solution, and
+comparing against $P_{max}$ shows immediately which input is at fault.
+
+\subsection{Forward chain}
+With the current known, the rest of the quantities follow directly:
+\begin{align}
+  P_{dc,rec}      &= k\,V_{d}\,I_{d}                         &&\text{[Eq.~\eqref{eq:dcline}]} \label{eq:c1}\\
+  P_{loss,line}   &= R_{loop}\,I_{d}^{\,2}                    &&\text{[Eq.~\eqref{eq:dcline}], split by Eq.~\eqref{eq:losssplit}} \label{eq:c2}\\
+  V_{d,inv}       &= V_{d} - I_{d}R_{HV}                      &&\text{[Eq.~\eqref{eq:vinv}]} \label{eq:c3}\\
+  P_{ac,rec}      &= \frac{P_{dc,rec}}{1-p_{rec}}             &&\text{[Eq.~\eqref{eq:rect}]} \label{eq:c4}\\
+  P_{loss,total}  &= P_{ac,rec} - P_{ac,inv}                  &&\text{AC-to-AC loss} \label{eq:c5}\\
+  \eta            &= \frac{P_{ac,inv}}{P_{ac,rec}}            &&\text{overall efficiency} \label{eq:c6}
+\end{align}
+The three loss contributions add up to the total, which is the closure check
+built into the workbook:
+\begin{equation}
+  P_{ac,rec} - P_{ac,inv}
+  = \underbrace{p_{rec}P_{ac,rec}}_{\text{rectifier}}
+  + \underbrace{R_{loop}I_{d}^{\,2}}_{\text{line}}
+  + \underbrace{p_{inv}P_{dc,inv}}_{\text{inverter}} .
+  \label{eq:closure}
+\end{equation}
+
+\subsection{Bipole with one pole out}
+The outage case is solved forward rather than backward, because the input is a
+current and not a power. Taking the pole current from the balanced bipole
+solution,
+\begin{equation}
+  I_{d,mono} = I_{d,bipole},
+  \qquad
+  R_{loop} = R_{HV} + R_{DMR},
+  \label{eq:monoin}
+\end{equation}
+the chain runs in the opposite direction to Equation~\eqref{eq:step1}:
+\begin{align}
+  P_{dc,rec}    &= V_{d}\,I_{d} \label{eq:m1}\\
+  P_{loss,line} &= R_{HV}I_{d}^{\,2} + R_{DMR}I_{d}^{\,2}
+                 = R_{loop}I_{d}^{\,2} \label{eq:m2}\\
+  P_{dc,inv}    &= P_{dc,rec} - P_{loss,line} \label{eq:m3}\\
+  P_{ac,inv}    &= P_{dc,inv}\,\bigl(1-p_{inv}\bigr) \label{eq:m4}
+\end{align}
+so that the transferable power is a \emph{result} of the case rather than an
+input. The residual capability is reported as a fraction of the bipolar
+rating,
+\begin{equation}
+  \frac{P_{ac,inv,mono}}{P_{ac,inv,bipole}} ,
+  \label{eq:ratio}
+\end{equation}
+which lands slightly below 50\,\% --- the pole current is unchanged but only
+one pole carries power, and the DMR return is more resistive than the HV
+bundle it replaces.
+
+\subsection{Current margin}
+The margin does not enter the flow. It scales the operating current to a rating
+figure used for conductor selection, valve and bushing ratings, switchgear and
+protection settings:
+\begin{equation}
+  I_{rated} = \bigl(1+m\bigr)\,I_{d}.
+  \label{eq:margin}
+\end{equation}
+Losses, voltage drops and powers are all reported at the operating current
+$I_{d}$, not at $I_{rated}$; the margined value is a sizing quantity only. If a
+worst-case loss figure is wanted, the calculation is re-run with the power
+input raised rather than by substituting $I_{rated}$ into the loss equation,
+which would be inconsistent with the stated power.

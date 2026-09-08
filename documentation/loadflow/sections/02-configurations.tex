@@ -1,0 +1,142 @@
+\section{Configurations covered}
+\label{sec:configurations}
+
+Figure~\ref{fig:configurations} shows the two arrangements the calculation
+covers, and the current path each of them presents to the flow.
+
+\begin{figure}[tbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    conv/.style={draw=atFg, line width=0.6pt, fill=atBgSubtle, rounded corners=1pt,
+                 align=center, inner sep=3pt, minimum width=11mm, minimum height=15mm},
+    line/.style={draw=atFg, line width=1.1pt},
+    dmr/.style={draw=atAccentFg, line width=1.1pt},
+    idle/.style={draw=atFgSubtle, line width=1.1pt, dashed},
+    ar/.style={draw=atFg, line width=1.1pt, -{Latex[length=1.8mm]}},
+    lab/.style={font=\tiny, text=atFgMuted},
+    acc/.style={font=\tiny, text=atAccentFg},
+    ttl/.style={font=\small\bfseries, text=atFg},
+  ]
+
+  % ---------------- panel 1 : symmetrical monopole ----------------
+  \node[ttl] at (3.1,2.35) {Symmetrical monopole};
+  \node[conv] (r1) at (0.5,0.6) {REC};
+  \node[conv] (i1) at (5.7,0.6) {INV};
+  % positive and negative conductors
+  \draw[ar] (1.06,1.25) -- (5.14,1.25);
+  \draw[line] (5.14,-0.05) -- (1.06,-0.05);
+  \node[lab, above] at (3.1,1.3) {$+V_d$ \quad $I_d$};
+  \node[lab, below] at (3.1,-0.1) {$-V_d$ \quad $I_d$};
+  \node[lab] at (3.1,0.6) {$R_{loop} = 2R_{HV}$};
+  \draw[ar] (-0.7,0.6) -- (-0.1,0.6);
+  \node[lab, left] at (-0.7,0.6) {$P_{ac,rec}$};
+  \draw[ar] (6.3,0.6) -- (6.9,0.6);
+  \node[lab, right] at (6.9,0.6) {$P_{ac,inv}$};
+  \node[lab] at (3.1,-0.75) {$P_{dc} = 2 V_d I_d$};
+
+  % ---------------- panel 2 : bipole with DMR ----------------
+  \begin{scope}[xshift=9.6cm]
+  \node[ttl] at (3.1,2.35) {Bipole with dedicated metallic return};
+  \node[conv, minimum height=8mm] (rp) at (0.5,1.35) {REC$^+$};
+  \node[conv, minimum height=8mm] (rn) at (0.5,-0.55) {REC$^-$};
+  \node[conv, minimum height=8mm] (ip) at (5.7,1.35) {INV$^+$};
+  \node[conv, minimum height=8mm] (in) at (5.7,-0.55) {INV$^-$};
+  % pole conductors
+  \draw[ar] (1.06,1.6) -- (5.14,1.6);
+  \node[lab, above] at (3.1,1.65) {$+V_d$ \quad $I_d$ \quad $R_{HV}$};
+  \draw[line] (5.14,-0.8) -- (1.06,-0.8);
+  \node[lab, below] at (3.1,-0.85) {$-V_d$ \quad $I_d$ \quad $R_{HV}$};
+  % DMR
+  \draw[dmr] (1.06,0.4) -- (5.14,0.4);
+  \node[acc, above] at (3.1,0.45) {DMR \quad $R_{DMR}$};
+  \node[acc, below] at (3.1,0.35) {$I_{DMR} = 0$ when balanced};
+  % station earths
+  \draw[line] (0.5,0.95) -- (0.5,0.4);
+  \draw[line] (0.5,-0.15) -- (0.5,0.4);
+  \draw[line] (5.7,0.95) -- (5.7,0.4);
+  \draw[line] (5.7,-0.15) -- (5.7,0.4);
+  \node[lab] at (3.1,-1.45) {balanced: $P_{dc} = 2 V_d I_d$
+                             \quad|\quad one pole out:
+                             $P_{dc} = V_d I_d$, return through DMR};
+  \end{scope}
+
+  \end{tikzpicture}}
+  \caption{The two conductor arrangements. In both normal cases the current
+           path is a two-conductor loop of resistance $2R_{HV}$; only when a
+           bipole pole is lost does the return move to the DMR and the loop
+           resistance become $R_{HV}+R_{DMR}$.}
+  \label{fig:configurations}
+\end{figure}
+
+\subsection{Symmetrical monopole}
+The symmetrical monopole carries the full power on two conductors held at
+$+V_{d}$ and $-V_{d}$ against ground, with no third conductor and no ground
+path in service. The DC circuit is a single loop: current leaves the rectifier
+on the positive conductor and returns on the negative one. The voltage seen by
+the converter is therefore the pole-to-pole voltage $2V_{d}$, and
+\[
+  P_{dc} = 2\,V_{d}\,I_{d}.
+\]
+Because there is no return path other than the second conductor, the loss of
+either conductor is the loss of the whole link --- there is no partial
+operating mode, which is the reason a bipole is preferred where availability
+matters.
+
+\subsection{Bipole with dedicated metallic return}
+The bipole runs two independently controlled poles at $\pm V_{d}$ plus a third,
+lower-rated conductor: the dedicated metallic return. In normal
+\textbf{balanced} operation the two pole currents are equal and opposite, the
+DMR carries no current, and the circuit is electrically identical to the
+symmetrical monopole:
+\[
+  P_{dc} = 2\,V_{d}\,I_{d},
+  \qquad
+  I_{DMR} = 0 .
+\]
+The DMR earns its place when the bipole becomes unbalanced. With one pole out
+of service the remaining pole keeps operating and its current returns through
+the DMR instead of the lost conductor, so the link continues at reduced
+capacity. In that condition the circuit is a single-pole loop:
+\[
+  P_{dc} = V_{d}\,I_{d},
+\]
+and the return path resistance is that of the DMR rather than that of a second
+HV bundle --- which is why the DMR conductor is a separate input in the
+calculation, as it is generally not the same conductor as the poles.
+
+\subsection{Reduced-capacity case as calculated}
+The one-pole-out case can be posed two ways: hold the power and double the pole
+current, or hold the current and accept roughly half the power. The workbook
+takes the second --- the outage case runs at the \emph{same pole current} as
+the balanced bipole, which keeps the case within the conductor and valve
+ratings already established for normal operation and needs no separate rating
+input. Power is then a result of that current, and comes out slightly below
+half of the bipolar figure because the return path through the DMR is more
+resistive than the parallel HV bundle it replaces.
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l c c X@{}}
+    \toprule
+    \textbf{Configuration} & \textbf{$P_{dc}$} & \textbf{$R_{loop}$} &
+    \textbf{Current path} \\
+    \midrule
+    Symmetrical monopole
+      & $2 V_{d} I_{d}$ & $2 R_{HV}$
+      & Out on the positive conductor, back on the negative conductor. \\
+    Bipole, balanced
+      & $2 V_{d} I_{d}$ & $2 R_{HV}$
+      & Out on the positive pole, back on the negative pole; DMR idle. \\
+    Bipole, one pole out
+      & $V_{d} I_{d}$ & $R_{HV} + R_{DMR}$
+      & Out on the healthy pole, back through the DMR. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{The three cases carried in the Load Flow tab. The first two share
+           the same equations; only the third involves the DMR.}
+  \label{tab:cases}
+\end{table}
+
