@@ -1,0 +1,654 @@
+\section{Electrical simulation}
+
+\subsection{Scope and reference configuration}
+This section documents the control cycle of the Organic Rankine Cycle (ORC)
+power block and the electrical model derived from it for grid interconnection
+studies. The reference configuration is a \textbf{40\,MW-class ORC unit,
+directly grid-connected through a synchronous generator} --- the arrangement
+used by large ORC plants (Ormat and Turboden class, roughly 0.3--20\,MW per
+unit and above), in which the expander drives a conventional four-pole
+synchronous machine at 1{,}500/1{,}800\,rpm through a reduction gearbox.
+
+Small ORC units below roughly 300\,kW, and high-speed direct-drive machines,
+instead use a permanent-magnet generator with a rectifier and a grid-tie
+inverter; such a plant is modelled with the WECC generic inverter-based
+resource models (\texttt{REGC\_A} / \texttt{REEC\_A} / \texttt{REPC\_A}) and is
+outside the scope of this section.
+
+The target interconnection is the \textbf{Western Interconnection (WECC)}, which
+drives the model-acceptance and power system stabilizer requirements in
+Section~\ref{sec:pss}.
+
+\subsection{Plant architecture and control cycle}
+Figure~\ref{fig:orc-control-cycle} shows the complete plant: the energy path
+from heat source to point of interconnection, the closed working-fluid loop,
+and the control and measurement layer wrapped around them.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    phys/.style={draw=atFg, line width=0.5pt, fill=atBgSubtle, rounded corners=1pt,
+                 align=center, inner sep=2.5pt},
+    ctrl/.style={draw=atAccentFg, line width=0.9pt, fill=white, rounded corners=1pt,
+                 align=center, inner sep=2.5pt},
+    dcsb/.style={draw=atAccentFg, line width=1.2pt, fill=atAccent!22, rounded corners=1pt,
+                 align=center, inner sep=3pt},
+    wf/.style={draw=atInfo, line width=0.9pt, -{Latex[length=1.8mm]}},
+    wfp/.style={draw=atInfo, line width=0.9pt},
+    brine/.style={draw=atDanger, line width=0.9pt, -{Latex[length=1.8mm]}},
+    elec/.style={draw=atFg, line width=1.4pt, -{Latex[length=2mm]}},
+    elecp/.style={draw=atFg, line width=1.4pt},
+    shaft/.style={draw=atFgMuted, line width=1.8pt},
+    sig/.style={draw=atAccentFg, dashed, line width=0.55pt, -{Latex[length=1.6mm]}},
+    sigb/.style={draw=atAccentFg, dashed, line width=0.55pt,
+                 {Latex[length=1.6mm]}-{Latex[length=1.6mm]}},
+    lab/.style={font=\tiny, text=atFgMuted},
+    sg/.style={font=\tiny, text=atAccentFg},
+    chip/.style={circle, draw=atFg, fill=white, line width=0.4pt,
+                 inner sep=0.7pt, font=\tiny},
+    tap/.style={circle, fill=atAccentFg, inner sep=1.1pt},
+  ]
+
+  % ---------- physical blocks : energy path ----------
+  \node[phys, minimum width=15mm, minimum height=13mm] (heat)  at (0,0)
+        {HEAT\\SOURCE};
+  \node[lab] at (0,-0.95) {brine / waste heat};
+  \node[phys, minimum width=19mm, minimum height=13mm] (evap)  at (2.7,0)
+        {PREHEATER\\+ EVAPORATOR};
+  \node[phys, minimum width=9mm,  minimum height=9mm]  (gear)  at (7.9,0)
+        {GEAR\\BOX};
+  \node[phys, circle, minimum size=14mm] (gen) at (9.3,0) {G};
+  \node[lab] at (9.3,-1.0) {synchronous generator};
+  \node[phys, circle, minimum size=9mm] (t1) at (11.2,0) {};
+  \node[phys, circle, minimum size=9mm] (t2) at (11.75,0) {};
+  \node[lab] at (11.5,-0.85) {GSU XFMR};
+  \node[phys, minimum width=5mm, minimum height=5mm] (brk) at (13.0,0) {};
+  \node[lab] at (13.0,-0.6) {52G};
+  \node[phys, minimum width=15mm, minimum height=10mm] (grid) at (15.0,0)
+        {POI /\\GRID};
+
+  % turbine (hand-drawn trapezium)
+  \draw[draw=atFg, line width=0.5pt, fill=atBgSubtle]
+        (5.55,0.42) -- (7.05,0.85) -- (7.05,-0.85) -- (5.55,-0.42) -- cycle;
+  \node[align=center] at (6.30,0) {ORC\\TURBINE};
+
+  % ---------- physical blocks : heat rejection loop ----------
+  \node[phys, minimum width=34mm, minimum height=11mm] (cond) at (7.2,-2.4)
+        {AIR-COOLED CONDENSER};
+  \node[phys, circle, minimum size=12mm] (pump) at (4.0,-2.4) {FEED\\PUMP};
+  \node[ctrl, minimum width=18mm, minimum height=8mm]  (fvfd) at (10.4,-1.9)
+        {FAN VFD};
+  \node[ctrl, minimum width=22mm, minimum height=6mm]  (pvfd) at (4.0,-3.9)
+        {PUMP VFD};
+  % fans
+  \draw[draw=atFg, line width=0.5pt, fill=atBgSubtle] (7.4,-1.68) circle (0.18);
+  \draw[draw=atFg, line width=0.4pt] (7.27,-1.81) -- (7.53,-1.55);
+  \draw[draw=atFg, line width=0.4pt] (7.53,-1.81) -- (7.27,-1.55);
+  \draw[draw=atFg, line width=0.5pt, fill=atBgSubtle] (8.6,-1.68) circle (0.18);
+  \draw[draw=atFg, line width=0.4pt] (8.47,-1.81) -- (8.73,-1.55);
+  \draw[draw=atFg, line width=0.4pt] (8.73,-1.81) -- (8.47,-1.55);
+
+  % ---------- control blocks ----------
+  \node[dcsb, minimum width=46mm, minimum height=9mm] (dcs) at (9.0,5.0)
+        {PLANT DCS / PLANT CONTROLLER\\[1pt]
+         \tiny dispatch $\cdot$ sequencing $\cdot$ POI schedule};
+  \node[ctrl, minimum width=20mm, minimum height=8mm] (gov)  at (4.3,3.0)
+        {GOVERNOR\\[1pt]\tiny speed / load};
+  \node[ctrl, minimum width=20mm, minimum height=8mm] (avr)  at (7.2,3.0)
+        {AVR + PSS\\[1pt]\tiny excitation};
+  \node[ctrl, minimum width=18mm, minimum height=8mm] (sync) at (11.6,3.0)
+        {AUTO-SYNC\\[1pt]\tiny 25 sync-check};
+  \node[ctrl, minimum width=22mm, minimum height=8mm] (prot) at (14.3,3.0)
+        {PROTECTION\\[1pt]\tiny 87G$\cdot$32$\cdot$40$\cdot$81$\cdot$27/59};
+
+  % ---------- brine loop ----------
+  \draw[brine] ([yshift=2.5mm]heat.east)  -- ([yshift=2.5mm]evap.west);
+  \draw[brine] ([yshift=-2.5mm]evap.west) -- ([yshift=-2.5mm]heat.east);
+  \node[lab] at (2.05,0.42) {hot};
+  \node[lab] at (2.05,-0.42) {reinject};
+
+  % ---------- working fluid loop ----------
+  \draw[wf]  (evap.east) -- (5.55,0);
+  \draw[fill=white, draw=atInfo, line width=0.7pt]
+        (4.15,0.22) -- (4.15,-0.22) -- (4.55,0.22) -- (4.55,-0.22) -- cycle;
+  \draw[fill=white, draw=atInfo, line width=0.7pt]
+        (4.95,0.22) -- (4.95,-0.22) -- (5.35,0.22) -- (5.35,-0.22) -- cycle;
+  \node[lab] at (4.35,-0.45) {ESV};
+  \node[lab] at (5.15,0.45)  {TCV};
+  \draw[wf]  (6.30,-0.64) -- (6.30,-1.85);
+  \node[lab, anchor=west] at (6.40,-1.25) {low-p vapour};
+  \draw[wf]  (cond.west) -- (4.62,-2.4);
+  \draw[wf]  (3.38,-2.4) -- (2.7,-2.4) -- (2.7,-0.66);
+  \node[lab, anchor=west] at (2.80,-1.6) {liquid};
+
+  % ---------- shaft ----------
+  \draw[shaft] (7.05,0) -- (gear.west);
+  \draw[shaft] (gear.east) -- (gen.west);
+
+  % ---------- electrical ----------
+  \draw[elecp] (gen.east) -- (t1.west);
+  \draw[elecp] (t2.east)  -- (brk.west);
+  \draw[elec]  (brk.east) -- (grid.west);
+
+  % ---------- measurement taps ----------
+  \node[tap] (spd)  at (8.47,0)  {};
+  \node[tap] (vtct) at (10.15,0) {};
+  \node[tap] (ctp)  at (12.5,0)  {};
+  \node[tap] (poi)  at (13.8,0)  {};
+  \node[tap] (pev)  at (2.2,-0.65) {};
+  \node[tap] (pcd)  at (8.90,-2.4) {};
+
+  % ---------- control signals ----------
+  % DCS -> governor
+  \draw[sig] (7.0,4.55) -- (7.0,4.25) -- (4.3,4.25) -- (4.3,3.4);
+  \node[sg, anchor=west] at (4.45,4.40) {MW setpoint};
+  % DCS -> AVR
+  \draw[sig] (8.2,4.55) -- (8.2,3.75) -- (7.6,3.75) -- (7.6,3.4);
+  \node[sg, anchor=west] at (8.30,3.95) {V / Q setpoint};
+  % POI -> DCS
+  \draw[sig] (13.8,-0.12) -- (13.8,-0.95) -- (16.2,-0.95) -- (16.2,5.95)
+             -- (9.8,5.95) -- (9.8,5.45);
+  \node[sg, anchor=east] at (16.0,6.15) {MW $\cdot$ MVAr $\cdot$ V at POI};
+  % governor -> TCV
+  \draw[sig] (3.7,2.6) -- (3.7,1.2) -- (5.15,1.2) -- (5.15,0.26);
+  \node[sg, anchor=west] at (3.80,1.35) {valve command};
+  % speed -> governor
+  \draw[sig] (8.47,0.12) -- (8.47,2.0) -- (4.7,2.0) -- (4.7,2.6);
+  \node[sg, anchor=west] at (5.60,2.15) {shaft speed $n$};
+  % AVR -> field
+  \draw[sig] (7.2,2.6) -- (7.2,2.32) -- (9.3,2.32) -- (9.3,0.72);
+  \node[sg, anchor=west] at (7.90,2.47) {field current};
+  % VT/CT -> AVR
+  \draw[sig] (10.15,0.12) -- (10.15,3.0) -- (avr.east);
+  \node[sg, anchor=south] at (9.30,3.05) {VT / CT};
+  % sync <-> breaker
+  \draw[sigb] (11.6,2.6) -- (11.6,1.0) -- (13.0,1.0) -- (13.0,0.3);
+  \node[sg, anchor=west] at (11.70,1.15) {V, $f$, $\varphi$ / close};
+  % sync -> governor + AVR bias
+  \draw[sig] (11.0,3.4) -- (11.0,4.05) -- (4.9,4.05) -- (4.9,3.4);
+  \node[sg, anchor=west] at (6.30,3.90) {speed / voltage match bias};
+  % CT -> protection
+  \draw[sig] (12.5,0.12) -- (12.5,1.6) -- (14.3,1.6) -- (14.3,2.6);
+  % protection -> trip breaker
+  \draw[sig] (14.8,2.6) -- (14.8,0.55) -- (13.15,0.55) -- (13.15,0.25);
+  \node[sg, anchor=west] at (14.90,0.75) {trip 52G};
+  % protection -> ESV
+  \draw[sig] (13.8,2.6) -- (13.8,1.72) -- (4.35,1.72) -- (4.35,0.26);
+  \node[sg, anchor=west] at (6.60,1.87) {emergency trip $\rightarrow$ ESV quick-close};
+  % evaporator pressure -> pump VFD
+  \draw[sig] (2.2,-0.77) -- (2.2,-3.9) -- (2.9,-3.9);
+  \node[sg, anchor=east] at (2.10,-2.9) {$p_{\mathrm{evap}}$};
+  \draw[sig] (4.0,-3.6) -- (4.0,-3.02);
+  % condenser pressure -> fan VFD
+  \draw[sig] (9.02,-2.4) -- (10.4,-2.4) -- (10.4,-2.3);
+  \node[sg, anchor=north] at (9.70,-2.48) {$p_{\mathrm{cond}}$};
+  \draw[sig] (9.5,-1.68) -- (8.82,-1.68);
+
+  % ---------- item numbers (keyed to Table 1) ----------
+  \node[chip] at (-0.75,0.65) {1};
+  \node[chip] at (1.75,0.65)  {2};
+  \node[chip] at (4.35,0.45)  {3};
+  \node[chip] at (5.60,0.60)  {4};
+  \node[chip] at (7.45,0.45)  {5};
+  \node[chip] at (8.70,0.60)  {6};
+  \node[chip] at (10.80,0.42) {7};
+  \node[chip] at (14.30,0.50) {8};
+  \node[chip] at (5.55,-1.85) {9};
+  \node[chip] at (3.42,-1.92) {10};
+
+  % ---------- legend ----------
+  \draw[wfp]   (-0.9,-5.1) -- (0.1,-5.1);
+  \node[lab, anchor=west] at (0.2,-5.1) {working fluid};
+  \draw[draw=atDanger, line width=0.9pt] (2.8,-5.1) -- (3.8,-5.1);
+  \node[lab, anchor=west] at (3.9,-5.1) {heat-source brine};
+  \draw[shaft] (6.7,-5.1) -- (7.7,-5.1);
+  \node[lab, anchor=west] at (7.8,-5.1) {shaft (mechanical)};
+  \draw[elecp] (10.7,-5.1) -- (11.7,-5.1);
+  \node[lab, anchor=west] at (11.8,-5.1) {electrical power};
+  \draw[draw=atAccentFg, dashed, line width=0.55pt] (14.2,-5.1) -- (15.2,-5.1);
+  \node[lab, anchor=west] at (15.3,-5.1) {control / measurement};
+  \end{tikzpicture}}
+  \caption{ORC plant control cycle. Energy flows left to right; the working
+  fluid circulates evaporator $\rightarrow$ turbine $\rightarrow$ condenser
+  $\rightarrow$ feed pump. Numbers key to Table~\ref{tab:orc-parts}. Setpoint
+  links from the plant DCS to the pump and fan VFDs, and the recuperator common
+  on many ORC cycles, are omitted for legibility; neither adds a control loop.}
+  \label{fig:orc-control-cycle}
+\end{figure}
+
+\subsubsection{Physical parts of the energy path}
+
+\begin{table}[htbp]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}c l X@{}}
+    \toprule
+    \textbf{\#} & \textbf{Part} & \textbf{Function and relevance} \\
+    \midrule
+    1  & Heat source loop      & Geothermal brine or waste-heat stream with its
+                                 circulation pumps. Sets the total heat
+                                 available and is the effective fuel valve of
+                                 the plant. \\
+    2  & Preheater, evaporator & Heats and vaporises the organic working fluid.
+                                 Key measurements: evaporator pressure and
+                                 superheat. \\
+    3  & ESV and TCV           & Spring-closed emergency stop valve (tripped by
+                                 protection) and the throttle valve modulated by
+                                 the governor. The only fast handles on turbine
+                                 power. \\
+    4  & ORC turbine           & Axial or radial-inflow expander converting
+                                 vapour enthalpy to shaft torque. Fitted with
+                                 speed pickups and an independent overspeed
+                                 trip. \\
+    5  & Gearbox               & Reduces turbine speed to synchronous speed
+                                 (1{,}500/1{,}800\,rpm). Omitted on machines
+                                 designed to drive the generator directly. \\
+    6  & Synchronous generator & Four-pole machine with shaft-mounted brushless
+                                 exciter. Field current from the AVR sets
+                                 terminal voltage and reactive power. Modelled
+                                 as \texttt{GENROU}. \\
+    7  & GSU transformer       & Steps generator voltage (typically
+                                 11--13.8\,kV) up to interconnection voltage.
+                                 Carries its own differential protection
+                                 zone. \\
+    8  & Generator breaker 52G, POI
+                               & Switching point between island and
+                                 grid-connected operation, closed only on
+                                 synchroniser permission. Revenue metering and
+                                 the regulated POI quantities sit here. \\
+    9  & Air-cooled condenser  & Rejects cycle heat to ambient; VFD-driven fan
+                                 motors set condensing pressure. A cooling-tower
+                                 loop replaces it on water-cooled plants. \\
+    10 & Working-fluid feed pump
+                               & VFD-driven pump closing the loop. Its speed is
+                                 the principal handle on working-fluid mass
+                                 flow, and therefore on plant output over
+                                 minutes. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Physical parts of the ORC energy path, keyed to
+           Figure~\ref{fig:orc-control-cycle}.}
+  \label{tab:orc-parts}
+\end{table}
+
+\subsubsection{Control loops}
+Each loop pairs a sensor, a controller and an actuator around one of the parts
+above. The fast loops (milliseconds to seconds) reside in dedicated hardware ---
+governor, AVR, protection --- while the slow thermal loops (seconds to minutes)
+reside in the plant DCS. Only the fast loops survive into the dynamic model of
+Section~\ref{sec:model}.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}p{2.1cm} p{3.2cm} p{3.7cm} X@{}}
+    \toprule
+    \textbf{Loop} & \textbf{Measured} & \textbf{Actuator} &
+    \textbf{Regulated quantity} \\
+    \midrule
+    Speed / load         & Shaft speed, MW output, turbine inlet pressure
+                         & TCV (3)
+                         & Speed during run-up; MW or inlet pressure once
+                           synchronised \\
+    Evaporator pressure  & Evaporator pressure and superheat (2)
+                         & Feed-pump VFD (10)
+                         & Vapour conditions at turbine inlet as heat input
+                           varies \\
+    Condensing pressure  & Condenser pressure (9)
+                         & ACC fan VFDs (9)
+                         & Back-pressure near optimum across ambient swings \\
+    Voltage / VAR        & Generator terminal voltage and current (6)
+                         & Exciter field current (6)
+                         & Terminal voltage, or the power-factor / MVAr
+                           setpoint \\
+    Synchronisation      & Voltage, frequency and phase across 52G
+                         & Governor and AVR bias, 52G close coil (8)
+                         & Match across the breaker before closing is
+                           permitted \\
+    Plant / POI          & MW, MVAr and voltage at the POI meter
+                         & Setpoints to all controllers above
+                         & Dispatch target and the POI voltage / power-factor
+                           schedule \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Control loops of the ORC power block. Numbers in parentheses refer
+           to Table~\ref{tab:orc-parts}.}
+  \label{tab:orc-loops}
+\end{table}
+
+\subsection{Protection}
+Protection acts once and latches rather than regulating continuously. The
+generator protection relay --- differential (87G), reverse power (32), loss of
+field (40), over/under-frequency (81) and over/under-voltage (27/59) --- trips
+the 52G breaker and simultaneously commands the turbine trip system, which dumps
+hydraulic pressure and allows the spring-closed ESV to shut. The reverse-power
+element is of particular relevance to an ORC unit: left connected without
+working-fluid flow, the machine would motor the generator and drive the
+expander backwards.
+
+An independent electronic overspeed system trips the ESV directly, without
+passing through the DCS, so that loss of the control system can never disable
+overspeed protection. The GSU transformer carries its own differential and
+overcurrent zone.
+
+In the simulation model these functions appear as breaker events and relay
+settings, not as dynamics.
+
+\subsection{Positive-sequence dynamic model}
+\label{sec:model}
+In a positive-sequence dynamic model (PSS/E, PSLF, PowerFactory, ETAP) the whole
+plant of Figure~\ref{fig:orc-control-cycle} collapses to three interconnected
+blocks plus the network solution. The thermal loops --- evaporator pressure,
+condensing pressure, feed pump and fans --- are far too slow to influence
+stability timeframes and disappear into the boundary condition
+$P_{\mathrm{mech}} \approx \mathrm{const}$. What remains is the wiring of
+Figure~\ref{fig:model-wiring}, which is identical in every tool; only the block
+names change.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.96\linewidth}{!}{%
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    blk/.style={draw=atFg, line width=0.6pt, fill=atBgSubtle, rounded corners=1pt,
+                align=center, inner sep=3pt},
+    sblk/.style={draw=atAccentFg, line width=0.7pt, dashed, fill=white,
+                 rounded corners=1pt, align=center, inner sep=3pt},
+    sumj/.style={draw=atFg, line width=0.6pt, fill=white, circle, inner sep=1.5pt},
+    sig/.style={draw=atFg, line width=0.9pt, -{Latex[length=2mm]}},
+    fb/.style={draw=atAccentFg, dashed, line width=0.6pt, -{Latex[length=1.8mm]}},
+    lab/.style={font=\tiny, text=atFgMuted},
+    sg/.style={font=\tiny, text=atAccentFg},
+    tap/.style={circle, fill=atAccentFg, inner sep=1.1pt},
+  ]
+  \node[blk, minimum width=28mm, minimum height=11mm] (tgov) at (0,1.4)
+        {\texttt{TGOV1}\\[1pt]\tiny turbine--governor};
+  \node[blk, minimum width=28mm, minimum height=11mm] (sexs) at (0,-0.8)
+        {\texttt{SEXS} $\rightarrow$ \texttt{AC7B}\\[1pt]\tiny AVR + exciter};
+  \node[blk, minimum width=26mm, minimum height=34mm] (gen) at (4.6,0.3)
+        {\texttt{GENROU}\\[2pt]\tiny synchronous\\\tiny machine\\[2pt]
+         \tiny(\texttt{GENSAL} if\\\tiny salient-pole)};
+  \node[blk, minimum width=28mm, minimum height=18mm] (net) at (8.2,0.3)
+        {NETWORK\\[1pt]\tiny GSU impedance + $Y_{\mathrm{bus}}$\\\tiny POI / grid};
+  \node[sumj] (sum) at (-2.8,-0.8) {$\Sigma$};
+  \node[sblk, minimum width=30mm, minimum height=10mm] (pss) at (-0.6,-2.6)
+        {\texttt{PSS2B} (WECC: required)\\[1pt]\tiny input $\Delta\omega$,
+         output $V_s$};
+
+  \draw[sig] (-5.0,1.4) -- (tgov.west);
+  \node[lab, anchor=south] at (-4.2,1.5) {$P_{\mathrm{ref}}$};
+  \draw[sig] (-5.0,-0.8) -- (sum.west);
+  \node[lab, anchor=south] at (-4.2,-0.7) {$V_{\mathrm{ref}}$};
+  \node[lab] at (-3.1,-0.42) {$+$};
+  \node[lab] at (-3.1,-1.20) {$-$};
+  \draw[sig] (sum.east) -- (sexs.west);
+  \draw[sig] (tgov.east) -- (3.3,1.4);
+  \node[lab, anchor=south] at (2.35,1.5) {$P_{\mathrm{mech}}$};
+  \draw[sig] (sexs.east) -- (3.3,-0.8);
+  \node[lab, anchor=south] at (2.35,-0.7) {$E_{\mathrm{fd}}$};
+  \draw[draw=atFg, line width=0.9pt, {Latex[length=2mm]}-{Latex[length=2mm]}]
+        (gen.east) -- (net.west);
+  \node[lab, anchor=south] at (6.35,0.42) {$V_t$, $I_t$};
+
+  % feedbacks
+  \draw[fb] (4.6,2.0) -- (4.6,2.9) -- (0.7,2.9) -- (0.7,1.95);
+  \node[sg, anchor=south] at (2.65,2.95) {$\Delta\omega$ (rotor speed deviation)};
+  \node[tap] at (6.35,0.3) {};
+  \draw[fb] (6.35,0.18) -- (6.35,-3.5) -- (-2.8,-3.5) -- (-2.8,-1.08);
+  \node[sg, anchor=south] at (2.4,-3.45) {$V_t$ (terminal voltage)};
+  \draw[fb] (-2.1,-2.6) -- (-3.7,-2.6) -- (-3.7,-0.2) -- (-2.8,-0.2) -- (-2.8,-0.52);
+  \node[sg, anchor=west] at (-3.60,-0.05) {$V_s$};
+  \node[lab, anchor=north, align=center] at (0,0.72)
+        {base-loaded: $P_{\mathrm{ref}}$ fixed,\\or unit flagged non-responsive};
+  \end{tikzpicture}}
+  \caption{Model wiring implemented by every positive-sequence tool. Solid lines
+  are model signals; dashed lines are the two feedbacks that close the loops ---
+  $\Delta\omega$ to the governor and $V_t$ to the AVR summing junction.
+  Protection and the synchroniser do not appear as dynamics.}
+  \label{fig:model-wiring}
+\end{figure}
+
+\subsection{Turbine--governor model}
+The governor block of Figure~\ref{fig:model-wiring} is expanded in
+Figure~\ref{fig:tgov1}. \texttt{TGOV1} is the model named by the NERC
+turbine-governor modelling guideline for a simple, non-reheat thermal unit and
+is the appropriate choice for an ORC turbine.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.94\linewidth}{!}{%
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    blk/.style={draw=atFg, line width=0.6pt, fill=atBgSubtle, rounded corners=1pt,
+                align=center, inner sep=3pt},
+    sumj/.style={draw=atFg, line width=0.6pt, fill=white, circle, inner sep=1.5pt},
+    sig/.style={draw=atFg, line width=0.9pt, -{Latex[length=2mm]}},
+    sigp/.style={draw=atFg, line width=0.9pt},
+    lab/.style={font=\tiny, text=atFgMuted},
+    tap/.style={circle, fill=atFg, inner sep=1.1pt},
+  ]
+  \node[sumj] (s1) at (-2.2,0) {$\Sigma$};
+  \node[blk, minimum width=22mm, minimum height=12mm] (lag) at (0.4,0)
+        {$\dfrac{1}{1+sT_1}$};
+  \node[blk, minimum width=24mm, minimum height=12mm] (ll) at (3.4,0)
+        {$\dfrac{1+sT_2}{1+sT_3}$};
+  \node[sumj] (s2) at (5.9,0) {$\Sigma$};
+  \node[blk, minimum width=12mm, minimum height=9mm] (rr) at (-3.4,-2.0) {$1/R$};
+  \node[blk, minimum width=12mm, minimum height=9mm] (dt) at (4.3,-3.0) {$D_t$};
+
+  \draw[sig] (-4.4,0) -- (s1.west);
+  \node[lab, anchor=south] at (-3.7,0.10) {$P_{\mathrm{ref}}$};
+  \node[lab] at (-2.5,0.30) {$+$};
+  \draw[sig] (s1.east) -- (lag.west);
+  \draw[sig] (lag.east) -- (ll.west);
+  \draw[sig] (ll.east) -- (s2.west);
+  \draw[sig] (s2.east) -- (8.0,0);
+  \node[lab, anchor=south] at (7.2,0.10) {$P_{\mathrm{mech}}$};
+  \node[lab, anchor=south] at (0.4,0.66) {$V_{\max}$};
+  \node[lab, anchor=north] at (0.4,-0.66) {$V_{\min}$};
+
+  \draw[sigp] (-4.9,-2.0) -- (rr.west);
+  \node[lab, anchor=south] at (-4.55,-1.90) {$\Delta\omega$};
+  \node[tap] (j) at (-4.3,-2.0) {};
+  \draw[sig] (rr.east) -- (-2.2,-2.0) -- (-2.2,-0.28);
+  \node[lab] at (-1.95,-0.55) {$-$};
+  \draw[sigp] (-4.3,-2.0) -- (-4.3,-3.0);
+  \draw[sig] (-4.3,-3.0) -- (dt.west);
+  \draw[sig] (dt.east) -- (5.9,-3.0) -- (5.9,-0.28);
+  \node[lab] at (6.15,-0.55) {$-$};
+  \end{tikzpicture}}
+  \caption{\texttt{TGOV1} turbine--governor model. For an ORC unit $T_1$ lumps
+  the valve stroke and the evaporator vapour-volume lag ($\approx$
+  0.4--1.5\,s); there is no reheater, so $T_2 = T_3$ and the lead--lag drops
+  out. Base-loaded operation is represented either by
+  $V_{\max} = V_{\min} = P_0$ or by flagging the unit non-responsive.}
+  \label{fig:tgov1}
+\end{figure}
+
+\subsection{Excitation system model}
+The excitation block of Figure~\ref{fig:model-wiring} is expanded in
+Figure~\ref{fig:sexs}, shown here in its screening-level \texttt{SEXS} form.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.84\linewidth}{!}{%
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    blk/.style={draw=atFg, line width=0.6pt, fill=atBgSubtle, rounded corners=1pt,
+                align=center, inner sep=3pt},
+    sumj/.style={draw=atFg, line width=0.6pt, fill=white, circle, inner sep=1.5pt},
+    sig/.style={draw=atFg, line width=0.9pt, -{Latex[length=2mm]}},
+    lab/.style={font=\tiny, text=atFgMuted},
+  ]
+  \node[sumj] (s) at (-2.0,0) {$\Sigma$};
+  \node[blk, minimum width=24mm, minimum height=12mm] (ll) at (0.7,0)
+        {$\dfrac{1+sT_A}{1+sT_B}$};
+  \node[blk, minimum width=22mm, minimum height=12mm] (k) at (3.7,0)
+        {$\dfrac{K}{1+sT_E}$};
+  \draw[sig] (-4.2,0) -- (s.west);
+  \node[lab, anchor=south] at (-3.5,0.10) {$V_{\mathrm{ref}}$};
+  \draw[sig] (-2.0,1.7) -- (s.north);
+  \node[lab, anchor=west] at (-1.90,1.35) {$V_s$ (PSS) \ $+$};
+  \draw[sig] (-2.0,-1.7) -- (s.south);
+  \node[lab, anchor=west] at (-1.90,-1.35) {$V_t$ \ $-$};
+  \node[lab] at (-2.30,0.30) {$+$};
+  \draw[sig] (s.east) -- (ll.west);
+  \draw[sig] (ll.east) -- (k.west);
+  \draw[sig] (k.east) -- (6.6,0);
+  \node[lab, anchor=south] at (5.8,0.10) {$E_{\mathrm{fd}}$};
+  \node[lab, anchor=south] at (3.7,0.66) {$E_{\max}$};
+  \node[lab, anchor=north] at (3.7,-0.66) {$E_{\min}$};
+  \end{tikzpicture}}
+  \caption{\texttt{SEXS} excitation model: voltage error, regulator lead--lag,
+  exciter gain with ceiling limits. It is a screening-level placeholder; once
+  OEM excitation data is available the block is replaced by IEEE
+  \texttt{AC7B}/\texttt{AC8B} for a brushless exciter (the usual case on ORC
+  machines) or \texttt{ST4B} for a static exciter. The wiring of
+  Figure~\ref{fig:model-wiring} is unchanged.}
+  \label{fig:sexs}
+\end{figure}
+
+\subsection{Power system stabilizer and WECC requirement}
+\label{sec:pss}
+A power system stabilizer (PSS) is a supplementary controller added to the
+excitation system --- the dashed block in Figure~\ref{fig:model-wiring}. The AVR
+alone regulates terminal voltage, but a fast, high-gain AVR erodes the damping
+of the rotor's electromechanical oscillations. Following a disturbance every
+synchronous rotor swings against the rest of the system at 0.1--3\,Hz: local
+machine-against-system modes around 1--2\,Hz, and inter-area modes, in which
+large groups of machines in one region swing against another, at 0.1--0.8\,Hz.
+The PSS measures rotor speed deviation and electrical power --- the modern
+dual-input integral-of-accelerating-power design, models \texttt{PSS2B} and
+\texttt{PSS2C} --- phase-compensates that signal and injects it as $V_s$ into
+the AVR summing junction, so that the field is modulated in phase with rotor
+speed and produces a damping torque. The PSS adds damping; it does not alter
+steady-state voltage control.
+
+The Western Interconnection has long transmission corridors and well-known
+inter-area modes --- the $\sim$0.25\,Hz North--South mode was central to the
+August 1996 west-wide separation --- and WECC is consequently the one region
+with its own enforceable regional PSS standard.
+
+\paragraph{VAR-501-WECC-4 requirements.} The standard applies to synchronous
+generators connected to the Bulk Electric System that meet the definition of
+Commercial Operation; a 40\,MW / 47\,MVA unit falls within scope. The
+obligations relevant to this project are:
+
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{Installation} --- PSS installed and placed in service within
+        180 days of a new generator connecting to the BES, or of the
+        replacement of an existing voltage regulator.
+  \item \textbf{In service} --- the PSS must be in service whenever the unit is
+        synchronised, other than during component failure, testing or
+        maintenance, or as otherwise agreed with the Transmission Operator.
+        Outages shorter than 30 minutes are not violations; inoperable
+        equipment must be repaired or replaced within 24 months.
+  \item \textbf{Tuning} --- phase response within $\pm$30$^\circ$ over the
+        defined frequency range; output authority of at least $\pm$5\,\% of
+        terminal voltage; gain set between one-third and one-half of the
+        maximum practical gain; washout time constant not exceeding 30\,s.
+  \item \textbf{Exemption} --- narrow, and limited to excitation systems
+        incapable of meeting the tuning requirements; it lapses when the
+        voltage regulator is replaced or retrofitted.
+\end{itemize}
+
+\noindent
+The practical consequences for this project are that the PSS must be specified
+together with the excitation system at the time of purchase, that commissioning
+must include PSS tuning tests, and that a \texttt{PSS2B}/\texttt{PSS2C} record
+must accompany the exciter model in the submitted dynamics data, populated from
+those tests.
+
+\subsection{Model parameters}
+Table~\ref{tab:dyn-params} gives screening-level values on a 47\,MVA machine
+base (40\,MW at 0.85 power factor), 60\,Hz, four-pole through gearbox. The
+characteristically ORC parameter is the \textbf{low inertia}: a compact expander
+and gearbox store far less rotational energy than a steam turbine train, so $H$
+sits at the bottom of the synchronous range.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l X@{}}
+    \toprule
+    \textbf{Model} & \textbf{Typical parameters} \\
+    \midrule
+    \texttt{GENROU}
+      & $T'_{d0}=5.0$\,s, $T''_{d0}=0.05$, $T'_{q0}=0.8$, $T''_{q0}=0.08$,
+        $H=1.8$\,s, $D=0$, $X_d=1.80$, $X_q=1.70$, $X'_d=0.30$, $X'_q=0.55$,
+        $X''=0.20$, $X_l=0.12$, $S(1.0)=0.10$, $S(1.2)=0.40$. \newline
+        $H \approx 1.5$--$2.5$\,s is typical for ORC turbogenerators. Use
+        \texttt{GENSAL}/\texttt{GENTPJ} if the OEM machine is salient-pole,
+        which is common at 1{,}500/1{,}800\,rpm. \\
+    \texttt{SEXS}
+      & $T_A/T_B=0.10$, $T_B=10.0$\,s, $K=100$, $T_E=0.10$\,s,
+        $E_{\min}=0.0$, $E_{\max}=4.0$. Placeholder until the OEM AVR data
+        sheet supports \texttt{AC7B} or \texttt{ST4B}. \\
+    \texttt{TGOV1}
+      & $R=0.05$, $T_1=0.40$\,s, $V_{\max}=1.0$, $V_{\min}=0.0$, $T_2=1.0$,
+        $T_3=1.0$, $D_t=0$. For a base-loaded unit set
+        $V_{\max}=V_{\min}=P_0$, or omit the governor and flag the unit
+        non-responsive. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Screening-level dynamic model parameters, 40\,MW ORC unit on a
+           47\,MVA base. Replace with OEM data before any interconnection
+           filing.}
+  \label{tab:dyn-params}
+\end{table}
+
+\noindent
+The corresponding PSS/E dynamics record is:
+
+{\small
+\begin{verbatim}
+/ 40 MW ORC unit at bus 101, id 1 - machine base 47.0 MVA, 60 Hz
+/ Placeholder screening data: replace with OEM values for any filing
+101 'GENROU' 1   5.00  0.05  0.80  0.08  1.80  0.00
+                 1.80  1.70  0.30  0.55  0.20  0.12  0.10  0.40 /
+101 'SEXS'   1   0.10  10.0  100.0 0.10  0.00  4.00 /
+101 'TGOV1'  1   0.05  0.40  1.00  0.00  1.00  1.00  0.00 /
+\end{verbatim}}
+
+\noindent
+A \texttt{PSS2B} record must be added alongside the exciter before submission,
+per Section~\ref{sec:pss}.
+
+\subsection{Portability across tools}
+The same three blocks exist under the same or near-identical names in every
+environment:
+
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item \textbf{PSLF} --- \texttt{genrou} / \texttt{sexs} / \texttt{tgov1},
+        with an \texttt{epcl} equivalent of the \texttt{.dyr} record.
+  \item \textbf{PowerFactory, ETAP} --- shipped as standard IEEE model
+        implementations; parameters transfer directly from
+        Table~\ref{tab:dyn-params}.
+  \item \textbf{MATLAB/Simulink} --- Figures~\ref{fig:tgov1} and
+        \ref{fig:sexs} are wired directly from transfer-function blocks around
+        the built-in synchronous machine model.
+  \item \textbf{PSCAD (EMT)} --- retain the machine and exciter and drive the
+        shaft with constant mechanical torque. The ORC thermal side contributes
+        nothing at EMT timescales.
+\end{itemize}
+
+\subsection{Open items}
+\begin{itemize}\setlength{\itemsep}{0.25em}
+  \item Obtain the OEM generator data sheet and confirm round-rotor versus
+        salient-pole construction, which selects \texttt{GENROU} against
+        \texttt{GENSAL}/\texttt{GENTPJ}.
+  \item Obtain the excitation system type and data to replace \texttt{SEXS}
+        with \texttt{AC7B}/\texttt{AC8B} or \texttt{ST4B}.
+  \item Confirm whether the unit will provide primary frequency response; if
+        not, agree the non-responsive representation with the Transmission
+        Planner.
+  \item Specify the PSS with the excitation system and schedule commissioning
+        tuning tests (Section~\ref{sec:pss}).
+  \item Obtain GSU impedance, machine saturation data and the reactive
+        capability curve. These bind the model to the real plant more tightly
+        than any control parameter.
+\end{itemize}

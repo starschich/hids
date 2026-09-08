@@ -1,0 +1,40 @@
+% =============================================================
+%  Organic Rankine Cycle (ORC) Power Block — Report
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex orc.tex   (run twice for ToC / references)
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives in the repo-level template folder
+\usepackage[corporate]{../../template/attemplate}
+\usepackage{multirow}
+
+% TikZ libraries used by the block diagrams in Section 1
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,fit}
+
+% ---- Report metadata ----------------------------------------
+\reporttitle{Organic Rankine Cycle Power Block}
+\reportsubtitle{Control cycle and electrical simulation model for WECC interconnection}
+\reportauthor{Eugen Starschich}
+\reportdocnumber{ATW-REP-ORC-001}
+\reportrevision{0.1}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Confidential}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{Sep. 4, 2026}{Eugen Starschich}{Initial document}
+}
+
+\newpage
+\tableofcontents
+\clearpage
+
+% ---- Body ---------------------------------------------------
+\input{sections/01-electrical-simulation}
+
+\end{document}
