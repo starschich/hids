@@ -7,9 +7,13 @@
 %    theme/atstyle.sty         <- template: palette, theme, commands
 %    design/*.tex            <- one file per overview item
 %
-%  Compile (run twice for nav/refs):
-%    pdflatex presentation.tex
-%    pdflatex presentation.tex
+%  Compile (latexmk runs the engine twice for nav/refs):
+%    latexmk -xelatex presentation.tex       % brand fonts (Archivo etc.)
+%    latexmk -lualatex presentation.tex      % same, needs luaotfload
+%  pdflatex still works but falls back to Helvetica.
+%
+%  Optional cover photo, as on the company overview deck:
+%    \atsettitleimage{path/to/photo}   % before \titleslide
 % =============================================================
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage{theme/atstyle}
@@ -40,7 +44,7 @@
 \begin{document}
 
 % ---- Title slide --------------------------------------------
-\titleslide
+% \titleslide
 
 % ---- Projects -----------------------------------------------
 
@@ -50,13 +54,13 @@
 % ---- Design -----------------------------------------------
 % \input{design/ac-transmission/ac-transmission}
 % \input{design/loadflow/loadflow}
-% \input{design/hvdc-topologies/dc-power-transmission}
+\input{design/hvdc-topologies/dc-power-transmission}
 % \input{design/hvdc-topologies/hvdc-topologies}
 % \input{design/terminal/components/components}
 % \input{design/insulation-coordination/insulation-coordination}
 % \input{design/c-and-p/c-and-p}
 % \input{design/ram/ram}
-\input{design/short-circuit/short-circuit}
+% \input{design/short-circuit/short-circuit}
 
 % ---- Standardization bodies ------------
 % \input{design/standardization/standardization}

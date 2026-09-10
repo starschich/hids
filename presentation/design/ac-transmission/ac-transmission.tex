@@ -4,23 +4,28 @@
 % =============================================================
 \newcommand{\acfig}[1]{design/ac-transmission/fig/#1}
 
-\sectionslide{AC Power Transmission}{Power exchange, cables and PSCAD}
+\sectionslide{AC Power Transmission}{Power exchange, cables and OHL}
 
 \begin{frame}{Abbreviations}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
       {\small
       \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
+        AAAC  & All-aluminium alloy conductor \\
+        AAC   & All-aluminium conductor \\
         AC    & Alternating current \\
+        ACSR  & Aluminium conductor steel reinforced \\
+        ACSS  & Aluminium conductor steel supported \\
         DC    & Direct current \\
-        OHL   & Overhead line \\
-        PCC   & Point of common coupling \\
-        RMS   & Root mean square \\
+        kcmil & Thousand circular mils \\
       \end{tabularx}}
     \end{column}
     \begin{column}{0.48\textwidth}
       {\small
       \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
+        OHL   & Overhead line \\
+        PCC   & Point of common coupling \\
+        RMS   & Root mean square \\
         SCL   & Short-circuit level \\
         VSC   & Voltage-sourced converter \\
         XLPE  & Cross-linked polyethylene \\
@@ -141,7 +146,7 @@
     \end{column}
     \begin{column}{0.42\textwidth}\centering
       \topoimg[width=\linewidth,height=0.4\textheight,keepaspectratio]{\acfig{image10.pdf}}\\[0.4em]
-      {\footnotesize Example cable parameters:\\
+      {\color{atGray}\footnotesize Example cable parameters:\\
       $C'_L=190$\,nF/km, $R'_L=22$\,m$\Omega$/km, $X'_L=1.35$\,mH/km}
     \end{column}
   \end{columns}
@@ -295,6 +300,68 @@
       \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image19.png}}
     \end{column}
   \end{columns}
+\end{frame}
+
+% ---- Natural power (surge-impedance loading) ----------------
+\input{design/ac-transmission/natural-power}
+
+\intermezzo{OHL Conductors}{Definitions and applications}
+\begin{frame}{OHL conductors --- codewords}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.33\textwidth}
+      \renewcommand{\arraystretch}{1.2}
+      {\small
+      \begin{tabular}{@{}l c@{}}
+        \textbf{Codeword} & \textbf{Al/St strands} \\
+        \hline
+        Cuckoo  & 24/7  \\
+        Drake   & 26/7  \\
+        Mallard & 30/19 \\
+        Condor  & 54/7  \\
+        \hline
+      \end{tabular}}\\[0.5em]
+      {\color{atGray}\footnotesize The four standard strandings of
+      795\,kcmil ACSR.}
+    \end{column}
+    \begin{column}{0.63\textwidth}
+      {\small
+      \begin{itemize}
+        \setlength{\itemsep}{0.15em}
+        \item A size alone does not define a conductor: 795\,kcmil ACSR exists
+              in four standard strandings, each with a different steel content
+              and so different strength, weight and sag.
+        \item The codeword fixes area, stranding and core in one word.
+        \item Originally Alcoa product nomenclature (1920s--30s), later
+              adopted into the ASTM standards (ACSR: ASTM B232).
+        \item The name family identifies the construction:
+              \begin{itemize}
+                \setlength{\itemsep}{0.1em}
+                \item[--] ACSR / ACSS --- birds (Drake, Falcon, Rail, Cardinal)
+                \item[--] AAC --- flowers (Rose, Iris, Tulip, Peony)
+                \item[--] AAAC --- US city names (Akron, Amherst, Anaheim)
+              \end{itemize}
+        \item No size information in the name: Bluebird is 2156\,kcmil,
+              Condor only 795\,kcmil.
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{OHL conductors --- codewords elsewhere}
+  \begin{itemize}
+    \setlength{\itemsep}{0.5em}
+    \item BS 215 and Indian practice use the same idea with mammals:
+          Dog, Wolf, Lynx, Panther, Zebra, Moose. A 400\,kV Indian line is
+          specified as ``twin Moose'', the North American equivalent as
+          ``bundled Drake''.
+    \item Metric designs in continental Europe usually drop codewords and
+          quote the aluminium and steel areas directly, e.g.\ 490/65\,mm$^2$.
+    \item Practical consequence for us: a conductor must always be quoted
+          with its standard as well as its codeword, since the same name can
+          appear in more than one national system.
+  \end{itemize}
+  \vspace{0.5em}
+  {\color{atGray}\footnotesize ASTM B232 (ACSR), ASTM B231 (AAC), ASTM B399 (AAAC), BS 215-2}
 \end{frame}
 
 \begin{frame}{Link collection}
