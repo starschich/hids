@@ -1,0 +1,202 @@
+% =============================================================
+%  American Terawatt — Beamer theme / template definitions
+%  Brand basis: americanterawatt.com (stark black/white,
+%  minimal industrial-energy aesthetic).
+%
+%  Load from the main file with:  \usepackage{theme/atstyle}
+%  (must be loaded after \documentclass{beamer})
+% =============================================================
+\ProvidesPackage{theme/atstyle}[2026/06/30 American Terawatt beamer theme]
+
+% ---- Packages -----------------------------------------------
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{helvet}                 % Helvetica-like sans, portable
+\renewcommand{\familydefault}{\sfdefault}
+\RequirePackage{tikz}
+\RequirePackage{calc}
+\RequirePackage{graphicx}
+\RequirePackage{makecell}               % multi-line table cells (\makecell)
+\RequirePackage{booktabs}               % \toprule \midrule \bottomrule
+\RequirePackage{colortbl}               % \rowcolor
+\RequirePackage{tabularx}               % width-filling X columns
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{calc,positioning,arrows.meta,fit,backgrounds}
+
+% ---- SVG / figure inclusion ---------------------------------
+% By default we embed PDF versions of the SVGs via \includegraphics,
+% so the deck compiles anywhere (no Inkscape / -shell-escape needed).
+% The .svg files remain the editable source in each chapter folder.
+%
+% To embed the .svg files directly instead, install Inkscape, compile
+% with  pdflatex -shell-escape , and set \atsvgtrue below (uncomment):
+%   \usepackage{svg}
+%   \atsvgtrue
+\newif\ifatsvg
+\atsvgfalse
+
+% \topoimg[graphicx-options]{basename}
+%   basename is resolved relative to the file that calls it.
+\newcommand{\topoimg}[2][width=\linewidth]{%
+  \ifatsvg
+    \includesvg[#1]{#2}%
+  \else
+    \includegraphics[#1]{#2}%
+  \fi
+}
+
+% =============================================================
+%  BRAND PALETTE  (edit to retheme the whole deck)
+% =============================================================
+\definecolor{atBlack}{HTML}{0A0A0A}   % near-black background
+\definecolor{atInk}{HTML}{111111}     % body text on light
+\definecolor{atPaper}{HTML}{FFFFFF}   % white
+\definecolor{atGray}{HTML}{6B7280}    % muted gray (captions)
+\definecolor{atLine}{HTML}{E5E5E5}    % hairline rules
+\definecolor{atAccent}{HTML}{E0A03C}  % electric amber (energy accent)
+
+% =============================================================
+%  THEME SETUP
+% =============================================================
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{normal text}{fg=atInk,bg=atPaper}
+\setbeamercolor{structure}{fg=atAccent}
+\setbeamercolor{frametitle}{fg=atBlack,bg=atPaper}
+\setbeamercolor{itemize item}{fg=atAccent}
+\setbeamercolor{itemize subitem}{fg=atGray}
+\setbeamercolor{enumerate item}{fg=atAccent}
+\setbeamercolor{block title}{fg=atPaper,bg=atBlack}
+\setbeamercolor{block body}{fg=atInk,bg=atLine!30}
+
+\setbeamerfont{frametitle}{series=\bfseries,size=\LARGE}
+\setbeamerfont{title}{series=\bfseries}
+\setbeamerfont{footline}{size=\scriptsize}
+
+\setbeamertemplate{itemize item}{\raisebox{0.12ex}{\rule{0.7ex}{0.7ex}}}
+\setbeamertemplate{itemize subitem}{\textcolor{atGray}{--}}
+
+\setbeamersize{text margin left=0.9cm, text margin right=0.4cm}
+\setlength{\leftmargini}{1.4em}   % top-level bullets
+\setlength{\leftmarginii}{1.2em}  % sub-bullets
+
+
+% ---- Frame title: bold title + thin accent rule underneath ----
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.5em}%
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.9cm,rightskip=0.9cm]{frametitle}%
+    {\usebeamerfont{frametitle}\insertframetitle}\par%
+    \vspace{-0.5em}%
+    {\color{atAccent}\rule{2.2cm}{2pt}}%
+  \end{beamercolorbox}%
+  \vspace{0em}%
+}
+
+% ---- Footer: wordmark + slide number ----
+\setbeamertemplate{footline}{%
+  \hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.4ex,leftskip=0.9cm,rightskip=0.9cm]{footline}%
+      {\color{atGray}\textbf{AMERICAN}\,\textbf{TERAWATT}}\hfill%
+      {\color{atGray}\insertframenumber}%
+    \end{beamercolorbox}%
+  }%
+}
+
+% =============================================================
+%  REUSABLE COMMANDS
+% =============================================================
+
+% Wordmark (use on dark or light backgrounds via optional color arg)
+\newcommand{\atwordmark}[1][atPaper]{%
+  {\color{#1}\fontsize{13}{15}\selectfont\textbf{AMERICAN}\hspace{0.35em}\textbf{TERAWATT}}%
+}
+
+% A single stat block: {value}{label}  e.g. \statblock{525kV}{DC transmission}
+\newcommand{\statblock}[2]{%
+  \begin{minipage}[t]{0.30\textwidth}
+    \raggedright
+    {\color{atAccent}\fontsize{30}{32}\selectfont\textbf{#1}}\\[0.35em]
+    {\color{atGray}\footnotesize #2}
+  \end{minipage}%
+}
+
+% Full-bleed black frame body helper: \darkframe{ ...content... }
+\newcommand{\darkframe}[1]{%
+  {\setbeamercolor{background canvas}{bg=atBlack}%
+  \begin{frame}[plain]
+    #1
+  \end{frame}}
+}
+
+% ---- Title slide (uses \title/\subtitle/\author/\date metadata) ----
+\newcommand{\titleslide}{%
+  {\setbeamercolor{background canvas}{bg=atBlack}%
+  \begin{frame}[plain]
+    \vspace{0.6cm}
+    \atwordmark[atPaper]
+
+    \vfill
+    {\color{atPaper}\fontsize{34}{38}\selectfont\textbf{\inserttitle}}\\[0.5em]
+    {\color{atGray}\Large \insertsubtitle}
+
+    \vspace{0.6cm}
+    {\color{atAccent}\rule{3.5cm}{2.5pt}}
+    \vfill
+
+    {\color{atGray}\small \insertauthor \quad\textbar\quad \insertdate}
+  \end{frame}}
+}
+
+% ---- Full-bleed image slide: \fullpageimage{<image code>} ----
+% Pass any image command; it is centered and scaled to fill the slide.
+% e.g. \fullpageimage{\topoimg[height=\paperheight]{design/.../network-overview}}
+\newcommand{\fullpageimage}[1]{%
+  {\setbeamercolor{background canvas}{bg=atBlack}%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=center] at (current page.center) {#1};
+    \end{tikzpicture}
+  \end{frame}}
+}
+
+% ---- Section divider: \sectionslide{Title}{Subtitle} ----
+\newcommand{\sectionslide}[2]{%
+  {\setbeamercolor{background canvas}{bg=atBlack}%
+  \begin{frame}[plain]
+    \vfill
+    {\color{atAccent}\rule{2.2cm}{2.5pt}}\\[0.6em]
+    {\color{atPaper}\fontsize{30}{34}\selectfont\textbf{#1}}\\[0.4em]
+    {\color{atGray}\large #2}
+    \vfill
+  \end{frame}}
+}
+
+% ---- Intermediate divider (white bg): \intermezzo{Title}{Subtitle} ----
+% Light-background transition slide between subsections.
+\newcommand{\intermezzo}[2]{%
+  {\setbeamercolor{background canvas}{bg=atPaper}%
+  \begin{frame}[plain]
+    \vfill
+    {\color{atAccent}\rule{2.2cm}{2.5pt}}\\[0.6em]
+    {\color{atBlack}\fontsize{30}{34}\selectfont\textbf{#1}}\\[0.4em]
+    {\color{atGray}\large #2}
+    \vfill
+  \end{frame}}
+}
+
+% ---- Closing slide: \closingslide{tagline}{contact line} ----
+\newcommand{\closingslide}[2]{%
+  {\setbeamercolor{background canvas}{bg=atBlack}%
+  \begin{frame}[plain]
+    \vfill
+    \centering
+    \atwordmark[atPaper]\\[1.2em]
+    {\color{atPaper}\fontsize{26}{30}\selectfont\textbf{#1}}\\[1.4em]
+    {\color{atGray}\small #2}
+    \vfill
+    {\color{atGray}\scriptsize \textcopyright\ \the\year\ American Terawatt. All rights reserved.}
+  \end{frame}}
+}
+
+\endinput

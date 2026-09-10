@@ -1,18 +1,26 @@
 % =============================================================
 %  American Terawatt — Beamer theme / template definitions
-%  Brand basis: americanterawatt.com (stark black/white,
-%  minimal industrial-energy aesthetic).
+%
+%  Brand basis: "Sep26_AmWatt Internal Overview" (Google Slides
+%  company overview deck) — white slides with a lime confidentiality
+%  spine on the left, black Archivo headings, dark panel blocks,
+%  warm sand highlights and Geist Mono technical labels.
 %
 %  Load from the main file with:  \usepackage{theme/atstyle}
 %  (must be loaded after \documentclass{beamer})
+%
+%  Compile with xelatex or lualatex (latexmk runs it twice for
+%  nav/refs):
+%      latexmk -xelatex  presentation.tex     % works on a minimal TeX Live
+%      latexmk -lualatex presentation.tex     % needs luaotfload installed
+%  pdflatex still compiles, but falls back to Helvetica because the
+%  brand fonts in theme/fonts/ need xelatex/lualatex.
 % =============================================================
-\ProvidesPackage{theme/atstyle}[2026/06/30 American Terawatt beamer theme]
+\ProvidesPackage{theme/atstyle}[2026/09/09 American Terawatt beamer theme]
+
+\RequirePackage{iftex}
 
 % ---- Packages -----------------------------------------------
-\RequirePackage[T1]{fontenc}
-\RequirePackage[utf8]{inputenc}
-\RequirePackage{helvet}                 % Helvetica-like sans, portable
-\renewcommand{\familydefault}{\sfdefault}
 \RequirePackage{tikz}
 \RequirePackage{calc}
 \RequirePackage{graphicx}
@@ -24,13 +32,60 @@
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{calc,positioning,arrows.meta,fit,backgrounds}
 
+% =============================================================
+%  BRAND FONTS
+%  Archivo      — display + body (the deck's headline face)
+%  Inter Tight  — secondary / UI-style labels
+%  Geist Mono   — technical labels, diagram callouts, chips
+%  Static TTF instances live in theme/fonts/ (OFL, see OFL-*.txt).
+% =============================================================
+\ifPDFTeX
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage[utf8]{inputenc}
+  \RequirePackage{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+  \newcommand{\atmediumfont}{\normalfont}
+  \newcommand{\atsemiboldfont}{\bfseries}
+  \newcommand{\atsecondaryfont}{\normalfont}
+  \PackageWarningNoLine{theme/atstyle}{%
+    Compiled with pdflatex: falling back to Helvetica.^^J%
+    Use `latexmk -xelatex presentation.tex' for the brand fonts%
+  }
+\else
+  \RequirePackage{fontspec}
+  \defaultfontfeatures{Path = theme/fonts/, Extension = .ttf}
+  \setsansfont{Archivo}[
+    UprightFont     = *-Regular,
+    BoldFont        = *-Bold,
+    ItalicFont      = *-Italic,
+    BoldItalicFont  = *-BoldItalic]
+  \setmainfont{Archivo}[
+    UprightFont     = *-Regular,
+    BoldFont        = *-Bold,
+    ItalicFont      = *-Italic,
+    BoldItalicFont  = *-BoldItalic]
+  \setmonofont{GeistMono}[
+    UprightFont     = *-Regular,
+    BoldFont        = *-Bold,
+    AutoFakeSlant   = 0.12,
+    Scale           = MatchLowercase]
+  \newfontfamily\atmediumfont{Archivo}[
+    UprightFont = *-Medium, BoldFont = *-Bold, ItalicFont = *-Italic]
+  \newfontfamily\atsemiboldfont{Archivo}[
+    UprightFont = *-SemiBold, BoldFont = *-Bold, ItalicFont = *-BoldItalic]
+  \newfontfamily\atsecondaryfont{InterTight}[
+    UprightFont = *-Regular, BoldFont = *-Bold,
+    ItalicFont  = *-Italic,  BoldItalicFont = *-BoldItalic]
+  \renewcommand{\familydefault}{\sfdefault}
+\fi
+
 % ---- SVG / figure inclusion ---------------------------------
 % By default we embed PDF versions of the SVGs via \includegraphics,
 % so the deck compiles anywhere (no Inkscape / -shell-escape needed).
 % The .svg files remain the editable source in each chapter folder.
 %
 % To embed the .svg files directly instead, install Inkscape, compile
-% with  pdflatex -shell-escape , and set \atsvgtrue below (uncomment):
+% with  -shell-escape , and set \atsvgtrue below (uncomment):
 %   \usepackage{svg}
 %   \atsvgtrue
 \newif\ifatsvg
@@ -48,13 +103,40 @@
 
 % =============================================================
 %  BRAND PALETTE  (edit to retheme the whole deck)
+%  Sampled from the company overview deck.
 % =============================================================
-\definecolor{atBlack}{HTML}{0A0A0A}   % near-black background
-\definecolor{atInk}{HTML}{111111}     % body text on light
-\definecolor{atPaper}{HTML}{FFFFFF}   % white
-\definecolor{atGray}{HTML}{6B7280}    % muted gray (captions)
-\definecolor{atLine}{HTML}{E5E5E5}    % hairline rules
-\definecolor{atAccent}{HTML}{E0A03C}  % electric amber (energy accent)
+\definecolor{atLime}{HTML}{CEEB11}     % signal lime — spine, marks, rules
+\definecolor{atAccent}{HTML}{CEEB11}   % alias kept for existing content
+\definecolor{atBlack}{HTML}{121212}    % full-bleed dark backgrounds
+\definecolor{atPanel}{HTML}{272B2B}    % dark header bars / panels
+\definecolor{atInk}{HTML}{232323}      % body text on light
+\definecolor{atPaper}{HTML}{FFFFFF}    % white
+\definecolor{atMist}{HTML}{F2F2F2}     % light fill
+\definecolor{atBox}{HTML}{F7F7F6}      % table / box fill
+\definecolor{atSand}{HTML}{E3E2DA}     % warm highlight rows
+\definecolor{atSandDeep}{HTML}{DEDDD3} % warm highlight, stronger
+\definecolor{atStone}{HTML}{C9C7C2}    % hairline rules, borders
+\definecolor{atLine}{HTML}{C9C7C2}     % alias kept for existing content
+\definecolor{atGray}{HTML}{5C5C5C}     % muted text on light (captions)
+\definecolor{atGrayLight}{HTML}{B5B5B5}% muted text on dark
+
+\arrayrulecolor{atStone}
+
+% The source deck sets body copy flush-left / ragged-right. Uncomment to
+% match it everywhere (tables and figure captions included):
+%   \RequirePackage{ragged2e}
+%   \AtBeginDocument{\RaggedRight}
+
+% =============================================================
+%  GEOMETRY
+% =============================================================
+\newlength{\atspinewidth}\setlength{\atspinewidth}{0.3cm}  % 36/1920 of the slide, per the source artwork
+\newlength{\atmarginleft}\setlength{\atmarginleft}{0.9cm}
+\newlength{\atmarginright}\setlength{\atmarginright}{0.6cm}
+
+\setbeamersize{text margin left=\atmarginleft, text margin right=\atmarginright}
+\setlength{\leftmargini}{1.4em}   % top-level bullets
+\setlength{\leftmarginii}{1.2em}  % sub-bullets
 
 % =============================================================
 %  THEME SETUP
@@ -62,13 +144,15 @@
 \usefonttheme{professionalfonts}
 \setbeamertemplate{navigation symbols}{}
 \setbeamercolor{normal text}{fg=atInk,bg=atPaper}
-\setbeamercolor{structure}{fg=atAccent}
-\setbeamercolor{frametitle}{fg=atBlack,bg=atPaper}
-\setbeamercolor{itemize item}{fg=atAccent}
+\setbeamercolor{structure}{fg=atPanel}
+\setbeamercolor{frametitle}{fg=atBlack}   % no bg: the lime spine must run unbroken
+\setbeamercolor{itemize item}{fg=atPanel}
 \setbeamercolor{itemize subitem}{fg=atGray}
-\setbeamercolor{enumerate item}{fg=atAccent}
-\setbeamercolor{block title}{fg=atPaper,bg=atBlack}
-\setbeamercolor{block body}{fg=atInk,bg=atLine!30}
+\setbeamercolor{enumerate item}{fg=atPanel}
+\setbeamercolor{alerted text}{fg=atPanel}
+\setbeamercolor{block title}{fg=atPaper,bg=atPanel}
+\setbeamercolor{block body}{fg=atInk,bg=atBox}
+\setbeamercolor{caption name}{fg=atGray}
 
 \setbeamerfont{frametitle}{series=\bfseries,size=\LARGE}
 \setbeamerfont{title}{series=\bfseries}
@@ -77,30 +161,57 @@
 \setbeamertemplate{itemize item}{\raisebox{0.12ex}{\rule{0.7ex}{0.7ex}}}
 \setbeamertemplate{itemize subitem}{\textcolor{atGray}{--}}
 
-\setbeamersize{text margin left=0.9cm, text margin right=0.4cm}
-\setlength{\leftmargini}{1.4em}   % top-level bullets
-\setlength{\leftmarginii}{1.2em}  % sub-bullets
-
-
-% ---- Frame title: bold title + thin accent rule underneath ----
+% ---- Frame title: bold black, flush with the text margin ----
 \setbeamertemplate{frametitle}{%
-  \vspace*{0.5em}%
-  \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.9cm,rightskip=0.9cm]{frametitle}%
-    {\usebeamerfont{frametitle}\insertframetitle}\par%
-    \vspace{-0.5em}%
-    {\color{atAccent}\rule{2.2cm}{2pt}}%
+  \vspace*{0.45em}%
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=\atmarginleft,rightskip=\atmarginright]{frametitle}%
+    {\usebeamerfont{frametitle}\hyphenpenalty=10000\exhyphenpenalty=10000%
+     \rightskip=0pt plus 1fil\relax\insertframetitle\par}%
   \end{beamercolorbox}%
-  \vspace{0em}%
+  \vspace{0.15em}%
 }
 
-% ---- Footer: wordmark + slide number ----
-\setbeamertemplate{footline}{%
-  \hbox{%
-    \begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.4ex,leftskip=0.9cm,rightskip=0.9cm]{footline}%
-      {\color{atGray}\textbf{AMERICAN}\,\textbf{TERAWATT}}\hfill%
-      {\color{atGray}\insertframenumber}%
-    \end{beamercolorbox}%
-  }%
+% ---- No bottom footer: the spine carries the slide number ----
+\setbeamertemplate{footline}{}
+
+% =============================================================
+%  CONFIDENTIALITY SPINE (the deck's signature left edge)
+%  Lime strip down the left of every light slide, carrying the
+%  rotated confidentiality notice and the slide number.
+%  Disable globally with \atspinefalse, or per slide inside a group.
+% =============================================================
+\newif\ifatspine \atspinetrue
+\newcommand{\atconfidentialtext}{CONFIDENTIAL NOT FOR PUBLIC DISCLOSURE}
+\newcommand{\atsetconfidential}[1]{\renewcommand{\atconfidentialtext}{#1}}
+
+% theme/img/at-spine.png is the brand artwork for the spine: lime ground,
+% the mark at the top and the rotated confidentiality notice, 36x1080 in
+% the source, i.e. exactly \atspinewidth wide at full slide height. The
+% slide number is NOT part of the artwork -- it is set live below, where
+% the source file places it. Without the artwork the spine is drawn.
+\newif\ifat@hasspine
+\IfFileExists{theme/img/at-spine.png}{\at@hasspinetrue}{}
+
+\setbeamertemplate{background}{%
+  \ifatspine
+    \begin{tikzpicture}[remember picture,overlay]
+      \ifat@hasspine
+        \node[anchor=north west,inner sep=0pt] at (current page.north west)
+          {\includegraphics[height=\paperheight]{theme/img/at-spine}};
+      \else
+        \fill[atLime] (current page.north west)
+          rectangle ([xshift=\atspinewidth]current page.south west);
+        \node[rotate=90,anchor=west,inner sep=0pt,
+              font=\fontsize{4.4}{5}\selectfont\ttfamily]
+          at ([xshift=0.5\atspinewidth,yshift=0.95cm]current page.south west)
+          {\color{atInk}\atconfidentialtext};
+      \fi
+      % live slide number, at the position the source artwork reserves
+      \node[anchor=south,inner sep=0pt,font=\fontsize{5.5}{6}\selectfont\bfseries]
+        at ([xshift=0.51\atspinewidth,yshift=0.1cm]current page.south west)
+        {\color{atBlack}\insertframenumber};
+    \end{tikzpicture}
+  \fi
 }
 
 % =============================================================
@@ -108,51 +219,148 @@
 % =============================================================
 
 % Wordmark (use on dark or light backgrounds via optional color arg)
-\newcommand{\atwordmark}[1][atPaper]{%
-  {\color{#1}\fontsize{13}{15}\selectfont\textbf{AMERICAN}\hspace{0.35em}\textbf{TERAWATT}}%
+\newcommand{\atwordmark}[1][atLime]{%
+  {\color{#1}\fontsize{13}{15}\selectfont\bfseries AMERICAN\hspace{0.35em}TERAWATT}%
 }
+
+% \atmono{...}  — Geist Mono for technical labels and callouts
+\newcommand{\atmono}[1]{{\ttfamily #1}}
+
+% \atchip{...}  — small lime tag, as on the deck's title slide
+\newcommand{\atchip}[1]{%
+  {\setlength{\fboxsep}{3pt}%
+   \colorbox{atLime}{\color{atInk}\fontsize{6}{7}\selectfont\ttfamily #1}}%
+}
+
+% \atblockheader{...} — full-width dark header bar above a table/list
+\newcommand{\atblockheader}[1]{%
+  \noindent\colorbox{atPanel}{%
+    \begin{minipage}{\linewidth-2\fboxsep}
+      \color{atPaper}\bfseries\small #1
+    \end{minipage}}\par\vspace{0.35em}%
+}
+
+% \atnote{...} — small grey source/footnote line at the slide foot
+\newcommand{\atnote}[1]{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,inner sep=0pt,align=left,
+          text width=\paperwidth-\atmarginleft-\atmarginright,
+          font=\fontsize{5.5}{7}\selectfont]
+      at ([xshift=\atmarginleft,yshift=0.42cm]current page.south west)
+      {\color{atGray}#1};
+  \end{tikzpicture}%
+}
+
+% Table row shading helpers
+\newcommand{\atrowhighlight}{\rowcolor{atSand}}
+\newcommand{\atrowfill}{\rowcolor{atBox}}
 
 % A single stat block: {value}{label}  e.g. \statblock{525kV}{DC transmission}
 \newcommand{\statblock}[2]{%
   \begin{minipage}[t]{0.30\textwidth}
     \raggedright
-    {\color{atAccent}\fontsize{30}{32}\selectfont\textbf{#1}}\\[0.35em]
+    {\color{atLime}\rule{1.1cm}{2.5pt}}\\[0.35em]
+    {\color{atInk}\fontsize{30}{32}\selectfont\bfseries #1}\\[0.35em]
     {\color{atGray}\footnotesize #2}
   \end{minipage}%
 }
 
-% Full-bleed black frame body helper: \darkframe{ ...content... }
+% Full-bleed dark frame body helper: \darkframe{ ...content... }
 \newcommand{\darkframe}[1]{%
-  {\setbeamercolor{background canvas}{bg=atBlack}%
+  {\atspinefalse
+  \setbeamercolor{background canvas}{bg=atBlack}%
+  \setbeamercolor{normal text}{fg=atPaper,bg=atBlack}\usebeamercolor[fg]{normal text}%
   \begin{frame}[plain]
     #1
   \end{frame}}
 }
 
+% ---- Cover / divider artwork ------------------------------------
+% The company overview deck uses one full-bleed landscape photograph
+% on the cover and picks it up again, darkened, on section dividers.
+% Drop the image in as theme/img/at-cover.jpg (or .png); without it
+% both slides fall back to the flat near-black ground.
+%   \atsettitleimage{path/to/other-photo}   % to use a different one
+\def\at@titleimage{theme/img/at-cover}
+\newcommand{\atsettitleimage}[1]{\def\at@titleimage{#1}}
+\newif\ifat@hascover
+\IfFileExists{theme/img/at-cover.jpg}{\at@hascovertrue}{}
+\IfFileExists{theme/img/at-cover.JPG}{\at@hascovertrue}{}
+\IfFileExists{theme/img/at-cover.png}{\at@hascovertrue}{}
+\IfFileExists{theme/img/at-cover.pdf}{\at@hascovertrue}{}
+
+% Layout grid: lime hairline frame with four-point marks at the
+% intersections, exactly as the deck lays it over the cover photo.
+\newif\ifat@hasgrid
+\IfFileExists{theme/img/at-grid.png}{\at@hasgridtrue}{}
+\newif\ifatgrid \atgridtrue          % \atgridfalse to switch it off
+
+% Lime wordmark artwork (mark + AMERICAN TERAWATT), deck original.
+\newif\ifat@haswordmark
+\IfFileExists{theme/img/at-wordmark.png}{\at@haswordmarktrue}{}
+\newcommand{\atwordmarkart}[1][0.317\paperwidth]{%
+  \ifat@haswordmark
+    \includegraphics[width=#1]{theme/img/at-wordmark}%
+  \else
+    \atwordmarkstacked[atLime]%
+  \fi
+}
+
+% Stacked wordmark, as bottom-right on the deck cover
+\newcommand{\atwordmarkstacked}[1][atLime]{%
+  {\color{#1}\fontsize{12}{13.5}\selectfont\bfseries
+   \begin{tabular}{@{}l@{}}AMERICAN\\TERAWATT\end{tabular}}%
+}
+
+% \at@photoframe{scrim opacity}{tikz content}
+\newcommand{\at@photoframe}[2]{%
+  {\atspinefalse
+  \setbeamercolor{background canvas}{bg=atBlack}%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \ifat@hascover
+        \node[anchor=center,inner sep=0pt] at (current page.center)
+          {\includegraphics[width=\paperwidth,height=\paperheight]{\at@titleimage}};
+        \fill[black,opacity=#1] (current page.north west) rectangle (current page.south east);
+        % narrow dark sliver at the left edge, as on the deck cover
+        \fill[atBlack] (current page.north west)
+          rectangle ([xshift=\atspinewidth]current page.south west);
+      \fi
+      \ifatgrid\ifat@hasgrid
+        \node[anchor=center,inner sep=0pt] at (current page.center)
+          {\includegraphics[width=\paperwidth,height=\paperheight]{theme/img/at-grid}};
+      \fi\fi
+      #2
+    \end{tikzpicture}
+  \end{frame}}%
+}
+
 % ---- Title slide (uses \title/\subtitle/\author/\date metadata) ----
 \newcommand{\titleslide}{%
-  {\setbeamercolor{background canvas}{bg=atBlack}%
-  \begin{frame}[plain]
-    \vspace{0.6cm}
-    \atwordmark[atPaper]
-
-    \vfill
-    {\color{atPaper}\fontsize{34}{38}\selectfont\textbf{\inserttitle}}\\[0.5em]
-    {\color{atGray}\Large \insertsubtitle}
-
-    \vspace{0.6cm}
-    {\color{atAccent}\rule{3.5cm}{2.5pt}}
-    \vfill
-
-    {\color{atGray}\small \insertauthor \quad\textbar\quad \insertdate}
-  \end{frame}}
+  \at@photoframe{0.20}{%
+    \node[anchor=north west,inner sep=0pt,align=left,text width=0.62\paperwidth]
+      at ([xshift=\atmarginleft,yshift=-1.3cm]current page.north west)
+      {\hyphenpenalty=10000\exhyphenpenalty=10000\rightskip=0pt plus 1fil\relax
+       \color{atPaper}\fontsize{30}{34}\selectfont\bfseries\inserttitle\par
+       \vspace{0.55em}
+       \mdseries\color{atPaper}\fontsize{13}{16}\selectfont\insertsubtitle\par
+       \vspace{0.3em}
+       \mdseries\color{atPaper}\fontsize{8}{10}\selectfont\itshape Last Update: \insertdate};
+    \node[anchor=south west,inner sep=0pt]
+      at ([xshift=\atmarginleft,yshift=0.5cm]current page.south west)
+      {\atchip{\MakeLowercase{\atconfidentialtext}}};
+    \node[anchor=south east,inner sep=0pt]
+      at ([xshift=-0.022\paperwidth,yshift=0.045\paperheight]current page.south east)
+      {\atwordmarkart};
+  }%
 }
 
 % ---- Full-bleed image slide: \fullpageimage{<image code>} ----
 % Pass any image command; it is centered and scaled to fill the slide.
 % e.g. \fullpageimage{\topoimg[height=\paperheight]{design/.../network-overview}}
 \newcommand{\fullpageimage}[1]{%
-  {\setbeamercolor{background canvas}{bg=atBlack}%
+  {\atspinefalse
+  \setbeamercolor{background canvas}{bg=atBlack}%
   \begin{frame}[plain]
     \begin{tikzpicture}[remember picture,overlay]
       \node[anchor=center] at (current page.center) {#1};
@@ -161,15 +369,24 @@
 }
 
 % ---- Section divider: \sectionslide{Title}{Subtitle} ----
+% Identical treatment to the title slide -- same artwork, same scrim,
+% same type sizes and positions, same chip and wordmark. Only the words
+% change, so a divider reads as another cover.
 \newcommand{\sectionslide}[2]{%
-  {\setbeamercolor{background canvas}{bg=atBlack}%
-  \begin{frame}[plain]
-    \vfill
-    {\color{atAccent}\rule{2.2cm}{2.5pt}}\\[0.6em]
-    {\color{atPaper}\fontsize{30}{34}\selectfont\textbf{#1}}\\[0.4em]
-    {\color{atGray}\large #2}
-    \vfill
-  \end{frame}}
+  \at@photoframe{0.20}{%
+    \node[anchor=north west,inner sep=0pt,align=left,text width=0.62\paperwidth]
+      at ([xshift=\atmarginleft,yshift=-1.3cm]current page.north west)
+      {\hyphenpenalty=10000\exhyphenpenalty=10000\rightskip=0pt plus 1fil\relax
+       \color{atPaper}\fontsize{30}{34}\selectfont\bfseries #1\par
+       \vspace{0.55em}
+       \mdseries\color{atPaper}\fontsize{13}{16}\selectfont #2};
+    \node[anchor=south west,inner sep=0pt]
+      at ([xshift=\atmarginleft,yshift=0.5cm]current page.south west)
+      {\atchip{\MakeLowercase{\atconfidentialtext}}};
+    \node[anchor=south east,inner sep=0pt]
+      at ([xshift=-0.022\paperwidth,yshift=0.045\paperheight]current page.south east)
+      {\atwordmarkart};
+  }%
 }
 
 % ---- Intermediate divider (white bg): \intermezzo{Title}{Subtitle} ----
@@ -178,8 +395,8 @@
   {\setbeamercolor{background canvas}{bg=atPaper}%
   \begin{frame}[plain]
     \vfill
-    {\color{atAccent}\rule{2.2cm}{2.5pt}}\\[0.6em]
-    {\color{atBlack}\fontsize{30}{34}\selectfont\textbf{#1}}\\[0.4em]
+    {\color{atLime}\rule{2.2cm}{2.5pt}}\\[0.6em]
+    {\color{atBlack}\fontsize{30}{34}\selectfont\bfseries #1}\\[0.4em]
     {\color{atGray}\large #2}
     \vfill
   \end{frame}}
@@ -187,15 +404,16 @@
 
 % ---- Closing slide: \closingslide{tagline}{contact line} ----
 \newcommand{\closingslide}[2]{%
-  {\setbeamercolor{background canvas}{bg=atBlack}%
+  {\atspinefalse
+  \setbeamercolor{background canvas}{bg=atBlack}%
   \begin{frame}[plain]
     \vfill
     \centering
-    \atwordmark[atPaper]\\[1.2em]
-    {\color{atPaper}\fontsize{26}{30}\selectfont\textbf{#1}}\\[1.4em]
-    {\color{atGray}\small #2}
+    \atwordmark[atLime]\\[1.2em]
+    {\color{atPaper}\fontsize{26}{30}\selectfont\bfseries #1}\\[1.4em]
+    {\color{atGrayLight}\small #2}
     \vfill
-    {\color{atGray}\scriptsize \textcopyright\ \the\year\ American Terawatt. All rights reserved.}
+    {\color{atGrayLight}\scriptsize \textcopyright\ \the\year\ American Terawatt. All rights reserved.}
   \end{frame}}
 }
 
