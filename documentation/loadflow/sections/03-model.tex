@@ -4,15 +4,57 @@
 The link is represented by three elements in series: the rectifier station, the
 DC line, and the inverter station. Each is a single algebraic relation.
 
-\subsection{Line resistance}
-The resistance of one pole conductor over the whole route is the specific
-resistance of a single subconductor, divided by the number of subconductors in
-the bundle (they are electrically in parallel), converted to $\Omega$/mi and
-multiplied by the length:
+\subsection{Conductor resistance and temperature}
+Conductor tables quote DC resistance per unit length at a stated reference
+temperature. The data used here is given at $T_{ref} = 20\,^{\circ}$C, while
+the line in service runs hot, so the specific resistance is corrected to the
+design conductor temperature $T$ before anything else is calculated.
+
+The correction uses the inferred zero-resistance temperature $T_{0}$ --- the
+temperature at which the linear resistance-temperature characteristic of the
+metal extrapolates to zero:
 \begin{equation}
-  R_{HV} = \frac{r'_{HV}\cdot 5.28}{n_{HV}}\; L ,
+  k_{T} = \frac{T_{0}+T}{T_{0}+T_{ref}},
   \qquad
-  R_{DMR} = \frac{r'_{DMR}\cdot 5.28}{n_{DMR}}\; L .
+  r'(T) = r'(T_{ref})\cdot k_{T} .
+  \label{eq:ktemp}
+\end{equation}
+For hard-drawn 1350-H19 aluminium, which carries essentially all of the
+current in an ACSR conductor, $T_{0} = 228\,^{\circ}$C. This is the same
+statement as a temperature coefficient
+$\alpha_{20} = 1/(228+20) = 0.00403\,\mathrm{K}^{-1}$ referred to
+20\,$^{\circ}$C, written in the form that avoids having to restate $\alpha$
+every time the reference temperature changes. The constant is a
+property of the material, so a DMR of a different alloy is corrected with its
+own value.
+
+With the default design temperature of 75\,$^{\circ}$C --- the usual maximum
+continuous operating temperature for an ACSR conductor --- the factor is
+\begin{equation}
+  k_{T} = \frac{228+75}{228+20} = \frac{303}{248} = 1.2218,
+  \label{eq:ktvalue}
+\end{equation}
+that is, the line is some 22\,\% more resistive hot than the conductor table
+suggests. Since line losses scale with resistance, ignoring the correction
+would understate them by the same 22\,\%, which is why the temperature basis
+belongs in the calculation rather than in a footnote.
+
+The correction can be checked against the conductor table itself, which also
+lists an AC resistance at 75\,$^{\circ}$C. For Bluebird,
+$0.00801\cdot 1.2218 = 0.00979\,\Omega$/1000\,ft against a tabulated
+$0.0105\,\Omega$/1000\,ft; the remaining 7\,\% is skin effect, which is why
+the tabulated AC value is not the one to use on a DC line even though its
+temperature is right.
+
+\subsection{Line resistance}
+The resistance of one pole conductor over the whole route is the corrected
+specific resistance of a single subconductor, divided by the number of
+subconductors in the bundle (they are electrically in parallel), converted to
+$\Omega$/mi and multiplied by the length:
+\begin{equation}
+  R_{d,hv} = \frac{r'_{d,hv}\cdot 5.28}{n_{hv}}\cdot L\cdot k_{T},
+  \qquad
+  R_{d,dmr} = \frac{r'_{d,dmr}\cdot 5.28}{n_{dmr}}\cdot L\cdot k_{T}.
   \label{eq:resistance}
 \end{equation}
 The resistance that matters for the flow is that of the complete circuit ---
@@ -20,17 +62,15 @@ out and back --- which depends on the configuration:
 \begin{equation}
   R_{loop} =
   \begin{cases}
-    2\,R_{HV}          & \text{symmetrical monopole, and balanced bipole,}\\[2pt]
-    R_{HV} + R_{DMR}   & \text{bipole with one pole out (DMR return).}
+    2\cdot R_{d,hv}      & \text{symmetrical monopole, and balanced bipole,}\\[2pt]
+    R_{d,hv} + R_{d,dmr}   & \text{bipole with one pole out (DMR return).}
   \end{cases}
   \label{eq:loop}
 \end{equation}
 
-Equation~\eqref{eq:resistance} is a DC resistance at the temperature of the
-underlying conductor table. No temperature correction, skin effect or
-proximity effect is applied; on a DC line the first is the only one that
-matters and it is handled by choosing the conductor data at the design
-temperature (Section~\ref{sec:assumptions}).
+Equation~\eqref{eq:resistance} is a DC resistance. No skin or proximity effect
+is applied; on a DC line neither arises, and temperature is the one correction
+that matters.
 
 \subsection{Converter stations}
 Station losses are taken as a fraction of the power passing through the
@@ -38,12 +78,12 @@ station. The two stations therefore differ only in which side of the
 conversion is known:
 \begin{align}
   \text{rectifier (AC}\rightarrow\text{DC):} \quad
-    & P_{dc,rec} = P_{ac,rec}\,\bigl(1-p_{rec}\bigr)
+    & P_{dc,rec} = P_{ac,rec}\cdot\bigl(1-p_{rec}\bigr)
       \quad\Longleftrightarrow\quad
       P_{ac,rec} = \frac{P_{dc,rec}}{1-p_{rec}},
       \label{eq:rect}\\[2pt]
   \text{inverter (DC}\rightarrow\text{AC):} \quad
-    & P_{ac,inv} = P_{dc,inv}\,\bigl(1-p_{inv}\bigr)
+    & P_{ac,inv} = P_{dc,inv}\cdot\bigl(1-p_{inv}\bigr)
       \quad\Longleftrightarrow\quad
       P_{dc,inv} = \frac{P_{ac,inv}}{1-p_{inv}}.
       \label{eq:inv}
@@ -60,12 +100,12 @@ converts the given $P_{ac,inv}$ into the DC power that must arrive at the
 inverter DC terminals.
 
 \subsection{DC line}
-With the DC voltage held at $V_{d}$ pole-to-ground at the rectifier, the power
+With the DC voltage held at $U_{dpe,rec}$ pole-to-ground at the rectifier, the power
 leaving the rectifier and the resistive loss of the line are
 \begin{equation}
-  P_{dc,rec} = k\,V_{d}\,I_{d},
+  P_{dc,rec} = k\cdot U_{dpe,rec}\cdot I_{d},
   \qquad
-  P_{loss,line} = R_{loop}\,I_{d}^{\,2},
+  P_{loss,line} = R_{loop}\cdot I_{d}^{\,2},
   \qquad
   k =
   \begin{cases}
@@ -76,46 +116,58 @@ leaving the rectifier and the resistive loss of the line are
 \end{equation}
 and the power arriving at the inverter DC terminals is the difference:
 \begin{equation}
-  P_{dc,inv} = k\,V_{d}\,I_{d} - R_{loop}\,I_{d}^{\,2}.
+  P_{dc,inv} = k\cdot U_{dpe,rec}\cdot I_{d} - R_{loop}\cdot I_{d}^{\,2}.
   \label{eq:flow}
 \end{equation}
 Equation~\eqref{eq:flow} is the load flow equation of the link. Everything in
-Section~\ref{sec:solution} follows from solving it.
+Section~\ref{sec:solution} follows from solving it. The factor $k$ is the only
+formal difference between a link running on two poles and one running on one:
+with two poles energised the flow works against twice the pole-to-ground
+voltage, with one pole out against $U_{dpe,rec}$ alone, between the healthy
+pole and the return.
 
 The loss splits between the conductors in proportion to their resistances,
-which is reported separately because the DMR contribution is what distinguishes
-the outage case:
+which is reported separately because the DMR contribution is what
+distinguishes the outage case:
 \begin{equation}
   P_{loss,HV} =
   \begin{cases}
-    2R_{HV} I_{d}^{\,2} & \text{balanced,}\\
-    R_{HV} I_{d}^{\,2}  & \text{one pole out,}
+    2\cdot R_{d,hv}\cdot I_{d}^{\,2} & \text{balanced,}\\
+    R_{d,hv}\cdot I_{d}^{\,2}  & \text{one pole out,}
   \end{cases}
   \qquad
   P_{loss,DMR} =
   \begin{cases}
     0                    & \text{balanced,}\\
-    R_{DMR} I_{d}^{\,2}  & \text{one pole out.}
+    R_{d,dmr}\cdot I_{d}^{\,2}  & \text{one pole out.}
   \end{cases}
   \label{eq:losssplit}
 \end{equation}
+The two contributions must add to $R_{loop}\cdot I_{d}^{2}$ and no more: in the
+one-pole-out case the HV term carries $R_{d,hv}$ alone, not the loop resistance,
+or the DMR loss is counted twice.
 
 \subsection{Receiving-end voltage}
 The voltage at the far end of the line is the sending-end voltage less the drop
-along the conductors the current actually traverses. With two poles energised
-the arrangement is symmetric --- each conductor drops $I_{d}R_{HV}$ and the
+along the conductors the current traverses. With two poles energised the
+arrangement is symmetric --- each conductor drops $I_{d}\cdot R_{d,hv}$ and the
 midpoint stays at ground --- so the pole-to-ground voltage at the inverter is
 \begin{equation}
-  V_{d,inv} = V_{d} - I_{d}\,R_{HV}
-  \qquad\text{(two poles energised),}
+  U_{dpe,inv} = U_{dpe,rec} - I_{d}\cdot R_{d,hv},
   \label{eq:vinv}
 \end{equation}
 which is consistent with Equation~\eqref{eq:flow}, since
-$2V_{d,inv}I_{d} = 2V_{d}I_{d} - 2R_{HV}I_{d}^{2}$. With one pole out the whole
-loop drop appears between the healthy pole and the DMR, so the corresponding
-figure is a pole-to-DMR voltage:
+$2\cdot U_{dpe,inv}\cdot I_{d} = 2\cdot U_{dpe,rec}\cdot I_{d} - 2\cdot R_{d,hv}\cdot I_{d}^{2}$.
+
+With one pole out, Equation~\eqref{eq:vinv} still gives the pole-to-ground
+voltage of the healthy pole at the inverter, but it is no longer the voltage
+across the converter: the DMR carries the return current and rises by
+$I_{d}\cdot R_{d,dmr}$ above the rectifier neutral, so the converter sees
 \begin{equation}
-  V_{d,inv} = V_{d} - I_{d}\,R_{loop}
-  \qquad\text{(one pole out, pole-to-DMR).}
+  U_{dpm,inv} = U_{dpe,rec} - I_{d}\cdot R_{loop}
+  \qquad\text{(one pole out).}
   \label{eq:vinvmono}
 \end{equation}
+Both figures are useful --- the first for insulation coordination against
+ground, the second for the converter operating point --- and the distinction
+matters only in the outage case.
