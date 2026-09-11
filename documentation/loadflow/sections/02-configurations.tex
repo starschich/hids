@@ -14,13 +14,9 @@ and the transmitted power is
 \[
   P_{dc} = U_{dpp}\cdot I_{d}.
 \]
-Because there is no return path other than the second conductor, the loss of
-either conductor is the loss of the whole link --- there is no partial
-operating mode, which is the reason a bipole is preferred where availability
-matters.
 
 \subsection{Bipole with dedicated metallic return}
-The bipole runs two independently controlled poles at $\pm U_{dpe}$ plus a third,
+The bipole with dedicated return runs two independently controlled poles at $\pm U_{dpe}$ plus a third,
 lower-rated conductor: the dedicated metallic return. In normal
 \textbf{balanced} operation the two pole currents are equal and opposite, the
 DMR carries no current, and the circuit is electrically identical to the
@@ -28,7 +24,7 @@ symmetrical monopole:
 \[
   P_{dc} = 2\cdot U_{dpe}\cdot I_{d},
   \qquad
-  I_{d,dmr} = 0 .
+  I_{d\_dmr} = 0 .
 \]
 The DMR earns its place when the bipole becomes unbalanced. With one pole out
 of service the remaining pole keeps operating and its current returns through
@@ -59,27 +55,26 @@ and valve rating. And because the same order of current flows through a loop of
 higher resistance while carrying half the power, the loss as a fraction of the
 transfer is several times worse than in balanced operation.
 
-\begin{table}[t]
+\begin{table}[b]
   \centering
   \renewcommand{\arraystretch}{1.25}
   \begin{tabularx}{\linewidth}{@{}l c c X@{}}
     \toprule
-    \textbf{Operating state} & \textbf{$P_{dc}$} & \textbf{$R_{loop}$} &
+    \multicolumn{1}{c}{\textbf{Operating state}} & \multicolumn{1}{c}{\textbf{$P_{dc}$}} & \multicolumn{1}{c}{\textbf{$R_{loop}$}} &
     \textbf{Current path} \\
     \midrule
     Symmetrical monopole
-      & $U_{dpp}\cdot I_{d}$ & $2\cdot R_{d,hv}$
+      & $U_{dpp}\cdot I_{d}$ & $2\cdot R_{d\_hv}$
       & Out on the positive conductor, back on the negative conductor. \\
     Bipole, balanced
-      & $2\cdot U_{dpe}\cdot I_{d}$ & $2\cdot R_{d,hv}$
+      & $2\cdot U_{dpe}\cdot I_{d}$ & $2\cdot R_{d\_hv}$
       & Out on the positive pole, back on the negative pole; DMR idle. \\
     Bipole, one pole out
-      & $U_{dpe}\cdot I_{d}$ & $R_{d,hv} + R_{d,dmr}$
+      & $U_{dpe}\cdot I_{d}$ & $R_{d\_hv} + R_{d\_dmr}$
       & Out on the healthy pole, back through the DMR. \\
     \bottomrule
   \end{tabularx}
-  \caption{The three operating states covered. The first two obey the same
-           equations; only the third involves the DMR.}
+  \caption{Topologies covered in the analysis}
   \label{tab:cases}
 \end{table}
 

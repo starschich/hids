@@ -52,9 +52,9 @@ specific resistance of a single subconductor, divided by the number of
 subconductors in the bundle (they are electrically in parallel), converted to
 $\Omega$/mi and multiplied by the length:
 \begin{equation}
-  R_{d,hv} = \frac{r'_{d,hv}\cdot 5.28}{n_{hv}}\cdot L\cdot k_{T},
+  R_{d\_hv} = \frac{r'_{d\_hv}\cdot 5.28}{n_{hv}}\cdot L\cdot k_{T},
   \qquad
-  R_{d,dmr} = \frac{r'_{d,dmr}\cdot 5.28}{n_{dmr}}\cdot L\cdot k_{T}.
+  R_{d\_dmr} = \frac{r'_{d\_dmr}\cdot 5.28}{n_{dmr}}\cdot L\cdot k_{T}.
   \label{eq:resistance}
 \end{equation}
 The resistance that matters for the flow is that of the complete circuit ---
@@ -62,8 +62,8 @@ out and back --- which depends on the configuration:
 \begin{equation}
   R_{loop} =
   \begin{cases}
-    2\cdot R_{d,hv}      & \text{symmetrical monopole, and balanced bipole,}\\[2pt]
-    R_{d,hv} + R_{d,dmr}   & \text{bipole with one pole out (DMR return).}
+    2\cdot R_{d\_hv}      & \text{symmetrical monopole, and balanced bipole,}\\[2pt]
+    R_{d\_hv} + R_{d\_dmr}   & \text{bipole with one pole out (DMR return).}
   \end{cases}
   \label{eq:loop}
 \end{equation}
@@ -78,14 +78,14 @@ station. The two stations therefore differ only in which side of the
 conversion is known:
 \begin{align}
   \text{rectifier (AC}\rightarrow\text{DC):} \quad
-    & P_{dc,rec} = P_{ac,rec}\cdot\bigl(1-p_{rec}\bigr)
+    & P_{dc\_rec} = P_{ac\_rec}\cdot\bigl(1-p_{rec}\bigr)
       \quad\Longleftrightarrow\quad
-      P_{ac,rec} = \frac{P_{dc,rec}}{1-p_{rec}},
+      P_{ac\_rec} = \frac{P_{dc\_rec}}{1-p_{rec}},
       \label{eq:rect}\\[2pt]
   \text{inverter (DC}\rightarrow\text{AC):} \quad
-    & P_{ac,inv} = P_{dc,inv}\cdot\bigl(1-p_{inv}\bigr)
+    & P_{ac\_inv} = P_{dc\_inv}\cdot\bigl(1-p_{inv}\bigr)
       \quad\Longleftrightarrow\quad
-      P_{dc,inv} = \frac{P_{ac,inv}}{1-p_{inv}}.
+      P_{dc\_inv} = \frac{P_{ac\_inv}}{1-p_{inv}}.
       \label{eq:inv}
 \end{align}
 A single fraction lumps everything inside the station fence: valve conduction
@@ -96,16 +96,16 @@ real loss curve; see Section~\ref{sec:assumptions}.
 
 Because power is specified at the receiving AC terminals,
 Equation~\eqref{eq:inv} is the \emph{entry point} of the whole calculation: it
-converts the given $P_{ac,inv}$ into the DC power that must arrive at the
+converts the given $P_{ac\_inv}$ into the DC power that must arrive at the
 inverter DC terminals.
 
 \subsection{DC line}
-With the DC voltage held at $U_{dpe,rec}$ pole-to-ground at the rectifier, the power
+With the DC voltage held at $U_{dpe\_rec}$ pole-to-ground at the rectifier, the power
 leaving the rectifier and the resistive loss of the line are
 \begin{equation}
-  P_{dc,rec} = k\cdot U_{dpe,rec}\cdot I_{d},
+  P_{dc\_rec} = k\cdot U_{dpe\_rec}\cdot I_{d},
   \qquad
-  P_{loss,line} = R_{loop}\cdot I_{d}^{\,2},
+  P_{loss\_line} = R_{loop}\cdot I_{d}^{\,2},
   \qquad
   k =
   \begin{cases}
@@ -116,55 +116,55 @@ leaving the rectifier and the resistive loss of the line are
 \end{equation}
 and the power arriving at the inverter DC terminals is the difference:
 \begin{equation}
-  P_{dc,inv} = k\cdot U_{dpe,rec}\cdot I_{d} - R_{loop}\cdot I_{d}^{\,2}.
+  P_{dc\_inv} = k\cdot U_{dpe\_rec}\cdot I_{d} - R_{loop}\cdot I_{d}^{\,2}.
   \label{eq:flow}
 \end{equation}
 Equation~\eqref{eq:flow} is the load flow equation of the link. Everything in
 Section~\ref{sec:solution} follows from solving it. The factor $k$ is the only
 formal difference between a link running on two poles and one running on one:
 with two poles energised the flow works against twice the pole-to-ground
-voltage, with one pole out against $U_{dpe,rec}$ alone, between the healthy
+voltage, with one pole out against $U_{dpe\_rec}$ alone, between the healthy
 pole and the return.
 
 The loss splits between the conductors in proportion to their resistances,
 which is reported separately because the DMR contribution is what
 distinguishes the outage case:
 \begin{equation}
-  P_{loss,HV} =
+  P_{loss\_hv} =
   \begin{cases}
-    2\cdot R_{d,hv}\cdot I_{d}^{\,2} & \text{balanced,}\\
-    R_{d,hv}\cdot I_{d}^{\,2}  & \text{one pole out,}
+    2\cdot R_{d\_hv}\cdot I_{d}^{\,2} & \text{balanced,}\\
+    R_{d\_hv}\cdot I_{d}^{\,2}  & \text{one pole out,}
   \end{cases}
   \qquad
-  P_{loss,DMR} =
+  P_{loss\_dmr} =
   \begin{cases}
     0                    & \text{balanced,}\\
-    R_{d,dmr}\cdot I_{d}^{\,2}  & \text{one pole out.}
+    R_{d\_dmr}\cdot I_{d}^{\,2}  & \text{one pole out.}
   \end{cases}
   \label{eq:losssplit}
 \end{equation}
 The two contributions must add to $R_{loop}\cdot I_{d}^{2}$ and no more: in the
-one-pole-out case the HV term carries $R_{d,hv}$ alone, not the loop resistance,
+one-pole-out case the HV term carries $R_{d\_hv}$ alone, not the loop resistance,
 or the DMR loss is counted twice.
 
 \subsection{Receiving-end voltage}
 The voltage at the far end of the line is the sending-end voltage less the drop
 along the conductors the current traverses. With two poles energised the
-arrangement is symmetric --- each conductor drops $I_{d}\cdot R_{d,hv}$ and the
+arrangement is symmetric --- each conductor drops $I_{d}\cdot R_{d\_hv}$ and the
 midpoint stays at ground --- so the pole-to-ground voltage at the inverter is
 \begin{equation}
-  U_{dpe,inv} = U_{dpe,rec} - I_{d}\cdot R_{d,hv},
+  U_{dpe\_inv} = U_{dpe\_rec} - I_{d}\cdot R_{d\_hv},
   \label{eq:vinv}
 \end{equation}
 which is consistent with Equation~\eqref{eq:flow}, since
-$2\cdot U_{dpe,inv}\cdot I_{d} = 2\cdot U_{dpe,rec}\cdot I_{d} - 2\cdot R_{d,hv}\cdot I_{d}^{2}$.
+$2\cdot U_{dpe\_inv}\cdot I_{d} = 2\cdot U_{dpe\_rec}\cdot I_{d} - 2\cdot R_{d\_hv}\cdot I_{d}^{2}$.
 
 With one pole out, Equation~\eqref{eq:vinv} still gives the pole-to-ground
 voltage of the healthy pole at the inverter, but it is no longer the voltage
 across the converter: the DMR carries the return current and rises by
-$I_{d}\cdot R_{d,dmr}$ above the rectifier neutral, so the converter sees
+$I_{d}\cdot R_{d\_dmr}$ above the rectifier neutral, so the converter sees
 \begin{equation}
-  U_{dpm,inv} = U_{dpe,rec} - I_{d}\cdot R_{loop}
+  U_{dpm\_inv} = U_{dpe\_rec} - I_{d}\cdot R_{loop}
   \qquad\text{(one pole out).}
   \label{eq:vinvmono}
 \end{equation}

@@ -2,13 +2,16 @@
 \label{sec:assumptions}
 
 \subsection{Assumptions}
-\begin{table}[t]
+Table~\ref{tab:assumptions} lists what the relations take for granted, and what
+each assumption costs in accuracy.
+
+\begin{table}[!ht]
   \centering
   \small
   \renewcommand{\arraystretch}{1.25}
   \begin{tabularx}{\linewidth}{@{}l X@{}}
     \toprule
-    \textbf{Assumption} & \textbf{Consequence and justification} \\
+    \multicolumn{1}{c}{\textbf{Assumption}} & \textbf{Consequence and justification} \\
     \midrule
     Purely resistive DC line
       & No inductance or capacitance appears in the relations. Correct for a
@@ -27,20 +30,13 @@
       & The steel core of an ACSR conductor is neglected in the resistance,
         which is standard practice; $T_{0} = 228\,^{\circ}$C is the aluminium
         constant. \\
-    Ideal voltage regulation at the rectifier
-      & $U_{dpe,rec}$ holds exactly at the sending terminals irrespective of
-        loading. Real control holds it within a droop band. \\
     Station losses proportional to throughput
       & No no-load term, so light-load efficiency is overstated while
-        full-load efficiency is representative. Adequate for screening; a
-        two-term model ($p_{0} + p_{1}P$) is the natural refinement. \\
+        full-load efficiency is representative.\\
     Balanced bipole carries no DMR current
       & The pole currents are taken as exactly equal. In service a small
         unbalance flows in the DMR; its loss contribution is second order,
         going with the square of a few percent of $I_{d}$. \\
-    Single operating point
-      & Each case is one dispatch, not a duty cycle. Annual energy losses
-        require a loading profile and a separate loss-energy calculation. \\
     \bottomrule
   \end{tabularx}
   \caption{Assumptions underlying the load flow relations.}
@@ -56,20 +52,11 @@ study:
         the converter boundary in these relations. Converter reactive
         capability and AC network voltage support belong to the AC side of the
         design and, ultimately, to interconnection studies.
-  \item \textbf{Ground and electrode return.} Only metallic return is
-        treated. A bipole operating with earth return has a different loop
-        resistance and a set of electrode, corrosion and interference
-        constraints that sit outside a load flow.
   \item \textbf{Thermal rating of the conductor.} The flow yields the current
         and assumes a conductor temperature; whether that current actually
         produces that temperature at the ambient and wind conditions of the
         route is an ampacity calculation, and the two should be reconciled
         once the route conditions are fixed.
-  \item \textbf{Converter overload and short-term ratings.} The margin of
-        Equation~\eqref{eq:margin} is a continuous rating margin, not an
-        overload capability.
-  \item \textbf{Multi-terminal and intermediate taps.} The relations assume a
-        two-terminal, point-to-point link.
   \item \textbf{Dynamics.} Control response, ramp rates, pole-block
         transients and the transition into the one-pole-out state are all
         outside a steady-state flow.
@@ -77,11 +64,6 @@ study:
 
 \subsection{Open items}
 \begin{enumerate}[label=(\arabic*)]
-  \item \textbf{DMR conductor sizing.} The balanced bipole is described with a
-        two-subconductor Chukar DMR and the outage case with one. Since the
-        DMR only carries current when a pole is lost, the outage figure is the
-        one that matters, and the difference is 76\,MW of line loss
-        (Section~\ref{sec:reference}). To be settled with the real DMR design.
   \item \textbf{Conductor temperature basis.} 75\,$^{\circ}$C is the maximum
         continuous temperature and gives a worst-case loss and voltage drop.
         Whether losses should also be reported at an average operating
@@ -91,8 +73,4 @@ study:
         VSC-class value. To be replaced with vendor loss curves, at which
         point the two-term loss model of Table~\ref{tab:assumptions} becomes
         worthwhile.
-  \item \textbf{Loss-energy evaluation.} A loading profile and an annual
-        loss-energy figure are the natural extension, since it is energy
-        rather than peak loss that enters an economic comparison of voltage
-        levels and conductor sizes.
 \end{enumerate}

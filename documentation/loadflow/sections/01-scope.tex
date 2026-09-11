@@ -14,7 +14,7 @@ Power flows from the \textbf{rectifier} (sending station) to the
   \item \textbf{Power is defined at the receiving end}, at the AC terminals of
         the inverter station.
   \item \textbf{DC voltage is regulated at the rectifier DC terminals.} The
-        nominal dc voltage $U_{dpe,rec}$ is defined at the sending station and
+        nominal dc voltage $U_{dpe\_rec}$ is defined at the sending station and
         the receiving-end voltage comes out lower by the resistive drop of the line.
   \item \textbf{Converter station losses are a fraction of station throughput}, applied per station, rather than a fixed number of
         megawatts.
@@ -61,7 +61,7 @@ symbol wherever a statement holds for either pole or for either station.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\linewidth]{figures/bip-notation.pdf}
+  \includegraphics[width=\linewidth]{figures/dc-notation-bip.pdf}
   \caption{DC-side notation for BIP}
   \label{fig:bip-notation}
 \end{figure}
@@ -71,29 +71,28 @@ symbol wherever a statement holds for either pole or for either station.
   \renewcommand{\arraystretch}{1.25}
   \begin{tabularx}{\linewidth}{@{}l l X@{}}
     \toprule
-    \textbf{Symbol} & \textbf{Unit} & \textbf{Quantity} \\
+    \multicolumn{1}{c}{\textbf{Symbol}} & \multicolumn{1}{c}{\textbf{Unit}} & \textbf{Quantity} \\
     \midrule
-    $P_{ac,inv}$   & MW            & AC power at the receiving end (inverter AC terminals) --- \emph{given} \\
-    $P_{ac,rec}$   & MW            & AC power drawn at the sending end (rectifier AC terminals) \\
-    $P_{dc,inv}$   & MW            & DC power at the inverter DC terminals \\
-    $P_{dc,rec}$   & MW            & DC power at the rectifier DC terminals \\
+    $P_{ac\_inv}$   & MW            & AC power at the receiving end (inverter AC terminals) --- \emph{given} \\
+    $P_{ac\_rec}$   & MW            & AC power drawn at the sending end (rectifier AC terminals) \\
+    $P_{dc\_inv}$   & MW            & DC power at the inverter DC terminals \\
+    $P_{dc\_rec}$   & MW            & DC power at the rectifier DC terminals \\
     $U_{dpe}$      & kV            & DC pole-to-ground (earth) voltage \\
-    $U_{dpe,rec}$  & kV            & DC pole-to-ground voltage at the rectifier --- \emph{given} \\
-    $U_{dpe,inv}$  & kV            & DC pole-to-ground voltage at the inverter \\
+    $U_{dpe\_rec}$  & kV            & DC pole-to-ground voltage at the rectifier --- \emph{given} \\
+    $U_{dpe\_inv}$  & kV            & DC pole-to-ground voltage at the inverter \\
     $U_{dpp}$      & kV            & DC voltage across a converter's DC terminals; $U_{dpp} = 2\cdot U_{dpe}$ for a symmetrical monopole \\
     $U_{dmr}$      & kV            & DMR potential at the station where the return is not earthed \\
-    $U_{dpm,inv}$  & kV            & DC pole-to-DMR voltage at the inverter (one pole out) \\
+    $U_{dpm\_inv}$  & kV            & DC pole-to-DMR voltage at the inverter (one pole out) \\
     $I_{d}$        & kA            & DC pole current, operating value \\
-    $I_{rated}$    & kA            & DC pole current including design margin \\
     $k$            & ---           & Number of energised poles: 2 normally, 1 with a pole out \\
     $L$            & mi            & DC line length \\
-    $r'_{d,hv}$      & $\Omega$/1000\,ft & Specific resistance of one HV subconductor \\
+    $r'_{d\_hv}$      & $\Omega$/1000\,ft & Specific resistance of one HV subconductor \\
     $n_{hv}$       & ---           & Subconductors per pole (bundle count) \\
-    $R_{d,hv}$     & $\Omega$      & Resistance of one pole conductor over the whole length \\
-    $r'_{d,dmr}$     & $\Omega$/1000\,ft & Specific resistance of one DMR subconductor \\
+    $R_{d\_hv}$     & $\Omega$      & Resistance of one pole conductor over the whole length \\
+    $r'_{d\_dmr}$     & $\Omega$/1000\,ft & Specific resistance of one DMR subconductor \\
     $n_{dmr}$      & ---           & Subconductors in the DMR bundle \\
-    $R_{d,dmr}$    & $\Omega$      & Resistance of the DMR over the whole length \\
-    $I_{d,dmr}$    & kA            & Current in the DMR; zero when the bipole is balanced \\
+    $R_{d\_dmr}$    & $\Omega$      & Resistance of the DMR over the whole length \\
+    $I_{d\_dmr}$    & kA            & Current in the DMR; zero when the bipole is balanced \\
     $R_{loop}$     & $\Omega$      & Resistance of the complete current path (out and return) \\
     $T_{ref}$      & $^{\circ}$C   & Temperature the conductor resistance data refers to \\
     $T$            & $^{\circ}$C   & Conductor temperature the flow is evaluated at \\
@@ -101,11 +100,12 @@ symbol wherever a statement holds for either pole or for either station.
     $k_{T}$        & ---           & Temperature correction factor on the specific resistance \\
     $p_{rec}$      & ---           & Rectifier station loss fraction of throughput \\
     $p_{inv}$      & ---           & Inverter station loss fraction of throughput \\
-    $m$            & ---           & Margin applied to the DC current for rating purposes \\
-    $P_{loss,line}$& MW            & Total resistive loss of the DC line \\
+    $P_{loss\_line}$& MW            & Total resistive loss of the DC line \\
     $\eta$         & ---           & Overall AC-to-AC efficiency of the link \\
     \bottomrule
   \end{tabularx}
   \caption{Notation.}
   \label{tab:notation}
 \end{table}
+
+\pagebreak

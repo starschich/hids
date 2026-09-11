@@ -4,35 +4,34 @@
 \subsection{The cases}
 Four operating cases are worked through below: the 1\,GW symmetrical monopole,
 a double symmetrical monopole variant, the 3\,GW bipole, and that bipole
-holding half its transfer on one pole. Station losses are 1.2\,\% per station
-and the current margin 5\,\%. All conductor data is the DC resistance at
+holding half its transfer on one pole. Station losses are 1.2\,\% per station.
+All conductor data is the DC resistance at
 20\,$^{\circ}$C from the ACSR tables and the flow is evaluated at a conductor
 temperature of 75\,$^{\circ}$C.
 
-\begin{table}[t]
+\begin{table}[!ht]
   \centering
   \small
   \renewcommand{\arraystretch}{1.25}
   \begin{tabularx}{\linewidth}{@{}X l r r r r@{}}
     \toprule
-    \textbf{Given} & \textbf{Unit} &
-    \textbf{SMP} & \textbf{DSMP} & \textbf{BIP} &
-    \textbf{BIP 1 pole} \\
+    \textbf{Given} & \multicolumn{1}{c}{\textbf{Unit}} &
+    \multicolumn{1}{c}{\textbf{SMP}} & \multicolumn{1}{c}{\textbf{DSMP}} & \multicolumn{1}{c}{\textbf{BIP}} &
+    \multicolumn{1}{c}{\textbf{BIP 1 pole}} \\
     \midrule
     AC power at receiving end     & MW                & 1{,}000 & 1{,}500 & 3{,}000 & 1{,}500 \\
-    DC voltage pole-to-ground $U_{dpe,rec}$ & kV                & 400     & 400     & 525     & 525     \\
+    DC voltage pole-to-ground $U_{dpe\_rec}$ & kV                & 400     & 400     & 525     & 525     \\
     DC line length                & mi                & 160     & 200     & 200     & 200     \\
     HV conductor                  & ---               & Bluebird & Chukar & Bluebird & Bluebird \\
     HV subconductors per pole     & ---               & 1       & 2       & 2       & 2       \\
     Specific HV resistance        & $\Omega$/1000\,ft & 0.00801 & 0.00970 & 0.00801 & 0.00801 \\
     DMR conductor                 & ---               & n/a     & n/a     & Chukar  & Chukar  \\
-    DMR subconductors             & ---               & n/a     & n/a     & 2       & 1       \\
+    DMR subconductors             & ---               & n/a     & n/a     & 2       & 2       \\
     Specific DMR resistance       & $\Omega$/1000\,ft & n/a     & n/a     & 0.00970 & 0.00970 \\
     Reference temperature $T_{ref}$ & $^{\circ}$C     & 20      & 20      & 20      & 20      \\
     Conductor temperature $T$     & $^{\circ}$C       & 75      & 75      & 75      & 75      \\
     Zero-resistance temperature $T_{0}$ & $^{\circ}$C & 228     & 228     & 228     & 228     \\
     Losses per converter station  & \%                & 1.2     & 1.2     & 1.2     & 1.2     \\
-    Margin for DC current         & \%                & 5       & 5       & 5       & 5       \\
     \bottomrule
   \end{tabularx}
   \caption{Given quantities for the four cases. BIP\,1\,pole is the 3\,GW
@@ -50,15 +49,16 @@ Equation~\eqref{eq:ktvalue}:
 Applying Equation~\eqref{eq:resistance} to the bipole, whose HV conductor and
 length the outage case shares:
 \[
-  R_{d,hv} = \frac{0.00801\cdot 5.28}{2}\cdot 200 \cdot 1.2218
+  R_{d\_hv} = \frac{0.00801\cdot 5.28}{2}\cdot 200 \cdot 1.2218
          = 4.229 \cdot 1.2218 = 5.167\ \Omega,
 \]
-and to the single-subconductor DMR that carries the return in the outage case:
+and to the DMR that carries the return in the outage case, a two-subconductor
+Chukar bundle like the poles:
 \[
-  R_{d,dmr} = \frac{0.00970\cdot 5.28}{1}\cdot 200 \cdot 1.2218
-          = 10.243 \cdot 1.2218 = 12.515\ \Omega .
+  R_{d\_dmr} = \frac{0.00970\cdot 5.28}{2}\cdot 200 \cdot 1.2218
+          = 5.122 \cdot 1.2218 = 6.257\ \Omega .
 \]
-So $R_{loop} = 10.335\,\Omega$ balanced and $17.682\,\Omega$ with the return
+So $R_{loop} = 10.335\,\Omega$ balanced and $11.425\,\Omega$ with the return
 through the DMR. At the 20\,$^{\circ}$C data temperature those figures would
 have been $8.459\,\Omega$ and $14.472\,\Omega$: the correction alone adds
 22\,\% to every resistive loss reported below.
@@ -66,36 +66,36 @@ have been $8.459\,\Omega$ and $14.472\,\Omega$: the correction alone adds
 \subsection{Balanced bipole, step by step}
 Following Section~\ref{sec:solution} with $k=2$:
 \begin{align*}
-  P_{dc,inv} &= \frac{3000}{1-0.012} = 3036.4\ \mathrm{MW}
+  P_{dc\_inv} &= \frac{3000}{1-0.012} = 3036.4\ \mathrm{MW}
               && \text{Eq.~\eqref{eq:step1}} \\
   I_{d}      &= \frac{525 - \sqrt{525^{2} - 10.335\cdot 3036.4}}{10.335}
               = \frac{525 - 494.21}{10.335} = 2.979\ \mathrm{kA}
               && \text{Eq.~\eqref{eq:current2}} \\
-  P_{dc,rec} &= 2\cdot 525 \cdot 2.979 = 3128.2\ \mathrm{MW}
+  P_{dc\_rec} &= 2\cdot 525 \cdot 2.979 = 3128.2\ \mathrm{MW}
               && \text{Eq.~\eqref{eq:c1}} \\
-  P_{loss,line} &= 10.335 \cdot 2.979^{2} = 91.7\ \mathrm{MW}
+  P_{loss\_line} &= 10.335 \cdot 2.979^{2} = 91.7\ \mathrm{MW}
               && \text{Eq.~\eqref{eq:c2}} \\
-  U_{dpe,inv}  &= 525 - 2.979\cdot 5.167 = 509.6\ \mathrm{kV}
+  U_{dpe\_inv}  &= 525 - 2.979\cdot 5.167 = 509.6\ \mathrm{kV}
               && \text{Eq.~\eqref{eq:vinv}} \\
-  P_{ac,rec} &= \frac{3128.2}{1-0.012} = 3166.2\ \mathrm{MW}
+  P_{ac\_rec} &= \frac{3128.2}{1-0.012} = 3166.2\ \mathrm{MW}
               && \text{Eq.~\eqref{eq:c4}} \\
   \eta       &= \frac{3000}{3166.2} = 94.75\,\%
               && \text{Eq.~\eqref{eq:c6}}
 \end{align*}
 The loss balance of Equation~\eqref{eq:closure} closes:
-$38.0 + 91.7 + 36.4 = 166.2\ \mathrm{MW} = P_{ac,rec}-P_{ac,inv}$.
+$38.0 + 91.7 + 36.4 = 166.2\ \mathrm{MW} = P_{ac\_rec}-P_{ac\_inv}$.
 
 \subsection{One pole out, step by step}
 The same plant with $k=1$, the DMR in the loop, and its own 1500\,MW target:
 \begin{align*}
-  P_{dc,inv} &= \frac{1500}{1-0.012} = 1518.2\ \mathrm{MW} \\
-  I_{d}      &= \frac{525 - \sqrt{525^{2} - 4\cdot 17.682\cdot 1518.2}}
-                     {2\cdot 17.682}
-              = \frac{525 - 410.16}{35.36} = 3.247\ \mathrm{kA}
+  P_{dc\_inv} &= \frac{1500}{1-0.012} = 1518.2\ \mathrm{MW} \\
+  I_{d}      &= \frac{525 - \sqrt{525^{2} - 4\cdot 11.425\cdot 1518.2}}
+                     {2\cdot 11.425}
+              = \frac{525 - 454.14}{22.85} = 3.101\ \mathrm{kA}
               && \text{Eq.~\eqref{eq:current}} \\
-  P_{dc,rec} &= 525 \cdot 3.247 = 1704.6\ \mathrm{MW} \\
-  P_{loss,line} &= 5.167\cdot 3.247^{2} + 12.515\cdot 3.247^{2}
-                 = 54.5 + 131.9 = 186.4\ \mathrm{MW}
+  P_{dc\_rec} &= 525 \cdot 3.101 = 1628.1\ \mathrm{MW} \\
+  P_{loss\_line} &= 5.167\cdot 3.101^{2} + 6.257\cdot 3.101^{2}
+                 = 49.7 + 60.2 = 109.9\ \mathrm{MW}
               && \text{Eq.~\eqref{eq:losssplit}}
 \end{align*}
 Half the power, and yet a higher current and twice the line loss of the
@@ -105,33 +105,31 @@ balanced bipole. This is the case that sizes the conductor.
 Table~\ref{tab:refresults} collects the four cases, each at the
 75\,$^{\circ}$C conductor temperature.
 
-\begin{table}[t]
+\begin{table}[!ht]
   \centering
   \small
   \renewcommand{\arraystretch}{1.25}
   \begin{tabularx}{\linewidth}{@{}X l r r r r@{}}
     \toprule
-    \textbf{Result} & \textbf{Unit} &
-    \textbf{SMP} & \textbf{DSMP} & \textbf{BIP} &
-    \textbf{BIP 1 pole} \\
+    \textbf{Result} & \multicolumn{1}{c}{\textbf{Unit}} &
+    \multicolumn{1}{c}{\textbf{SMP}} & \multicolumn{1}{c}{\textbf{DSMP}} & \multicolumn{1}{c}{\textbf{BIP}} & \multicolumn{1}{c}{\textbf{BIP 1 pole}} \\
     \midrule
     Temperature correction factor    & ---      & 1.2218  & 1.2218  & 1.2218  & 1.2218  \\
     HV resistance per pole           & $\Omega$ & 8.268   & 6.257   & 5.167   & 5.167   \\
-    DMR resistance                   & $\Omega$ & ---     & ---     & ---     & 12.515  \\
-    Loop resistance                  & $\Omega$ & 16.535  & 12.515  & 10.335  & 17.682  \\
+    DMR resistance                   & $\Omega$ & ---     & ---     & ---     & 6.257   \\
+    Loop resistance                  & $\Omega$ & 16.535  & 12.515  & 10.335  & 11.425  \\
     DC power at inverter terminals   & MW       & 1{,}012.1 & 1{,}518.2 & 3{,}036.4 & 1{,}518.2 \\
-    DC current, operating            & A        & 1{,}300 & 1{,}958 & 2{,}979 & 3{,}247 \\
-    DC current, rated (5\,\% margin) & A        & 1{,}365 & 2{,}056 & 3{,}128 & 3{,}409 \\
-    DC power at rectifier terminals  & MW       & 1{,}040.1 & 1{,}566.2 & 3{,}128.2 & 1{,}704.6 \\
-    Line losses, HV conductors       & MW       & 27.9    & 48.0    & 91.7    & 54.5    \\
-    Line losses, DMR                 & MW       & ---     & ---     & 0.0     & 131.9   \\
-    Total DC line losses             & MW       & 27.9    & 48.0    & 91.7    & 186.4   \\
-    DC voltage at inverter $U_{dpe,inv}$ & kV    & 389.3   & 387.7   & 509.6   & 508.2   \\
-    DC voltage at inverter $U_{dpm,inv}$ & kV       & ---     & ---     & ---     & 467.6   \\
-    AC power at sending end          & MW       & 1{,}052.7 & 1{,}585.2 & 3{,}166.2 & 1{,}725.3 \\
-    Total losses, AC to AC           & MW       & 52.7    & 85.2    & 166.2   & 225.3   \\
-    Overall efficiency               & \%       & 94.99   & 94.62   & 94.75   & 86.94   \\
-    Maximum transferable power       & MW       & 9{,}676 & 12{,}785 & 26{,}671 & 3{,}897 \\
+    DC current, operating            & A        & 1{,}300 & 1{,}958 & 2{,}979 & 3{,}101 \\
+    DC power at rectifier terminals  & MW       & 1{,}040.1 & 1{,}566.2 & 3{,}128.2 & 1{,}628.1 \\
+    Line losses, HV conductors       & MW       & 27.9    & 48.0    & 91.7    & 49.7    \\
+    Line losses, DMR                 & MW       & ---     & ---     & 0.0     & 60.2    \\
+    Total DC line losses             & MW       & 27.9    & 48.0    & 91.7    & 109.9   \\
+    DC voltage at inverter $U_{dpe\_inv}$ & kV    & 389.3   & 387.7   & 509.6   & 509.0   \\
+    DC voltage at inverter $U_{dpm\_inv}$ & kV       & ---     & ---     & ---     & 489.6   \\
+    AC power at sending end          & MW       & 1{,}052.7 & 1{,}585.2 & 3{,}166.2 & 1{,}647.9 \\
+    Total losses, AC to AC           & MW       & 52.7    & 85.2    & 166.2   & 147.9   \\
+    Overall efficiency               & \%       & 94.99   & 94.62   & 94.75   & 91.03   \\
+    Maximum transferable power       & MW       & 9{,}676 & 12{,}785 & 26{,}671 & 6{,}031 \\
     \bottomrule
   \end{tabularx}
   \caption{Results at a conductor temperature of 75\,$^{\circ}$C.}
@@ -141,19 +139,17 @@ Table~\ref{tab:refresults} collects the four cases, each at the
 \subsection{Reading the results}
 Four points are worth drawing out.
 
-\textbf{The outage state sets the current rating.} At 3247\,A the bipole
-holding half its transfer on one pole draws 9\,\% more current than it does at
-full power on two, and with the margin applied it asks for 3409\,A against
-3128\,A in normal operation. A conductor or valve sized on balanced operation
+\textbf{The outage state sets the current rating.} At 3101\,A the bipole
+holding half its transfer on one pole draws 4\,\% more current than the 2979\,A
+it draws at full power on two. A conductor or valve sized on balanced operation
 alone would be undersized for the contingency it exists to survive.
 
-\textbf{The DMR dominates the outage loss.} 132\,MW of the 186\,MW lost in the
-one-pole-out case is in the DMR alone, because a single Chukar subconductor is
-2.4 times the resistance of the two-conductor Bluebird pole bundle it stands in
-for. Doubling the DMR to two subconductors brings $R_{d,dmr}$ to
-6.257\,$\Omega$, the current to 3101\,A and the line loss to 110\,MW --- a
-76\,MW improvement for one extra conductor, and the first thing to settle in
-the DMR design.
+\textbf{The DMR carries more loss than the pole.} 60\,MW of the 110\,MW lost
+in the one-pole-out case is in the DMR, against 50\,MW in the pole conductor,
+because the Chukar DMR bundle is 1.2 times the resistance of the Bluebird pole
+bundle at equal subconductor count. The return path is therefore worth as much
+attention as the pole in the outage case, even though it is idle in normal
+operation.
 
 \textbf{Temperature is not a detail.} Every resistance and every line loss in
 Table~\ref{tab:refresults} is 22\,\% higher than the conductor table suggests,
@@ -164,7 +160,7 @@ comparison made at data temperature would not be a fair one.
 
 \textbf{Where the power is defined changes the current.} Taken as the power
 \emph{leaving} the rectifier over a line at data temperature, 3000\,MW on the
-bipole corresponds to $P/(2\cdot U_{dpe,rec}) = 2857\,\mathrm{A}$. Required to
+bipole corresponds to $P/(2\cdot U_{dpe\_rec}) = 2857\,\mathrm{A}$. Required to
 \emph{arrive} at the receiving AC terminals through a hot line, the same
 3000\,MW needs 2979\,A, because the current now has to cover the line and
 converter losses as well. The second figure is the one to size equipment

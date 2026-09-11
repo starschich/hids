@@ -14,26 +14,26 @@ needed.
 Start from the DC power that must arrive at the inverter,
 Equation~\eqref{eq:inv}:
 \begin{equation}
-  P_{dc,inv} = \frac{P_{ac,inv}}{1-p_{inv}} .
+  P_{dc\_inv} = \frac{P_{ac\_inv}}{1-p_{inv}} .
   \label{eq:step1}
 \end{equation}
 Insert it into Equation~\eqref{eq:flow} and collect terms:
 \begin{equation}
-  R_{loop}\cdot I_{d}^{\,2} - k\cdot U_{dpe,rec}\cdot I_{d} + P_{dc,inv} = 0 .
+  R_{loop}\cdot I_{d}^{\,2} - k\cdot U_{dpe\_rec}\cdot I_{d} + P_{dc\_inv} = 0 .
   \label{eq:quadratic}
 \end{equation}
 The operating point is the \textbf{lower} root:
 \begin{equation}
   \boxed{\;
-  I_{d} = \frac{k\cdot U_{dpe,rec} - \sqrt{k^{2}\cdot U_{dpe,rec}^{2} - 4\cdot R_{loop}\cdot P_{dc,inv}}}{2\cdot R_{loop}}
+  I_{d} = \frac{k\cdot U_{dpe\_rec} - \sqrt{k^{2}\cdot U_{dpe\_rec}^{2} - 4\cdot R_{loop}\cdot P_{dc\_inv}}}{2\cdot R_{loop}}
   \;}
   \label{eq:current}
 \end{equation}
-with $U_{dpe,rec}$ in kV, $R_{loop}$ in $\Omega$, $P_{dc,inv}$ in MW and $I_{d}$ in
+with $U_{dpe\_rec}$ in kV, $R_{loop}$ in $\Omega$, $P_{dc\_inv}$ in MW and $I_{d}$ in
 kA. Equation~\eqref{eq:current} covers both operating states through $k$. With
 two poles energised ($k=2$) it simplifies to
 \begin{equation}
-  I_{d} = \frac{U_{dpe,rec} - \sqrt{U_{dpe,rec}^{2} - R_{loop}\cdot P_{dc,inv}}}{R_{loop}} .
+  I_{d} = \frac{U_{dpe\_rec} - \sqrt{U_{dpe\_rec}^{2} - R_{loop}\cdot P_{dc\_inv}}}{R_{loop}} .
   \label{eq:current2}
 \end{equation}
 
@@ -48,12 +48,12 @@ physical one.
 \subsection{Maximum transferable power}
 The square root in Equation~\eqref{eq:current} becomes imaginary when the
 requested power exceeds what the line can deliver at that voltage. The limit
-follows from $\mathrm{d}P_{dc,inv}/\mathrm{d}I_{d} = 0$ applied to
+follows from $\mathrm{d}P_{dc\_inv}/\mathrm{d}I_{d} = 0$ applied to
 Equation~\eqref{eq:flow}:
 \begin{equation}
-  I_{d}\big|_{P_{max}} = \frac{k\cdot U_{dpe,rec}}{2\cdot R_{loop}},
+  I_{d}\big|_{P_{max}} = \frac{k\cdot U_{dpe\_rec}}{2\cdot R_{loop}},
   \qquad
-  P_{max} = \frac{k^{2}\cdot U_{dpe,rec}^{2}}{4\cdot R_{loop}} .
+  P_{max} = \frac{k^{2}\cdot U_{dpe\_rec}^{2}}{4\cdot R_{loop}} .
   \label{eq:pmax}
 \end{equation}
 $P_{max}$ is a bound on solvability, not a capability: at that point half the
@@ -68,37 +68,19 @@ that again.
 \subsection{The rest of the flow}
 With the current known, the remaining quantities follow directly:
 \begin{align}
-  P_{dc,rec}      &= k\cdot U_{dpe,rec}\cdot I_{d}                         &&\text{Eq.~\eqref{eq:dcline}} \label{eq:c1}\\
-  P_{loss,line}   &= R_{loop}\cdot I_{d}^{\,2}                   &&\text{Eq.~\eqref{eq:dcline}, split by Eq.~\eqref{eq:losssplit}} \label{eq:c2}\\
-  U_{dpe,inv}       &= U_{dpe,rec} - I_{d}\cdot R_{d,hv}                     &&\text{Eq.~\eqref{eq:vinv}} \label{eq:c3}\\
-  P_{ac,rec}      &= \frac{P_{dc,rec}}{1-p_{rec}}            &&\text{Eq.~\eqref{eq:rect}} \label{eq:c4}\\
-  P_{loss,total}  &= P_{ac,rec} - P_{ac,inv}                 &&\text{AC-to-AC loss} \label{eq:c5}\\
-  \eta            &= \frac{P_{ac,inv}}{P_{ac,rec}}           &&\text{overall efficiency} \label{eq:c6}
+  P_{dc\_rec}      &= k\cdot U_{dpe\_rec}\cdot I_{d}                         &&\text{Eq.~\eqref{eq:dcline}} \label{eq:c1}\\
+  P_{loss\_line}   &= R_{loop}\cdot I_{d}^{\,2}                   &&\text{Eq.~\eqref{eq:dcline}, split by Eq.~\eqref{eq:losssplit}} \label{eq:c2}\\
+  U_{dpe\_inv}       &= U_{dpe\_rec} - I_{d}\cdot R_{d\_hv}                     &&\text{Eq.~\eqref{eq:vinv}} \label{eq:c3}\\
+  P_{ac\_rec}      &= \frac{P_{dc\_rec}}{1-p_{rec}}            &&\text{Eq.~\eqref{eq:rect}} \label{eq:c4}\\
+  P_{loss\_total}  &= P_{ac\_rec} - P_{ac\_inv}                 &&\text{AC-to-AC loss} \label{eq:c5}\\
+  \eta            &= \frac{P_{ac\_inv}}{P_{ac\_rec}}           &&\text{overall efficiency} \label{eq:c6}
 \end{align}
 The three loss contributions account for the whole difference between the two
 ends:
 \begin{equation}
-  P_{ac,rec} - P_{ac,inv}
-  = \underbrace{p_{rec}\cdot P_{ac,rec}}_{\text{rectifier}}
+  P_{ac\_rec} - P_{ac\_inv}
+  = \underbrace{p_{rec}\cdot P_{ac\_rec}}_{\text{rectifier}}
   + \underbrace{R_{loop}\cdot I_{d}^{\,2}}_{\text{line}}
-  + \underbrace{p_{inv}\cdot P_{dc,inv}}_{\text{inverter}} .
+  + \underbrace{p_{inv}\cdot P_{dc\_inv}}_{\text{inverter}} .
   \label{eq:closure}
 \end{equation}
-
-\subsection{Current margin}
-The margin does not enter the flow. It scales the operating current to a rating
-figure for conductor selection, valve and bushing ratings, switchgear and
-protection settings:
-\begin{equation}
-  I_{rated} = \bigl(1+m\bigr)\cdot I_{d}.
-  \label{eq:margin}
-\end{equation}
-Losses, voltage drops and powers all belong to the operating current $I_{d}$,
-not to $I_{rated}$; the margined value is a sizing quantity only. A worst-case
-loss figure comes from re-evaluating the flow at a higher power, not from
-substituting $I_{rated}$ into the loss relation, which would be inconsistent
-with the stated transfer.
-
-Because the outage state can carry the highest current of all the states
-considered, the governing rated current for the conductor and the valves is the
-largest $I_{rated}$ across them, not the one belonging to normal operation.
