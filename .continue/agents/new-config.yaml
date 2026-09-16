@@ -1,0 +1,8 @@
+name: Main Config
+version: 1.0.0
+schema: v1
+models:
+  - name: Autodetect
+    provider: openai
+    model: AUTODETECT
+    apiBase: http://localhost:1235/v1/
