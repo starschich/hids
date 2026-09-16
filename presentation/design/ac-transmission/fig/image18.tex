@@ -1,0 +1,64 @@
+% =============================================================
+%  TikZ recreation of image18.png
+%  Transmission line as a 2-port unit: terminal quantities
+%  U1/I1 and U2/I2, and the local quantities U/I at distance x
+%  along a line of total length l.
+%  Self-contained snippet -- \input directly inside a frame.
+%  Scales to fill \linewidth, so the enclosing column (or a
+%  minipage) sets the size.
+% =============================================================
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    x=0.60cm, y=0.60cm,
+    line width=0.9pt,
+    every node/.style={inner sep=1.5pt},
+    term/.style={circle, draw, fill=white, line width=0.9pt,
+                 minimum size=4.5pt, inner sep=0pt},
+    flow/.style={-{Triangle[length=2.8mm,width=2.4mm]}, line width=0.9pt},
+    dim/.style={dotted, line width=1pt},
+  ]
+
+  % ---- geometry ---------------------------------------------
+  \def\xa{0}     % sending-end terminals
+  \def\xb{8}     % receiving-end terminals
+  \def\xm{2.9}   % cross-section at distance x
+  \def\yt{4}     % upper conductor
+  \def\yb{0}     % lower conductor
+
+  % ---- conductors -------------------------------------------
+  \draw (\xa,\yt) -- (\xb,\yt);
+  \draw (\xa,\yb) -- (\xb,\yb);
+
+  % ---- line current I at the cross-section ------------------
+  \draw[flow] (\xa,\yt) -- (\xm,\yt);
+  \node[above=1pt] at (\xm,\yt) {$\underline{I}$};
+
+  % ---- terminals --------------------------------------------
+  \node[term] at (\xa,\yt) {};
+  \node[term] at (\xb,\yt) {};
+  \node[term] at (\xa,\yb) {};
+  \node[term] at (\xb,\yb) {};
+
+  % ---- terminal currents ------------------------------------
+  \draw[flow] ({\xa-1.7},\yt) -- ({\xa-0.8},\yt);
+  \node[left] at ({\xa-1.9},\yt) {$\underline{I}_1$};
+  \draw[flow] ({\xb+0.8},\yt) -- ({\xb+1.7},\yt);
+  \node[right] at ({\xb+1.9},\yt) {$\underline{I}_2$};
+
+  % ---- voltages (upper conductor -> lower conductor) --------
+  \draw[flow] (\xa,\yt) -- (\xa,\yb);
+  \node[right=2pt] at (\xa,{(\yt+\yb)/2}) {$\underline{U}_1$};
+  \draw[flow] (\xm,\yt) -- (\xm,\yb);
+  \node[right=2pt] at (\xm,{(\yt+\yb)/2}) {$\underline{U}$};
+  \draw[flow] (\xb,\yt) -- (\xb,\yb);
+  \node[right=2pt] at (\xb,{(\yt+\yb)/2}) {$\underline{U}_2$};
+
+  % ---- coordinate x and overall length l --------------------
+  \node[below=1pt] at (\xm,\yb) {$x$};
+  \draw[dim] (\xa,{\yb-0.4}) -- (\xa,{\yb-2.4});
+  \draw[dim] (\xb,{\yb-0.4}) -- (\xb,{\yb-2.4});
+  \draw[dim] (\xa,{\yb-1.9}) -- (\xb,{\yb-1.9});
+  \node[below=1pt] at ({(\xa+\xb)/2},{\yb-2.0}) {$l$};
+
+\end{tikzpicture}%
+}

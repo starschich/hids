@@ -238,66 +238,59 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{2-port units --- calculations}
-  \centering
-  \topoimg[width=0.8\linewidth,height=0.28\textheight,keepaspectratio]{\acfig{image18.png}}\\[0.5em]
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.24\textwidth}\centering
-      {\footnotesize Wave impedance}\\[0.2em]
-      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image19.png}}
-    \end{column}
-    \begin{column}{0.24\textwidth}\centering
-      {\footnotesize Propagation}\\[0.2em]
-      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image20.png}}
-    \end{column}
-    \begin{column}{0.24\textwidth}\centering
-      {\footnotesize Voltage along line}\\[0.2em]
-      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image21.png}}
-    \end{column}
-    \begin{column}{0.24\textwidth}\centering
-      {\footnotesize 2-port parameters}\\[0.2em]
-      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image22.png}}
-    \end{column}
-  \end{columns}
+\begin{frame}{2-port units}
+  \begin{center}
+    \begin{minipage}{0.50\textwidth}
+      \input{\acfig{image18.tex}}
+    \end{minipage}
+  \end{center}
+
+The calculation of the 2-port units is based on two paratemers which are defined by the physical set-up of the transmission:
+\begin{itemize}
+  \item Propagation constant
+  \item Wave impedance
+\end{itemize}
 \end{frame}
 
-\begin{frame}{2-port units - calculations}
-
+\begin{frame}{2-port units --- line constants}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.45\textwidth}\centering
-      \topoimg[width=0.8\linewidth,height=0.6\textheight,keepaspectratio]{\acfig{image18.png}}
+    \begin{column}{0.40\textwidth}\centering
+      \input{\acfig{image18.tex}}
     \end{column}
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.57\textwidth}
+      Propagation constant\\
+      $\begin{aligned}[t]
+        \underline{\gamma}&=\alpha+j\cdot\beta =\sqrt{\underline{Z}'\cdot\underline{Y}'}\\[0.4em]
+                          &=\sqrt{\left(R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)\right)\cdot\left(G'+j \cdot \omega \cdot C'\right)}
+       \end{aligned}$\\[2em]
       Wave impedance\\
       $\begin{aligned}[t]
-        \underline{\gamma}&=\alpha+j\cdot\beta =\sqrt{\underline{Z}'\cdot\underline{Y}'}\\[0.4em]
-                          &=\sqrt{\left(R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)\right)\cdot\left(G'+j \cdot \omega \cdot C'\right)}
-       \end{aligned}$\\[2em]
-      Propagation\\
-      $\begin{aligned}[t]
          \underline{Z}_w &= \sqrt{\frac{\underline{Z}'}{\underline{Y}'}} = \sqrt{\frac{R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)}{G' + j\cdot\omega\cdot C'}}
        \end{aligned}$\\
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{2-port units - calculations}
-
+\begin{frame}{2-port units --- line equations}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.45\textwidth}\centering
-      \topoimg[width=0.8\linewidth,height=0.6\textheight,keepaspectratio]{\acfig{image18.png}}
+    \begin{column}{0.40\textwidth}\centering
+      \input{\acfig{image18.tex}}
     \end{column}
-    \begin{column}{0.55\textwidth}
-      Voltage along line\\
+    \begin{column}{0.57\textwidth}
+      Voltage along line, at distance $x$ from the sending end\\
       $\begin{aligned}[t]
-        \underline{\gamma}&=\alpha+j\cdot\beta =\sqrt{\underline{Z}'\cdot\underline{Y}'}\\[0.4em]
-                          &=\sqrt{\left(R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)\right)\cdot\left(G'+j \cdot \omega \cdot C'\right)}
+        \underline{U} &= \underline{U}_2\cosh\underline{\gamma}\left(l-x\right)
+                       + \underline{Z}_w\,\underline{I}_2\sinh\underline{\gamma}\left(l-x\right)\\[0.4em]
+        \underline{I} &= \frac{\underline{U}_2}{\underline{Z}_w}\sinh\underline{\gamma}\left(l-x\right)
+                       + \underline{I}_2\cosh\underline{\gamma}\left(l-x\right)
        \end{aligned}$\\[2em]
-      Propagation\\
+      2-port parameters, at the sending end $\left(x=0\right)$\\
       $\begin{aligned}[t]
-         \underline{Z}_w &= \sqrt{\frac{\underline{Z}'}{\underline{Y}'}} = \sqrt{\frac{R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)}{G' + j\cdot\omega\cdot C'}}
+        \underline{U}_1 &= \underline{U}_2\cosh\underline{\gamma}l
+                         + \underline{Z}_w\,\underline{I}_2\sinh\underline{\gamma}l\\[0.4em]
+        \underline{I}_1 &= \frac{\underline{U}_2}{\underline{Z}_w}\sinh\underline{\gamma}l
+                         + \underline{I}_2\cosh\underline{\gamma}l
        \end{aligned}$\\
-      \topoimg[width=\linewidth,height=0.16\textheight,keepaspectratio]{\acfig{image19.png}}
     \end{column}
   \end{columns}
 \end{frame}

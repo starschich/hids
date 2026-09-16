@@ -1,0 +1,18 @@
+% =============================================================
+%  LaTeX transcription of image21.png
+%  Line equations: voltage and current at distance x along a
+%  line of total length l, expressed via the receiving-end
+%  quantities U2/I2, the propagation constant gamma and the
+%  wave impedance Zw.
+%  Self-contained snippet -- \input directly inside a frame.
+%  Scales to fill \linewidth, so the enclosing column (or a
+%  minipage) sets the size.
+% =============================================================
+\resizebox{\linewidth}{!}{%
+$\begin{aligned}
+  \underline{U} &= \underline{U}_2\cosh\underline{\gamma}\left(l-x\right)
+                 + \underline{Z}_w\,\underline{I}_2\sinh\underline{\gamma}\left(l-x\right)\\[0.4em]
+  \underline{I} &= \frac{\underline{U}_2}{\underline{Z}_w}\sinh\underline{\gamma}\left(l-x\right)
+                 + \underline{I}_2\cosh\underline{\gamma}\left(l-x\right).
+\end{aligned}$%
+}
