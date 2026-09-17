@@ -1,0 +1,171 @@
+\section{Physical network model}
+\label{sec:network}
+
+The network case contains 11 buses, 6 branches, 4 transformers, 9 generators plus the
+POI swing source, and 4 loads. All equipment is assigned to area~26 (LADWP) and
+zone~283 (LA~IPP). The system base is 100\,MV$\cdot$A. Figure~\ref{fig:oneline}
+shows the one-line arrangement.
+
+\begin{figure}[!ht]
+\centering
+\resizebox{\linewidth}{!}{%
+\input{figures/oneline}}
+\caption{One-line diagram of the Phase~2 network case. Bus numbers are those of the \texttt{.epc} file; line lengths and conductor types are taken from the branch records.}
+\label{fig:oneline}
+\end{figure}
+
+\subsection{Buses}
+
+Table~\ref{tab:bus} lists the buses. Bus~1 is the swing bus (PSLF type~0) with a
+scheduled voltage of 1.0493\,pu; the four generator buses are voltage-controlled
+(type~2) at 1.00\,pu, regulating their own terminals; the remaining 345\,kV buses are
+load buses (type~1). Every bus carries the same 0.95--1.05\,pu voltage band.
+
+\begin{table}[!ht]
+\centering
+\begin{tabularx}{\linewidth}{@{}r l r c r X@{}}
+\toprule
+\multicolumn{1}{c}{\textbf{No.}} & \textbf{Name} & \multicolumn{1}{c}{\textbf{kV}} & \multicolumn{1}{c}{\textbf{Type}} & \multicolumn{1}{c}{\textbf{$U_{sched}$}} & \textbf{Function} \\
+\midrule
+ 1 & POI         & 345.0 & 0 & 1.0493 & Point of interconnection, swing bus \\
+ 2 & HV-MPT-P1   & 345.0 & 1 & --     & Phase~1 main power transformer HV bus \\
+18 & GEN-TIE     & 345.0 & 1 & --     & Phase~2 345\,kV collector bus \\
+19 & HV-GSU-P2-1 & 345.0 & 1 & --     & GSU~1 HV terminal \\
+20 & HV-GSU-P2-2 & 345.0 & 1 & --     & GSU~2 HV terminal \\
+21 & HV-GSU-P2-3 & 345.0 & 1 & --     & GSU~3 HV terminal \\
+28 & HV-GSU-P2-4 & 345.0 & 1 & --     & GSU~4 HV terminal \\
+17 & GEN-P2-U4-5 & 13.8  & 2 & 1.0000 & Generator bus, units 4 and 5, aux load \\
+22 & GEN-P2-U6-7 & 13.8  & 2 & 1.0000 & Generator bus, units 6 and 7, aux load \\
+23 & GEN-P2-U8-9 & 13.8  & 2 & 1.0000 & Generator bus, units 8 and 9, aux load \\
+25 & GEN-P2-U10-1 & 13.8 & 2 & 1.0000 & Generator bus, units 10 and 11, aux load \\
+\bottomrule
+\end{tabularx}
+\caption{Bus data (all buses in area 26 LADWP, zone 283 LA IPP).}
+\label{tab:bus}
+\end{table}
+
+\subsection{Branches}
+
+The six 345\,kV branches are given in Table~\ref{tab:branch}. Impedances are in per
+unit on the 100\,MV$\cdot$A system base; \texttt{charge} is the total line charging
+$B$. The POI and Phase~1 ties use 1590\,kcmil Lapwing ACSR; the four GSU feeders use
+266.8\,kcmil Waxwing ACSR. The GEN-TIE to HV-MPT-P1 branch carries a metering flag
+at the GEN-TIE end and a 90 line-section identifier in the record, which is how the
+Phase~1/Phase~2 boundary is marked in the case.
+
+\begin{table}[!ht]
+\centering
+\footnotesize\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{@{}l l r r r r r r r r@{}}
+\toprule
+\textbf{From} & \textbf{To} & \multicolumn{1}{c}{\textbf{$R$}} & \multicolumn{1}{c}{\textbf{$X$}} & \multicolumn{1}{c}{\textbf{$B$}} & \multicolumn{1}{c}{\textbf{Rate~1}} & \multicolumn{1}{c}{\textbf{Rate~2}} & \multicolumn{1}{c}{\textbf{Rate~3}} & \multicolumn{1}{c}{\textbf{Rate~4}} & \multicolumn{1}{c}{\textbf{mi}} \\
+\midrule
+ 1 POI     & 18 GEN-TIE     & 0.000145 & 0.001841 & 0.021185 & 1077.7 & 1291.2 & 1351.8 & 1408.4 & 3.00 \\
+18 GEN-TIE &  2 HV-MPT-P1   & 0.000155 & 0.001963 & 0.022597 & 1077.7 & 1291.2 & 1351.8 & 1408.4 & 3.20 \\
+18 GEN-TIE & 19 HV-GSU-P2-1 & 0.000159 & 0.000416 & 0.003687 &  144.6 &  190.9 &  204.0 &  216.2 & 0.60 \\
+18 GEN-TIE & 20 HV-GSU-P2-2 & 0.000196 & 0.000513 & 0.004548 &  144.6 &  190.9 &  204.0 &  216.2 & 0.74 \\
+18 GEN-TIE & 21 HV-GSU-P2-3 & 0.000745 & 0.001949 & 0.017269 &  144.6 &  190.9 &  204.0 &  216.2 & 2.81 \\
+18 GEN-TIE & 28 HV-GSU-P2-4 & 0.000763 & 0.001997 & 0.017699 &  144.6 &  190.9 &  204.0 &  216.2 & 2.88 \\
+\bottomrule
+\end{tabularx}
+\caption{Branch data (pu on 100\,MV$\cdot$A; ratings in MV$\cdot$A; the two 3-mile ties are Lapwing, the four feeders Waxwing).}
+\label{tab:branch}
+\end{table}
+
+\subsection{Transformers}
+
+All four GSUs are identical two-winding units, Table~\ref{tab:xfmr}. The impedance is
+entered on the transformer base of 150\,MV$\cdot$A, so on the 100\,MV$\cdot$A system
+base it becomes
+\begin{equation}
+  X_{T,sys} = 0.14496 \cdot \frac{100}{150} = 0.09664\,\mathrm{pu},
+  \qquad
+  R_{T,sys} = 0.00345 \cdot \frac{100}{150} = 0.00230\,\mathrm{pu}.
+\end{equation}
+The HV winding tap is 362\,kV against a 345\,kV bus base, i.e.\ a fixed
+$362/345 = 1.0493$\,pu tap position, which matches the scheduled POI voltage. The
+transformers are of PSLF type~1 (fixed tap, no regulation) with a 200\,MV$\cdot$A
+rating in both rate slots.
+
+\begin{table}[!ht]
+\centering
+\small\begin{tabularx}{\linewidth}{@{}l l c r r r r r@{}}
+\toprule
+\textbf{HV bus} & \textbf{LV bus} & \multicolumn{1}{c}{\textbf{ck}} & \multicolumn{1}{c}{\textbf{$S_{base}$}} & \multicolumn{1}{c}{\textbf{$R_T$}} & \multicolumn{1}{c}{\textbf{$X_T$}} & \multicolumn{1}{c}{\textbf{Tap HV/LV}} & \multicolumn{1}{c}{\textbf{Rating}} \\
+ & & & \multicolumn{1}{c}{MV$\cdot$A} & \multicolumn{1}{c}{pu} & \multicolumn{1}{c}{pu} & \multicolumn{1}{c}{kV} & \multicolumn{1}{c}{MV$\cdot$A} \\
+\midrule
+19 HV-GSU-P2-1 & 17 GEN-P2-U4-5  & 1  & 150 & 0.00345 & 0.14496 & 362.0 / 13.8 & 200 \\
+20 HV-GSU-P2-2 & 22 GEN-P2-U6-7  & 1  & 150 & 0.00345 & 0.14496 & 362.0 / 13.8 & 200 \\
+21 HV-GSU-P2-3 & 23 GEN-P2-U8-9  & 11 & 150 & 0.00345 & 0.14496 & 362.0 / 13.8 & 200 \\
+28 HV-GSU-P2-4 & 25 GEN-P2-U10-1 & 1  & 150 & 0.00345 & 0.14496 & 362.0 / 13.8 & 200 \\
+\bottomrule
+\end{tabularx}
+\caption{Generator step-up transformer data.}
+\label{tab:xfmr}
+\end{table}
+
+\subsection{Generators}
+
+Table~\ref{tab:gen} gives the generator dispatch and limits. Each unit regulates
+its own terminal bus at 1.00\,pu with a full share of the reactive requirement
+(\texttt{prf} $=$ \texttt{qrf} $= 1.0$). The dynamic source impedance
+\texttt{gen\_x} is 1.0\,pu on the machine base for every unit and is overridden by
+the machine model at initialisation. The POI source is a 99\,999\,MV$\cdot$A swing
+generator with $\pm$9999\,MW and $\pm$9999\,Mvar limits, i.e.\ an ideal source.
+
+\begin{table}[!ht]
+\centering
+\begin{tabularx}{\linewidth}{@{}r c X r r r r r r@{}}
+\toprule
+\multicolumn{1}{c}{\textbf{Bus}} & \multicolumn{1}{c}{\textbf{id}} & \textbf{Long name} & \multicolumn{1}{c}{\textbf{$P_{gen}$}} & \multicolumn{1}{c}{\textbf{$P_{max}$}} & \multicolumn{1}{c}{\textbf{$P_{min}$}} & \multicolumn{1}{c}{\textbf{$Q_{max}$}} & \multicolumn{1}{c}{\textbf{$Q_{min}$}} & \multicolumn{1}{c}{\textbf{$S_{base}$}} \\
+\midrule
+17 & 1 & Cape Phase 2 -- Turboden -- Gen 4  & 56.659 & 65.000 & 0 & 45.118 & $-36.706$ & 76.471 \\
+17 & 2 & Cape Phase 2 -- Turboden -- Gen 5  & 56.659 & 65.000 & 0 & 45.118 & $-36.706$ & 76.471 \\
+22 & 1 & Cape Phase 2 -- Turboden -- Gen 6  & 56.659 & 65.000 & 0 & 45.118 & $-36.706$ & 76.471 \\
+22 & 2 & Cape Phase 2 -- Baker H -- Gen 7   & 55.402 & 60.461 & 0 & 46.235 & $-38.410$ & 71.130 \\
+23 & 1 & Cape Phase 2 -- Baker H -- Gen 8   & 55.402 & 60.461 & 0 & 46.235 & $-38.410$ & 71.130 \\
+23 & 2 & Cape Phase 2 -- Baker H -- Gen 9   & 55.402 & 60.461 & 0 & 46.235 & $-38.410$ & 71.130 \\
+25 & 1 & Cape Phase 2 -- Baker H -- Gen 10  & 55.402 & 60.461 & 0 & 46.235 & $-38.410$ & 71.130 \\
+25 & 2 & Cape Phase 2 -- Baker H -- Gen 11  & 55.402 & 60.461 & 0 & 46.235 & $-38.410$ & 71.130 \\
+\midrule
+ 1 & 1 & POI (swing source) & 0 & 9999 & $-9999$ & 9999 & $-9999$ & 99999 \\
+\bottomrule
+\end{tabularx}
+\caption{Generator data (MW, Mvar and MV$\cdot$A).}
+\label{tab:gen}
+\end{table}
+
+\subsection{Loads}
+
+Each generator bus carries a constant-power auxiliary load representing the plant's
+own consumption (geothermal brine pumping and balance of plant), Table~\ref{tab:load}.
+The loads are modelled entirely as constant $P$ and $Q$; the current- and
+impedance-dependent components are zero.
+
+\begin{table}[!ht]
+\centering
+\begin{tabularx}{\linewidth}{@{}r l X r r@{}}
+\toprule
+\multicolumn{1}{c}{\textbf{Bus}} & \textbf{Name} & \textbf{Long name} & \multicolumn{1}{c}{\textbf{$P$ (MW)}} & \multicolumn{1}{c}{\textbf{$Q$ (Mvar)}} \\
+\midrule
+17 & GEN-P2-U4-5  & gen aux load & 35.60 & 17.24 \\
+22 & GEN-P2-U6-7  & gen aux load & 34.36 & 16.64 \\
+23 & GEN-P2-U8-9  & gen aux load & 33.12 & 16.04 \\
+25 & GEN-P2-U10-1 & gen aux load & 33.12 & 16.04 \\
+\midrule
+\multicolumn{3}{l}{Total} & 136.20 & 65.96 \\
+\bottomrule
+\end{tabularx}
+\caption{Auxiliary loads (constant power).}
+\label{tab:load}
+\end{table}
+
+\subsection{Dispatch summary}
+
+The scheduled dispatch of the nine units sums to
+\begin{equation}
+  P_{gross} = 3 \cdot 56.659\,\mathrm{MW} + 5 \cdot 55.402\,\mathrm{MW} = 446.98\,\mathrm{MW},
+\end{equation}
+against a combined capability of $3 \cdot 65.0 + 5 \cdot 60.461 = 497.3$\,MW. After
+the 136.20\,MW of auxiliary load the net injection into the four GSUs is
+$446.98 - 136.20 = 310.78$\,MW before transformer and line losses. The reactive
+capability of the fleet spans $+366.5$ to $-302.2$\,Mvar at the terminals.

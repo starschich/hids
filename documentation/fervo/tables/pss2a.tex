@@ -1,0 +1,33 @@
+\begin{tabularx}{\linewidth}{@{}l X l r@{}}
+\toprule
+\textbf{Parameter} & \textbf{Description} & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c}{\textbf{Value}} \\
+\midrule
+\texttt{j1} & Input signal 1 code (1 = rotor speed deviation) & -- & 1 \\
+\texttt{k1} & Remote bus for input 1 (0 = local) & -- & 0 \\
+\texttt{j2} & Input signal 2 code (3 = electrical power) & -- & 3 \\
+\texttt{k2} & Remote bus for input 2 (0 = local) & -- & 0 \\
+\texttt{tw1} & Washout time constant $T_{w1}$ & s & 2 \\
+\texttt{tw2} & Washout time constant $T_{w2}$ & s & 2 \\
+\texttt{tw3} & Washout time constant $T_{w3}$ & s & 2 \\
+\texttt{tw4} & Washout time constant $T_{w4}$ (0 = bypassed) & s & 0 \\
+\texttt{t6} & Input 1 transducer time constant $T_6$ & s & 0 \\
+\texttt{t7} & Input 2 transducer time constant $T_7$ & s & 2 \\
+\texttt{ks2} & Input 2 gain $K_{S2}$ ($= T_7 / (2 \cdot H)$) & pu & 0.501 \\
+\texttt{ks3} & Signal-matching gain $K_{S3}$ & pu & 1 \\
+\texttt{ks4} & Input 2 gain $K_{S4}$ & pu & 1 \\
+\texttt{t8} & Ramp-tracking filter lead time constant $T_8$ & s & 0.5 \\
+\texttt{t9} & Ramp-tracking filter lag time constant $T_9$ & s & 0.1 \\
+\texttt{n} & Ramp-tracking filter order $N$ & -- & 1 \\
+\texttt{m} & Ramp-tracking filter order $M$ & -- & 5 \\
+\texttt{ks1} & Stabilizer gain $K_{S1}$ & pu & 5 \\
+\texttt{t1} & Lead time constant $T_1$ & s & 0.25 \\
+\texttt{t2} & Lag time constant $T_2$ & s & 0.02 \\
+\texttt{t3} & Lead time constant $T_3$ & s & 0.25 \\
+\texttt{t4} & Lag time constant $T_4$ & s & 0.02 \\
+\texttt{vstmax} & Stabilizer output upper limit $V_{STMAX}$ & pu & 0.1 \\
+\texttt{vstmin} & Stabilizer output lower limit $V_{STMIN}$ & pu & -0.1 \\
+\texttt{a} & Optional second-order filter coefficient $a$ & -- & 0 \\
+\texttt{ta} & Optional filter time constant $T_a$ & s & 0 \\
+\texttt{tb} & Optional filter time constant $T_b$ & s & 0 \\
+\bottomrule
+\end{tabularx}

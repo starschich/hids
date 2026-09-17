@@ -1,0 +1,165 @@
+## Fervo Cape Station (400MW)
+
+models
+gencls                1 "POI         " 362.00  "1 "  : #9 mva=9999.0000 "h" 999.0000 "d" 0.0000 "ra" 0.0000 "lppd" 0.1000 /
+ "rcomp" 0.0000 "xcomp" 0.0000 "accel" 0.0000 
+
+### Phase 2 - Unit 4
+genqec               17 "GEN-P2-U4-5 "  13.80 "1 "  : #9 mva=76.471   "tpdo" 5.751 "tppdo" 0.0440 "tpqo" 0.8650 "tppqo" 0.0720 "h" 1.4900 "d" 3.0000 "ld" 1.43600 /
+ "lq" 0.6100 "lpd" 0.1890 "lpq" 0.6100 "lppd" 0.1210 "lppq" 0.1810 "ll" 0.0991 "s1" 0.1000 "s12" 0.5220 "ra" 0.0020 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               17 "GEN-P2-U4-5 "  13.80 "1 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                17 "GEN-P2-U4-5 "  13.80 "1 "  : #9 mwcap=65 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                17 "GEN-P2-U4-5 "  13.80 "1 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                17 "GEN-P2-U4-5 "  13.80 "1 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                17 "GEN-P2-U4-5 "  13.80 "1 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+
+### Phase 2 - Unit 5
+genqec               17 "GEN-P2-U4-5 "  13.80 "2 "  : #9 mva=76.471   "tpdo" 5.751 "tppdo" 0.0440 "tpqo" 0.8650 "tppqo" 0.0720 "h" 1.4900 "d" 3.0000 "ld" 1.43600 /
+ "lq" 0.6100 "lpd" 0.1890 "lpq" 0.6100 "lppd" 0.1210 "lppq" 0.1810 "ll" 0.0991 "s1" 0.1000 "s12" 0.5220 "ra" 0.0020 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               17 "GEN-P2-U4-5 "  13.80 "2 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                17 "GEN-P2-U4-5 "  13.80 "2 "  : #9 mwcap=65 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                17 "GEN-P2-U4-5 "  13.80 "2 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                17 "GEN-P2-U4-5 "  13.80 "2 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                17 "GEN-P2-U4-5 "  13.80 "2 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+
+### Phase 2 - Unit 6
+genqec               22 "GEN-P2-U6-7 "  13.80 "1 "  : #9 mva=76.471   "tpdo" 5.751 "tppdo" 0.0440 "tpqo" 0.8650 "tppqo" 0.0720 "h" 1.4900 "d" 3.0000 "ld" 1.43600 /
+ "lq" 0.6100 "lpd" 0.1890 "lpq" 0.6100 "lppd" 0.1210 "lppq" 0.1810 "ll" 0.0991 "s1" 0.1000 "s12" 0.5220 "ra" 0.0020 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               22 "GEN-P2-U6-7 "  13.80 "1 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                22 "GEN-P2-U6-7 "  13.80 "1 "  : #9 mwcap=65 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                22 "GEN-P2-U6-7 "  13.80 "1 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                22 "GEN-P2-U6-7 "  13.80 "1 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                22 "GEN-P2-U6-7 "  13.80 "1 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+
+### Phase 2 - Unit 7
+genqec               22 "GEN-P2-U6-7 "  13.80 "2 "  : #9 mva=71.130   "tpdo" 10 "tppdo" 0.050 "tpqo" 0.865 "tppqo" 0.130 "h" 1.500 "d" 3.0000 "ld" 1.4900 /
+ "lq" 0.7800 "lpd" 0.210 "lpq" 0.7800 "lppd" 0.140 "lppq" 0.1800 "ll" 0.110 "s1" 0.1000 "s12" 0.5220 "ra" 0.00450 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               22 "GEN-P2-U6-7 "  13.80 "2 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                22 "GEN-P2-U6-7 "  13.80 "2 "  : #9 mwcap=60.461 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                22 "GEN-P2-U6-7 "  13.80 "2 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                22 "GEN-P2-U6-7 "  13.80 "2 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                22 "GEN-P2-U6-7 "  13.80 "2 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+ 
+### Phase 2 - Unit 8
+genqec               23 "GEN-P2-U8-9 "  13.80 "1 "  : #9 mva=71.130   "tpdo" 10 "tppdo" 0.050 "tpqo" 0.865 "tppqo" 0.130 "h" 1.500 "d" 3.0000 "ld" 1.4900 /
+ "lq" 0.7800 "lpd" 0.210 "lpq" 0.7800 "lppd" 0.140 "lppq" 0.1800 "ll" 0.110 "s1" 0.1000 "s12" 0.5220 "ra" 0.00450 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               23 "GEN-P2-U8-9 "  13.80 "1 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                23 "GEN-P2-U8-9 "  13.80 "1 "  : #9 mwcap=60.461 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                23 "GEN-P2-U8-9 "  13.80 "1 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                23 "GEN-P2-U8-9 "  13.80 "1 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                23 "GEN-P2-U8-9 "  13.80 "1 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+ 
+### Phase 2 - Unit 9
+genqec               23 "GEN-P2-U8-9 "  13.80 "2 "  : #9 mva=71.130   "tpdo" 10 "tppdo" 0.050 "tpqo" 0.865 "tppqo" 0.130 "h" 1.500 "d" 3.0000 "ld" 1.4900 /
+ "lq" 0.7800 "lpd" 0.210 "lpq" 0.7800 "lppd" 0.140 "lppq" 0.1800 "ll" 0.110 "s1" 0.1000 "s12" 0.5220 "ra" 0.00450 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               23 "GEN-P2-U8-9 "  13.80 "2 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                23 "GEN-P2-U8-9 "  13.80 "2 "  : #9 mwcap=60.461 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                23 "GEN-P2-U8-9 "  13.80 "2 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                23 "GEN-P2-U8-9 "  13.80 "2 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                23 "GEN-P2-U8-9 "  13.80 "2 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+ 
+### Phase 2 - Unit 10
+genqec               25 "GEN-P2-U10-1"  13.80 "1 "  : #9 mva=71.130   "tpdo" 10 "tppdo" 0.050 "tpqo" 0.865 "tppqo" 0.130 "h" 1.500 "d" 3.0000 "ld" 1.4900 /
+ "lq" 0.7800 "lpd" 0.210 "lpq" 0.7800 "lppd" 0.140 "lppq" 0.1800 "ll" 0.110 "s1" 0.1000 "s12" 0.5220 "ra" 0.00450 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               25 "GEN-P2-U10-1"  13.80 "1 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                25 "GEN-P2-U10-1"  13.80 "1 "  : #9 mwcap=60.461 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                25 "GEN-P2-U10-1"  13.80 "1 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                25 "GEN-P2-U10-1"  13.80 "1 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                25 "GEN-P2-U10-1"  13.80 "1 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+ 
+### Phase 2 - Unit 11
+genqec               25 "GEN-P2-U10-1"  13.80 "2 "  : #9 mva=71.130   "tpdo" 10 "tppdo" 0.050 "tpqo" 0.865 "tppqo" 0.130 "h" 1.500 "d" 3.0000 "ld" 1.4900 /
+ "lq" 0.7800 "lpd" 0.210 "lpq" 0.7800 "lppd" 0.140 "lppq" 0.1800 "ll" 0.110 "s1" 0.1000 "s12" 0.5220 "ra" 0.00450 "rcomp" 0.0000 "xcomp" 0.0000 "kw" 0.0000 "satflg" 0.0000
+esac8b               25 "GEN-P2-U10-1"  13.80 "2 "  : #9 "tr" 0.010000 "kpr" 100.0000 "kir"  90.0000 "kdr"  20.0000 "tdr" 0.100000 "vrmax"  20.0000 "vrmin" 0.0 "ka" 1.000000 "ta" 0.0 "te" 0.400000 /
+ "vfemax"  11.4600 "vemin" 0.0 "ke" 1.000000 "kc" 0.170000 "kd"   1.1900 "e1"   4.8000 "se1" 0.022200 "e2"   3.0000 "se2" 0.021900 "vtmult" 0.0 /
+ "spdmlt" 0.0
+ggov1                25 "GEN-P2-U10-1"  13.80 "2 "  : #9 mwcap=60.461 "r" 0.050000 "rselect" 1.000000 "tpelec" 1.000000 "maxerr" 0.050000 "minerr" -0.050000 "kpgov"  10.0000 "kigov"   2.0000 "kdgov" 0.0 "tdgov" 1.000000 "vmax" 1.000000 /
+ "vmin" 0.0 "tact" 0.500000 "kturb"   1.1000 "wfnl" 0.100000 "tb" 0.120000 "tc" 0.0 "flag" 0.0 "teng" 0.0 "tfload"   3.0000 "kpload"   2.0000 /
+ "kiload" 0.670000 "ldref" 1.000000 "dm" 0.0 "ropen" 0.0 "rclose" -0.100000 "kimw" 0.0 "pmwset" 0.0 "aset" 1.000000 "ka"  10.0000 "ta" 0.100000 /
+ "db" 0.0 "tsa"   4.0000 "tsb"   5.0000 "rup"  99.0000 "rdown" -99.0000
+pss2a                25 "GEN-P2-U10-1"  13.80 "2 "  : #9 "j1" 1.000000 "k1" 0.0 "j2"   3.0000 "k2" 0.0 "tw1"   2.0000 "tw2"   2.0000 "tw3"   2.0000 "tw4" 0.0 "t6" 0.0 "t7"   2.0000 /
+ "ks2" 0.501000 "ks3" 1.000000 "ks4" 1.000000 "t8" 0.500000 "t9" 0.100000 "n" 1.000000 "m"   5.0000 "ks1"   5.0000 "t1" 0.250000 "t2" 0.020000 /
+ "t3" 0.250000 "t4" 0.020000 "vstmax" 0.100000 "vstmin" -0.100000 "a" 0.0 "ta" 0.0 "tb" 0.0
+lhvrt                25 "GEN-P2-U10-1"  13.80 "2 "  : #8 "vref" 1.000000 "dvtrp1" 0.250000 "dvtrp2" 0.150000 "dvtrp3" -0.150000 "dvtrp4" -0.450000 "dvtrp5" 0.0 "dvtrp6" 0.0 "dvtrp7" 0.0 "dvtrp8" 0.0 "dvtrp9" 0.0 /
+ "dvtrp10" 0.0 "dttrp1" 0.500000 "dttrp2"   6.0000 "dttrp3"   7.0000 "dttrp4"   3.0000 "dttrp5" 0.0 "dttrp6" 0.0 "dttrp7" 0.0 "dttrp8" 0.0 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0
+lhfrt                25 "GEN-P2-U10-1"  13.80 "2 "  : #8 "fref"  60.0000 "dftrp1"   1.7000 "dftrp2"   1.6000 "dftrp3" 0.600000 "dftrp4" -0.600000 "dftrp5"  -1.6000 "dftrp6"  -2.2000 "dftrp7"  -2.7000 "dftrp8"  -3.0000 "dftrp9" 0.0 /
+ "dftrp10" 0.0 "dttrp1" 0.050000 "dttrp2"   30.00 "dttrp3"   180.00 "dttrp4"   180.00 "dttrp5"  30.0000 "dttrp6"   7.5000 "dttrp7" 0.750000 "dttrp8" 0.050000 "dttrp9" 0.0 /
+ "dttrp10" 0.0 "alarm" 0.0

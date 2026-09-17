@@ -1,0 +1,44 @@
+\begin{tikzpicture}[x=1cm,y=1cm,font=\footnotesize]
+  % POI
+  \draw[bus] (-1.2,10) -- (1.2,10) node[right,xshift=2mm]{\textbf{1 POI} 345\,kV\quad(swing, $U_{sched}=1.0493$)};
+  \draw (0,10) -- (0,8.6);
+  \node[right,align=left] at (0.15,9.3) {3.0\,mi, 1590 kcmil Lapwing\\1077.7\,MV$\cdot$A};
+  % GEN-TIE busbar
+  \draw[bus] (-6.4,8.6) -- (6.4,8.6) node[right,xshift=2mm]{\textbf{18 GEN-TIE} 345\,kV};
+  % tie to Phase 1
+  \draw (-6.0,8.6) -- (-6.0,7.6) -- (-7.4,7.6);
+  \draw[bus] (-7.4,7.1) -- (-7.4,8.1);
+  \node[left,align=right] at (-7.5,7.6) {\textbf{2 HV-MPT-P1}\\345\,kV (Phase~1)};
+  \node[above,align=center] at (-6.7,7.65) {3.2\,mi\\Lapwing};
+  % four feeders
+  \foreach \x/\b/\g/\len/\gsu/\u in {
+      -4.5/19/17/0.60/HV-GSU-P2-1/{4, 5},
+      -1.5/20/22/0.74/HV-GSU-P2-2/{6, 7},
+       1.5/21/23/2.81/HV-GSU-P2-3/{8, 9},
+       4.5/28/25/2.88/HV-GSU-P2-4/{10, 11}}{
+    \draw (\x,8.6) -- (\x,7.0);
+    \node[right,align=left] at (\x+0.08,7.85) {\len\,mi\\Waxwing};
+    \draw[bus] (\x-0.8,7.0) -- (\x+0.8,7.0);
+    \node[above left,align=right,yshift=-0.3mm] at (\x-0.8,7.0) {\textbf{\b}};
+    \node[below,align=center] at (\x,6.95) {\gsu\\345\,kV};
+    % transformer
+    \draw (\x,6.35) -- (\x,5.95);
+    \draw (\x,5.6) circle (0.35);
+    \draw (\x,5.1) circle (0.35);
+    \draw (\x,4.75) -- (\x,4.4);
+    \node[right,align=left,font=\scriptsize] at (\x+0.4,5.35) {150\,MV$\cdot$A\\$X_T = 14.5\,\%$\\362/13.8\,kV};
+    % gen bus
+    \draw[bus] (\x-0.9,4.4) -- (\x+0.9,4.4);
+    \node[above left,align=right,yshift=-0.3mm] at (\x-0.9,4.4) {\textbf{\g}};
+    \node[below left,align=right,font=\scriptsize,yshift=0.3mm] at (\x-0.9,4.4) {13.8\,kV};
+    % two generators
+    \draw (\x-0.55,4.4) -- (\x-0.55,3.75);
+    \draw (\x-0.55,3.35) circle (0.4) node{G};
+    \draw (\x+0.55,4.4) -- (\x+0.55,3.75);
+    \draw (\x+0.55,3.35) circle (0.4) node{G};
+    % load arrow
+    \draw[-{Latex[length=2mm]}] (\x,4.4) -- (\x,2.6);
+    \node[below,align=center] at (\x,2.55) {aux\\load};
+    \node[below,align=center] at (\x,1.9) {units \u};
+  }
+\end{tikzpicture}

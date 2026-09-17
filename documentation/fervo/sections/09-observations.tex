@@ -1,0 +1,18 @@
+\section{Observations}
+\label{sec:obs}
+
+A few points stand out from the two files and may deserve a check with the data
+provider before the model is used in studies.
+
+The gross scheduled dispatch of 447\,MW against 136\,MW of auxiliary load yields
+about 311\,MW net at the generator buses, well below the 400\,MW in the case title,
+so the title figure refers to nameplate rather than to the dispatch in this case.
+Bus~22 hosts one Turboden and one Baker Hughes machine, so the two units on that bus
+have different dynamics even though they share a GSU. The GSU between buses~21
+and~23 carries circuit identifier~11 where the other three carry~1, which is
+harmless but inconsistent. The \texttt{pss2a} gain $K_{S2} = 0.501$ implies a design
+inertia of $H = 2.0$\,s rather than the modelled 1.49--1.50\,s. Finally, the POI is
+modelled as an infinite bus (\texttt{gencls}, $H = 999$\,s) and the Phase~1 tie is
+represented only by its line to bus~2 with no equipment behind it, so the case as
+delivered is a plant-only model intended to be merged into a full-system case for
+interconnection studies.

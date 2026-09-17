@@ -1,0 +1,43 @@
+\begin{tikzpicture}[x=1cm,y=1cm]
+  % input 1 row
+  \node[blk,minimum width=18mm] (w1) at (0.8,0) {$\dfrac{s \cdot T_{w1}}{1 + s \cdot T_{w1}}$};
+  \node[blk,minimum width=18mm] (w2) at (3.0,0) {$\dfrac{s \cdot T_{w2}}{1 + s \cdot T_{w2}}$};
+  \node[blk,minimum width=16mm] (t6) at (5.2,0) {$\dfrac{1}{1 + s \cdot T_6}$};
+  \node[sum] (sa) at (6.8,0) {};
+  \node[blk,minimum width=28mm] (rt) at (8.8,0) {$\left[\dfrac{1 + s \cdot T_8}{(1 + s \cdot T_9)^M}\right]^N$};
+  \node[sum] (sb) at (10.8,0) {};
+  \node[blk,minimum width=10mm] (ks1) at (12.0,0) {$K_{S1}$};
+  \node[blk,minimum width=18mm] (l1) at (13.7,0) {$\dfrac{1 + s \cdot T_1}{1 + s \cdot T_2}$};
+  \node[blk,minimum width=18mm] (l2) at (15.9,0) {$\dfrac{1 + s \cdot T_3}{1 + s \cdot T_4}$};
+  \node[lim,minimum width=9mm] (lim) at (17.6,0) {};
+  \draw[thick] ($(lim.center)+(-0.25,-0.25)$) -- ($(lim.center)+(-0.1,-0.25)$) -- ($(lim.center)+(0.1,0.25)$) -- ($(lim.center)+(0.25,0.25)$);
+  % input 2 row
+  \node[blk,minimum width=18mm] (w3) at (0.8,-2.0) {$\dfrac{s \cdot T_{w3}}{1 + s \cdot T_{w3}}$};
+  \node[blk,minimum width=18mm] (w4) at (3.0,-2.0) {$\dfrac{s \cdot T_{w4}}{1 + s \cdot T_{w4}}$};
+  \node[blk,minimum width=16mm] (t7) at (5.2,-2.0) {$\dfrac{K_{S2}}{1 + s \cdot T_7}$};
+  \node[blk,minimum width=10mm] (ks3) at (6.8,-2.0) {$K_{S3}$};
+  \node[blk,minimum width=10mm] (ks4) at (10.8,-2.0) {$K_{S4}$};
+  % signals
+  \draw[sig] (-0.9,0) node[left,lbl]{$\Delta\omega$} -- (w1);
+  \draw[sig] (w1) -- (w2);
+  \draw[sig] (w2) -- (t6);
+  \draw[sig] (t6) -- (sa);
+  \draw[sig] (sa) -- (rt);
+  \draw[sig] (rt) -- (sb);
+  \node[lbl] at ($(sb)+(-0.22,-0.22)$) {$-$};
+  \draw[sig] (sb) -- (ks1);
+  \draw[sig] (ks1) -- (l1);
+  \draw[sig] (l1) -- (l2);
+  \draw[sig] (l2) -- (lim);
+  \node[lbl,above=0.5mm of lim] {$V_{STMAX}$};
+  \node[lbl,below=0.5mm of lim] {$V_{STMIN}$};
+  \draw[sig] (lim) -- (18.8,0) node[right,lbl]{$V_S$};
+  \draw[sig] (-0.9,-2.0) node[left,lbl]{$P_{elec}$} -- (w3);
+  \draw[sig] (w3) -- (w4);
+  \draw[sig] (w4) -- (t7);
+  \draw[sig] (t7) -- (ks3);
+  \draw[sig] (ks3.north) -- (sa);
+  \fill (6.15,-2.0) circle (1pt);
+  \draw[sig] (6.15,-2.0) -- (6.15,-3.0) -- (10.8,-3.0) -- (ks4.south);
+  \draw[sig] (ks4.north) -- (sb);
+\end{tikzpicture}

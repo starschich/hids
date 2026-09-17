@@ -1,0 +1,79 @@
+\section{Power system stabilizer --- \texttt{pss2a}}
+\label{sec:pss2a}
+
+\subsection{Purpose of a power system stabilizer}
+
+A power system stabilizer (PSS) is a supplementary control loop on the excitation
+system of a synchronous generator. Its only task is to damp the electromechanical
+oscillations of the rotor against the rest of the grid; it contributes nothing to
+the steady-state voltage or power setpoints and is inactive when the machine runs
+at constant speed.
+
+The need for it arises from the voltage regulator itself. A modern static or
+brushless excitation system with a high-gain, fast-acting automatic voltage
+regulator (AVR) such as the \texttt{esac8b} of Section~\ref{sec:esac8b} holds the
+terminal voltage tightly and thereby raises the synchronising torque of the machine,
+which improves transient stability after a fault. The same fast field action,
+however, produces a component of electrical torque that lags the rotor speed
+deviation, which reduces --- and in weakly connected systems can eliminate --- the
+natural damping of the rotor swing. The result is a growing or poorly damped
+oscillation of rotor angle, power and voltage in the range of roughly 0.1 to 2\,Hz:
+local plant modes near 1--2\,Hz, in which a unit or a plant swings against the
+nearby system, and inter-area modes near 0.1--0.8\,Hz, in which groups of machines
+in different regions swing against each other~[3].
+
+The PSS restores this damping. It measures a signal that reflects the rotor speed
+deviation and, after phase compensation, adds a small modulating signal $V_S$ to the
+voltage reference of the AVR. The phase compensation is tuned so that the resulting
+change in electrical torque is in phase with the speed deviation; a torque component
+in phase with speed is by definition a damping torque. The output is limited (here to
+$\pm0.1$\,pu) so that the stabilizer can only ever nudge the terminal voltage and
+cannot override the voltage regulator during a large disturbance.
+
+Early stabilizers used speed alone as the input, which made them sensitive to
+torsional shaft modes, or electrical power alone, which caused an unwanted
+terminal-voltage excursion whenever the turbine output was ramped. The
+\emph{integral-of-accelerating-power} design standardised as IEEE~421.5
+type~PSS2A~[4] combines both: speed and electrical power are used to synthesise the
+integral of the accelerating power, $\int (P_{mech} - P_{elec})\,dt$, which is
+proportional to the speed deviation but free of the torsional content and
+insensitive to slow changes in mechanical power. This is the design applied to all
+nine Cape Station units.
+
+For the Fervo units the stabilizer serves two purposes. It provides the damping that
+the fast \texttt{esac8b} regulator would otherwise remove, and it satisfies the WECC
+requirement that synchronous generators equipped with suitable excitation systems be
+fitted with a stabilizer and have it in service, which is a condition of model
+acceptance for the interconnection studies this data set feeds.
+
+\subsection{Model implementation}
+
+\texttt{pss2a} is the IEEE~421.5 dual-input stabilizer. Input~1 is rotor speed
+deviation (\texttt{j1} $= 1$) and input~2 is electrical power (\texttt{j2} $= 3$),
+both measured locally. The two signals are washed out ($T_{w1} = T_{w2} = T_{w3} =
+2$\,s, $T_{w4} = 0$ so the fourth washout is bypassed), the power signal is integrated
+through $K_{S2}/(1 + s \cdot T_7)$ with $T_7 = 2$\,s and $K_{S2} = 0.501$, and the two
+are combined and passed through the ramp-tracking filter with $T_8 = 0.5$\,s,
+$T_9 = 0.1$\,s, $N = 1$, $M = 5$ to synthesise the integral of accelerating power.
+The result is amplified by $K_{S1} = 5$ and phase-compensated by two identical
+lead-lag stages $(1 + 0.25 s)/(1 + 0.02 s)$, then limited to $\pm0.1$\,pu before it
+enters the exciter as $V_S$. Figure~\ref{fig:pss2a} shows the structure.
+
+The value $K_{S2} = 0.501$ is consistent with the usual tuning rule
+$K_{S2} = T_7 / (2 \cdot H)$ evaluated with $H = 2.0$\,s, which does not match either
+machine inertia ($H = 1.49$ or $1.50$\,s would give $K_{S2} = 0.671$ or $0.667$). This
+is worth confirming with the supplier of the dynamic data.
+
+\begin{figure}[!ht]
+\centering
+\resizebox{\linewidth}{!}{\input{figures/pss2a}}
+\caption{\texttt{pss2a} block diagram. $T_{w4} = 0$ bypasses the fourth washout; $K_{S3} = K_{S4} = 1$.}
+\label{fig:pss2a}
+\end{figure}
+
+\begin{table}[!ht]
+\centering
+\input{tables/pss2a}
+\caption{\texttt{pss2a} parameters (common to all nine units).}
+\label{tab:pss2a}
+\end{table}

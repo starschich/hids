@@ -1,0 +1,24 @@
+\section{Scope}
+
+This document sets out the PSLF model of Fervo Cape Station Phase~2 as delivered in
+the two source files listed in Section~\ref{sec:refs}: a power-flow network case
+(\texttt{.epc}, PSLF version~24.3.0)~[1] and a dynamic-data file (\texttt{.dyd})~[2].
+The representation is split into a \emph{physical part} --- buses, lines, transformers,
+generators and loads that define the steady-state network --- and a \emph{control
+part} --- the machine, excitation, governor, stabilizer and protection models that
+define the dynamic behaviour of each unit.
+
+The plant comprises nine steam-turbine generators at 13.8\,kV, arranged in pairs on
+four generator buses, each pair stepped up through its own 150\,MVA generator
+step-up transformer (GSU) to a 345\,kV collector bus (GEN-TIE). The collector bus
+connects over a 3.0\,mile line to the point of interconnection (POI), which is
+represented as an infinite bus in the dynamic data. A 3.2\,mile line from GEN-TIE to
+the Phase~1 main power transformer bus (HV-MPT-P1) is included in the network case
+as the tie to Phase~1.
+
+Two families of units appear in the data. Units~4, 5 and~6 are Turboden machines
+rated 76.471\,MV$\cdot$A, and units~7 through~11 are Baker Hughes machines rated
+71.13\,MV$\cdot$A. The two families share the same excitation, stabilizer and
+protection settings but have different machine constants and turbine capabilities.
+Every parameter value in the tables of this document is transcribed from the source
+files by script, so the tables can be regenerated whenever the files change.

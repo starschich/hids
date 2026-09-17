@@ -1,0 +1,27 @@
+\begin{tabularx}{\linewidth}{@{}l X l r r@{}}
+\toprule
+\textbf{Parameter} & \textbf{Description} & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c}{\textbf{Turboden}} & \multicolumn{1}{c}{\textbf{Baker Hughes}} \\
+\midrule
+\texttt{mva} & Machine MVA base & MV$\cdot$A & 76.471 & 71.13 \\
+\texttt{tpdo} & d-axis transient open-circuit time constant $T'_{d0}$ & s & 5.751 & 10 \\
+\texttt{tppdo} & d-axis subtransient open-circuit time constant $T''_{d0}$ & s & 0.044 & 0.05 \\
+\texttt{tpqo} & q-axis transient open-circuit time constant $T'_{q0}$ & s & 0.865 & 0.865 \\
+\texttt{tppqo} & q-axis subtransient open-circuit time constant $T''_{q0}$ & s & 0.072 & 0.13 \\
+\texttt{h} & Inertia constant $H$ & MW$\cdot$s/MV$\cdot$A & 1.49 & 1.5 \\
+\texttt{d} & Damping factor $D$ & pu & 3 & 3 \\
+\texttt{ld} & d-axis synchronous reactance $L_d$ & pu & 1.436 & 1.49 \\
+\texttt{lq} & q-axis synchronous reactance $L_q$ & pu & 0.61 & 0.78 \\
+\texttt{lpd} & d-axis transient reactance $L'_d$ & pu & 0.189 & 0.21 \\
+\texttt{lpq} & q-axis transient reactance $L'_q$ & pu & 0.61 & 0.78 \\
+\texttt{lppd} & d-axis subtransient reactance $L''_d$ & pu & 0.121 & 0.14 \\
+\texttt{lppq} & q-axis subtransient reactance $L''_q$ & pu & 0.181 & 0.18 \\
+\texttt{ll} & Stator leakage reactance $L_l$ & pu & 0.0991 & 0.11 \\
+\texttt{s1} & Saturation factor at 1.0 pu flux $S(1.0)$ & -- & 0.1 & 0.1 \\
+\texttt{s12} & Saturation factor at 1.2 pu flux $S(1.2)$ & -- & 0.522 & 0.522 \\
+\texttt{ra} & Stator resistance $R_a$ & pu & 0.002 & 0.0045 \\
+\texttt{rcomp} & Compounding resistance (voltage-regulator compensation) & pu & 0 & 0 \\
+\texttt{xcomp} & Compounding reactance (voltage-regulator compensation) & pu & 0 & 0 \\
+\texttt{kw} & Saturation weighting factor $K_w$ & -- & 0 & 0 \\
+\texttt{satflg} & Saturation-function selector & -- & 0 & 0 \\
+\bottomrule
+\end{tabularx}

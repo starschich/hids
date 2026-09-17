@@ -1,0 +1,42 @@
+\begin{tabularx}{\linewidth}{@{}l X l r r@{}}
+\toprule
+\textbf{Parameter} & \textbf{Description} & \multicolumn{1}{c}{\textbf{Unit}} & \multicolumn{1}{c}{\textbf{Turboden}} & \multicolumn{1}{c}{\textbf{Baker Hughes}} \\
+\midrule
+\texttt{mwcap} & Turbine MW capability (governor base) & MW & 65 & 60.461 \\
+\texttt{r} & Permanent droop $R$ & pu & 0.05 & 0.05 \\
+\texttt{rselect} & Feedback signal for droop (1 = electrical power) & -- & 1 & 1 \\
+\texttt{tpelec} & Electrical-power transducer time constant $T_{pelec}$ & s & 1 & 1 \\
+\texttt{maxerr} & Maximum speed-error signal & pu & 0.05 & 0.05 \\
+\texttt{minerr} & Minimum speed-error signal & pu & -0.05 & -0.05 \\
+\texttt{kpgov} & Governor proportional gain $K_{Pgov}$ & pu & 10 & 10 \\
+\texttt{kigov} & Governor integral gain $K_{Igov}$ & pu/s & 2 & 2 \\
+\texttt{kdgov} & Governor derivative gain $K_{Dgov}$ & pu$\cdot$s & 0 & 0 \\
+\texttt{tdgov} & Governor derivative time constant $T_{Dgov}$ & s & 1 & 1 \\
+\texttt{vmax} & Maximum valve position $V_{max}$ & pu & 1 & 1 \\
+\texttt{vmin} & Minimum valve position $V_{min}$ & pu & 0 & 0 \\
+\texttt{tact} & Actuator time constant $T_{act}$ & s & 0.5 & 0.5 \\
+\texttt{kturb} & Turbine gain $K_{turb}$ & pu & 1.1 & 1.1 \\
+\texttt{wfnl} & No-load fuel flow $W_{fnl}$ & pu & 0.1 & 0.1 \\
+\texttt{tb} & Turbine lag time constant $T_b$ & s & 0.12 & 0.12 \\
+\texttt{tc} & Turbine lead time constant $T_c$ & s & 0 & 0 \\
+\texttt{flag} & Fuel-flow speed dependence (0 = independent of speed) & -- & 0 & 0 \\
+\texttt{teng} & Transport lag for diesel engine $T_{eng}$ & s & 0 & 0 \\
+\texttt{tfload} & Load-limiter transducer time constant $T_{fload}$ & s & 3 & 3 \\
+\texttt{kpload} & Load-limiter proportional gain $K_{Pload}$ & pu & 2 & 2 \\
+\texttt{kiload} & Load-limiter integral gain $K_{Iload}$ & pu/s & 0.67 & 0.67 \\
+\texttt{ldref} & Load-limiter reference $L_{dref}$ & pu & 1 & 1 \\
+\texttt{dm} & Mechanical damping / speed sensitivity $D_m$ & pu & 0 & 0 \\
+\texttt{ropen} & Maximum valve opening rate $R_{open}$ & pu/s & 0 & 0 \\
+\texttt{rclose} & Maximum valve closing rate $R_{close}$ & pu/s & -0.1 & -0.1 \\
+\texttt{kimw} & Power-controller (MW) integral gain $K_{imw}$ & pu/s & 0 & 0 \\
+\texttt{pmwset} & Power-controller setpoint $P_{mwset}$ & MW & 0 & 0 \\
+\texttt{aset} & Acceleration-limiter setpoint $a_{set}$ & pu/s & 1 & 1 \\
+\texttt{ka} & Acceleration-limiter gain $K_a$ & pu & 10 & 10 \\
+\texttt{ta} & Acceleration-limiter time constant $T_a$ & s & 0.1 & 0.1 \\
+\texttt{db} & Speed governor deadband & pu & 0 & 0 \\
+\texttt{tsa} & Temperature-detection lead time constant $T_{sa}$ & s & 4 & 4 \\
+\texttt{tsb} & Temperature-detection lag time constant $T_{sb}$ & s & 5 & 5 \\
+\texttt{rup} & Maximum rate of load-limit increase & pu/s & 99 & 99 \\
+\texttt{rdown} & Maximum rate of load-limit decrease & pu/s & -99 & -99 \\
+\bottomrule
+\end{tabularx}

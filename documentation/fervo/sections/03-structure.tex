@@ -1,0 +1,63 @@
+\section{Dynamic model structure}
+\label{sec:structure}
+
+Every one of the nine units is represented by the same chain of five PSLF models,
+Figure~\ref{fig:chain}: a \texttt{genqec} synchronous machine, an \texttt{esac8b}
+excitation system, a \texttt{ggov1} turbine-governor, a \texttt{pss2a} power system
+stabilizer and the \texttt{lhvrt}/\texttt{lhfrt} ride-through trip models. The POI
+is a \texttt{gencls} classical machine with $H = 999$\,s on a 9999\,MV$\cdot$A base
+and $X''_d = 0.10$\,pu, which is the conventional way of making the swing bus an
+infinite source in a PSLF dynamic study.
+
+\begin{figure}[!ht]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[blk,minimum width=36mm,minimum height=12mm] (gen) at (5,0) {\texttt{genqec}\\synchronous machine};
+  \node[blk,minimum width=32mm,minimum height=12mm] (exc) at (0,0) {\texttt{esac8b}\\excitation system};
+  \node[blk,minimum width=32mm,minimum height=12mm] (gov) at (10,0) {\texttt{ggov1}\\turbine-governor};
+  \node[blk,minimum width=32mm,minimum height=12mm] (pss) at (0,-2.4) {\texttt{pss2a}\\stabilizer};
+  \node[blk,minimum width=32mm,minimum height=12mm] (rt) at (10,-2.4) {\texttt{lhvrt} / \texttt{lhfrt}\\ride-through trip};
+  \node[blk,minimum width=40mm,minimum height=12mm] (net) at (5,2.6) {Network\\(13.8\,kV terminal bus)};
+  % exciter <-> machine
+  \draw[sig] ([yshift=2mm]exc.east) -- node[above,lbl]{$E_{fd}$} ([yshift=2mm]gen.west);
+  \draw[sig] ([yshift=-2mm]gen.west) -- node[below,lbl]{$I_{fd}$} ([yshift=-2mm]exc.east);
+  % governor <-> machine
+  \draw[sig] ([yshift=2mm]gov.west) -- node[above,lbl]{$P_{mech}$} ([yshift=2mm]gen.east);
+  \draw[sig] ([yshift=-2mm]gen.east) -- node[below,lbl]{$\omega$, $P_{elec}$} ([yshift=-2mm]gov.west);
+  % pss
+  \draw[sig] (pss) -- node[right,lbl]{$V_S$} (exc);
+  \draw[sig] (gen.south) -- (5,-2.4) -- node[above,lbl]{$\omega$, $P_{elec}$} (pss.east);
+  % network
+  \draw[sig,<->] (gen) -- node[right,lbl]{$I_t$, $U_t$} (net);
+  \draw[sig] (net.west) -- (-1.2,2.6) -- node[left,lbl]{$U_t$} ([xshift=-12mm]exc.north);
+  \draw[sig] (net.east) -- (12.4,2.6) -- node[right,lbl]{$U_t$, $f_t$} (12.4,-2.4) -- (rt.east);
+  % trip
+  \draw[sig,dashed] (rt.west) -- node[above,lbl]{trip} (6.4,-2.4) -- ([xshift=14mm]gen.south);
+\end{tikzpicture}
+\caption{Signal flow between the five dynamic models attached to each unit. The stabilizer output $V_S$ enters the exciter's voltage-error summing junction; the ride-through models trip the unit when the terminal quantities leave the permitted envelope.}
+\label{fig:chain}
+\end{figure}
+
+The parameter sets are grouped by manufacturer. Table~\ref{tab:assign} shows which
+set applies to which unit; note that the two units on bus~22 belong to different
+families, so the two machines on that bus are not identical.
+
+\begin{table}[!ht]
+\centering
+\begin{tabularx}{\linewidth}{@{}l r c X l@{}}
+\toprule
+\textbf{Unit} & \multicolumn{1}{c}{\textbf{Bus}} & \multicolumn{1}{c}{\textbf{id}} & \textbf{Machine set} & \textbf{Controls} \\
+\midrule
+Gen 4  & 17 & 1 & Turboden, 76.471\,MV$\cdot$A, \texttt{mwcap} 65      & common set \\
+Gen 5  & 17 & 2 & Turboden, 76.471\,MV$\cdot$A, \texttt{mwcap} 65      & common set \\
+Gen 6  & 22 & 1 & Turboden, 76.471\,MV$\cdot$A, \texttt{mwcap} 65      & common set \\
+Gen 7  & 22 & 2 & Baker Hughes, 71.13\,MV$\cdot$A, \texttt{mwcap} 60.461 & common set \\
+Gen 8  & 23 & 1 & Baker Hughes, 71.13\,MV$\cdot$A, \texttt{mwcap} 60.461 & common set \\
+Gen 9  & 23 & 2 & Baker Hughes, 71.13\,MV$\cdot$A, \texttt{mwcap} 60.461 & common set \\
+Gen 10 & 25 & 1 & Baker Hughes, 71.13\,MV$\cdot$A, \texttt{mwcap} 60.461 & common set \\
+Gen 11 & 25 & 2 & Baker Hughes, 71.13\,MV$\cdot$A, \texttt{mwcap} 60.461 & common set \\
+\bottomrule
+\end{tabularx}
+\caption{Assignment of parameter sets to units.}
+\label{tab:assign}
+\end{table}
