@@ -1,0 +1,37 @@
+\section{Storage: what survives}
+\label{sec:storage}
+
+Exactly one path spans both machines.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l X X@{}}
+    \toprule
+    \textbf{Path} & \textbf{Shared with container?} &
+    \textbf{Survives \cmd{gpu release}?} \\
+    \midrule
+    \cmd{/shared/\$USER} & yes, live and bidirectional & yes \\
+    \cmd{\textasciitilde} on the developer VM & \textbf{no} & n/a \\
+    \cmd{\textasciitilde} inside the container & it is \emph{camimo's} home & yes, on camimo \\
+    container root filesystem & --- & no \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Which paths are shared and which survive a release.}
+  \label{tab:gpu-storage}
+\end{table}
+
+This deserves emphasis because it is easy to get wrong. The claim command
+bind-mounts \cmd{-v \$HOME:\$HOME}, but \cmd{\$HOME} is resolved \emph{on the
+GPU host}. The home directory visible inside the container is camimo's
+\cmd{/home/\$USER}, not the developer VM's. A file written to
+\cmd{\textasciitilde} in one place is not visible in the other. Only
+\cmd{-v /shared:/shared} is unconditional, and only \cmd{/shared} genuinely
+spans both.
+
+\medskip
+\textbf{\cmd{/shared} is not a backup.} One unmirrored NVMe copied hourly to
+another machine. Model weights belong there because they are large and
+re-downloadable; anything whose loss would matter belongs in Git, pushed
+elsewhere. It is also readable by the whole team, so it must never hold
+credentials, keys, tokens, draft commercial terms, or material under NDA.

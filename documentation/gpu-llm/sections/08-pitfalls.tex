@@ -1,0 +1,47 @@
+\section{Pitfalls}
+\label{sec:pitfalls}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{4.4cm} X@{}}
+    \toprule
+    \textbf{Symptom} & \textbf{Cause and remedy} \\
+    \midrule
+    Claim never released &
+    Claims do not expire, by design. A forgotten claim blocks the pool
+    indefinitely. Release explicitly. \\[2pt]
+
+    \cmd{Text file busy} on a freshly staged binary &
+    NFS write-back lag on a new executable under \cmd{/shared}. It clears by
+    itself; wait rather than re-copying. \\[2pt]
+
+    \cmd{pgrep -f "ollama serve"} always matches &
+    The search pattern appears in the searching command's own command line.
+    Use \cmd{grep "[b]in/ollama serve"}. \\[2pt]
+
+    Quoted one-liner silently does nothing &
+    The relay re-quotes arguments; nested quoting does not survive. Put the
+    commands in a script on \cmd{/shared}. \\[2pt]
+
+    \cmd{curl} returns the wrong model &
+    A local Ollama already occupies port 11434, so the forward failed to bind
+    and the query answered locally. Forward to a free local port such as
+    11435. \\[2pt]
+
+    \cmd{ssh -N} appears to hang &
+    Expected. \cmd{-N} runs no remote command; it holds the tunnel open and
+    prints nothing. Test from a second terminal. \\[2pt]
+
+    Work lost on release &
+    Only \cmd{/shared} spans both machines. The container home is the GPU
+    host's, not the developer VM's. \\[2pt]
+
+    \cmd{<defunct>} processes accumulate &
+    Container PID 1 is \cmd{sleep infinity} and never reaps children.
+    Harmless; cleared on release. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Symptoms seen in practice, with cause and remedy.}
+  \label{tab:gpu-pitfalls}
+\end{table}

@@ -1,0 +1,56 @@
+\section{Fetching and serving the model}
+\label{sec:serving}
+
+\subsection{Start the server}
+Keep this in a script on \cmd{/shared}. Long quoted one-liners do not survive
+the relay's re-quoting.
+
+\begin{lstlisting}
+#!/bin/bash
+# /shared/$USER/start-ollama.sh   --  run: gpu shell /shared/$USER/start-ollama.sh
+set -u
+BIN=/shared/$USER/opt/ollama/bin/ollama
+LOG=/shared/$USER/ollama-serve.log
+
+export OLLAMA_MODELS=/shared/$USER/ollama-models
+export OLLAMA_HOST=0.0.0.0:11434
+
+if ps -eo cmd | grep -q "[b]in/ollama serve"; then
+    echo "already running"; exit 0
+fi
+cd /shared/$USER
+nohup setsid "$BIN" serve > "$LOG" 2>&1 < /dev/null &
+echo "launched pid $!"
+\end{lstlisting}
+
+\subsection{Pull the weights}
+
+\begin{lstlisting}
+gpu shell bash -lc 'export OLLAMA_MODELS=/shared/$USER/ollama-models; \
+  /shared/$USER/opt/ollama/bin/ollama pull gpt-oss:120b'
+\end{lstlisting}
+
+Roughly 65\,GB. Because \cmd{OLLAMA\_MODELS} points at \cmd{/shared}, the pull
+happens once and is reused by every later claim --- and by teammates.
+
+\subsection{Measured behaviour}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}X l@{}}
+    \toprule
+    \textbf{Quantity} & \textbf{Value} \\
+    \midrule
+    Model                        & \cmd{gpt-oss:120b}, 116.8\,B parameters, MXFP4 \\
+    Download                     & 65\,GB at $\approx$106--117\,MB/s \\
+    Cold load from \cmd{/shared} & 43\,s \\
+    VRAM resident                & 67.0\,GB of 97.9\,GB \\
+    Generation, warm             & 183.5 tokens/s \\
+    Default context              & 131\,072 tokens \\
+    Keep-alive                   & 5 minutes idle, then unloaded \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Measured behaviour of \cmd{gpt-oss:120b} on one RTX PRO 6000.}
+  \label{tab:gpu-measured}
+\end{table}

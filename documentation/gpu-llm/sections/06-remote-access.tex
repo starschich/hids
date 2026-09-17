@@ -1,0 +1,33 @@
+\section{Remote access}
+\label{sec:remote-access}
+
+The server binds inside the container's network namespace, which nothing
+outside can reach. Two SSH forwards carry it out. Every hop terminates on
+loopback, so no inference port is ever published to the office network.
+
+\begin{lstlisting}
+# 1. in the container: bind the bridge interface
+gpu shell /shared/$USER/start-ollama.sh
+
+# 2. on the developer VM: forward to the container
+ssh -f -N -L 127.0.0.1:11434:172.17.0.4:11434 camimo
+
+# 3. on the laptop: forward to the developer VM
+ssh -N -L 11435:127.0.0.1:11434 eugen@192.168.1.57
+
+# 4. verify, from a second terminal
+curl http://localhost:11435/api/tags
+\end{lstlisting}
+
+The client then uses \cmd{http://localhost:11435/v1} as an OpenAI-compatible
+base URL with any non-empty API key, or \cmd{/api/...} for the native
+interface.
+
+\medskip
+\textbf{Security.} Ollama performs no authentication whatsoever. Whoever reaches
+the port can run inference on the card and pull or delete models. Binding
+\cmd{0.0.0.0} inside the container exposes it to every account on the GPU host
+--- acceptable within a team, but a deliberate decision rather than a default.
+Binding \cmd{0.0.0.0} on the developer VM would publish an unauthenticated
+endpoint to the whole LAN and should not be done. Access from outside the
+office requires a VPN; the developer VM has no public address.

@@ -1,0 +1,24 @@
+\section{Teardown and restore}
+\label{sec:teardown}
+
+\begin{lstlisting}
+gpu release        # deletes the container; cards return to the pool
+\end{lstlisting}
+
+The container, the running server and both tunnels are destroyed. The Ollama
+installation, the model weights and the start-up script all live on
+\cmd{/shared} and survive. Restoring service after a later claim costs two
+commands and no re-download:
+
+\begin{lstlisting}
+gpu claim 1
+gpu shell /shared/$USER/start-ollama.sh
+ssh -f -N -L 127.0.0.1:11434:172.17.0.4:11434 camimo
+\end{lstlisting}
+
+Confirm the bridge address first, as it may differ between claims:
+
+\begin{lstlisting}
+ssh camimo "docker inspect -f \
+  '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gpu-eugen"
+\end{lstlisting}

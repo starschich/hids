@@ -1,0 +1,79 @@
+% =============================================================
+%  Running a Local LLM on the Shared GPU Pool — Report
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex gpu-llm.tex   (run twice for ToC / references)
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives in the repo-level template folder
+\usepackage[corporate]{../../template/attemplate}
+\usepackage{listings}
+
+% TikZ libraries used by the architecture and stack diagrams
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,fit}
+
+% ---- Shell / code listing style ------------------------------
+% The shared template carries no listings style, so the document
+% defines one in the template's own colours.
+\lstdefinestyle{atshell}{
+  basicstyle=\ttfamily\fontsize{8.5}{11}\selectfont\color{atFg},
+  backgroundcolor=\color{atBgSubtle},
+  frame=single,
+  rulecolor=\color{atBorder},
+  framesep=5pt,
+  breaklines=true,
+  breakindent=0pt,
+  postbreak=\mbox{\textcolor{atBorderStrong}{$\hookrightarrow$}\space},
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  commentstyle=\color{atFgMuted}\itshape,
+  morecomment=[l]{\#},
+  xleftmargin=0pt,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+\lstset{style=atshell}
+
+\newcommand{\cmd}[1]{\texttt{\small #1}}
+
+% ---- Report metadata ----------------------------------------
+\reporttitle{Local LLM on the Shared GPU Pool}
+\reportsubtitle{Claiming GPUs, staging the runtime and serving an inference endpoint}
+\atEyebrow{Developer infrastructure}
+\atAbstract{End-to-end account of how a local large language model is deployed
+on the shared GPU pool: how GPUs are borrowed, why the work happens inside a
+container, where files must live to survive, how the model runtime is installed
+into an image without package manager access, and how the resulting endpoint is
+reached from a remote machine.}
+\reportauthor{Eugen Starschich}
+\reportdocnumber{ATW-REP-GPU-001}
+\reportrevision{0.1}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Confidential}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{Sep. 17, 2026}{Eugen Starschich}{Initial document}
+}
+
+\newpage
+\tableofcontents
+\clearpage
+
+% ---- Body ---------------------------------------------------
+\input{sections/01-architecture}
+\input{sections/02-borrowing-gpus}
+\input{sections/03-storage}
+\input{sections/04-runtime}
+\input{sections/05-serving}
+\input{sections/06-remote-access}
+\input{sections/07-teardown}
+\input{sections/08-pitfalls}
+\input{sections/09-command-reference}
+
+\end{document}

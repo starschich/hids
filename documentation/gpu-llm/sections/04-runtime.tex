@@ -1,0 +1,57 @@
+\section{Installing the runtime}
+\label{sec:runtime}
+
+\subsection{Staging the binary}
+Because the container has no downloader and no root, the runtime is fetched on
+the developer VM and staged through \cmd{/shared}.
+
+\begin{lstlisting}
+# on the developer VM
+mkdir -p /shared/$USER/opt /shared/$USER/ollama-models
+cd /shared/$USER/opt
+curl -sL -o ollama.tar.zst \
+  https://github.com/ollama/ollama/releases/download/v0.34.0/ollama-linux-amd64.tar.zst
+mkdir -p ollama && zstd -dc ollama.tar.zst | tar -xf - -C ollama
+\end{lstlisting}
+
+This yields \cmd{bin/ollama} plus the bundled CUDA runners in \cmd{lib/ollama}.
+No installation step, no systemd unit, no root required --- which is precisely
+why it works in a container where none of those are available.
+
+\subsection{Where Ollama sits}
+Ollama is a management layer, not the inference engine and not the model.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[
+    font=\small,
+    lay/.style={draw=atBorderStrong, minimum width=10.5cm, minimum height=0.95cm,
+                align=center},
+    arr/.style={{Latex[length=2mm]}-{Latex[length=2mm]}, draw=atFgMuted},
+  ]
+  \node[lay, fill=atBg]       (cli) {client: \cmd{curl}, editor plugin, OpenAI SDK};
+  \node[lay, fill=atBgSubtle, below=2mm of cli] (oll)
+    {\textbf{Ollama} --- process supervision, model registry,\\
+     prompt templating, HTTP API};
+  \node[lay, fill=atBgMuted, below=2mm of oll] (eng)
+    {\cmd{llama-server} (llama.cpp / ggml) + CUDA backend};
+  \node[lay, fill=atBgSubtle, below=2mm of eng] (wts)
+    {weights: \cmd{gpt-oss:120b}, GGUF, MXFP4};
+  \draw[arr] (cli) -- (oll);
+  \draw[arr] (oll) -- (eng);
+  \draw[arr] (eng) -- (wts);
+  \end{tikzpicture}
+  \caption{The serving stack, from client call down to the weights on disk.}
+  \label{fig:gpu-ollama-stack}
+\end{figure}
+
+Ollama supervises a separate \cmd{llama-server} process; llama.cpp and its CUDA
+kernels perform the arithmetic. Ollama contributes four things: it fetches and
+stores weights as blobs and manifests, it loads and unloads models with a
+keep-alive timer, it renders chat turns into the exact token format the model
+was trained on, and it exposes both a native API and an OpenAI-compatible one.
+It also sizes the context window to measured VRAM at start-up.
+
+For a single user on a single card this is the right trade. For a shared,
+heavily concurrent endpoint, vLLM's continuous batching would serve better at
+the cost of a much heavier install.

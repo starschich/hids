@@ -1,0 +1,61 @@
+\section{Architecture}
+\label{sec:architecture}
+
+\subsection{Scope}
+This document records a working deployment of \cmd{gpt-oss:120b} under Ollama
+on one NVIDIA RTX PRO 6000 Blackwell card of the shared GPU pool. All concrete
+figures quoted in Section~\ref{sec:serving} come from that deployment.
+
+\subsection{Hosts involved}
+Four hosts participate. Nothing about the model runs on the developer VM; it is
+a control point and an SSH waypoint only.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[
+    font=\small,
+    box/.style={draw=atBorderStrong, rounded corners=2pt, align=center,
+                minimum height=1.05cm, minimum width=2.9cm, fill=atBg},
+    gpubox/.style={box, fill=atBgSubtle},
+    ctr/.style={box, fill=atBgSubtle},
+    lnk/.style={-{Latex[length=2mm]}, thick, draw=atFgMuted},
+  ]
+  \node[box] (laptop) {Laptop\\\footnotesize remote client};
+  \node[box, right=1.5cm of laptop] (dev) {\cmd{dev-eugen}\\\footnotesize 192.168.1.57};
+  \node[box, right=1.5cm of dev] (cam) {\cmd{camimo}\\\footnotesize 192.168.1.96};
+  \node[ctr, below=1.15cm of cam] (cont) {container \cmd{gpu-eugen}\\\footnotesize 172.17.0.4};
+  \node[gpubox, below=1.15cm of cont] (gpu) {RTX PRO 6000\\\footnotesize 97\,887 MiB};
+
+  \draw[lnk] (laptop) -- node[above,font=\scriptsize,align=center] {ssh\\:11435} (dev);
+  \draw[lnk] (dev) -- node[above,font=\scriptsize,align=center] {ssh\\:11434} (cam);
+  \draw[lnk] (cam) -- node[right,font=\scriptsize] {docker bridge} (cont);
+  \draw[lnk] (cont) -- node[right,font=\scriptsize] {\cmd{-{}-gpus "device=N"}} (gpu);
+
+  \node[draw=atBorderStrong, dashed, rounded corners, inner sep=7pt,
+        fit=(cam)(cont)(gpu),
+        label={[font=\scriptsize\itshape, atFgMuted]above right:GPU host}] {};
+  \end{tikzpicture}
+  \caption{Hosts, container and card, with the two SSH hops that carry the
+           endpoint out to the client.}
+  \label{fig:gpu-architecture}
+\end{figure}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l l X@{}}
+    \toprule
+    \textbf{Host} & \textbf{Role} & \textbf{Notes} \\
+    \midrule
+    Laptop          & remote client       & reaches the pool only via SSH \\
+    \cmd{dev-eugen} & developer VM        & 4 cores, 8\,GB RAM, \emph{no GPU} \\
+    \cmd{camimo}    & GPU host            & 8 GPUs, also the NFS server for \cmd{/shared} \\
+    \cmd{gpu-eugen} & per-claim container & 128 cores, 440\,GB RAM visible \\
+    \bottomrule
+  \end{tabularx}
+  \caption{The four hosts and what each contributes.}
+  \label{tab:gpu-hosts}
+\end{table}
+
+The GPU host and the storage host are the same machine: \cmd{/shared} is local
+disk there, and NFS-mounted on the developer VM.

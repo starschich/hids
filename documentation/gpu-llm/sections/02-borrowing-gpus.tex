@@ -1,0 +1,94 @@
+\section{Borrowing GPUs}
+\label{sec:borrowing}
+
+\subsection{The verbs}
+
+\begin{lstlisting}
+gpu status        # who holds what, what is free
+gpu claim 2       # take 2 (all-or-nothing: 2 or none)
+gpu shell         # shell inside your container
+gpu shell CMD     # run one command in it, non-interactively
+gpu release       # give them back
+\end{lstlisting}
+
+\cmd{gpu} on the developer VM is a thin relay: it re-quotes its arguments and
+forwards them over SSH to \cmd{camimo}, where the real tool runs. Because it
+requests a remote TTY only when it has one, it works from scripts and from
+automated callers as well as interactively.
+
+\subsection{What a claim actually creates}
+\cmd{gpu claim} allocates cards in pool state and then starts a container
+pinned to exactly those cards:
+
+\begin{lstlisting}
+docker run -d --name gpu-eugen \
+  --gpus "device=1" \
+  --label gpu.owner=eugen --label gpu.devices=1 \
+  --restart no \
+  --user 3003:3000 \
+  -e HOME=/home/eugen \
+  -v /shared:/shared \
+  --shm-size 16g \
+  nvidia/cuda:12.6.0-base-ubuntu24.04 sleep infinity
+\end{lstlisting}
+
+Pool state lives in \cmd{/var/lib/gpu-pool/state.json} under a \cmd{flock}, and
+every command reconciles that file against \cmd{docker ps} before reporting or
+allocating. A container that dies therefore returns its cards on its own. If
+the state file is unreadable the tool refuses to write rather than falling back
+to ``the pool is empty'', which would hand out cards already in use.
+
+\subsection{Why a container at all}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}p{4.2cm} X@{}}
+    \toprule
+    \textbf{Property} & \textbf{Consequence} \\
+    \midrule
+    \cmd{-{}-gpus "device=N"} &
+    Isolation is structural, not by convention. Other cards are invisible;
+    yours renumbers to 0. A stray \cmd{CUDA\_VISIBLE\_DEVICES} cannot reach a
+    colleague's run. \\
+    Container is the unit of accounting &
+    \cmd{gpu release} is \cmd{docker rm -f}; reconciliation against
+    \cmd{docker ps} frees the cards. \\
+    No reaper, by design &
+    A claim is released by its owner, never by a timer --- so a long training
+    run is safe, and a forgotten claim blocks the pool. \\
+    All-or-nothing allocation &
+    Asking for 4 with 3 free yields nothing, rather than a half-sized
+    allocation that silently invalidates the run. \\
+    \cmd{-{}-user uid:3000} &
+    Files created on \cmd{/shared} are owned by you in the \cmd{team} group,
+    not by root. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{What the container arrangement buys.}
+  \label{tab:gpu-container-properties}
+\end{table}
+
+\subsection{Consequences to plan around}
+The image is \cmd{nvidia/cuda:12.6.0-base-ubuntu24.04}. The \emph{base} variant
+carries the CUDA runtime and nothing else.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}p{5.1cm} X@{}}
+    \toprule
+    \textbf{Constraint} & \textbf{Why} \\
+    \midrule
+    No \cmd{python3}, \cmd{curl}, \cmd{git}, \cmd{tmux} & \cmd{-base} image variant \\
+    No \cmd{sudo}; \cmd{apt install} fails & runs as your uid, not root \\
+    Service ports unreachable from outside & default docker bridge, isolated netns \\
+    Filesystem is ephemeral & \cmd{gpu release} deletes the container \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Constraints imposed by the claim container.}
+  \label{tab:gpu-constraints}
+\end{table}
+
+Anything that must run inside the container therefore has to be a
+self-contained binary staged in from outside.
