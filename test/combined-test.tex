@@ -1,0 +1,614 @@
+% =============================================================
+%  Test Document: Combined GPU/Corpus Documentation with TikZ Reference
+%  Standalone document with custom styling
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Basic packages
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,fit,decorations.pathreplacing}
+\usepackage{circuitikz}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+% Define brand colors
+\definecolor{atLime}{HTML}{CEEB11}
+\definecolor{atBlack}{HTML}{121212}
+\definecolor{atInk}{HTML}{232323}
+\definecolor{atPaper}{HTML}{FFFFFF}
+\definecolor{atGray}{HTML}{5C5C5C}
+\definecolor{atPanel}{HTML}{272B2B}
+\definecolor{atSand}{HTML}{E3E2DA}
+\definecolor{atStone}{HTML}{C9C7C2}
+\definecolor{atBorderStrong}{HTML}{C9C7C2}
+\definecolor{atBg}{HTML}{F7F7F6}
+\definecolor{atBgSubtle}{HTML}{F2F2F2}
+\definecolor{atBgMuted}{HTML}{E3E2DA}
+\definecolor{atAccent}{HTML}{CEEB11}
+\definecolor{atFg}{HTML}{232323}
+\definecolor{atFgMuted}{HTML}{5C5C5C}
+
+\geometry{margin=1in}
+
+% ---- Shell / code listing style ------------------------------
+\lstdefinestyle{atshell}{
+  basicstyle=\ttfamily\small\color{atFg},
+  backgroundcolor=\color{atBgSubtle},
+  frame=single,
+  rulecolor=\color{atBorderStrong},
+  framesep=5pt,
+  breaklines=true,
+  breakindent=0pt,
+  postbreak=\mbox{\textcolor{atBorderStrong}{$\hookrightarrow$}\space},
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  commentstyle=\color{atFgMuted}\itshape,
+  morecomment=[l]{\#},
+  xleftmargin=0pt,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+\lstset{style=atshell}
+
+\newcommand{\cmd}[1]{\texttt{\small #1}}
+
+% ---- Document metadata ----------------------------------------
+\title{Test Document: GPU Pool and Corpus System Documentation}
+\subtitle{Combined reference: LLM deployment, document retrieval, and transmission-line TikZ diagram}
+\author{Eugen Starschich}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+End-to-end account of how a local large language model is deployed on the shared
+GPU pool --- how GPUs are borrowed, why the work happens inside a container, where
+files must live to survive, how the model runtime is installed into an image
+without package manager access, and how the resulting endpoint is reached from a
+remote machine --- followed by \textit{corpus}, the retrieval
+system that answers questions from our own documents over that endpoint.
+Plus: TikZ representation of transmission line model.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ============================================================
+%  PART I: GPU POOL DOCUMENTATION
+% ============================================================
+
+\part{GPU Pool and LLM Deployment}
+
+\section{Architecture}
+\label{sec:architecture}
+
+Two machines are involved: the developer VM (dev-eugen) and the GPU host
+(camimo). The pool claim lifecycle is explicit (claim $\rightarrow$ release), the
+container home is ephemeral (data must live on /shared), and the tunnel
+forwarding the endpoint must survive container recreation.
+
+\subsection{The Shared GPU Pool}
+
+The GPU pool is not a Kubernetes cluster. It is a single physical box
+(camimo) with four GPUs, plus a DRA (Dynamic Resource Allocation) script
+that hands one GPU at a time to developers on first-come-first-served basis. The claim lifecycle is explicit:
+
+\begin{lstlisting}
+# --- pool -----------------------------------------------------------
+gpu status              # see current claim holder
+gpu claim 1             # claim GPU 1 (blocks forever until release)
+gpu shell               # interactive shell inside the container
+gpu shell /path/to/script.sh    # run command and attach
+gpu release             # release GPU; container destroyed
+\end{lstlisting}
+
+Claims do not expire, by design. A forgotten claim blocks the pool indefinitely.
+
+\section{Storage Model}
+
+Only /shared spans both machines. The container home is the GPU host's, not the
+developer VM's.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l X@{}}
+    \toprule
+    \textbf{Location} & \textbf{Purpose} \\\midrule
+    \cmd{/shared/} & Persistent data (model weights, scripts, logs) \\\midrule
+    \cmd{container home} & Ephemeral (deleted on release) \\\midrule
+    \cmd{~/work/raw} & Dashboard uploads (dev-eugen only) \\\bottomrule
+  \end{tabularx}
+  \caption{Storage model: what survives and where.}
+  \label{tab:storage}
+\end{table}
+
+\section{Ollama Runtime}
+
+Install once, then the model and the container survive independently.
+
+\begin{lstlisting}
+# --- inside the container -------------------------------------------
+nvidia-smi                            # verify GPU is claimed
+ps -eo pid,etime,cmd | grep "[b]in/ollama serve"
+tail -f /shared/$USER/ollama-serve.log
+\end{lstlisting}
+
+The script /shared/$USER/start-ollama.sh survives release. After a later claim:
+
+\begin{lstlisting}
+gpu claim 1
+gpu shell /shared/$USER/start-ollama.sh
+\end{lstlisting}
+
+\section{Model and Endpoint}
+
+\begin{lstlisting}
+# --- model ----------------------------------------------------------
+ollama list
+ollama pull  gpt-oss:120b
+ollama run   gpt-oss:120b --verbose "prompt"
+ollama stop  gpt-oss:120b       # unload from VRAM, keep on disk
+
+# --- endpoint -------------------------------------------------------
+curl http://localhost:11435/api/tags
+curl http://localhost:11435/api/generate \
+  -d '{"model":"gpt-oss:120b","prompt":"...","stream":false}'
+\end{lstlisting}
+
+The local port (11435) differs from the default (11434) because the relay re-quotes
+arguments; nested quoting does not survive.
+
+\section{Remote Access (Laptop $\rightarrow$ GPU Host)}
+
+From the developer VM, reach the GPU host over the office LAN. The SSH tunnel
+forwards the model endpoint so the laptop can talk to it as if it were local.
+
+\begin{lstlisting}
+ssh -f -N -L 127.0.0.1:11434:172.17.0.4:11434 camimo
+\end{lstlisting}
+
+Confirm the bridge address first, as it may differ between claims:
+
+\begin{lstlisting}
+ssh camimo "docker inspect -f \
+  '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' gpu-eugen"
+\end{lstlisting}
+
+\section{Pitfalls}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{4.4cm} X@{}}
+    \toprule
+    \textbf{Symptom} & \textbf{Cause and remedy} \\\midrule
+    Claim never released &
+    Claims do not expire, by design. A forgotten claim blocks the pool
+    indefinitely. Release explicitly. \\[2pt]
+
+    \cmd{Text file busy} on a freshly staged binary &
+    NFS write-back lag on a new executable under \cmd{/shared}. It clears by
+    itself; wait rather than re-copying. \\[2pt]
+
+    \cmd{pgrep -f "ollama serve"} always matches &
+    The search pattern appears in the searching command's own command line.
+    Use \cmd{grep "[b]in/ollama serve"}. \\[2pt]
+
+    Quoted one-liner silently does nothing &
+    The relay re-quotes arguments; nested quoting does not survive. Put the
+    commands in a script on \cmd{/shared}. \\[2pt]
+
+    \cmd{curl} returns the wrong model &
+    A local Ollama already occupies port 11434, so the forward failed to bind
+    and the query answered locally. Forward to a free local port such as
+    11435. \\[2pt]
+
+    \cmd{ssh -N} appears to hang &
+    Expected. \cmd{-N} runs no remote command; it holds the tunnel open and
+    prints nothing. Test from a second terminal. \\[2pt]
+
+    Work lost on release &
+    Only \cmd{/shared} spans both machines. The container home is the GPU
+    host's, not the developer VM's. \\[2pt]
+
+    \cmd{<defunct>} processes accumulate &
+    Container PID 1 is \cmd{sleep infinity} and never reaps children.
+    Harmless; cleared on release. \\\bottomrule
+  \end{tabularx}
+  \caption{Symptoms seen in practice, with cause and remedy.}
+  \label{tab:gpu-pitfalls}
+\end{table}
+
+% ============================================================
+%  PART II: CORPUS DOCUMENT RETRIEVAL
+% ============================================================
+
+\part{Document Retrieval System (corpus)}
+
+\section{Document retrieval on the endpoint: \textit{corpus}}
+\label{sec:corpus}
+
+\subsection{What it is}
+\textit{corpus} is a retrieval-augmented question answering system over our own
+documents, running entirely on American Terawatt hardware and using the
+endpoint of Section~\ref{sec:architecture} as its model. Documents are parsed
+once, split into passages, embedded, and indexed on local disk. At question
+time the relevant passages are retrieved and handed to \cmd{gpt-oss:120b} on
+the shared GPU pool, which answers from those passages and cites them. Nothing
+leaves the network, and nothing is sent to an external API.
+
+The system deliberately does \emph{not} fine-tune a model on the documents.
+Fine-tuning gives no reliable recall of specific facts, no citations, and would
+need re-running whenever a document changes. Retrieval at query time gives all
+three.
+
+\subsection{Where everything runs}
+Three machines are involved, and the split matters: the corpus lives next to
+the documents, the model lives on the GPU, and only questions and answers cross
+the network.
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[node distance=9mm,
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                minimum height=8mm},
+    store/.style={blk, fill=atBgSubtle},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    zone/.style={draw=atBorderStrong, dashed, rounded corners=4pt, inner sep=6mm},
+    flow/.style={{-Stealth[length=2mm]}, draw=atFgMuted, thick},
+    net/.style={{-Stealth[length=2mm]}, draw=atFgMuted, thick, dashed},
+    lbl/.style={font=\tiny, text=atFgMuted, align=center},
+  ]
+  % laptop
+  \node[comp] (hermes) {Hermes Agent\\{\normalfont (or any MCP client)}};
+  \node[zone, fit=(hermes), label={[font=\small\bfseries]above:Your laptop}] (zlap) {};
+
+  % developer VM
+  \node[comp, right=30mm of hermes] (server) {corpus server\\{\cmd{:8765}}\\MCP + JSON};
+  \node[comp, above right=6mm and 12mm of server] (cli) {{\cmd{./rag} CLI}};
+  \node[comp, below right=6mm and 12mm of server] (core)
+    {{\textbf{ragkit}}\\parse $\cdot$ chunk\\retrieve $\cdot$ answer};
+  \node[store, below=of core] (lance) {LanceDB index\\vectors + BM25};
+  \node[store, below=of lance] (md) {{\cmd{md/}} parse cache\\keyed on sha256};
+  \node[store, left=9mm of md] (raw) {{\cmd{\char`~/work/raw}}\\dashboard uploads};
+  \node[zone, fit=(server)(cli)(core)(lance)(md)(raw),
+        label={[font=\small\bfseries]above:dev-eugen {\normalfont(developer VM)}}] (zdev) {};
+
+  % GPU host
+  \node[comp, right=30mm of core] (ollama) {Ollama\\{\cmd{:11434}}};
+  \node[model, above right=4mm and 10mm of ollama] (chat)
+    {{\cmd{gpt-oss:120b}}\\65.4\,GB MXFP4\\131k ctx, tools};
+  \node[model, below right=4mm and 10mm of ollama] (embed) {{\cmd{bge-m3}}\\1024-dim};
+  \node[zone, fit=(ollama)(chat)(embed),
+        label={[font=\small\bfseries]above:GPU host {\normalfont(pool container)}}] (zgpu) {};
+
+  % edges
+  \draw[net] (hermes.east) -- node[lbl, above=1mm, midway, text width=24mm]
+    {HTTP + token\\office LAN} (server.west);
+  \draw[flow] (server.east) -- (core.north west);
+  \draw[flow] (cli.south east) -- (core.north);
+  \draw[flow] (core) -- (lance);
+  \draw[flow] (md) -- (lance);
+  \draw[flow] (raw) -- (md);
+  \draw[flow] (core.east) -- node[lbl, above=1mm, midway, text width=26mm]
+    {HTTP, forwarded\\to the pool} (ollama.west);
+  \draw[flow, <->] (ollama.east) -- (chat.west);
+  \draw[flow, <->] (ollama.east) -- (embed.west);
+  \end{tikzpicture}}
+  \caption{Where everything runs. Only questions and answers cross the network;
+           the index stays beside the documents.}
+  \label{fig:corpus-system}
+\end{figure}
+
+\subsection{Ingest: documents in, index out}
+Ingest runs once per document, and is cached. Parsing is the slow step, so its
+output is stored in \cmd{md/} keyed on the source file's sha256 --- re-running
+\cmd{./rag ingest} over a growing folder only touches files whose bytes
+changed.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[node distance=6mm,
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                minimum height=8mm},
+    store/.style={blk, fill=atBgSubtle},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    flow/.style={{-Stealth[length=2mm]}, draw=atFgMuted, thick},
+    lbl/.style={font=\tiny, text=atFgMuted, text width=26mm},
+  ]
+  \node[store] (src) {{\cmd{\char`~/work/raw}}\\PDF DOCX XLSX\\CSV MD TXT};
+  \node[comp, right=of src] (disc) {discover\\skips venvs,\\\cmd{node\_modules}, \cmd{.git}};
+  \node[comp, right=of disc] (parse) {parse\\to markdown};
+  \node[comp, right=of parse] (fix) {repair\\ligatures, tidy};
+  \node[store, right=of fix] (cache) {{\cmd{md/}}\\cache};
+
+  \node[comp, below=14mm of cache] (chunk) {chunk\\1000 tok, 150 overlap\\heading-aware};
+  \node[model, left=of chunk] (emb) {embed\\\cmd{bge-m3}};
+  \node[store, left=of emb] (tbl) {LanceDB\\\cmd{chunks} table};
+  \node[comp, left=of tbl] (idx) {build indexes\\BM25 always\\ANN $\geq$ 2048 rows};
+
+  \draw[flow] (src) -- (disc);
+  \draw[flow] (disc) -- (parse);
+  \draw[flow] (parse) -- (fix);
+  \draw[flow] (fix) -- (cache);
+  \draw[flow] (cache.south) -- (chunk.north);
+  \draw[flow] (chunk) -- (emb);
+  \draw[flow] (emb) -- (tbl);
+  \draw[flow] (tbl) -- (idx);
+
+  \node[lbl, below=1mm of parse] {scans flagged,\\not indexed};
+  \node[lbl, below=1mm of chunk, text width=30mm]
+    {title + heading path\\prefixed to each chunk};
+  \end{tikzpicture}
+  \caption{Ingest. Parsing is cached on the source's sha256, so re-running only
+           touches documents whose bytes changed.}
+  \label{fig:corpus-ingest}
+\end{figure}
+
+\subsection{Query: three model calls, not one}
+A question triggers an embedding call, then a rerank call, then the answer
+call. The database and the model never talk to each other; Python moves text
+between them.
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                minimum height=8mm},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    zone/.style={draw=atBorderStrong, dashed, rounded corners=4pt, inner sep=6mm},
+    flow/.style={{-Stealth[length=2mm]}, draw=atFgMuted, thick},
+    lbl/.style={font=\tiny, text=atFgMuted, align=center},
+  ]
+  % retrieval
+  \node[blk]   (q)    at (0,0)      {question};
+  \node[model] (qe)   at (2.5,0)    {\textbf{1.} embed\\\cmd{bge-m3}};
+  \node[comp]  (vec)  at (5.6,1.15) {vector search\\cosine, top 40};
+  \node[comp]  (bm)   at (5.6,-1.15){BM25 search\\top 40};
+  \node[comp]  (rrf)  at (9.1,0)    {fuse\\reciprocal rank};
+  \node[comp]  (prom) at (12.1,0)   {promote a\\dominant\\BM25 hit};
+  \node[zone, fit=(vec)(bm),
+        label={[font=\tiny, text=atFgMuted]below:LanceDB --- one table, two indexes}] (lz) {};
+
+  % generation
+  \node[model] (rr)  at (12.1,-4.3) {\textbf{2.} rerank\\\cmd{gpt-oss:120b}\\listwise, 1 call};
+  \node[model] (ans) at (8.0,-4.3)  {\textbf{3.} answer\\\cmd{gpt-oss:120b}};
+  \node[blk]   (out) at (4.2,-4.3)  {cited answer\\+ sources};
+
+  \draw[flow] (q) -- (qe);
+  \draw[flow] (qe.east) to[out=40,in=180]  (vec.west);
+  \draw[flow] (qe.east) to[out=-40,in=180] (bm.west);
+  \draw[flow] (vec.east) to[out=0,in=130]  (rrf.north);
+  \draw[flow] (bm.east)  to[out=0,in=-130] (rrf.south);
+  \draw[flow] (rrf) -- (prom);
+  \draw[flow] (prom) -- node[lbl, right=1mm, midway, text width=20mm]{40\\candidates} (rr);
+  \draw[flow] (rr) -- node[lbl, above=1mm, midway]{top 8 passages} (ans);
+  \draw[flow] (ans) -- (out);
+
+  \node[lbl, text width=40mm] at (5.6,2.5) {embeddings blur exact identifiers};
+  \node[lbl, text width=30mm] at (1.5,-1.9) {BM25 catches ``754'', ``IEC 60287''};
+  \node[lbl, below=2mm of ans, text width=38mm]
+    {{\cmd{--fast}} skips step 2:\\$\approx$7\,s instead of $\approx$20\,s};
+  \end{tikzpicture}}
+  \caption{A query. Three model calls: embed the question, rerank the
+           shortlist, then answer from the survivors.}
+  \label{fig:corpus-query}
+\end{figure}
+
+\subsection{Model operations}
+
+Four ways to interface with the corpus system:
+\begin{itemize}
+  \item \cmd{./rag ask} - CLI, no server
+  \item Python \cmd{import ragkit} - notebooks, own scripts
+  \item MCP stdio - client spawns it
+  \item MCP + JSON over HTTP \cmd{:8765} - Hermes and other agents
+\end{itemize}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l l l X@{}}
+    \toprule
+    \textbf{Interface} & \textbf{Server?} & \textbf{Auth} & \textbf{Use it for} \\\midrule
+    \cmd{./rag ask}              & no      & ---    & everyday use on the developer VM \\\midrule
+    \cmd{import ragkit}          & no      & ---    & notebooks, own scripts \\\midrule
+    MCP stdio                    & spawned & ---    & Claude Code on that box \\\midrule
+    MCP \cmd{/mcp}               & yes     & bearer & Hermes and other agents \\\midrule
+    JSON \cmd{/ask}, \cmd{/search} & yes   & bearer & curl, scripts, any language \\\bottomrule
+  \end{tabularx}
+  \caption{The four interfaces and what each is for.}
+  \label{tab:corpus-interfaces}
+\end{table}
+
+\subsection{Everyday commands}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l X@{}}
+    \toprule
+    \textbf{Task} & \textbf{Command} \\\midrule
+    Index new uploads    & \cmd{./rag ingest} \\\midrule
+    Index elsewhere      & \cmd{./rag ingest /shared/eugen/brochures} \\\midrule
+    Re-parse everything  & \cmd{./rag ingest --force} \\\midrule
+    Rebuild from scratch & \cmd{./rag ingest --reset} \\\midrule
+    Ask                  & \cmd{./rag ask "\dots"} \\\midrule
+    Passages only        & \cmd{./rag search "\dots"} \\\midrule
+    What is indexed      & \cmd{./rag status} \\\midrule
+    Start the server     & \cmd{tmux new -s corpus-mcp}, then \cmd{./mcp-http --host 0.0.0.0} \\\midrule
+    Client details       & \cmd{./mcp-http --show-client-config} \\\bottomrule
+  \end{tabularx}
+  \caption{Everyday \textit{corpus} commands on the developer VM.}
+  \label{tab:corpus-commands}
+\end{table}
+
+\section{Known limits}
+
+\begin{itemize}\itemsep1pt
+  \item \textbf{Scanned PDFs index nothing.} Ingest flags them rather than
+        silently adding empty chunks. A vision model (\cmd{qwen2.5vl:32b}) is
+        now on the pool and is the obvious OCR path if needed.
+  \item \textbf{Damage already in the source is not repaired.} The eCIGRE
+        brochure list contains titles that lost their ligatures before reaching
+        the spreadsheet (``Model specication''), so a search for
+        ``specification'' will not match them. Ligature repair runs only for
+        PDFs, where the document's own text supplies a trustworthy vocabulary.
+  \item \textbf{One writer.} LanceDB is embedded: concurrent readers are fine,
+        two simultaneous ingests are not.
+  \item \textbf{Rerank latency.} The 120B spends reasoning tokens before any
+        visible output, so a reranked query costs $\approx$20\,s.
+  \item \textbf{LAN exposure.} With \cmd{--host 0.0.0.0} the bearer token is
+        the only thing between the office network and every indexed document.
+\end{itemize}
+
+% ============================================================
+%  PART III: APPENDIX - TIKZ TRANSMISSION LINE DIAGRAM
+% ============================================================
+
+\appendix
+
+\chapter{TikZ Transmission Line Diagram}
+
+\section{AC Transmission Line Model}
+
+The following TikZ diagram represents the transmission line model from image9.pdf:
+
+\begin{figure}[!ht]
+  \centering
+  \begin{circuitikz}[american voltages, scale=1.2]
+    % Source box
+    \draw (0,0) rectangle (1,1);
+    
+    % Label above source (P_S, Q_S)
+    \draw[->,violet, thick] (1,1.3) -- (3,1.3) node[midway, above] {$P_S, Q_S$};
+    
+    % Line from source to point S
+    \draw (1,0.5) -- (2,0.5);
+    
+    % Point S (red dot)
+    \fill[red] (2,0.5) circle (2pt);
+    \node[right] at (2,0.6) {$S$};
+    
+    % I_S arrow (red, going right)
+    \draw[->,red, thick] (2,0.5) -- (2.8,0.5) node[midway, above] {$I_S$};
+    
+    % U_S arrow (blue, going down)
+    \draw[->,blue, thick] (2,0.5) -- (2,-0.5) node[midway, right] {$U_S$};
+    
+    % Switch/open
+    \draw[thick] (3,0.5) -- (3.3,0.5);
+    \draw[thick] (3.3,0.5) -- (3.5,0.6) -- (3.5,0.4) -- (3.8,0.5);
+    
+    % Cable (thick black line) with brace
+    \draw[ultra thick] (3.8,0.5) -- (6,0.5);
+    \draw[decorate,decoration={brace,amplitude=6pt}, above] 
+        (3.8,0.5) -- (6,0.5) node[midway,above=8pt] {$L_{\text{cable}}$};
+    
+    % Point R (red dot)
+    \fill[red] (6,0.5) circle (2pt);
+    \node[right] at (6,0.6) {$R$};
+    
+    % I_R arrow (red, going right)
+    \draw[->,red, thick] (6,0.5) -- (6.8,0.5) node[midway, above] {$I_R$};
+    
+    % U_R arrow (blue, going down)
+    \draw[->,blue, thick] (6,0.5) -- (6,-0.5) node[midway, right] {$U_R$};
+    
+    % Label above point R (P_R, Q_R)
+    \draw[->,violet, thick] (6,1.3) -- (8,1.3) node[midway, above] {$P_R, Q_R$};
+    
+    % Switch/open
+    \draw[thick] (6.8,0.5) -- (7.2,0.5);
+    \draw[thick] (7.2,0.5) -- (7.5,0.6) -- (7.5,0.4) -- (7.8,0.5);
+    
+    % Load Z_L
+    \draw (7.8,0.5) to[R, l^=$Z_L$] (7.8,-1) node[ground]{};
+    
+    % Ground from cable
+    \draw (6,-0.5) -- (6,-1) node[ground]{};
+    \draw (2,-0.5) -- (2,-1) node[ground]{};
+  \end{circuitikz}
+  \caption{TikZ representation of the transmission line model from image9.pdf.}
+  \label{fig:transmission-line-tikz}
+\end{figure}
+
+\section{Diagram Description}
+
+The diagram shows:
+\begin{itemize}
+  \item Source box on the left with power flow labels ($P_S, Q_S$)
+  \item Point $S$ (sending end) marked with red dot
+  \item Current $I_S$ (red arrow) and voltage $U_S$ (blue arrow)
+  \item Cable segment $L_{\text{cable}}$ with thick line and brace
+  \item Point $R$ (receiving end) marked with red dot
+  \item Current $I_R$ (red arrow) and voltage $U_R$ (blue arrow)
+  \item Power flow labels ($P_R, Q_R$) at receiving end
+  \item Load $Z_L$ (resistor) to ground
+\end{itemize}
+
+\chapter{Command Reference}
+
+\section{GPU Pool Commands}
+
+\begin{lstlisting}
+# --- pool -----------------------------------------------------------
+gpu status
+gpu claim 1
+gpu shell                       # interactive
+gpu shell /path/to/script.sh    # one command
+gpu release
+
+# --- inside the container -------------------------------------------
+nvidia-smi
+ps -eo pid,etime,cmd | grep "[b]in/ollama serve"
+tail -f /shared/$USER/ollama-serve.log
+
+# --- model ----------------------------------------------------------
+ollama list
+ollama pull  gpt-oss:120b
+ollama run   gpt-oss:120b --verbose "prompt"
+ollama stop  gpt-oss:120b       # unload from VRAM, keep on disk
+
+# --- endpoint -------------------------------------------------------
+curl http://localhost:11435/api/tags
+curl http://localhost:11435/api/generate \
+  -d '{"model":"gpt-oss:120b","prompt":"...","stream":false}'
+\end{lstlisting}
+
+\section{Corpus Commands}
+
+\begin{lstlisting}
+# --- index ------------------------------------------------------------
+./rag ingest                            # new uploads in ~/work/raw
+./rag ingest /shared/eugen/brochures    # a folder elsewhere
+./rag ingest --force                    # re-parse everything
+./rag ingest --reset                    # rebuild from scratch
+./rag status                            # what is indexed
+
+# --- ask --------------------------------------------------------------
+./rag ask    "..."                      # cited answer
+./rag ask    "..." --fast               # skip the rerank call
+./rag search "..."                      # passages only
+
+# --- server -----------------------------------------------------------
+tmux new -s corpus-mcp
+./mcp-http --host 0.0.0.0               # MCP + JSON on :8765, bearer token
+./mcp-http --show-client-config
+\end{lstlisting}
+
+\end{document}
