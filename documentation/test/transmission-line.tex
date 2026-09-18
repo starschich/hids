@@ -1,0 +1,63 @@
+% =============================================================
+%  Test document: TikZ single-line diagram of a cable link
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex transmission-line.tex   (run twice)
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives in the repo-level template folder
+\usepackage[corporate]{../../template/attemplate}
+
+% TikZ libraries used by the figure
+\usetikzlibrary{arrows.meta,calc}
+
+% ---- Report metadata ----------------------------------------
+\reporttitle{Cable Link Single-Line Diagram}
+\reportsubtitle{TikZ rendering of the sending-end / receiving-end transmission model}
+\atEyebrow{Template test}
+\atAbstract{Test document for the shared report template. It compiles a
+TikZ rendering of the single-line diagram of a cable transmission link
+(source, disconnectors, cable of length $L_{\mathrm{cable}}$ and load
+impedance $Z_{L}$) with the sending-end and receiving-end voltages,
+currents and power flows.}
+\reportauthor{Eugen Starschich}
+\reportdocnumber{ATW-TST-TIKZ-001}
+\reportrevision{0.1}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Internal}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{Sep. 18, 2026}{Eugen Starschich}{Initial document}
+}
+
+\clearpage
+
+% ---- Body ---------------------------------------------------
+\section{Transmission model}
+
+Figure~\ref{fig:transmission-line} shows the single-line representation of
+a cable transmission link between a sending end $S$ and a receiving end
+$R$. The sending-end source feeds the cable through a disconnector; at the
+receiving end a second disconnector connects the cable to the load
+impedance $Z_{L}$. The voltages $U_{S}$ and $U_{R}$ are measured against
+ground at the two cable ends, the currents $I_{S}$ and $I_{R}$ are counted
+positive in the direction from $S$ to $R$, and $P_{S}, Q_{S}$ and
+$P_{R}, Q_{R}$ denote the active and reactive power entering and leaving
+the cable of length $L_{\mathrm{cable}}$.
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{\linewidth}{!}{\input{figures/transmission-line-tikz}}
+  \caption{Single-line diagram of the cable transmission link.}
+  \label{fig:transmission-line}
+\end{figure}
+
+The figure is drawn in TikZ (\texttt{figures/transmission-line-tikz.tex})
+and can be reused in other documents with \verb|\input|.
+
+\end{document}
