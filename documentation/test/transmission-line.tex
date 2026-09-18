@@ -53,11 +53,33 @@ the cable of length $L_{\mathrm{cable}}$.
 \begin{figure}[!ht]
   \centering
   \resizebox{\linewidth}{!}{\input{figures/transmission-line-tikz}}
-  \caption{Single-line diagram of the cable transmission link.}
+  \caption{Single-line diagram of the cable transmission link (TikZ).}
   \label{fig:transmission-line}
 \end{figure}
 
 The figure is drawn in TikZ (\texttt{figures/transmission-line-tikz.tex})
 and can be reused in other documents with \verb|\input|.
+
+\section{Comparison with the original}
+
+Figure~\ref{fig:transmission-line-original} reproduces the original
+drawing (\texttt{figures/image9.pdf}) that the TikZ figure was traced
+from, for a side-by-side check of geometry, colours and labels. Both
+figures are scaled to the full text width, so they can be compared
+directly.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\linewidth]{figures/image9.pdf}
+  \caption{Original drawing used as reference.}
+  \label{fig:transmission-line-original}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{\linewidth}{!}{\input{figures/transmission-line-tikz}}
+  \caption{TikZ rendering of Figure~\ref{fig:transmission-line-original}.}
+  \label{fig:transmission-line-tikz}
+\end{figure}
 
 \end{document}
