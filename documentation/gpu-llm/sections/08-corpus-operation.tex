@@ -1,0 +1,118 @@
+\section{Operating \textit{corpus}}
+\label{sec:corpus-operation}
+
+\subsection{Four ways in, one core}
+
+The rag script used in the following commands is located in:\\
+\hspace*{2em} \cmd{/home/eugen/work/corpus/rag}
+
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[node distance=6mm,
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                minimum height=8mm},
+    store/.style={blk, fill=atBgSubtle},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    flow/.style={-{Stealth[length=2mm]}, draw=atFgMuted, thick},
+  ]
+  \node[blk] (a) {\cmd{./rag ask}\\CLI, no server};
+  \node[blk, below=of a] (b) {Python\\\cmd{import ragkit}};
+  \node[blk, below=of b] (c) {MCP stdio\\client spawns it};
+  \node[blk, below=of c] (d) {MCP + JSON over HTTP\\\cmd{:8765}};
+
+  \node[comp, right=22mm of b, yshift=-7mm] (core2) {\textbf{ragkit}\\retrieve $\cdot$ answer};
+  \node[store, right=of core2, yshift=8mm] (l2) {LanceDB};
+  \node[model, right=of core2, yshift=-8mm] (o2) {Ollama\\on the pool};
+
+  \draw[flow] (a.east) to[out=0,in=170] (core2.west);
+  \draw[flow] (b.east) to[out=0,in=178] (core2.west);
+  \draw[flow] (c.east) to[out=0,in=185] (core2.west);
+  \draw[flow] (d.east) to[out=0,in=192] (core2.west);
+  \draw[flow, <->] (core2) -- (l2);
+  \draw[flow, <->] (core2) -- (o2);
+  \end{tikzpicture}
+  \caption{Four interfaces onto one pipeline --- the same \textbf{ragkit} core
+           backs every one of them.}
+  \label{fig:corpus-doors}
+\end{figure}
+
+MCP is a doorway for other programs, not part of retrieval. Working on the
+developer VM, it is never needed. It exists so an agent on another machine ---
+Hermes, say --- can use the corpus, and so a coding session can search the
+documents mid-conversation.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l l l X@{}}
+    \toprule
+    \textbf{Interface} & \textbf{Server?} & \textbf{Auth} & \textbf{Use it for} \\
+    \midrule
+    \cmd{./rag ask}              & no      & ---    & everyday use on the developer VM \\
+    \cmd{import ragkit}          & no      & ---    & notebooks, own scripts \\
+    MCP stdio                    & spawned & ---    & Claude Code on that box \\
+    MCP \cmd{/mcp}               & yes     & bearer & Hermes and other agents \\
+    JSON \cmd{/ask}, \cmd{/search} & yes   & bearer & curl, scripts, any language \\
+    \bottomrule
+  \end{tabularx}
+  \caption{The four interfaces and what each is for.}
+  \label{tab:corpus-interfaces}
+\end{table}
+
+\subsection{Everyday commands}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l X@{}}
+    \toprule
+    \textbf{Task} & \textbf{Command} \\
+    \midrule
+    Index new uploads    & \cmd{./rag ingest} \\
+    Index elsewhere      & \cmd{./rag ingest /shared/eugen/brochures} \\
+    Re-parse everything  & \cmd{./rag ingest -{}-force} \\
+    Rebuild from scratch & \cmd{./rag ingest -{}-reset} \\
+    Ask                  & \cmd{./rag ask "\dots"} \\
+    Passages only        & \cmd{./rag search "\dots"} \\
+    What is indexed      & \cmd{./rag status} \\
+    Start the server     & \cmd{tmux new -s corpus-mcp}, then \cmd{./mcp-http -{}-host 0.0.0.0} \\
+    Client details       & \cmd{./mcp-http -{}-show-client-config} \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Everyday \textit{corpus} commands on the developer VM.}
+  \label{tab:corpus-commands}
+\end{table}
+
+\begin{sloppypar}
+Documents reach the developer VM through the \textbf{dashboard upload panel} at\\
+\hspace*{2em} \url{http://dev.americanterawatt.com/}\\ 
+landing in \cmd{\char`~/work/raw}. That is the route; there is no SSH access for anyone, by design.
+\end{sloppypar}
+
+\subsection{Known limits}
+
+\begin{itemize}\itemsep1pt
+  \item \textbf{Scanned PDFs index nothing.} Ingest flags them rather than
+        silently adding empty chunks. A vision model (\cmd{qwen2.5vl:32b}) is
+        now on the pool and is the obvious OCR path if needed.
+  \item \textbf{Damage already in the source is not repaired.} The eCIGRE
+        brochure list contains titles that lost their ligatures before reaching
+        the spreadsheet (``Model specication''), so a search for
+        ``specification'' will not match them. Ligature repair runs only for
+        PDFs, where the document's own text supplies a trustworthy vocabulary.
+  \item \textbf{One writer.} LanceDB is embedded: concurrent readers are fine,
+        two simultaneous ingests are not.
+  \item \textbf{Rerank latency.} The 120B spends reasoning tokens before any
+        visible output, so a reranked query costs $\approx$20\,s.
+  \item \textbf{LAN exposure.} With \cmd{-{}-host 0.0.0.0} the bearer token is
+        the only thing between the office network and every indexed document.
+\end{itemize}
+
+\subsection{Backups}
+\cmd{index/} and \cmd{md/} are derived --- they can be deleted and rebuilt from
+the sources at any time. The pipeline code is what matters, and as
+Section~\ref{sec:storage} notes \cmd{/shared} is one unmirrored NVMe, so that
+directory belongs in Git, pushed elsewhere.

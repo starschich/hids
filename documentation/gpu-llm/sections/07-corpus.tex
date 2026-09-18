@@ -1,0 +1,289 @@
+\section{Document retrieval on the endpoint: \textit{corpus}}
+\label{sec:corpus}
+
+\subsection{What it is}
+\textit{corpus} is a retrieval-augmented question answering system over our own
+documents, running entirely on American Terawatt hardware and using the
+endpoint of Section~\ref{sec:remote-access} as its model. Documents are parsed
+once, split into passages, embedded, and indexed on local disk. At question
+time the relevant passages are retrieved and handed to \cmd{gpt-oss:120b} on
+the shared GPU pool, which answers from those passages and cites them. Nothing
+leaves the network, and nothing is sent to an external API.
+
+The system deliberately does \emph{not} fine-tune a model on the documents.
+Fine-tuning gives no reliable recall of specific facts, no citations, and would
+need re-running whenever a document changes. Retrieval at query time gives all
+three.
+
+\subsection{Where everything runs}
+Three machines are involved, and the split matters: the corpus lives next to
+the documents, the model lives on the GPU, and only questions and answers cross
+the network.
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[node distance=9mm,
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                minimum height=8mm},
+    store/.style={blk, fill=atBgSubtle},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    zone/.style={draw=atBorderStrong, dashed, rounded corners=4pt, inner sep=6mm},
+    flow/.style={-{Stealth[length=2mm]}, draw=atFgMuted, thick},
+    net/.style={-{Stealth[length=2mm]}, draw=atFgMuted, thick, dashed},
+    lbl/.style={font=\tiny, text=atFgMuted, align=center},
+  ]
+  % laptop
+  \node[comp] (hermes) {Hermes Agent\\\textnormal{(or any MCP client)}};
+  \node[zone, fit=(hermes), label={[font=\small\bfseries]above:Your laptop}] (zlap) {};
+
+  % developer VM
+  \node[comp, right=30mm of hermes] (server) {corpus server\\\cmd{:8765}\\MCP + JSON};
+  \node[comp, above right=6mm and 12mm of server] (cli) {\cmd{./rag} CLI};
+  \node[comp, below right=6mm and 12mm of server] (core)
+    {\textbf{ragkit}\\parse $\cdot$ chunk\\retrieve $\cdot$ answer};
+  \node[store, below=of core] (lance) {LanceDB index\\vectors + BM25};
+  \node[store, below=of lance] (md) {\cmd{md/} parse cache\\keyed on sha256};
+  \node[store, left=9mm of md] (raw) {\cmd{\char`~/work/raw}\\dashboard uploads};
+  \node[zone, fit=(server)(cli)(core)(lance)(md)(raw),
+        label={[font=\small\bfseries]above:dev-eugen \textnormal{(developer VM)}}] (zdev) {};
+
+  % GPU host
+  \node[comp, right=30mm of core] (ollama) {Ollama\\\cmd{:11434}};
+  \node[model, above right=4mm and 10mm of ollama] (chat)
+    {\cmd{gpt-oss:120b}\\65.4\,GB MXFP4\\131k ctx, tools};
+  \node[model, below right=4mm and 10mm of ollama] (embed) {\cmd{bge-m3}\\1024-dim};
+  \node[zone, fit=(ollama)(chat)(embed),
+        label={[font=\small\bfseries]above:GPU host \textnormal{(pool container)}}] (zgpu) {};
+
+  % edges
+  \draw[net] (hermes.east) -- node[lbl, above=1mm, midway, text width=24mm]
+    {HTTP + token\\office LAN} (server.west);
+  \draw[flow] (server.east) -- (core.north west);
+  \draw[flow] (cli.south east) -- (core.north);
+  \draw[flow] (core) -- (lance);
+  \draw[flow] (md) -- (lance);
+  \draw[flow] (raw) -- (md);
+  \draw[flow] (core.east) -- node[lbl, above=1mm, midway, text width=26mm]
+    {HTTP, forwarded\\to the pool} (ollama.west);
+  \draw[flow, <->] (ollama.east) -- (chat.west);
+  \draw[flow, <->] (ollama.east) -- (embed.west);
+  \end{tikzpicture}}
+  \caption{Where everything runs. Only questions and answers cross the network;
+           the index stays beside the documents.}
+  \label{fig:corpus-system}
+\end{figure}
+
+Two consequences are worth holding onto. First, \textbf{the corpus is not the
+model}: the laptop's SSH tunnel of Section~\ref{sec:remote-access} reaches the
+model on port 11434, but the corpus is a separate service on port 8765 and
+needs its own path. Second, \textbf{retrieval happens where the data is}. Only
+a question goes over the wire and only an answer comes back --- kilobytes, not
+the gigabytes it would take to replicate the index.
+
+\subsection{Ingest: documents in, index out}
+Ingest runs once per document, and is cached. Parsing is the slow step, so its
+output is stored in \cmd{md/} keyed on the source file's sha256 --- re-running
+\cmd{./rag ingest} over a growing folder only touches files whose bytes
+changed.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[node distance=6mm,
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                minimum height=8mm},
+    store/.style={blk, fill=atBgSubtle},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    flow/.style={-{Stealth[length=2mm]}, draw=atFgMuted, thick},
+    lbl/.style={font=\tiny, text=atFgMuted, align=center},
+  ]
+  \node[store] (src) {\cmd{\char`~/work/raw}\\PDF DOCX XLSX\\CSV MD TXT};
+  \node[comp, right=of src] (disc) {discover\\skips venvs,\\\cmd{node\_modules}, \cmd{.git}};
+  \node[comp, right=of disc] (parse) {parse\\to markdown};
+  \node[comp, right=of parse] (fix) {repair\\ligatures, tidy};
+  \node[store, right=of fix] (cache) {\cmd{md/}\\cache};
+
+  \node[comp, below=14mm of cache] (chunk) {chunk\\1000 tok, 150 overlap\\heading-aware};
+  \node[model, left=of chunk] (emb) {embed\\\cmd{bge-m3}};
+  \node[store, left=of emb] (tbl) {LanceDB\\\cmd{chunks} table};
+  \node[comp, left=of tbl] (idx) {build indexes\\BM25 always\\ANN $\geq$ 2048 rows};
+
+  \draw[flow] (src) -- (disc);
+  \draw[flow] (disc) -- (parse);
+  \draw[flow] (parse) -- (fix);
+  \draw[flow] (fix) -- (cache);
+  \draw[flow] (cache.south) -- (chunk.north);
+  \draw[flow] (chunk) -- (emb);
+  \draw[flow] (emb) -- (tbl);
+  \draw[flow] (tbl) -- (idx);
+
+  \node[lbl, below=1mm of parse, text width=26mm] {scans flagged,\\not indexed};
+  \node[lbl, below=1mm of chunk, text width=30mm]
+    {title + heading path\\prefixed to each chunk};
+  \end{tikzpicture}
+  \caption{Ingest. Parsing is cached on the source's sha256, so re-running only
+           touches documents whose bytes changed.}
+  \label{fig:corpus-ingest}
+\end{figure}
+
+\subsubsection*{Why the chunks look the way they do}
+Every chunk is prefixed with its document title and heading path before it is
+embedded. A passage reading ``the limit is 40\,$^{\circ}$C'' is useless on its
+own; ``TB 754 $>$ 6.~Harmonic limits $>$ 6.11 --- the limit is
+40\,$^{\circ}$C'' both retrieves and answers correctly. The prefix is what gets
+embedded and BM25-indexed; the bare text is what the model is shown.
+
+Tables are kept whole where possible, and split on row boundaries with the
+header repeated when they are too large --- a spreadsheet row severed from its
+column headings cannot be read by anything.
+
+\subsection{Query: three model calls, not one}
+A question triggers an embedding call, then a rerank call, then the answer
+call. The database and the model never talk to each other; Python moves text
+between them.
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                minimum height=8mm},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    zone/.style={draw=atBorderStrong, dashed, rounded corners=4pt, inner sep=6mm},
+    flow/.style={-{Stealth[length=2mm]}, draw=atFgMuted, thick},
+    lbl/.style={font=\tiny, text=atFgMuted, align=center},
+  ]
+  % retrieval
+  \node[blk]   (q)    at (0,0)      {question};
+  \node[model] (qe)   at (2.5,0)    {\textbf{1.} embed\\\cmd{bge-m3}};
+  \node[comp]  (vec)  at (5.6,1.15) {vector search\\cosine, top 40};
+  \node[comp]  (bm)   at (5.6,-1.15){BM25 search\\top 40};
+  \node[comp]  (rrf)  at (9.1,0)    {fuse\\reciprocal rank};
+  \node[comp]  (prom) at (12.1,0)   {promote a\\dominant\\BM25 hit};
+  \node[zone, fit=(vec)(bm),
+        label={[font=\tiny, text=atFgMuted]below:LanceDB --- one table, two indexes}] (lz) {};
+
+  % generation
+  \node[model] (rr)  at (12.1,-4.3) {\textbf{2.} rerank\\\cmd{gpt-oss:120b}\\listwise, 1 call};
+  \node[model] (ans) at (8.0,-4.3)  {\textbf{3.} answer\\\cmd{gpt-oss:120b}};
+  \node[blk]   (out) at (4.2,-4.3)  {cited answer\\+ sources};
+
+  \draw[flow] (q) -- (qe);
+  \draw[flow] (qe.east) to[out=40,in=180]  (vec.west);
+  \draw[flow] (qe.east) to[out=-40,in=180] (bm.west);
+  \draw[flow] (vec.east) to[out=0,in=130]  (rrf.north);
+  \draw[flow] (bm.east)  to[out=0,in=-130] (rrf.south);
+  \draw[flow] (rrf) -- (prom);
+  \draw[flow] (prom) -- node[lbl, right=1mm, midway, text width=20mm]{40\\candidates} (rr);
+  \draw[flow] (rr) -- node[lbl, above=1mm, midway]{top 8 passages} (ans);
+  \draw[flow] (ans) -- (out);
+
+  \node[lbl, text width=40mm] at (5.6,2.5) {embeddings blur exact identifiers};
+  \node[lbl, text width=30mm] at (1.5,-1.9) {BM25 catches ``754'', ``IEC 60287''};
+  \node[lbl, below=2mm of ans, text width=38mm]
+    {\cmd{-{}-fast} skips step 2:\\$\approx$7\,s instead of $\approx$20\,s};
+  \end{tikzpicture}}
+  \caption{A query. Three model calls: embed the question, rerank the
+           shortlist, then answer from the survivors.}
+  \label{fig:corpus-query}
+\end{figure}
+
+\subsubsection*{Which model does what}
+There are exactly four model calls in the whole system, and \textbf{ragkit}
+makes all of them. The two models are not interchangeable: \cmd{bge-m3} only
+turns text into vectors --- it cannot generate --- so anything that produces
+words is \cmd{gpt-oss:120b}.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l l l X@{}}
+    \toprule
+    \textbf{Call site} & \textbf{Wrapper} & \textbf{Model} & \textbf{When} \\
+    \midrule
+    \cmd{rag.py:87}       & \cmd{llm.embed} & \cmd{bge-m3}       & ingest: embed every chunk \\
+    \cmd{retrieve.py:62}  & \cmd{llm.embed} & \cmd{bge-m3}       & query: embed the question \\
+    \cmd{retrieve.py:192} & \cmd{llm.chat}  & \cmd{gpt-oss:120b} & rerank the shortlist \\
+    \cmd{answer.py:36}    & \cmd{llm.chat}  & \cmd{gpt-oss:120b} & write the cited answer \\
+    \bottomrule
+  \end{tabularx}
+  \caption{The four model calls, and which model serves each.}
+  \label{tab:corpus-model-calls}
+\end{table}
+
+\cmd{llm.embed} posts to \cmd{/api/embed}, \cmd{llm.chat} to
+\cmd{/v1/chat/completions} --- same Ollama, same connection, different model
+name in the payload. That is why Figure~\ref{fig:corpus-system} shows one arrow
+into Ollama and Ollama reaching both models.
+
+Where the LanceDB search sits in that list is: nowhere. The lookup itself
+(vector + BM25) uses no model at all. It is the steps on either side of it that
+do --- embedding the question before, reranking after. Likewise ``the database
+and the model never talk to each other'' means exactly that: LanceDB and
+\cmd{gpt-oss:120b} have no link, and \textbf{ragkit} is the thing in the middle
+that talks to both.
+
+\subsubsection*{How the model actually receives the passages}
+As plain text in the prompt. There is no special channel and nothing is loaded
+into the model. The retrieved passages are concatenated into one numbered block
+and sent as an ordinary chat message to \cmd{/v1/chat/completions}:
+
+\begin{center}
+\begin{tikzpicture}
+\node[draw=atBorderStrong, rounded corners=2pt, fill=atBgSubtle,
+      text width=110mm, align=left, inner sep=6pt, font=\scriptsize] (p) {
+\textbf{system}\ \ Use only the numbered sources. Cite as [3]. If the sources
+do not contain the answer, say so.\\[3pt]
+\textbf{user}\ \ \ \ \ Sources:\\
+\phantom{xx}[1] 0754 AC side harmonics $>$ 6.~Harmonic limits $>$ 6.11.2 \dots\\
+\phantom{xx}distortion factor of the centred interharmonic subgroup \dots\\
+\phantom{xx}[2] \dots\\[2pt]
+\phantom{xx}Question: What harmonic order range does brochure 754 consider?};
+\end{tikzpicture}
+\end{center}
+
+The model sees one flat sequence of tokens. It has no filesystem access, no
+connection to LanceDB, and no memory of previous questions --- each question
+builds a fresh prompt. Three things follow:
+
+\begin{itemize}\itemsep1pt
+  \item \textbf{Citations cannot drift.} The model copies back the \cmd{[n]}
+        label it was given; the mapping from \cmd{[n]} to a file path is done
+        in Python afterwards.
+  \item \textbf{Refusal is honest.} ``The sources do not contain any entry for
+        brochure 9999'' is an accurate report about its input.
+  \item \textbf{Retrieval is the ceiling.} If a passage does not reach the
+        prompt, the model cannot know it, however capable it is.
+\end{itemize}
+
+\subsubsection*{Why context size is not the constraint}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}X r@{}}
+    \toprule
+    & \textbf{Tokens} \\
+    \midrule
+    System message                        & 128 \\
+    Retrieved passages (4) + question     & 4\,103 \\
+    Typical query at \cmd{k=8}            & $\approx$8\,000 \\
+    \midrule
+    One brochure in full (TB 754)         & 74\,550 \\
+    Model context window                  & 131\,072 \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Token budget of a query against the context window.}
+  \label{tab:corpus-context}
+\end{table}
+
+A default query uses about 6\,\% of the window. Stuffing the context instead
+would fit one brochure and a half out of roughly a thousand. That is the whole
+argument for retrieval: the problem was never how much text fits, it is picking
+the right four thousand tokens.

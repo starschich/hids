@@ -39,16 +39,17 @@
 
 % ---- Report metadata ----------------------------------------
 \reporttitle{Local LLM on the Shared GPU Pool}
-\reportsubtitle{Claiming GPUs, staging the runtime and serving an inference endpoint}
+\reportsubtitle{Claiming GPUs, serving an inference endpoint and answering from our own documents}
 \atEyebrow{Developer infrastructure}
 \atAbstract{End-to-end account of how a local large language model is deployed
-on the shared GPU pool: how GPUs are borrowed, why the work happens inside a
+on the shared GPU pool --- how GPUs are borrowed, why the work happens inside a
 container, where files must live to survive, how the model runtime is installed
 into an image without package manager access, and how the resulting endpoint is
-reached from a remote machine.}
+reached from a remote machine --- followed by \textit{corpus}, the retrieval
+system that answers questions from our own documents over that endpoint.}
 \reportauthor{Eugen Starschich}
 \reportdocnumber{ATW-REP-GPU-001}
-\reportrevision{0.1}
+\reportrevision{0.3}
 \reportstatus{Draft}
 \reportdate{\today}
 \reportconfidentiality{Confidential}
@@ -59,6 +60,8 @@ reached from a remote machine.}
 
 \revisionhistory{
   \revrow{0.1}{Sep. 17, 2026}{Eugen Starschich}{Initial document}
+  \revrow{0.2}{Sep. 17, 2026}{Eugen Starschich}{\textit{corpus} document retrieval added (Sections 7 and 8); command reference extended}
+  \revrow{0.3}{Sep. 17, 2026}{Eugen Starschich}{Model call sites tabulated (Section 7.4); embedding and chat endpoints distinguished}
 }
 
 \newpage
@@ -72,8 +75,10 @@ reached from a remote machine.}
 \input{sections/04-runtime}
 \input{sections/05-serving}
 \input{sections/06-remote-access}
-\input{sections/07-teardown}
-\input{sections/08-pitfalls}
-\input{sections/09-command-reference}
+\input{sections/07-corpus}
+\input{sections/08-corpus-operation}
+\input{sections/09-teardown}
+\input{sections/10-pitfalls}
+\input{sections/11-command-reference}
 
 \end{document}

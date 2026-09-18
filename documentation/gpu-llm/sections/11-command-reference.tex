@@ -1,0 +1,48 @@
+\section{Command reference}
+\label{sec:command-reference}
+
+\begin{lstlisting}
+# --- pool -----------------------------------------------------------
+gpu status
+gpu claim 1
+gpu shell                       # interactive
+gpu shell /path/to/script.sh    # one command
+gpu release
+
+# --- inside the container -------------------------------------------
+nvidia-smi
+ps -eo pid,etime,cmd | grep "[b]in/ollama serve"
+tail -f /shared/$USER/ollama-serve.log
+
+# --- model ----------------------------------------------------------
+ollama list
+ollama pull  gpt-oss:120b
+ollama run   gpt-oss:120b --verbose "prompt"
+ollama stop  gpt-oss:120b       # unload from VRAM, keep on disk
+
+# --- endpoint -------------------------------------------------------
+curl http://localhost:11435/api/tags
+curl http://localhost:11435/api/generate \
+  -d '{"model":"gpt-oss:120b","prompt":"...","stream":false}'
+\end{lstlisting}
+
+\subsection*{corpus, on the developer VM}
+
+\begin{lstlisting}
+# --- index ------------------------------------------------------------
+./rag ingest                            # new uploads in ~/work/raw
+./rag ingest /shared/eugen/brochures    # a folder elsewhere
+./rag ingest --force                    # re-parse everything
+./rag ingest --reset                    # rebuild from scratch
+./rag status                            # what is indexed
+
+# --- ask --------------------------------------------------------------
+./rag ask    "..."                      # cited answer
+./rag ask    "..." --fast               # skip the rerank call
+./rag search "..."                      # passages only
+
+# --- server -----------------------------------------------------------
+tmux new -s corpus-mcp
+./mcp-http --host 0.0.0.0               # MCP + JSON on :8765, bearer token
+./mcp-http --show-client-config
+\end{lstlisting}
