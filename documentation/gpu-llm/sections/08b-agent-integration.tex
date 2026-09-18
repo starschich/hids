@@ -1,0 +1,150 @@
+\section{Connecting an agent}
+\label{sec:agent-integration}
+
+The endpoint of Section~\ref{sec:remote-access} and the retrieval tools of
+Section~\ref{sec:corpus-operation} are both consumed by the same client: an
+agent that reasons, calls tools, and reads our documents. This section records
+how that client is configured, using Hermes Agent as the worked example. The
+principles carry to any agent framework; the key names do not.
+
+\subsection{Three things an agent needs}
+
+\begin{enumerate}
+  \item A model that declares \textit{tools} --- see
+        Section~\ref{sec:capabilities}. Without it the agent cannot act at all.
+  \item A provider entry that actually resolves to our endpoint.
+  \item The MCP server, for retrieval over our own documents.
+\end{enumerate}
+
+\subsection{The provider must be named}
+
+A custom OpenAI-compatible endpoint is declared as a provider. In Hermes Agent
+a \textit{bare} \cmd{provider: custom} does not work: the resolver returns
+\cmd{None} for the literal string \cmd{"custom"},
+
+\begin{lstlisting}
+if not requested_norm or requested_norm == "custom": return None
+\end{lstlisting}
+
+and resolution falls through to the tool's default cloud provider, which is
+then sent our local model name together with whatever key is on file. The
+symptom is a complaint about a provider nobody configured --- a rejected API
+key for a service that was never meant to be used --- and nothing in the error
+indicates that a different endpoint was contacted. The remedy is a
+\textbf{named} provider entry plus \cmd{custom:<name>}, which gives resolution a
+real base URL to find.
+
+\begin{lstlisting}
+providers:
+  local:
+    base_url: http://localhost:11435/v1     # the tunnel, not 11434
+    api_key: no-key-required                # Ollama ignores it; must be non-empty
+    default_model: "qwen3.5:122b-a10b"
+
+model:
+  default: "qwen3.5:122b-a10b"
+  provider: custom:local                    # NOT a bare "custom"
+  base_url: http://localhost:11435/v1
+  context_length: 131072                    # see Section 5.5 on VRAM headroom
+  max_tokens: 8192
+  timeout_seconds: 300
+\end{lstlisting}
+
+Three of those values are worth justifying.
+
+\textbf{Port 11435, not 11434.} On a laptop already running its own Ollama, the
+forward cannot bind 11434 and the client silently talks to the local instance
+instead --- appearing to work, while using an entirely different model.
+
+\textbf{\cmd{context\_length: 131072}, not the model's native 262\,144.} The KV
+cache does not fit the remaining VRAM on a single card
+(Section~\ref{sec:measured}).
+
+\textbf{\cmd{max\_tokens: 8192}.} A reasoning model spends tokens before
+emitting anything visible; a tight budget returns empty content, which is
+indistinguishable from a hung request. A tool-calling turn that also writes an
+answer from retrieved passages needs the headroom.
+
+\subsection{Auxiliary slots}
+
+Where the main model lacks a capability, an agent may route that task to a
+separate model. Hermes calls these \textit{auxiliary} slots --- vision, web
+summarisation and compression among them --- and, importantly, calls them
+\textbf{without} a tools array. That makes an auxiliary slot the correct home
+for a vision-only model, which would otherwise be rejected outright
+(Section~\ref{sec:capabilities}).
+
+\begin{lstlisting}
+auxiliary:
+  vision:
+    model: ""            # empty + "auto" = use the main chat model
+    provider: "auto"
+    base_url: null
+\end{lstlisting}
+
+With \cmd{qwen3.5:122b-a10b} as the main model the slot is left on
+\cmd{auto}, because that model has vision of its own. The slot earns its keep
+only when the main model does not --- pairing \cmd{gpt-oss:120b}, which has
+tools but no vision, with a vision model that has no tools. Each covers the
+other's gap, and neither is asked to do what it cannot.
+
+\subsection{Wiring in the corpus}
+
+The MCP server is declared separately from the model, and is reached
+\textbf{directly over the office LAN} rather than through the SSH tunnel --- it
+is a different service on a different port.
+
+\begin{lstlisting}
+mcp_servers:
+  corpus:
+    url: http://192.168.1.57:8765/mcp
+    headers:
+      Authorization: "Bearer ${env:CORPUS_MCP_TOKEN}"
+    timeout: 300          # rerank with the 120B takes ~20 s; 300 is the default
+    connect_timeout: 60
+    enabled: true
+    tools:
+      include: [search_corpus, ask_corpus, corpus_status]
+      exclude: []
+      resources: false
+      prompts: false
+\end{lstlisting}
+
+The transport key is omitted deliberately: it is inferred from the presence of
+\cmd{url}, and is needed only to force SSE instead of Streamable HTTP. The
+token belongs in the agent's environment file, not here, so that the
+configuration itself stays safe to copy and to commit.
+
+\subsection{Verifying the wiring}
+
+Check the two halves independently before blaming the agent. The endpoint:
+
+\begin{lstlisting}
+curl http://localhost:11435/api/tags          # must list the expected model
+\end{lstlisting}
+
+and the MCP server, which needs a session before it will answer --- a bare
+\cmd{tools/list} returns \cmd{-32600 Missing session ID}:
+
+\begin{lstlisting}
+TOK=$(ssh eugen@192.168.1.57 'cat ~/.config/corpus/mcp-token')
+H=(-H "Authorization: Bearer $TOK" -H "Content-Type: application/json"
+   -H "Accept: application/json, text/event-stream")
+
+SID=$(curl -s -D- -X POST http://192.168.1.57:8765/mcp "${H[@]}" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{
+       "protocolVersion":"2025-06-18","capabilities":{},
+       "clientInfo":{"name":"healthcheck","version":"1"}}}' \
+  -o /dev/null | tr -d '\r' | awk -F': ' '/^mcp-session-id/{print $2}')
+
+curl -s -X POST http://192.168.1.57:8765/mcp "${H[@]}" \
+  -H "mcp-session-id: $SID" \
+  -d '{"jsonrpc":"2.0","method":"notifications/initialized"}' -o /dev/null
+
+curl -s -X POST http://192.168.1.57:8765/mcp "${H[@]}" \
+  -H "mcp-session-id: $SID" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+\end{lstlisting}
+
+A request without the bearer token returns HTTP 401, which is the intended
+behaviour and a quick confirmation that authentication is enforced.

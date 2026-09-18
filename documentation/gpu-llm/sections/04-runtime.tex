@@ -36,7 +36,7 @@ Ollama is a management layer, not the inference engine and not the model.
   \node[lay, fill=atBgMuted, below=2mm of oll] (eng)
     {\cmd{llama-server} (llama.cpp / ggml) + CUDA backend};
   \node[lay, fill=atBgSubtle, below=2mm of eng] (wts)
-    {weights: \cmd{gpt-oss:120b}, GGUF, MXFP4};
+    {weights: GGUF on \cmd{/shared} (Table~\ref{tab:gpu-model-inventory})};
   \draw[arr] (cli) -- (oll);
   \draw[arr] (oll) -- (eng);
   \draw[arr] (eng) -- (wts);

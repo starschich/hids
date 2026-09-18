@@ -96,8 +96,10 @@ landing in \cmd{\char`~/work/raw}. That is the route; there is no SSH access for
 
 \begin{itemize}\itemsep1pt
   \item \textbf{Scanned PDFs index nothing.} Ingest flags them rather than
-        silently adding empty chunks. A vision model (\cmd{qwen2.5vl:32b}) is
-        now on the pool and is the obvious OCR path if needed.
+        silently adding empty chunks. The main model
+        (\cmd{qwen3.5:122b-a10b}) has vision and is the obvious OCR path if
+        needed. The dedicated vision model previously noted here,
+        \cmd{qwen2.5vl:32b}, was removed once the main model superseded it.
   \item \textbf{Damage already in the source is not repaired.} The eCIGRE
         brochure list contains titles that lost their ligatures before reaching
         the spreadsheet (``Model specication''), so a search for

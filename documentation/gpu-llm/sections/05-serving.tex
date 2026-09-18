@@ -27,30 +27,135 @@ echo "launched pid $!"
 
 \begin{lstlisting}
 gpu shell bash -lc 'export OLLAMA_MODELS=/shared/$USER/ollama-models; \
-  /shared/$USER/opt/ollama/bin/ollama pull gpt-oss:120b'
+  /shared/$USER/opt/ollama/bin/ollama pull qwen3.5:122b-a10b'
 \end{lstlisting}
 
-Roughly 65\,GB. Because \cmd{OLLAMA\_MODELS} points at \cmd{/shared}, the pull
-happens once and is reused by every later claim --- and by teammates.
+Because \cmd{OLLAMA\_MODELS} points at \cmd{/shared}, the pull happens once and
+is reused by every later claim --- and by teammates. Sustained download rate is
+around 110--120\,MB/s, though the tail of a large blob has been observed to
+collapse to roughly 1\,MB/s for the final gigabyte; the pull still completes.
 
-\subsection{Measured behaviour}
+\subsection{Model inventory}
+
+Three models are resident on \cmd{/shared}, serving distinct roles.
 
 \begin{table}[!ht]
   \centering
   \renewcommand{\arraystretch}{1.25}
-  \begin{tabularx}{\linewidth}{@{}X l@{}}
+  \begin{tabularx}{\linewidth}{@{}l r X@{}}
     \toprule
-    \textbf{Quantity} & \textbf{Value} \\
+    \textbf{Model} & \textbf{Size} & \textbf{Role} \\
     \midrule
-    Model                        & \cmd{gpt-oss:120b}, 116.8\,B parameters, MXFP4 \\
-    Download                     & 65\,GB at $\approx$106--117\,MB/s \\
-    Cold load from \cmd{/shared} & 43\,s \\
-    VRAM resident                & 67.0\,GB of 97.9\,GB \\
-    Generation, warm             & 183.5 tokens/s \\
-    Default context              & 131\,072 tokens \\
-    Keep-alive                   & 5 minutes idle, then unloaded \\
+    \cmd{qwen3.5:122b-a10b} & 81.4\,GB & Main model. 122\,B total / 10\,B
+      active sparse MoE. Declares \textit{completion, vision, tools,
+      thinking}. \\
+    \cmd{gpt-oss:120b}      & 65.4\,GB & Fallback. Faster, but no vision. \\
+    \cmd{bge-m3:latest}     & 1.2\,GB  & Embeddings for \textit{corpus}
+      (Section~\ref{sec:corpus}). Not a chat model. \\
     \bottomrule
   \end{tabularx}
-  \caption{Measured behaviour of \cmd{gpt-oss:120b} on one RTX PRO 6000.}
+  \caption{Model store on \cmd{/shared/\$USER/ollama-models}, 147.9\,GB total.}
+  \label{tab:gpu-model-inventory}
+\end{table}
+
+\subsection{Capabilities are not interchangeable}
+\label{sec:capabilities}
+
+A model's declared capabilities decide what it can be used \textit{for}, and no
+configuration can add a missing one. Query them before wiring a model into
+anything:
+
+\begin{lstlisting}
+curl -s http://localhost:11434/api/show -d '{"model":"qwen3.5:122b-a10b"}' \
+  | python3 -c "import json,sys; print(json.load(sys.stdin)['capabilities'])"
+\end{lstlisting}
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}X c c c c@{}}
+    \toprule
+    \textbf{Model} & \textbf{completion} & \textbf{tools} & \textbf{vision} & \textbf{thinking} \\
+    \midrule
+    \cmd{qwen3.5:122b-a10b} & yes & yes & yes & yes \\
+    \cmd{gpt-oss:120b}      & yes & yes & \textbf{no}  & yes \\
+    \cmd{bge-m3:latest}     & \multicolumn{4}{c}{\textit{embedding only}} \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Declared capabilities. Two consequences follow directly: a model
+  without \textit{tools} cannot drive an agent, and a model without
+  \textit{vision} cannot read an image.}
+  \label{tab:gpu-capabilities}
+\end{table}
+
+An agent framework attaches a \cmd{tools} array to every request. Sending that
+to a model lacking the capability is rejected outright:
+
+\begin{lstlisting}
+HTTP 400
+{"error":{"message":"registry.ollama.ai/library/<model> does not support tools",
+          "type":"invalid_request_error"}}
+\end{lstlisting}
+
+The same model answers normally when the array is absent, so the model is not
+faulty --- it simply cannot participate in an agent loop.
+
+\subsection{Measured behaviour}
+\label{sec:measured}
+
+Both chat models were put through an identical battery on the same endpoint:
+the same prompts, the same figure, and the same scoring. Everything in
+Table~\ref{tab:gpu-measured} is measured, not quoted from a model card.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}X r r@{}}
+    \toprule
+    \textbf{Quantity} & \cmd{gpt-oss:120b} & \cmd{qwen3.5:122b-a10b} \\
+    \midrule
+    Size on disk                  & 65.4\,GB  & 81.4\,GB \\
+    VRAM resident                 & 67.0\,GB  & 84.9\,GB \\
+    Context served                & 131\,072  & 262\,144 \\
+    Cold load and first reply     & 43\,s     & 28.6\,s \\
+    Generation, warm              & \textbf{183.5} tok/s & 126.8 tok/s \\
+    Tokens to emit ``CONNECTION OK'' & \textbf{68} & 253 \\
+    Tool call, first turn         & 0.8\,s    & 1.0\,s \\
+    Edit call, second turn        & 1.1\,s    & 3.7\,s \\
+    \cmd{old\_string} byte-exact  & yes       & yes \\
+    Edited code correct           & yes       & yes \\
+    Vision                        & \textit{not supported} & \textbf{yes} \\
+    Figure $\rightarrow$ TikZ compiles & ---  & yes \\
+    Figure $\rightarrow$ TikZ, SSIM    & ---  & 0.9441 \\
+    Figure $\rightarrow$ TikZ, ink overlap & --- & 0.4281 \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Head-to-head on one RTX PRO 6000. Keep-alive on both is 5 minutes
+  idle by configuration, though a longer effective value has been observed.}
   \label{tab:gpu-measured}
 \end{table}
+
+\paragraph{Reading the table.}
+\cmd{gpt-oss:120b} generates about 45\,\% faster and is markedly less verbose ---
+68 completion tokens to answer a two-word prompt against 253. In an agent loop
+that difference compounds across every turn, in both latency and context
+consumed.
+
+\cmd{qwen3.5:122b-a10b} pays for that with vision and twice the context, and
+matches \cmd{gpt-oss} exactly where it matters most for agent work: both
+produced a byte-exact \cmd{old\_string} for a search-and-replace edit and both
+yielded correct, compiling code. Byte-exactness is the usual failure mode for
+weaker models --- a paraphrased original silently fails to apply.
+
+On the figure-to-TikZ task its ink overlap of 0.4281 is more than four times
+that of the dedicated vision model it replaced (\cmd{qwen2.5vl:32b}, 0.1019),
+though still below the deterministic converter's 0.7015. The model's output is
+semantic and editable; the converter's is a coordinate dump.
+
+\paragraph{VRAM constrains the context window.}
+With \cmd{qwen3.5:122b-a10b} resident, \cmd{nvidia-smi} reports 84\,952\,MiB of
+97\,887 in use --- roughly 13\,GB free. The KV cache for a 256\,K context on a
+122\,B model does not fit in that, so a client configured for the model's full
+native context will fail on allocation during long conversations or large
+retrievals. Configure clients for 131\,072 on a single card, or claim a second
+card (Section~\ref{sec:borrowing}) before raising it.

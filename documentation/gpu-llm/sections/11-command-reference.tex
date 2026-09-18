@@ -16,14 +16,20 @@ tail -f /shared/$USER/ollama-serve.log
 
 # --- model ----------------------------------------------------------
 ollama list
-ollama pull  gpt-oss:120b
-ollama run   gpt-oss:120b --verbose "prompt"
-ollama stop  gpt-oss:120b       # unload from VRAM, keep on disk
+ollama pull  qwen3.5:122b-a10b
+ollama run   qwen3.5:122b-a10b --verbose "prompt"
+ollama stop  qwen3.5:122b-a10b   # unload from VRAM, keep on disk
+ollama rm    <model>             # delete weights from /shared
+
+# capabilities decide what a model may be used for - check before wiring
+curl -s http://localhost:11435/api/show -d '{"model":"qwen3.5:122b-a10b"}' \
+  | python3 -c "import json,sys; print(json.load(sys.stdin)['capabilities'])"
 
 # --- endpoint -------------------------------------------------------
 curl http://localhost:11435/api/tags
+curl http://localhost:11435/api/ps          # what is resident in VRAM
 curl http://localhost:11435/api/generate \
-  -d '{"model":"gpt-oss:120b","prompt":"...","stream":false}'
+  -d '{"model":"qwen3.5:122b-a10b","prompt":"...","stream":false}'
 \end{lstlisting}
 
 \subsection*{corpus, on the developer VM}
@@ -45,4 +51,11 @@ curl http://localhost:11435/api/generate \
 tmux new -s corpus-mcp
 ./mcp-http --host 0.0.0.0               # MCP + JSON on :8765, bearer token
 ./mcp-http --show-client-config
+
+# --- health check -----------------------------------------------------
+# No token must return 401. A bare tools/list returns -32600 Missing
+# session ID: initialize first, then reuse the mcp-session-id header.
+# Full sequence in Section 9.5.
+curl -s -o /dev/null -w '%{http_code}\n' -X POST \
+  http://127.0.0.1:8765/mcp -H 'Content-Type: application/json' -d '{}'
 \end{lstlisting}

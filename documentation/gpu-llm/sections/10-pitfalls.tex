@@ -39,7 +39,30 @@
 
     \cmd{<defunct>} processes accumulate &
     Container PID 1 is \cmd{sleep infinity} and never reaps children.
-    Harmless; cleared on release. \\
+    Harmless; cleared on release. \\[2pt]
+
+    \cmd{does not support tools} (HTTP 400) &
+    An agent attaches a \cmd{tools} array to every request and the model has no
+    such capability. Not fixable by configuration --- check
+    Table~\ref{tab:gpu-capabilities} and use a model that declares
+    \textit{tools}, or route the task to an auxiliary slot that is called
+    without them. \\[2pt]
+
+    Agent reports a rejected key for a provider you never configured &
+    The client fell back to its default provider because the custom one failed
+    to resolve. In Hermes Agent a bare \cmd{provider: custom} does exactly this
+    (Section~\ref{sec:agent-integration}); the error names the fallback, not the
+    real fault. \\[2pt]
+
+    Allocation failure on long conversations &
+    The configured context window exceeds what the KV cache can occupy in the
+    VRAM left after the weights. Lower \cmd{context\_length}, or claim a second
+    card. See Section~\ref{sec:measured}. \\[2pt]
+
+    \cmd{gpu claim} refuses while you hold a card &
+    One claim per user, by design: \cmd{"you already hold gpu N --- 'gpu
+    release' first"}. Adding a card means releasing and re-claiming, which
+    destroys the container and every process in it. \\
     \bottomrule
   \end{tabularx}
   \caption{Symptoms seen in practice, with cause and remedy.}

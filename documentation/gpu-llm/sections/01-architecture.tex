@@ -2,9 +2,11 @@
 \label{sec:architecture}
 
 \subsection{Scope}
-This document records a working deployment of \cmd{gpt-oss:120b} under Ollama
-on one NVIDIA RTX PRO 6000 Blackwell card of the shared GPU pool. All concrete
-figures quoted in Section~\ref{sec:serving} come from that deployment.
+This document records a working deployment of \cmd{qwen3.5:122b-a10b} under
+Ollama on one NVIDIA RTX PRO 6000 Blackwell card of the shared GPU pool, with
+\cmd{gpt-oss:120b} retained as a faster fallback without vision. All concrete
+figures quoted in Section~\ref{sec:serving} come from that deployment, and
+Section~\ref{sec:agent-integration} records how an agent is pointed at it.
 
 \subsection{Hosts involved}
 Four hosts participate. Nothing about the model runs on the developer VM; it is
