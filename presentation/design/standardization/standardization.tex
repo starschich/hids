@@ -1,7 +1,7 @@
 % =============================================================
 %  Chapter — Standards & Standardization Bodies
 %  Key players in the standardization and publication landscape
-%  relevant to HVDC: IEC, IEEE, CIGRE.
+%  relevant to HVDC: IEC (incl. document types IS/TS/TR/PAS), ISO, CEN/CENELEC, IEEE, CIGRE, EPRI, ESIG.
 % =============================================================
 \sectionslide{Standardization Bodies}{Who writes the standards and technical recommendations}
 
@@ -16,8 +16,99 @@
     \item Founded 1906; headquartered in Geneva, Switzerland.
     \item Consensus-based, normative standards developed by national committees and technical committees (e.g. TC~115 for HVDC).
     \item Also runs conformity-assessment / certification schemes.
-    \item IEC standards are noramative for countries adopting the IEC standards
+    \item IEC standards are normative for countries adopting the IEC standards.
   \end{itemize}
+\end{frame}
+
+
+% ---- IEC document types -------------------------------------
+\begin{frame}{IEC Document Types\\IS, TS, TR and PAS}
+  \noindent{\color{atGray}\small The prefix after ``IEC'' tells whether a document sets requirements or only gives guidance.}
+  \vspace{0.6em}
+
+  {\footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \multicolumn{1}{c}{\textbf{Type}} & \multicolumn{1}{c}{\textbf{Content}} & \textbf{Approval} & \textbf{Typical use / HVDC example} \\
+    \midrule
+    IEC (IS)   & Normative     & Full consensus: CDV + FDIS vote     & Ratings and tests; IEC~60700-1, IEC~62501 \\
+    \atrowfill
+    IEC TS     & Normative     & TC vote, 2/3 of P-members           & Emerging technology; IEC~TS~63291-1 \\
+    \atrowhighlight
+    IEC TR     & Informative   & TC vote, simple majority            & Guidance, state of the art; IEC~TR~60919-1 \\
+    IEC PAS    & Interim       & TC vote, simple majority            & Fast-track industry or consortium work \\
+    \bottomrule
+  \end{tabularx}}
+
+  \vspace{0.6em}
+  \noindent{\color{atGray}\small Compliance can be claimed only with an IS or TS. A TR binds a vendor only where the specification writes its content in as requirements.}
+\end{frame}
+
+
+% ---- ISO ----------------------------------------------------
+\begin{frame}{ISO\\International Organization for Standardization}
+  \begin{block}{Role}
+    International standards for all technical fields outside
+    electrotechnology (which is covered by the IEC).
+  \end{block}
+  \vspace{0.3em}
+  \begin{itemize}
+    \setlength{\itemsep}{0.4em}
+    \item Founded 1947; headquartered in Geneva, Switzerland.
+    \item Members are national standards bodies, one per country (e.g.\ DIN, ANSI, BSI), roughly 170 in total.
+    \item Covers management systems (ISO~9001, 14001, 45001), mechanical engineering, materials and testing; joint work with IEC (e.g.\ ISO/IEC~17025).
+    \item Like IEC standards, ISO standards become normative only once adopted nationally or referenced in contracts.
+  \end{itemize}
+\end{frame}
+
+
+% ---- CEN / CENELEC ------------------------------------------
+\begin{frame}{CEN \& CENELEC\\European Committees for Standardization}
+  \begin{block}{Abbreviations}
+    {\footnotesize
+    \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}>{\raggedright\arraybackslash}X@{}}
+      \textbf{CEN}     & Comit\'e Europ\'een de Normalisation --- European Committee for Standardization \\
+      \textbf{CENELEC} & Comit\'e Europ\'een de Normalisation \'Electrotechnique --- European Committee for Electrotechnical Standardization \\
+      \textbf{EN}      & Europ\"aische Norm / European Norm --- European Standard, published by CEN and CENELEC \\
+    \end{tabularx}}
+  \end{block}
+  \vspace{0.3em}
+  \begin{itemize}
+    \setlength{\itemsep}{0.4em}
+    \item Founded 1961 (CEN) and 1973 (CENELEC); Brussels; 34 national members.
+    \item Every member \textbf{must} adopt an EN unchanged; conflicting standards are withdrawn.
+    \item Most ENs adopt ISO work (via CEN) or IEC work (via CENELEC).
+    \item Harmonized ENs give presumption of conformity with EU directives.
+  \end{itemize}
+\end{frame}
+
+
+% ---- Designations -------------------------------------------
+\begin{frame}{Standard Designations\\DIN EN, DIN EN ISO, DIN IEC}
+  \noindent{\color{atGray}\small The prefix shows the origin of a standard and how widely it is binding; the number stays the same as in the original.}
+  \vspace{0.6em}
+
+  {\footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X l@{}}
+    \toprule
+    \textbf{Designation} & \textbf{Origin} & \textbf{Adoption path} & \textbf{Binding in} \\
+    \midrule
+    DIN               & German national          & DIN only                                   & Germany \\
+    \atrowfill
+    DIN EN            & European (CEN / CENELEC) & All CEN / CENELEC members                  & Europe \\
+    DIN EN ISO        & International (ISO)      & ISO $\rightarrow$ CEN $\rightarrow$ DIN    & Worldwide + Europe \\
+    \atrowfill
+    DIN EN IEC / 6xxxx & International (IEC)     & IEC $\rightarrow$ CENELEC $\rightarrow$ DIN & Worldwide + Europe \\
+    DIN ISO           & International (ISO)      & ISO $\rightarrow$ DIN, no EN               & Germany only \\
+    \atrowhighlight
+    DIN IEC           & International (IEC)      & IEC $\rightarrow$ DIN / DKE, no EN         & Germany only \\
+    \bottomrule
+  \end{tabularx}}
+
+  \vspace{0.6em}
+  \noindent{\color{atGray}\small Many HVDC documents are IEC~TS / TR that CENELEC has not adopted. For US projects, the IEC number itself is what counts.}
 \end{frame}
 
 
@@ -31,9 +122,9 @@
   \begin{itemize}
     \setlength{\itemsep}{0.4em}
     \item Standards developed through the IEEE Standards Association (IEEE~SA).
-    \item Especially influential in North American practice
+    \item Especially influential in North American practice.
     \item Power \& Energy Society (PES) covers transmission, HVDC and FACTS.
-    \item IEEE standards are not normative, unless adopted by individual network operators
+    \item IEEE standards are not normative, unless adopted by individual network operators.
   \end{itemize}
 \end{frame}
 
@@ -48,7 +139,7 @@
   \begin{itemize}
     \setlength{\itemsep}{0.4em}
     \item Founded 1921; headquartered in Paris, France.
-    \item Output: \textbf{Technical Brochures} (TBs) and conference publications
+    \item Output: \textbf{Technical Brochures} (TBs) and conference publications.
     \item Work organized into \textbf{16 Study Committees} across four domains (HVDC sits in \textbf{SC~B4}).
     \item CIGRE Technical Brochures are authoritative guidance and state-of-the-art references.
     \item TBs frequently become the technical basis for later IEC/IEEE standards.
@@ -57,7 +148,7 @@
 
 
 \begin{frame}{CIGRE\\Study Committees}
-  {\color{atGray}\small 16 Study Committees grouped into four domains:}
+  \noindent{\color{atGray}\small 16 Study Committees grouped into four domains:}
   \vspace{0.6em}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
@@ -82,7 +173,7 @@
 
 
 \begin{frame}{CIGRE\\Study Committees}
-  {\color{atGray}\small 16 Study Committees grouped into four domains:}
+  \noindent{\color{atGray}\small 16 Study Committees grouped into four domains:}
   \vspace{0.6em}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}

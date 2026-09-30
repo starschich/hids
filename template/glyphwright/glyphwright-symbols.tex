@@ -1,0 +1,1028 @@
+%% glyphwright-symbols.tex -- generated, do not edit by hand
+
+% Transformer, two windings, connections not specified
+%   IEC 60617 06-09-02  transformer, two windings (form 2, circles)
+\tikzset{gw/xfmr2/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-label) at (0.000mm,7.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, two windings, connections not specified, on-load tap changer
+%   IEC 60617 06-09-02  transformer, two windings (form 2, circles)
+%   IEC 60617 02-03-01  variability / adjustability, general (tap changer arrow)
+\tikzset{gw/xfmr2-oltc/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \draw[gw/thin] (7.778mm,-7.778mm) -- (-7.778mm,7.778mm);
+  \fill[gw/solid] (-7.778mm,7.778mm) -- (-6.859mm,5.869mm) -- (-5.869mm,6.859mm) -- cycle;
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-label) at (0.000mm,7.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, three windings, connections not specified
+%   IEC 60617 06-09-04  transformer, three windings (form 2, circles)
+\tikzset{gw/xfmr3/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/normal] (0.000mm,6.495mm) circle [radius=5.000mm];
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,11.495mm) -- (0.000mm,15.000mm);
+  \coordinate (-aux) at (0.000mm,15.000mm);
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-aux_centre) at (0.000mm,6.495mm);
+  \coordinate (-label) at (6.250mm,12.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, two windings, YNd11, HV neutral earthed
+%   IEC 60617 06-09-02  transformer, two windings (form 2, circles)
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-04  winding, delta connection
+\tikzset{gw/xfmr2-YNd11-e1/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-3.750mm,2.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-5.482mm,-1.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-2.018mm,-1.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (3.750mm,2.000mm) -- (2.018mm,-1.000mm) -- (5.482mm,-1.000mm) -- cycle;
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \draw[gw/normal] (-3.750mm,0.000mm) -- (-3.750mm,-5.000mm);
+  \draw[gw/normal] (-3.750mm,-5.000mm) -- (-3.750mm,-7.500mm);
+  \draw[gw/normal] (-6.250mm,-7.500mm) -- (-1.250mm,-7.500mm);
+  \draw[gw/normal] (-5.250mm,-8.750mm) -- (-2.250mm,-8.750mm);
+  \draw[gw/normal] (-4.250mm,-10.000mm) -- (-3.250mm,-10.000mm);
+  \node[gw/label, anchor=south] at (0.000mm,7.500mm) {\gwlabel{YNd11}};
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-label) at (0.000mm,7.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, two windings, Yd11
+%   IEC 60617 06-09-02  transformer, two windings (form 2, circles)
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-04  winding, delta connection
+\tikzset{gw/xfmr2-Yd11/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-3.750mm,2.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-5.482mm,-1.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-2.018mm,-1.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (3.750mm,2.000mm) -- (2.018mm,-1.000mm) -- (5.482mm,-1.000mm) -- cycle;
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \node[gw/label, anchor=south] at (0.000mm,7.500mm) {\gwlabel{Yd11}};
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-label) at (0.000mm,7.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, two windings, YNd11, HV neutral earthed, on-load tap changer
+%   IEC 60617 06-09-02  transformer, two windings (form 2, circles)
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-04  winding, delta connection
+%   IEC 60617 02-03-01  variability / adjustability, general (tap changer arrow)
+\tikzset{gw/xfmr2-YNd11-e1-oltc/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-3.750mm,2.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-5.482mm,-1.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-2.018mm,-1.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (3.750mm,2.000mm) -- (2.018mm,-1.000mm) -- (5.482mm,-1.000mm) -- cycle;
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \draw[gw/normal] (-3.750mm,0.000mm) -- (-3.750mm,-5.000mm);
+  \draw[gw/normal] (-3.750mm,-5.000mm) -- (-3.750mm,-7.500mm);
+  \draw[gw/normal] (-6.250mm,-7.500mm) -- (-1.250mm,-7.500mm);
+  \draw[gw/normal] (-5.250mm,-8.750mm) -- (-2.250mm,-8.750mm);
+  \draw[gw/normal] (-4.250mm,-10.000mm) -- (-3.250mm,-10.000mm);
+  \draw[gw/thin] (7.778mm,-7.778mm) -- (-7.778mm,7.778mm);
+  \fill[gw/solid] (-7.778mm,7.778mm) -- (-6.859mm,5.869mm) -- (-5.869mm,6.859mm) -- cycle;
+  \node[gw/label, anchor=south] at (0.000mm,7.500mm) {\gwlabel{YNd11}};
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-label) at (0.000mm,7.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, three windings, YNyn0d11, HV neutral earthed, LV neutral brought out
+%   IEC 60617 06-09-04  transformer, three windings (form 2, circles)
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-04  winding, delta connection
+\tikzset{gw/xfmr3-YNyn0d11-e1/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-3.750mm,2.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-5.482mm,-1.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-2.018mm,-1.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (3.750mm,0.000mm) -- (3.750mm,2.000mm);
+  \draw[gw/thin] (3.750mm,0.000mm) -- (2.018mm,-1.000mm);
+  \draw[gw/thin] (3.750mm,0.000mm) -- (5.482mm,-1.000mm);
+  \draw[gw/normal] (0.000mm,6.495mm) circle [radius=5.000mm];
+  \draw[gw/thin] (0.000mm,8.495mm) -- (-1.732mm,5.495mm) -- (1.732mm,5.495mm) -- cycle;
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,11.495mm) -- (0.000mm,15.000mm);
+  \coordinate (-aux) at (0.000mm,15.000mm);
+  \draw[gw/normal] (-3.750mm,0.000mm) -- (-3.750mm,-5.000mm);
+  \draw[gw/normal] (-3.750mm,-5.000mm) -- (-3.750mm,-7.500mm);
+  \draw[gw/normal] (-6.250mm,-7.500mm) -- (-1.250mm,-7.500mm);
+  \draw[gw/normal] (-5.250mm,-8.750mm) -- (-2.250mm,-8.750mm);
+  \draw[gw/normal] (-4.250mm,-10.000mm) -- (-3.250mm,-10.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) -- (3.750mm,-10.000mm);
+  \coordinate (-n2) at (3.750mm,-10.000mm);
+  \node[gw/label, anchor=west] at (6.250mm,12.500mm) {\gwlabel{YNyn0d11}};
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-aux_centre) at (0.000mm,6.495mm);
+  \coordinate (-label) at (6.250mm,12.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, three windings, YNd11yn0, HV neutral earthed, AUX neutral brought out
+%   IEC 60617 06-09-04  transformer, three windings (form 2, circles)
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-04  winding, delta connection
+%   IEC 60617 06-01-02  winding, star connection
+\tikzset{gw/xfmr3-YNd11yn0-e1/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-3.750mm,2.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-5.482mm,-1.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-2.018mm,-1.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (3.750mm,2.000mm) -- (2.018mm,-1.000mm) -- (5.482mm,-1.000mm) -- cycle;
+  \draw[gw/normal] (0.000mm,6.495mm) circle [radius=5.000mm];
+  \draw[gw/thin] (0.000mm,6.495mm) -- (0.000mm,8.495mm);
+  \draw[gw/thin] (0.000mm,6.495mm) -- (-1.732mm,5.495mm);
+  \draw[gw/thin] (0.000mm,6.495mm) -- (1.732mm,5.495mm);
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,11.495mm) -- (0.000mm,15.000mm);
+  \coordinate (-aux) at (0.000mm,15.000mm);
+  \draw[gw/normal] (-3.750mm,0.000mm) -- (-3.750mm,-5.000mm);
+  \draw[gw/normal] (-3.750mm,-5.000mm) -- (-3.750mm,-7.500mm);
+  \draw[gw/normal] (-6.250mm,-7.500mm) -- (-1.250mm,-7.500mm);
+  \draw[gw/normal] (-5.250mm,-8.750mm) -- (-2.250mm,-8.750mm);
+  \draw[gw/normal] (-4.250mm,-10.000mm) -- (-3.250mm,-10.000mm);
+  \draw[gw/normal] (0.000mm,6.495mm) -- (10.000mm,6.495mm);
+  \coordinate (-n3) at (10.000mm,6.495mm);
+  \node[gw/label, anchor=west] at (6.250mm,12.500mm) {\gwlabel{YNd11yn0}};
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-aux_centre) at (0.000mm,6.495mm);
+  \coordinate (-label) at (6.250mm,12.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, three windings, YNd11y0, HV neutral earthed
+%   IEC 60617 06-09-04  transformer, three windings (form 2, circles)
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-04  winding, delta connection
+%   IEC 60617 06-01-02  winding, star connection
+\tikzset{gw/xfmr3-YNd11y0-e1/.pic={
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-3.750mm,2.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-5.482mm,-1.000mm);
+  \draw[gw/thin] (-3.750mm,0.000mm) -- (-2.018mm,-1.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (3.750mm,2.000mm) -- (2.018mm,-1.000mm) -- (5.482mm,-1.000mm) -- cycle;
+  \draw[gw/normal] (0.000mm,6.495mm) circle [radius=5.000mm];
+  \draw[gw/thin] (0.000mm,6.495mm) -- (0.000mm,8.495mm);
+  \draw[gw/thin] (0.000mm,6.495mm) -- (-1.732mm,5.495mm);
+  \draw[gw/thin] (0.000mm,6.495mm) -- (1.732mm,5.495mm);
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-hv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-lv) at (12.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,11.495mm) -- (0.000mm,15.000mm);
+  \coordinate (-aux) at (0.000mm,15.000mm);
+  \draw[gw/normal] (-3.750mm,0.000mm) -- (-3.750mm,-5.000mm);
+  \draw[gw/normal] (-3.750mm,-5.000mm) -- (-3.750mm,-7.500mm);
+  \draw[gw/normal] (-6.250mm,-7.500mm) -- (-1.250mm,-7.500mm);
+  \draw[gw/normal] (-5.250mm,-8.750mm) -- (-2.250mm,-8.750mm);
+  \draw[gw/normal] (-4.250mm,-10.000mm) -- (-3.250mm,-10.000mm);
+  \node[gw/label, anchor=west] at (6.250mm,12.500mm) {\gwlabel{YNd11y0}};
+  \coordinate (-hv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (3.750mm,0.000mm);
+  \coordinate (-aux_centre) at (0.000mm,6.495mm);
+  \coordinate (-label) at (6.250mm,12.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Circuit breaker, open
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-05  circuit breaker
+\tikzset{gw/cb/.pic={
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,2.500mm);
+  \coordinate (-a) at (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-2.500mm);
+  \coordinate (-b) at (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (-2.500mm,1.830mm);
+  \draw[gw/normal] (-0.750mm,1.750mm) -- (0.750mm,3.250mm);
+  \draw[gw/normal] (-0.750mm,3.250mm) -- (0.750mm,1.750mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-3.750mm,0.000mm);
+}}
+
+% Circuit breaker, closed
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-05  circuit breaker
+\tikzset{gw/cb-closed/.pic={
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,2.500mm);
+  \coordinate (-a) at (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-2.500mm);
+  \coordinate (-b) at (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (0.000mm,2.500mm);
+  \draw[gw/normal] (-0.750mm,1.750mm) -- (0.750mm,3.250mm);
+  \draw[gw/normal] (-0.750mm,3.250mm) -- (0.750mm,1.750mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-3.750mm,0.000mm);
+}}
+
+% Disconnector, open
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-06  disconnector (isolator)
+\tikzset{gw/ds/.pic={
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,2.500mm);
+  \coordinate (-a) at (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-2.500mm);
+  \coordinate (-b) at (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (-2.500mm,1.830mm);
+  \draw[gw/normal] (-0.750mm,2.500mm) -- (0.750mm,2.500mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-3.750mm,0.000mm);
+}}
+
+% Disconnector, closed
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-06  disconnector (isolator)
+\tikzset{gw/ds-closed/.pic={
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,2.500mm);
+  \coordinate (-a) at (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-2.500mm);
+  \coordinate (-b) at (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (0.000mm,2.500mm);
+  \draw[gw/normal] (-0.750mm,2.500mm) -- (0.750mm,2.500mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-3.750mm,0.000mm);
+}}
+
+% Earthing switch, open
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-06 + 02-15-01  earthing switch (disconnector to earth)
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/es/.pic={
+  \draw[gw/normal] (-7.500mm,0.000mm) -- (-2.500mm,0.000mm);
+  \coordinate (-a) at (-7.500mm,0.000mm);
+  \draw[gw/normal] (-2.500mm,-0.750mm) -- (-2.500mm,0.750mm);
+  \draw[gw/normal] (2.500mm,0.000mm) -- (-1.830mm,2.500mm);
+  \draw[gw/normal] (2.500mm,0.000mm) -- (5.000mm,0.000mm);
+  \draw[gw/normal] (5.000mm,0.000mm) -- (7.500mm,0.000mm);
+  \draw[gw/normal] (7.500mm,-2.500mm) -- (7.500mm,2.500mm);
+  \draw[gw/normal] (8.750mm,-1.500mm) -- (8.750mm,1.500mm);
+  \draw[gw/normal] (10.000mm,-0.500mm) -- (10.000mm,0.500mm);
+  \coordinate (-label) at (0.000mm,5.000mm);
+  \coordinate (-tag) at (0.000mm,-3.750mm);
+}}
+
+% Earthing switch, closed
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-06 + 02-15-01  earthing switch (disconnector to earth)
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/es-closed/.pic={
+  \draw[gw/normal] (-7.500mm,0.000mm) -- (-2.500mm,0.000mm);
+  \coordinate (-a) at (-7.500mm,0.000mm);
+  \draw[gw/normal] (-2.500mm,-0.750mm) -- (-2.500mm,0.750mm);
+  \draw[gw/normal] (2.500mm,0.000mm) -- (-2.500mm,0.000mm);
+  \draw[gw/normal] (2.500mm,0.000mm) -- (5.000mm,0.000mm);
+  \draw[gw/normal] (5.000mm,0.000mm) -- (7.500mm,0.000mm);
+  \draw[gw/normal] (7.500mm,-2.500mm) -- (7.500mm,2.500mm);
+  \draw[gw/normal] (8.750mm,-1.500mm) -- (8.750mm,1.500mm);
+  \draw[gw/normal] (10.000mm,-0.500mm) -- (10.000mm,0.500mm);
+  \coordinate (-label) at (0.000mm,5.000mm);
+  \coordinate (-tag) at (0.000mm,-3.750mm);
+}}
+
+% Surge arrester
+%   IEC 60617 07-22-03  surge arrester
+\tikzset{gw/sa/.pic={
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,3.000mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (-1.250mm,3.000mm) -- (1.250mm,3.000mm) -- (1.250mm,-3.000mm) -- (-1.250mm,-3.000mm) -- cycle;
+  \draw[gw/thin] (0.000mm,3.000mm) -- (0.000mm,0.900mm);
+  \fill[gw/solid] (0.000mm,0.300mm) -- (0.500mm,1.500mm) -- (-0.500mm,1.500mm) -- cycle;
+  \draw[gw/normal] (0.000mm,-3.000mm) -- (0.000mm,-7.500mm);
+  \coordinate (-b) at (0.000mm,-7.500mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Surge arrester, earthed
+%   IEC 60617 07-22-03  surge arrester
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/sa-e/.pic={
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,3.000mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (-1.250mm,3.000mm) -- (1.250mm,3.000mm) -- (1.250mm,-3.000mm) -- (-1.250mm,-3.000mm) -- cycle;
+  \draw[gw/thin] (0.000mm,3.000mm) -- (0.000mm,0.900mm);
+  \fill[gw/solid] (0.000mm,0.300mm) -- (0.500mm,1.500mm) -- (-0.500mm,1.500mm) -- cycle;
+  \draw[gw/normal] (0.000mm,-3.000mm) -- (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-7.500mm);
+  \draw[gw/normal] (-2.500mm,-7.500mm) -- (2.500mm,-7.500mm);
+  \draw[gw/normal] (-1.500mm,-8.750mm) -- (1.500mm,-8.750mm);
+  \draw[gw/normal] (-0.500mm,-10.000mm) -- (0.500mm,-10.000mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Voltage transducer
+%   IEC 60617 06-13-04  voltage transformer / voltage transducer (verify)
+\tikzset{gw/vt/.pic={
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,3.500mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (0.000mm,1.500mm) circle [radius=2.000mm];
+  \draw[gw/normal] (0.000mm,-1.500mm) circle [radius=2.000mm];
+  \draw[gw/normal] (0.000mm,-3.500mm) -- (0.000mm,-7.500mm);
+  \coordinate (-b) at (0.000mm,-7.500mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Voltage transducer, earthed
+%   IEC 60617 06-13-04  voltage transformer / voltage transducer (verify)
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/vt-e/.pic={
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,3.500mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (0.000mm,1.500mm) circle [radius=2.000mm];
+  \draw[gw/normal] (0.000mm,-1.500mm) circle [radius=2.000mm];
+  \draw[gw/normal] (0.000mm,-3.500mm) -- (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-7.500mm);
+  \draw[gw/normal] (-2.500mm,-7.500mm) -- (2.500mm,-7.500mm);
+  \draw[gw/normal] (-1.500mm,-8.750mm) -- (1.500mm,-8.750mm);
+  \draw[gw/normal] (-0.500mm,-10.000mm) -- (0.500mm,-10.000mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Current transducer
+%   IEC 60617 06-13-01  current transformer / current transducer
+\tikzset{gw/ct/.pic={
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,0.000mm);
+  \coordinate (-a) at (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,0.000mm) -- (0.000mm,-5.000mm);
+  \coordinate (-b) at (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,0.000mm) circle [radius=2.000mm];
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Zero-flux current transducer
+%   IEC 60617 06-13-01  current transducer, drawn with two cores (double circle) = zero-flux (project convention, no dedicated IEC symbol)
+\tikzset{gw/zfct/.pic={
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,0.000mm);
+  \coordinate (-a) at (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,0.000mm) -- (0.000mm,-5.000mm);
+  \coordinate (-b) at (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,0.000mm) circle [radius=2.000mm];
+  \draw[gw/normal] (0.000mm,0.000mm) circle [radius=1.250mm];
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Cable sealing end
+%   IEC 60617 S00051  cable sealing end, one-core cable
+\tikzset{gw/cse/.pic={
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,0.000mm);
+  \coordinate (-a) at (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (0.000mm,-7.500mm);
+  \coordinate (-b) at (0.000mm,-7.500mm);
+  \draw[gw/normal] (-2.500mm,0.000mm) -- (2.500mm,0.000mm) -- (1.000mm,-2.500mm) -- (-1.000mm,-2.500mm) -- cycle;
+  \coordinate (-label) at (5.000mm,-1.250mm);
+  \coordinate (-tag) at (-5.000mm,-1.250mm);
+}}
+
+% Bushing
+%   IEC 60617 03-03-18  bushing / lead-through (verify)
+\tikzset{gw/bsh/.pic={
+  \draw[gw/normal] (0.000mm,12.500mm) -- (0.000mm,3.750mm);
+  \coordinate (-a) at (0.000mm,12.500mm);
+  \draw[gw/normal] (0.000mm,-3.750mm) -- (0.000mm,-12.500mm);
+  \coordinate (-b) at (0.000mm,-12.500mm);
+  \draw[gw/normal] (-1.250mm,3.750mm) -- (1.250mm,3.750mm) -- (1.250mm,-3.750mm) -- (-1.250mm,-3.750mm) -- cycle;
+  \draw[gw/thin] (0.000mm,3.750mm) -- (0.000mm,-3.750mm);
+  \draw[gw/thick] (-3.750mm,0.000mm) -- (-1.250mm,0.000mm);
+  \draw[gw/thick] (1.250mm,0.000mm) -- (3.750mm,0.000mm);
+  \coordinate (-label) at (5.000mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% VSC HVDC converter
+%   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
+%   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
+\tikzset{gw/vsc/.pic={
+  \draw[gw/normal] (-11.250mm,-11.250mm) -- (11.250mm,-11.250mm) -- (11.250mm,11.250mm) -- (-11.250mm,11.250mm) -- cycle;
+  \draw[gw/normal] (-11.250mm,-11.250mm) -- (11.250mm,11.250mm);
+  \draw[gw/thin] (-6.500mm,5.625mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (-4.250mm,5.625mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
+  \draw[gw/thin] (3.125mm,-4.875mm) -- (7.625mm,-4.875mm);
+  \draw[gw/thin] (3.125mm,-6.375mm) -- (7.625mm,-6.375mm);
+  \draw[gw/normal] (0.000mm,11.250mm) -- (0.000mm,17.500mm);
+  \coordinate (-ac) at (0.000mm,17.500mm);
+  \draw[gw/normal] (-7.500mm,-11.250mm) -- (-7.500mm,-17.500mm);
+  \coordinate (-dc1) at (-7.500mm,-17.500mm);
+  \draw[gw/normal] (7.500mm,-11.250mm) -- (7.500mm,-17.500mm);
+  \coordinate (-dc2) at (7.500mm,-17.500mm);
+  \node[gw/label, anchor=west] at (13.750mm,0.000mm) {\gwlabel{VSC}};
+  \coordinate (-label) at (13.750mm,0.000mm);
+  \coordinate (-tag) at (-13.750mm,0.000mm);
+}}
+
+% VSC HVDC converter, notation layout
+%   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
+%   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
+\tikzset{gw/vsc2/.pic={
+  \draw[gw/normal] (-10.000mm,-16.250mm) -- (10.000mm,-16.250mm) -- (10.000mm,16.250mm) -- (-10.000mm,16.250mm) -- cycle;
+  \draw[gw/thin] (-10.000mm,16.250mm) -- (10.000mm,0.000mm) -- (-10.000mm,-16.250mm);
+  \draw[gw/thin] (-6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (-4.375mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
+  \draw[gw/thin] (2.750mm,10.125mm) -- (7.250mm,10.125mm);
+  \draw[gw/thin] (2.750mm,8.625mm) -- (7.250mm,8.625mm);
+  \draw[gw/thin] (2.750mm,-8.625mm) -- (7.250mm,-8.625mm);
+  \draw[gw/thin] (2.750mm,-10.125mm) -- (7.250mm,-10.125mm);
+  \draw[gw/normal] (-10.000mm,0.000mm) -- (-15.000mm,0.000mm);
+  \coordinate (-ac) at (-15.000mm,0.000mm);
+  \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (25.000mm,20.000mm);
+  \coordinate (-dc1) at (25.000mm,20.000mm);
+  \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (25.000mm,-20.000mm);
+  \coordinate (-dc2) at (25.000mm,-20.000mm);
+  \node[gw/label, anchor=east] at (-12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \coordinate (-label) at (-12.500mm,-8.125mm);
+  \coordinate (-tag) at (-12.500mm,8.125mm);
+}}
+
+% VSC HVDC converter, notation layout with signals
+%   IEC 60617 02-15-01  earth, general
+%   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
+%   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
+\tikzset{gw/vsc2-sig/.pic={
+  \draw[gw/normal] (-10.000mm,-16.250mm) -- (10.000mm,-16.250mm) -- (10.000mm,16.250mm) -- (-10.000mm,16.250mm) -- cycle;
+  \draw[gw/thin] (-10.000mm,16.250mm) -- (10.000mm,0.000mm) -- (-10.000mm,-16.250mm);
+  \draw[gw/thin] (-6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (-4.375mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
+  \draw[gw/thin] (2.750mm,10.125mm) -- (7.250mm,10.125mm);
+  \draw[gw/thin] (2.750mm,8.625mm) -- (7.250mm,8.625mm);
+  \draw[gw/thin] (2.750mm,-8.625mm) -- (7.250mm,-8.625mm);
+  \draw[gw/thin] (2.750mm,-10.125mm) -- (7.250mm,-10.125mm);
+  \draw[gw/normal] (-10.000mm,0.000mm) -- (-15.000mm,0.000mm);
+  \coordinate (-ac) at (-15.000mm,0.000mm);
+  \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (25.000mm,20.000mm);
+  \coordinate (-dc1) at (25.000mm,20.000mm);
+  \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (25.000mm,-20.000mm);
+  \coordinate (-dc2) at (25.000mm,-20.000mm);
+  \node[gw/label, anchor=east] at (-12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \gwsig{udpe_p}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,20.750mm) -- (0.000mm,25.000mm);}
+  \gwsig{udpe_p}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,25.000mm) -- (-0.700mm,23.000mm) -- (0.700mm,23.000mm) -- cycle;}
+  \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (2.500mm,26.250mm) -- (-2.500mm,26.250mm);}
+  \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (1.500mm,27.500mm) -- (-1.500mm,27.500mm);}
+  \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (0.500mm,28.750mm) -- (-0.500mm,28.750mm);}
+  \gwsig{udpe_p}{\node[gw/label, gw/c-voltage, anchor=east, gw/sigstyle=udpe_p] at (-1.250mm,22.500mm) {\gwtext{udpe_p}{U\textsubscript{dpe\_rec}}};}
+  \gwsig{id_p}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_p] (21.250mm,20.000mm) -- (18.750mm,20.900mm) -- (18.750mm,19.100mm) -- cycle;}
+  \gwsig{id_p}{\node[gw/label, gw/c-current, anchor=south, gw/sigstyle=id_p] at (20.000mm,21.250mm) {\gwtext{id_p}{I\textsubscript{d}}};}
+  \gwsig{udpe_n}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpe_n] (0.000mm,-20.750mm) -- (0.000mm,-25.000mm);}
+  \gwsig{udpe_n}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpe_n] (0.000mm,-25.000mm) -- (0.700mm,-23.000mm) -- (-0.700mm,-23.000mm) -- cycle;}
+  \gwsig{udpe_n}{\draw[gw/normal, gw/sigstyle=udpe_n] (-2.500mm,-26.250mm) -- (2.500mm,-26.250mm);}
+  \gwsig{udpe_n}{\draw[gw/normal, gw/sigstyle=udpe_n] (-1.500mm,-27.500mm) -- (1.500mm,-27.500mm);}
+  \gwsig{udpe_n}{\draw[gw/normal, gw/sigstyle=udpe_n] (-0.500mm,-28.750mm) -- (0.500mm,-28.750mm);}
+  \gwsig{udpe_n}{\node[gw/label, gw/c-voltage, anchor=east, gw/sigstyle=udpe_n] at (-1.250mm,-22.500mm) {\gwtext{udpe_n}{U\textsubscript{dpe\_rec}}};}
+  \gwsig{id_n}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_n] (18.750mm,-20.000mm) -- (21.250mm,-20.900mm) -- (21.250mm,-19.100mm) -- cycle;}
+  \gwsig{id_n}{\node[gw/label, gw/c-current, anchor=north, gw/sigstyle=id_n] at (20.000mm,-21.250mm) {\gwtext{id_n}{I\textsubscript{d}}};}
+  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,16.250mm) -- (13.750mm,-16.250mm);}
+  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,-16.250mm) -- (14.450mm,-14.250mm) -- (13.050mm,-14.250mm) -- cycle;}
+  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpp] at (15.000mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
+  \coordinate (-label) at (-12.500mm,-8.125mm);
+  \coordinate (-tag) at (-12.500mm,8.125mm);
+}}
+
+% VSC valve (converter arm) with half-bridge submodule
+%   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
+%   IEC 62747 Figure 2  VSC valve / half-bridge submodule (verify)
+%   IEC 60617 05-05-15  IGBT, n-channel, enhancement type (verify)
+%   IEC 60617 05-03-01  semiconductor diode, general
+%   IEC 60617 04-02-01  capacitor, general (verify)
+\tikzset{gw/vsc3/.pic={
+  \draw[gw/normal] (-8.750mm,-10.000mm) -- (8.750mm,-10.000mm) -- (8.750mm,10.000mm) -- (-8.750mm,10.000mm) -- cycle;
+  \draw[gw/normal] (-4.250mm,2.500mm) -- (-4.250mm,5.500mm);
+  \draw[gw/thin] (-4.950mm,2.800mm) -- (-4.950mm,5.200mm);
+  \draw[gw/thin] (-4.950mm,2.800mm) -- (-6.250mm,2.800mm);
+  \draw[gw/thin] (-4.250mm,4.800mm) -- (-2.450mm,6.200mm) -- (-2.450mm,8.000mm);
+  \draw[gw/thin] (-4.250mm,3.200mm) -- (-2.450mm,1.800mm) -- (-2.450mm,0.000mm);
+  \fill[gw/solid] (-2.450mm,1.800mm) -- (-2.963mm,2.769mm) -- (-3.516mm,2.059mm) -- cycle;
+  \draw[gw/thin] (-2.450mm,6.800mm) -- (-0.250mm,6.800mm) -- (-0.250mm,1.200mm) -- (-2.450mm,1.200mm);
+  \fill[gw/solid] (-1.050mm,3.400mm) -- (0.550mm,3.400mm) -- (-0.250mm,4.600mm) -- cycle;
+  \draw[gw/thin] (-1.050mm,4.600mm) -- (0.550mm,4.600mm);
+  \draw[gw/normal] (-4.250mm,-5.500mm) -- (-4.250mm,-2.500mm);
+  \draw[gw/thin] (-4.950mm,-5.200mm) -- (-4.950mm,-2.800mm);
+  \draw[gw/thin] (-4.950mm,-5.200mm) -- (-6.250mm,-5.200mm);
+  \draw[gw/thin] (-4.250mm,-3.200mm) -- (-2.450mm,-1.800mm) -- (-2.450mm,0.000mm);
+  \draw[gw/thin] (-4.250mm,-4.800mm) -- (-2.450mm,-6.200mm) -- (-2.450mm,-8.000mm);
+  \fill[gw/solid] (-2.450mm,-6.200mm) -- (-2.963mm,-5.231mm) -- (-3.516mm,-5.941mm) -- cycle;
+  \draw[gw/thin] (-2.450mm,-1.200mm) -- (-0.250mm,-1.200mm) -- (-0.250mm,-6.800mm) -- (-2.450mm,-6.800mm);
+  \fill[gw/solid] (-1.050mm,-4.600mm) -- (0.550mm,-4.600mm) -- (-0.250mm,-3.400mm) -- cycle;
+  \draw[gw/thin] (-1.050mm,-3.400mm) -- (0.550mm,-3.400mm);
+  \draw[gw/thin] (-2.450mm,8.000mm) -- (4.750mm,8.000mm) -- (4.750mm,0.600mm);
+  \draw[gw/thin] (-2.450mm,-8.000mm) -- (4.750mm,-8.000mm) -- (4.750mm,-0.600mm);
+  \draw[gw/thin] (-2.450mm,0.000mm) -- (-7.500mm,0.000mm);
+  \draw[gw/thin] (-2.450mm,-8.000mm) -- (-7.500mm,-8.000mm);
+  \fill[gw/solid] (-2.450mm,0.000mm) circle [radius=0.350mm];
+  \fill[gw/solid] (-2.450mm,-8.000mm) circle [radius=0.350mm];
+  \draw[gw/normal] (3.250mm,0.600mm) -- (6.250mm,0.600mm);
+  \draw[gw/normal] (3.250mm,-0.600mm) -- (6.250mm,-0.600mm);
+  \draw[gw/normal] (0.000mm,10.000mm) -- (0.000mm,12.500mm);
+  \coordinate (-a) at (0.000mm,12.500mm);
+  \draw[gw/normal] (0.000mm,-10.000mm) -- (0.000mm,-12.500mm);
+  \coordinate (-b) at (0.000mm,-12.500mm);
+  \coordinate (-label) at (11.250mm,0.000mm);
+  \coordinate (-tag) at (-11.250mm,0.000mm);
+}}
+
+% Connection node
+%   IEC 60617 03-02-02  junction of conductors (connection dot) (verify)
+\tikzset{gw/node/.pic={
+  \fill[gw/solid] (0.000mm,0.000mm) circle [radius=0.400mm];
+  \coordinate (-a) at (0.000mm,0.000mm);
+  \coordinate (-label) at (1.250mm,1.250mm);
+}}
+
+% Earth
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/earth/.pic={
+  \draw[gw/normal] (0.000mm,0.000mm) -- (0.000mm,-2.500mm);
+  \draw[gw/normal] (-2.500mm,-2.500mm) -- (2.500mm,-2.500mm);
+  \draw[gw/normal] (-1.500mm,-3.750mm) -- (1.500mm,-3.750mm);
+  \draw[gw/normal] (-0.500mm,-5.000mm) -- (0.500mm,-5.000mm);
+  \coordinate (-a) at (0.000mm,0.000mm);
+  \coordinate (-label) at (3.750mm,-3.750mm);
+}}
+
+% Busbar, 40 mm
+%   IEC 60617 03-01-01  conductor / busbar, drawn with the thick line (verify)
+\tikzset{gw/bus40/.pic={
+  \draw[gw/thick] (-20.000mm,0.000mm) -- (20.000mm,0.000mm);
+  \coordinate (-a) at (-20.000mm,0.000mm);
+  \coordinate (-m) at (0.000mm,0.000mm);
+  \coordinate (-b) at (20.000mm,0.000mm);
+  \coordinate (-label) at (0.000mm,2.500mm);
+  \coordinate (-tag) at (-22.500mm,0.000mm);
+}}
+
+% VSC HVDC converter, notation layout with udpp, id_p, id_n
+%   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
+%   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
+\tikzset{gw/vsc2+udpp+id_p+id_n/.pic={
+  \draw[gw/normal] (-10.000mm,-16.250mm) -- (10.000mm,-16.250mm) -- (10.000mm,16.250mm) -- (-10.000mm,16.250mm) -- cycle;
+  \draw[gw/thin] (-10.000mm,16.250mm) -- (10.000mm,0.000mm) -- (-10.000mm,-16.250mm);
+  \draw[gw/thin] (-6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (-4.375mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
+  \draw[gw/thin] (2.750mm,10.125mm) -- (7.250mm,10.125mm);
+  \draw[gw/thin] (2.750mm,8.625mm) -- (7.250mm,8.625mm);
+  \draw[gw/thin] (2.750mm,-8.625mm) -- (7.250mm,-8.625mm);
+  \draw[gw/thin] (2.750mm,-10.125mm) -- (7.250mm,-10.125mm);
+  \draw[gw/normal] (-10.000mm,0.000mm) -- (-15.000mm,0.000mm);
+  \coordinate (-ac) at (-15.000mm,0.000mm);
+  \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (25.000mm,20.000mm);
+  \coordinate (-dc1) at (25.000mm,20.000mm);
+  \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (25.000mm,-20.000mm);
+  \coordinate (-dc2) at (25.000mm,-20.000mm);
+  \node[gw/label, anchor=east] at (-12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \gwsig{id_p}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_p] (21.250mm,20.000mm) -- (18.750mm,20.900mm) -- (18.750mm,19.100mm) -- cycle;}
+  \gwsig{id_p}{\node[gw/label, gw/c-current, anchor=south, gw/sigstyle=id_p] at (20.000mm,21.250mm) {\gwtext{id_p}{I\textsubscript{d}}};}
+  \gwsig{id_n}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_n] (18.750mm,-20.000mm) -- (21.250mm,-20.900mm) -- (21.250mm,-19.100mm) -- cycle;}
+  \gwsig{id_n}{\node[gw/label, gw/c-current, anchor=north, gw/sigstyle=id_n] at (20.000mm,-21.250mm) {\gwtext{id_n}{I\textsubscript{d}}};}
+  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,16.250mm) -- (13.750mm,-16.250mm);}
+  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,-16.250mm) -- (14.450mm,-14.250mm) -- (13.050mm,-14.250mm) -- cycle;}
+  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpp] at (15.000mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
+  \coordinate (-label) at (-12.500mm,-8.125mm);
+  \coordinate (-tag) at (-12.500mm,8.125mm);
+}}
+
+% Reactor
+%   IEC 60617 04-03-01  inductor / reactor, single-line form (verify)
+\tikzset{gw/rct/.pic={
+  \draw[gw/normal] (0.000mm,0.000mm) -- (0.000mm,7.500mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (0.000mm,0.000mm) ++(-90.00:2.500mm) arc [start angle=-90.00, end angle=180.00, radius=2.500mm];
+  \draw[gw/normal] (-2.500mm,0.000mm) -- (0.000mm,0.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (0.000mm,-7.500mm);
+  \coordinate (-b) at (0.000mm,-7.500mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Reactor, earthed
+%   IEC 60617 04-03-01  inductor / reactor, single-line form (verify)
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/rct-e/.pic={
+  \draw[gw/normal] (0.000mm,0.000mm) -- (0.000mm,7.500mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (0.000mm,0.000mm) ++(-90.00:2.500mm) arc [start angle=-90.00, end angle=180.00, radius=2.500mm];
+  \draw[gw/normal] (-2.500mm,0.000mm) -- (0.000mm,0.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-7.500mm);
+  \draw[gw/normal] (-2.500mm,-7.500mm) -- (2.500mm,-7.500mm);
+  \draw[gw/normal] (-1.500mm,-8.750mm) -- (1.500mm,-8.750mm);
+  \draw[gw/normal] (-0.500mm,-10.000mm) -- (0.500mm,-10.000mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Capacitive voltage divider
+%   IEC 60617 04-02-01  capacitor; two in series with tap = capacitive voltage divider (verify)
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/cvd/.pic={
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (-1.750mm,3.500mm) -- (1.750mm,3.500mm);
+  \draw[gw/normal] (-1.750mm,2.500mm) -- (1.750mm,2.500mm);
+  \draw[gw/normal] (-1.750mm,-3.500mm) -- (1.750mm,-3.500mm);
+  \draw[gw/normal] (-1.750mm,-2.500mm) -- (1.750mm,-2.500mm);
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,3.500mm);
+  \draw[gw/normal] (0.000mm,2.500mm) -- (0.000mm,-2.500mm);
+  \fill[gw/solid] (0.000mm,0.000mm) circle [radius=0.400mm];
+  \draw[gw/normal] (0.000mm,0.000mm) -- (2.500mm,0.000mm);
+  \coordinate (-s) at (2.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,-3.500mm) -- (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-7.500mm);
+  \draw[gw/normal] (-2.500mm,-7.500mm) -- (2.500mm,-7.500mm);
+  \draw[gw/normal] (-1.500mm,-8.750mm) -- (1.500mm,-8.750mm);
+  \draw[gw/normal] (-0.500mm,-10.000mm) -- (0.500mm,-10.000mm);
+  \coordinate (-label) at (2.500mm,3.750mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Resistive voltage divider
+%   IEC 60617 04-01-01  resistor; two in series with tap = resistive voltage divider (verify)
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/rvd/.pic={
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (-1.000mm,1.250mm) -- (1.000mm,1.250mm) -- (1.000mm,5.000mm) -- (-1.000mm,5.000mm) -- cycle;
+  \draw[gw/normal] (-1.000mm,-5.000mm) -- (1.000mm,-5.000mm) -- (1.000mm,-1.250mm) -- (-1.000mm,-1.250mm) -- cycle;
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,5.000mm);
+  \draw[gw/normal] (0.000mm,1.250mm) -- (0.000mm,-1.250mm);
+  \fill[gw/solid] (0.000mm,0.000mm) circle [radius=0.400mm];
+  \draw[gw/normal] (0.000mm,0.000mm) -- (2.500mm,0.000mm);
+  \coordinate (-s) at (2.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-7.500mm);
+  \draw[gw/normal] (-2.500mm,-7.500mm) -- (2.500mm,-7.500mm);
+  \draw[gw/normal] (-1.500mm,-8.750mm) -- (1.500mm,-8.750mm);
+  \draw[gw/normal] (-0.500mm,-10.000mm) -- (0.500mm,-10.000mm);
+  \coordinate (-label) at (2.500mm,3.750mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Resistor
+%   IEC 60617 04-01-01  resistor (verify)
+\tikzset{gw/res/.pic={
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,3.000mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (-1.250mm,3.000mm) -- (1.250mm,3.000mm) -- (1.250mm,-3.000mm) -- (-1.250mm,-3.000mm) -- cycle;
+  \draw[gw/normal] (0.000mm,-3.000mm) -- (0.000mm,-7.500mm);
+  \coordinate (-b) at (0.000mm,-7.500mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Resistor, earthed
+%   IEC 60617 04-01-01  resistor (verify)
+%   IEC 60617 02-15-01  earth, general
+\tikzset{gw/res-e/.pic={
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,3.000mm);
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \draw[gw/normal] (-1.250mm,3.000mm) -- (1.250mm,3.000mm) -- (1.250mm,-3.000mm) -- (-1.250mm,-3.000mm) -- cycle;
+  \draw[gw/normal] (0.000mm,-3.000mm) -- (0.000mm,-5.000mm);
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-7.500mm);
+  \draw[gw/normal] (-2.500mm,-7.500mm) -- (2.500mm,-7.500mm);
+  \draw[gw/normal] (-1.500mm,-8.750mm) -- (1.500mm,-8.750mm);
+  \draw[gw/normal] (-0.500mm,-10.000mm) -- (0.500mm,-10.000mm);
+  \coordinate (-label) at (3.750mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
+}}
+
+% Pre-insertion resistor with circuit breaker, open
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-05  circuit breaker
+%   IEC 60617 04-01-01  resistor (verify)
+\tikzset{gw/pir-cb/.pic={
+  \draw[gw/normal] (-5.000mm,0.000mm) -- (-2.500mm,0.000mm);
+  \coordinate (-a) at (-5.000mm,0.000mm);
+  \draw[gw/normal] (2.500mm,0.000mm) -- (5.000mm,0.000mm);
+  \coordinate (-b) at (5.000mm,0.000mm);
+  \draw[gw/normal] (-2.500mm,0.000mm) -- (1.830mm,2.500mm);
+  \draw[gw/normal] (3.250mm,-0.750mm) -- (1.750mm,0.750mm);
+  \draw[gw/normal] (1.750mm,-0.750mm) -- (3.250mm,0.750mm);
+  \draw[gw/normal] (-5.000mm,0.000mm) -- (-5.000mm,4.500mm) -- (-2.500mm,4.500mm);
+  \draw[gw/normal] (2.500mm,4.500mm) -- (5.000mm,4.500mm) -- (5.000mm,0.000mm);
+  \draw[gw/normal] (-2.500mm,3.750mm) -- (2.500mm,3.750mm) -- (2.500mm,5.250mm) -- (-2.500mm,5.250mm) -- cycle;
+  \coordinate (-label) at (0.000mm,7.250mm);
+  \coordinate (-tag) at (0.000mm,-3.750mm);
+}}
+
+% Pre-insertion resistor with disconnector, open
+%   IEC 60617 07-02-01  make contact (switch, general)
+%   IEC 60617 07-13-06  disconnector (isolator)
+%   IEC 60617 04-01-01  resistor (verify)
+\tikzset{gw/pir-ds/.pic={
+  \draw[gw/normal] (-5.000mm,0.000mm) -- (-2.500mm,0.000mm);
+  \coordinate (-a) at (-5.000mm,0.000mm);
+  \draw[gw/normal] (2.500mm,0.000mm) -- (5.000mm,0.000mm);
+  \coordinate (-b) at (5.000mm,0.000mm);
+  \draw[gw/normal] (-2.500mm,0.000mm) -- (1.830mm,2.500mm);
+  \draw[gw/normal] (2.500mm,-0.750mm) -- (2.500mm,0.750mm);
+  \draw[gw/normal] (-5.000mm,0.000mm) -- (-5.000mm,4.500mm) -- (-2.500mm,4.500mm);
+  \draw[gw/normal] (2.500mm,4.500mm) -- (5.000mm,4.500mm) -- (5.000mm,0.000mm);
+  \draw[gw/normal] (-2.500mm,3.750mm) -- (2.500mm,3.750mm) -- (2.500mm,5.250mm) -- (-2.500mm,5.250mm) -- cycle;
+  \coordinate (-label) at (0.000mm,7.250mm);
+  \coordinate (-tag) at (0.000mm,-3.750mm);
+}}
+
+% Datacenter
+%   IEC 60617 02-01-01  object / equipment outline (verify); datacenter rack motif = project convention (no dedicated IEC symbol)
+\tikzset{gw/datacenter/.pic={
+  \draw[gw/normal] (-7.500mm,7.500mm) -- (7.500mm,7.500mm) -- (7.500mm,-7.500mm) -- (-7.500mm,-7.500mm) -- cycle;
+  \draw[gw/thin] (-5.000mm,5.000mm) -- (5.000mm,5.000mm) -- (5.000mm,2.500mm) -- (-5.000mm,2.500mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,3.750mm) -- (3.500mm,3.750mm);
+  \draw[gw/thin] (-5.000mm,1.250mm) -- (5.000mm,1.250mm) -- (5.000mm,-1.250mm) -- (-5.000mm,-1.250mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,0.000mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,0.000mm) -- (3.500mm,0.000mm);
+  \draw[gw/thin] (-5.000mm,-2.500mm) -- (5.000mm,-2.500mm) -- (5.000mm,-5.000mm) -- (-5.000mm,-5.000mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,-3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,-3.750mm) -- (3.500mm,-3.750mm);
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,12.500mm);
+  \coordinate (-a) at (0.000mm,12.500mm);
+  \coordinate (-label) at (10.000mm,0.000mm);
+  \coordinate (-tag) at (-10.000mm,0.000mm);
+}}
+
+% Datacenter, terminal bottom
+%   IEC 60617 02-01-01  object / equipment outline (verify); datacenter rack motif = project convention (no dedicated IEC symbol)
+\tikzset{gw/datacenter-bottom/.pic={
+  \draw[gw/normal] (-7.500mm,7.500mm) -- (7.500mm,7.500mm) -- (7.500mm,-7.500mm) -- (-7.500mm,-7.500mm) -- cycle;
+  \draw[gw/thin] (-5.000mm,5.000mm) -- (5.000mm,5.000mm) -- (5.000mm,2.500mm) -- (-5.000mm,2.500mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,3.750mm) -- (3.500mm,3.750mm);
+  \draw[gw/thin] (-5.000mm,1.250mm) -- (5.000mm,1.250mm) -- (5.000mm,-1.250mm) -- (-5.000mm,-1.250mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,0.000mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,0.000mm) -- (3.500mm,0.000mm);
+  \draw[gw/thin] (-5.000mm,-2.500mm) -- (5.000mm,-2.500mm) -- (5.000mm,-5.000mm) -- (-5.000mm,-5.000mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,-3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,-3.750mm) -- (3.500mm,-3.750mm);
+  \draw[gw/normal] (0.000mm,-7.500mm) -- (0.000mm,-12.500mm);
+  \coordinate (-a) at (0.000mm,-12.500mm);
+  \coordinate (-label) at (10.000mm,0.000mm);
+  \coordinate (-tag) at (-10.000mm,0.000mm);
+}}
+
+% Datacenter, terminal left
+%   IEC 60617 02-01-01  object / equipment outline (verify); datacenter rack motif = project convention (no dedicated IEC symbol)
+\tikzset{gw/datacenter-left/.pic={
+  \draw[gw/normal] (-7.500mm,7.500mm) -- (7.500mm,7.500mm) -- (7.500mm,-7.500mm) -- (-7.500mm,-7.500mm) -- cycle;
+  \draw[gw/thin] (-5.000mm,5.000mm) -- (5.000mm,5.000mm) -- (5.000mm,2.500mm) -- (-5.000mm,2.500mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,3.750mm) -- (3.500mm,3.750mm);
+  \draw[gw/thin] (-5.000mm,1.250mm) -- (5.000mm,1.250mm) -- (5.000mm,-1.250mm) -- (-5.000mm,-1.250mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,0.000mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,0.000mm) -- (3.500mm,0.000mm);
+  \draw[gw/thin] (-5.000mm,-2.500mm) -- (5.000mm,-2.500mm) -- (5.000mm,-5.000mm) -- (-5.000mm,-5.000mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,-3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,-3.750mm) -- (3.500mm,-3.750mm);
+  \draw[gw/normal] (-7.500mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-a) at (-12.500mm,0.000mm);
+  \coordinate (-label) at (0.000mm,10.000mm);
+  \coordinate (-tag) at (0.000mm,-10.000mm);
+}}
+
+% Datacenter, terminal right
+%   IEC 60617 02-01-01  object / equipment outline (verify); datacenter rack motif = project convention (no dedicated IEC symbol)
+\tikzset{gw/datacenter-right/.pic={
+  \draw[gw/normal] (-7.500mm,7.500mm) -- (7.500mm,7.500mm) -- (7.500mm,-7.500mm) -- (-7.500mm,-7.500mm) -- cycle;
+  \draw[gw/thin] (-5.000mm,5.000mm) -- (5.000mm,5.000mm) -- (5.000mm,2.500mm) -- (-5.000mm,2.500mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,3.750mm) -- (3.500mm,3.750mm);
+  \draw[gw/thin] (-5.000mm,1.250mm) -- (5.000mm,1.250mm) -- (5.000mm,-1.250mm) -- (-5.000mm,-1.250mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,0.000mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,0.000mm) -- (3.500mm,0.000mm);
+  \draw[gw/thin] (-5.000mm,-2.500mm) -- (5.000mm,-2.500mm) -- (5.000mm,-5.000mm) -- (-5.000mm,-5.000mm) -- cycle;
+  \fill[gw/solid] (-3.500mm,-3.750mm) circle [radius=0.400mm];
+  \draw[gw/thin] (-1.500mm,-3.750mm) -- (3.500mm,-3.750mm);
+  \draw[gw/normal] (7.500mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-a) at (12.500mm,0.000mm);
+  \coordinate (-label) at (0.000mm,10.000mm);
+  \coordinate (-tag) at (0.000mm,-10.000mm);
+}}
+
+% Synchronous generator
+%   IEC 60617 06-04-01  rotating machine, general; letter G = generator (verify)
+%   IEC 60617 02-02-04  alternating current (verify)
+\tikzset{gw/gen/.pic={
+  \draw[gw/normal] (0.000mm,0.000mm) circle [radius=5.000mm];
+  \node[gw/title, anchor=center] at (0.000mm,1.000mm) {G};
+  \draw[gw/thin] (-0.750mm,-2.250mm) ++(0.00:0.750mm) arc [start angle=0.00, end angle=180.00, radius=0.750mm];
+  \draw[gw/thin] (0.750mm,-2.250mm) ++(180.00:0.750mm) arc [start angle=180.00, end angle=360.00, radius=0.750mm];
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,10.000mm);
+  \coordinate (-a) at (0.000mm,10.000mm);
+  \coordinate (-label) at (7.500mm,0.000mm);
+  \coordinate (-tag) at (-7.500mm,0.000mm);
+}}
+
+% ORC generator set (organic Rankine cycle turbine + generator)
+%   IEC 60617 06-04-01  rotating machine, general; letter G = generator (verify)
+%   IEC 60617 02-02-04  alternating current (verify)
+%   ISO 14617-? turbine outline (trapezoid) with mechanical shaft (verify); text ORC = organic Rankine cycle, project convention
+\tikzset{gw/gen-orc/.pic={
+  \draw[gw/normal] (0.000mm,0.000mm) circle [radius=5.000mm];
+  \node[gw/title, anchor=center] at (0.000mm,1.000mm) {G};
+  \draw[gw/thin] (-0.750mm,-2.250mm) ++(0.00:0.750mm) arc [start angle=0.00, end angle=180.00, radius=0.750mm];
+  \draw[gw/thin] (0.750mm,-2.250mm) ++(180.00:0.750mm) arc [start angle=180.00, end angle=360.00, radius=0.750mm];
+  \draw[gw/thin] (-5.000mm,0.500mm) -- (-7.500mm,0.500mm);
+  \draw[gw/thin] (-5.000mm,-0.500mm) -- (-7.500mm,-0.500mm);
+  \draw[gw/normal] (-7.500mm,3.750mm) -- (-7.500mm,-3.750mm) -- (-15.000mm,-2.000mm) -- (-15.000mm,2.000mm) -- cycle;
+  \node[gw/small, anchor=center] at (-11.250mm,0.000mm) {ORC};
+  \draw[gw/normal] (0.000mm,5.000mm) -- (0.000mm,10.000mm);
+  \coordinate (-a) at (0.000mm,10.000mm);
+  \coordinate (-label) at (7.500mm,0.000mm);
+  \coordinate (-tag) at (-17.500mm,0.000mm);
+}}
+
+% ORC generator set (organic Rankine cycle turbine + generator), terminal bottom
+%   IEC 60617 06-04-01  rotating machine, general; letter G = generator (verify)
+%   IEC 60617 02-02-04  alternating current (verify)
+%   ISO 14617-? turbine outline (trapezoid) with mechanical shaft (verify); text ORC = organic Rankine cycle, project convention
+\tikzset{gw/gen-orc-bottom/.pic={
+  \draw[gw/normal] (0.000mm,0.000mm) circle [radius=5.000mm];
+  \node[gw/title, anchor=center] at (0.000mm,1.000mm) {G};
+  \draw[gw/thin] (-0.750mm,-2.250mm) ++(0.00:0.750mm) arc [start angle=0.00, end angle=180.00, radius=0.750mm];
+  \draw[gw/thin] (0.750mm,-2.250mm) ++(180.00:0.750mm) arc [start angle=180.00, end angle=360.00, radius=0.750mm];
+  \draw[gw/thin] (-5.000mm,0.500mm) -- (-7.500mm,0.500mm);
+  \draw[gw/thin] (-5.000mm,-0.500mm) -- (-7.500mm,-0.500mm);
+  \draw[gw/normal] (-7.500mm,3.750mm) -- (-7.500mm,-3.750mm) -- (-15.000mm,-2.000mm) -- (-15.000mm,2.000mm) -- cycle;
+  \node[gw/small, anchor=center] at (-11.250mm,0.000mm) {ORC};
+  \draw[gw/normal] (0.000mm,-5.000mm) -- (0.000mm,-10.000mm);
+  \coordinate (-a) at (0.000mm,-10.000mm);
+  \coordinate (-label) at (7.500mm,0.000mm);
+  \coordinate (-tag) at (-17.500mm,0.000mm);
+}}
+
+% ORC generator set (organic Rankine cycle turbine + generator), terminal right
+%   IEC 60617 06-04-01  rotating machine, general; letter G = generator (verify)
+%   IEC 60617 02-02-04  alternating current (verify)
+%   ISO 14617-? turbine outline (trapezoid) with mechanical shaft (verify); text ORC = organic Rankine cycle, project convention
+\tikzset{gw/gen-orc-right/.pic={
+  \draw[gw/normal] (0.000mm,0.000mm) circle [radius=5.000mm];
+  \node[gw/title, anchor=center] at (0.000mm,1.000mm) {G};
+  \draw[gw/thin] (-0.750mm,-2.250mm) ++(0.00:0.750mm) arc [start angle=0.00, end angle=180.00, radius=0.750mm];
+  \draw[gw/thin] (0.750mm,-2.250mm) ++(180.00:0.750mm) arc [start angle=180.00, end angle=360.00, radius=0.750mm];
+  \draw[gw/thin] (-5.000mm,0.500mm) -- (-7.500mm,0.500mm);
+  \draw[gw/thin] (-5.000mm,-0.500mm) -- (-7.500mm,-0.500mm);
+  \draw[gw/normal] (-7.500mm,3.750mm) -- (-7.500mm,-3.750mm) -- (-15.000mm,-2.000mm) -- (-15.000mm,2.000mm) -- cycle;
+  \node[gw/small, anchor=center] at (-11.250mm,0.000mm) {ORC};
+  \draw[gw/normal] (5.000mm,0.000mm) -- (10.000mm,0.000mm);
+  \coordinate (-a) at (10.000mm,0.000mm);
+  \coordinate (-label) at (0.000mm,7.500mm);
+  \coordinate (-tag) at (-17.500mm,0.000mm);
+}}
+
+% Busbar, 40 mm
+%   IEC 60617 03-01-01  conductor / busbar, drawn with the thick line (verify)
+\tikzset{gw/bus40-r90/.pic={
+  \draw[gw/thick] (0.000mm,20.000mm) -- (0.000mm,-20.000mm);
+  \coordinate (-a) at (0.000mm,20.000mm);
+  \coordinate (-m) at (0.000mm,0.000mm);
+  \coordinate (-b) at (0.000mm,-20.000mm);
+  \coordinate (-label) at (2.500mm,0.000mm);
+  \coordinate (-tag) at (0.000mm,22.500mm);
+}}
+
+% Cable sealing end
+%   IEC 60617 S00051  cable sealing end, one-core cable
+\tikzset{gw/cse-r270/.pic={
+  \draw[gw/normal] (-5.000mm,0.000mm) -- (0.000mm,0.000mm);
+  \coordinate (-a) at (-5.000mm,0.000mm);
+  \draw[gw/normal] (2.500mm,0.000mm) -- (7.500mm,0.000mm);
+  \coordinate (-b) at (7.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,-2.500mm) -- (0.000mm,2.500mm) -- (2.500mm,1.000mm) -- (2.500mm,-1.000mm) -- cycle;
+  \coordinate (-label) at (1.250mm,5.000mm);
+  \coordinate (-tag) at (1.250mm,-5.000mm);
+}}
+
+% Cable sealing end
+%   IEC 60617 S00051  cable sealing end, one-core cable
+\tikzset{gw/cse-r90/.pic={
+  \draw[gw/normal] (5.000mm,0.000mm) -- (0.000mm,0.000mm);
+  \coordinate (-a) at (5.000mm,0.000mm);
+  \draw[gw/normal] (-2.500mm,0.000mm) -- (-7.500mm,0.000mm);
+  \coordinate (-b) at (-7.500mm,0.000mm);
+  \draw[gw/normal] (0.000mm,2.500mm) -- (0.000mm,-2.500mm) -- (-2.500mm,-1.000mm) -- (-2.500mm,1.000mm) -- cycle;
+  \coordinate (-label) at (-1.250mm,-5.000mm);
+  \coordinate (-tag) at (-1.250mm,5.000mm);
+}}
+
+% VSC HVDC converter, notation layout with signals
+%   IEC 60617 02-15-01  earth, general
+%   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
+%   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
+\tikzset{gw/vsc2-sig-fh/.pic={
+  \draw[gw/normal] (10.000mm,-16.250mm) -- (-10.000mm,-16.250mm) -- (-10.000mm,16.250mm) -- (10.000mm,16.250mm) -- cycle;
+  \draw[gw/thin] (10.000mm,16.250mm) -- (-10.000mm,0.000mm) -- (10.000mm,-16.250mm);
+  \draw[gw/thin] (6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (4.375mm,0.000mm) ++(-180.00:1.125mm) arc [start angle=-180.00, end angle=0.00, radius=1.125mm];
+  \draw[gw/thin] (-2.750mm,10.125mm) -- (-7.250mm,10.125mm);
+  \draw[gw/thin] (-2.750mm,8.625mm) -- (-7.250mm,8.625mm);
+  \draw[gw/thin] (-2.750mm,-8.625mm) -- (-7.250mm,-8.625mm);
+  \draw[gw/thin] (-2.750mm,-10.125mm) -- (-7.250mm,-10.125mm);
+  \draw[gw/normal] (10.000mm,0.000mm) -- (15.000mm,0.000mm);
+  \coordinate (-ac) at (15.000mm,0.000mm);
+  \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (-25.000mm,20.000mm);
+  \coordinate (-dc1) at (-25.000mm,20.000mm);
+  \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (-25.000mm,-20.000mm);
+  \coordinate (-dc2) at (-25.000mm,-20.000mm);
+  \node[gw/label, anchor=west] at (12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \gwsig{udpe_p}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,20.750mm) -- (0.000mm,25.000mm);}
+  \gwsig{udpe_p}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,25.000mm) -- (0.700mm,23.000mm) -- (-0.700mm,23.000mm) -- cycle;}
+  \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (-2.500mm,26.250mm) -- (2.500mm,26.250mm);}
+  \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (-1.500mm,27.500mm) -- (1.500mm,27.500mm);}
+  \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (-0.500mm,28.750mm) -- (0.500mm,28.750mm);}
+  \gwsig{udpe_p}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpe_p] at (1.250mm,22.500mm) {\gwtext{udpe_p}{U\textsubscript{dpe\_rec}}};}
+  \gwsig{id_p}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_p] (-21.250mm,20.000mm) -- (-18.750mm,20.900mm) -- (-18.750mm,19.100mm) -- cycle;}
+  \gwsig{id_p}{\node[gw/label, gw/c-current, anchor=south, gw/sigstyle=id_p] at (-20.000mm,21.250mm) {\gwtext{id_p}{I\textsubscript{d}}};}
+  \gwsig{udpe_n}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpe_n] (0.000mm,-20.750mm) -- (0.000mm,-25.000mm);}
+  \gwsig{udpe_n}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpe_n] (0.000mm,-25.000mm) -- (-0.700mm,-23.000mm) -- (0.700mm,-23.000mm) -- cycle;}
+  \gwsig{udpe_n}{\draw[gw/normal, gw/sigstyle=udpe_n] (2.500mm,-26.250mm) -- (-2.500mm,-26.250mm);}
+  \gwsig{udpe_n}{\draw[gw/normal, gw/sigstyle=udpe_n] (1.500mm,-27.500mm) -- (-1.500mm,-27.500mm);}
+  \gwsig{udpe_n}{\draw[gw/normal, gw/sigstyle=udpe_n] (0.500mm,-28.750mm) -- (-0.500mm,-28.750mm);}
+  \gwsig{udpe_n}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpe_n] at (1.250mm,-22.500mm) {\gwtext{udpe_n}{U\textsubscript{dpe\_rec}}};}
+  \gwsig{id_n}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_n] (-18.750mm,-20.000mm) -- (-21.250mm,-20.900mm) -- (-21.250mm,-19.100mm) -- cycle;}
+  \gwsig{id_n}{\node[gw/label, gw/c-current, anchor=north, gw/sigstyle=id_n] at (-20.000mm,-21.250mm) {\gwtext{id_n}{I\textsubscript{d}}};}
+  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (-13.750mm,16.250mm) -- (-13.750mm,-16.250mm);}
+  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (-13.750mm,-16.250mm) -- (-14.450mm,-14.250mm) -- (-13.050mm,-14.250mm) -- cycle;}
+  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=east, gw/sigstyle=udpp] at (-15.000mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
+  \coordinate (-label) at (12.500mm,-8.125mm);
+  \coordinate (-tag) at (12.500mm,8.125mm);
+}}
+
+% Transformer, two windings, YNd11, HV neutral earthed
+%   IEC 60617 06-09-02  transformer, two windings (form 2, circles)
+%   IEC 60617 06-01-02  winding, star connection
+%   IEC 60617 06-01-04  winding, delta connection
+\tikzset{gw/xfmr2-YNd11-e1-fh/.pic={
+  \draw[gw/normal] (3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (3.750mm,0.000mm) -- (3.750mm,2.000mm);
+  \draw[gw/thin] (3.750mm,0.000mm) -- (2.018mm,-1.000mm);
+  \draw[gw/thin] (3.750mm,0.000mm) -- (5.482mm,-1.000mm);
+  \draw[gw/normal] (-3.750mm,0.000mm) circle [radius=5.000mm];
+  \draw[gw/thin] (-3.750mm,2.000mm) -- (-5.482mm,-1.000mm) -- (-2.018mm,-1.000mm) -- cycle;
+  \draw[gw/normal] (8.750mm,0.000mm) -- (12.500mm,0.000mm);
+  \coordinate (-hv) at (12.500mm,0.000mm);
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-12.500mm,0.000mm);
+  \coordinate (-lv) at (-12.500mm,0.000mm);
+  \draw[gw/normal] (3.750mm,0.000mm) -- (3.750mm,-5.000mm);
+  \draw[gw/normal] (3.750mm,-5.000mm) -- (3.750mm,-7.500mm);
+  \draw[gw/normal] (6.250mm,-7.500mm) -- (1.250mm,-7.500mm);
+  \draw[gw/normal] (5.250mm,-8.750mm) -- (2.250mm,-8.750mm);
+  \draw[gw/normal] (4.250mm,-10.000mm) -- (3.250mm,-10.000mm);
+  \node[gw/label, anchor=south] at (0.000mm,7.500mm) {\gwlabel{YNd11}};
+  \coordinate (-hv_centre) at (3.750mm,0.000mm);
+  \coordinate (-lv_centre) at (-3.750mm,0.000mm);
+  \coordinate (-label) at (0.000mm,7.500mm);
+  \coordinate (-tag) at (0.000mm,-5.000mm);
+}}

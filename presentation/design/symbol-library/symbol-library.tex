@@ -1,0 +1,200 @@
+% =============================================================
+%  Chapter — Symbol Library
+%  IEC 60617 / IEC 62747 symbols and single-line diagrams drawn with
+%  Glyphwright: overview, transformers, switchgear and apparatus, VSC
+%  converter with signal notation, rotation and mirroring, signal selection
+%  in the LaTeX document, and two
+%  single-line diagrams (transformer bay, converter station).
+%  Symbols are drawn live with TikZ: figures/glyphwright-deck.tex holds the
+%  Glyphwright \pic library, figures/*.tex the figure snippets; both are
+%  generated from the Glyphwright repository (see figures/figures.yaml).
+% =============================================================
+\sectionslide{Symbol Library}{IEC symbols and single-line diagrams from one master geometry}
+
+% Glyphwright symbol library (TikZ \pic definitions) and figure shorthand
+\input{design/symbol-library/figures/glyphwright-deck}
+\newcommand{\slfig}[1]{\input{design/symbol-library/figures/#1}}
+
+% ---- Overview -----------------------------------------------
+\begin{frame}{Glyphwright\\One geometry, many outputs}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.58\textwidth}
+      \begin{block}{Approach}
+        Each symbol is defined once as parametric geometry; every output is generated from it.
+      \end{block}
+      \vspace{0.3em}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item IEC 60617 symbols (IEC 62747 for the VSC), 1:1 on a 2.5\,mm grid.
+        \item Outputs: TikZ for LaTeX, DXF blocks for AutoCAD, SVG for the web.
+        \item Single-line diagrams from YAML: validated, routed, drawn in every format.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.38\textwidth}
+      \centering
+      \slfig{overview}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- LaTeX integration -------------------------------------
+\begin{frame}[fragile]{LaTeX Integration\\Signals set in the document}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.50\textwidth}
+      \noindent{\color{atGray}\small Diagrams are generated in Python; the document only chooses which converter signals appear and how they are labelled.}
+      \vspace{0.4em}
+
+      {\fontsize{6}{7.2}\selectfont
+\begin{verbatim}
+\tikzset{gw/element/U1/.style={
+  gw/signals={udpp, id_p},
+  gw/text={udpp={U\textsubscript{dc}}},
+  gw/sig/udpp/.style={dashed}}}
+\input{figures/converter-station}
+\end{verbatim}}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item \atmono{gw/signals}, \atmono{gw/hide signals}: which signals are drawn.
+        \item \atmono{gw/text}: their names; \atmono{gw/sig/<name>}: colour, line style.
+        \item Without an override the selection of the YAML file applies.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \centering
+      \vspace{1.2em}
+      {\tikzset{gw/element/U1/.style={
+         gw/signals={udpp, id_p},
+         gw/text={udpp={U\textsubscript{dc}}},
+         gw/sig/udpp/.style={dashed}}}%
+       \resizebox{\linewidth}{!}{\slfig{converter-station}}}
+
+      \vspace{0.4em}
+      {\color{atGray}\scriptsize The converter station of the diagram slides, with the override on the left.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Transformers -------------------------------------------
+\begin{frame}{Transformers\\Variants of one parametric family}
+  \noindent{\color{atGray}\small IEC 60617 symbols; the ID selects windings, vector group, neutral treatment and tap changer, the ports stay in place.}
+  \vspace{0.8em}
+
+  \centering
+  \slfig{transformers}
+
+  \vspace{0.3em}
+  \raggedright
+  \begin{itemize}
+    \setlength{\itemsep}{0.4em}
+    \item ID pattern \atmono{xfmr2|3-<vector group>[-e<n>][-oltc]}; \atmono{e1} earths the HV neutral.
+    \item Two-, three-winding and autotransformers; illegal combinations are rejected.
+  \end{itemize}
+\end{frame}
+
+
+% ---- Switchgear & apparatus ---------------------------------
+\begin{frame}{Switchgear \& Apparatus\\IEC 60617}
+  \noindent{\color{atGray}\small Circuit breaker, disconnector, earthing switch, surge arrester, voltage and current transducer, cable sealing end and bushing.}
+  \vspace{0.6em}
+
+  \centering
+  \slfig{switchgear}
+
+  \vspace{0.3em}
+  \raggedright
+  \begin{itemize}
+    \setlength{\itemsep}{0.4em}
+    \item Switching devices kept compact beside transformer and converter: breaker and disconnector 10\,mm.
+    \item Arrester and voltage transducer optionally earthed (\atmono{-e}); switchgear open or \atmono{-closed}.
+  \end{itemize}
+\end{frame}
+
+
+% ---- Converters ---------------------------------------------
+\begin{frame}{VSC Converter\\IEC 62747 and signal notation}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.50\textwidth}
+      \begin{block}{Two layouts}
+        Compact square for overview diagrams; tall layout with room for the d.c. notation of the design documents.
+      \end{block}
+      \vspace{0.3em}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item Signals selectable one by one: $U_{dpe\_rec}$ pole to earth, $U_{dpp\_rec}$ pole to pole, $I_{d}$ d.c. current.
+        \item Voltages blue, currents red; every text is editable per drawing.
+        \item The $\sim$ and $=$ marks can stay upright when the symbol is rotated.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \centering
+      \slfig{converters}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Orientation --------------------------------------------
+\begin{frame}{Orientation\\Rotation and mirroring}
+  \noindent{\color{atGray}\small Every symbol turns in 90° steps and mirrors; texts stay horizontal and readable, ports move with the geometry.}
+  \vspace{0.8em}
+
+  \centering
+  \slfig{orientation}
+
+  \vspace{0.6em}
+  \raggedright
+  \begin{itemize}
+    \setlength{\itemsep}{0.4em}
+    \item Name suffixes \atmono{-r90}, \atmono{-fh} (left--right), \atmono{-fv} (top--bottom), combinable: \atmono{es-fh-r90}.
+    \item In a diagram: \atmono{rot: 90} (positive = clockwise), \atmono{flip: h}, \atmono{marks: upright}.
+  \end{itemize}
+\end{frame}
+
+
+% ---- SLD: transformer bay -----------------------------------
+\begin{frame}{Single-Line Diagram\\Transformer bay}
+  \noindent{\color{atGray}\small Busbar to converter from one YAML file, shown in three parts (read left to right): 13 elements, wires and junction dots routed automatically.}
+  \vspace{0.6em}
+
+  \centering
+  \begin{tabular}{@{}c@{\hspace{2.2em}}c@{\hspace{2.2em}}c@{}}
+    \raisebox{-\height}{\slfig{transformer-bay-1}} &
+    \raisebox{-\height}{\slfig{transformer-bay-2}} &
+    \raisebox{-\height}{\slfig{transformer-bay-3}} \\
+  \end{tabular}
+\end{frame}
+
+
+% ---- SLD: converter station ---------------------------------
+\begin{frame}[fragile]{Single-Line Diagram\\Converter station}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      {\fontsize{6}{7.2}\selectfont
+\begin{verbatim}
+instances:
+  T1: {symbol: xfmr2-YNd11-e1,
+       at: [-40, 0]}
+  U1: {symbol: vsc2,
+       at: [T1.lv+12.5, T1.lv], by: ac,
+       signals: [udpe_p, udpp, id_p, id_n]}
+nets:
+  - [T1.hv, [T1.hv-10, T1.hv]]
+  - [T1.lv, U1.ac]
+  - [U1.dc1, [U1.dc1+15, U1.dc1]]
+  - [U1.dc2, [U1.dc2+15, U1.dc2]]
+labels:
+  - {at: [U1.dc1+17.5, U1.dc1],
+     text: "pole 1", anchor: west}
+\end{verbatim}}
+      \vspace{0.2em}
+      \noindent{\color{atGray}\scriptsize Positions relative to other elements; \atmono{by: ac} places the converter by its a.c. terminal.}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \centering
+      \vspace{1.2em}
+      \slfig{converter-station}
+    \end{column}
+  \end{columns}
+\end{frame}

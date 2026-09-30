@@ -1,0 +1,81 @@
+% =============================================================
+%  American Terawatt — SMP Level 1, single-line diagram
+%
+%  Structure:
+%    smp-level-1.tex             <- this file
+%    theme -> ../theme           <- symlink: theme/atstyle.sty and theme/fonts/
+%                                   resolve as in the main presentation
+%    .latexmkrc                  <- adds ~/hids/template/glyphwright to TEXINPUTS
+%    figures/figures.yaml        <- figure list; figures/smp_level_1.tex is
+%    figures/src/smp_level_1.yaml   generated from the diagram YAML
+%
+%  Compile in this folder:
+%    latexmk -xelatex smp-level-1.tex
+%
+%  The symbols come from the Glyphwright library in ~/hids/template/glyphwright
+%  (\usepackage{glyphwright}); regenerate figure and library as described in
+%  figures/figures.yaml.
+% =============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{theme/atstyle}
+\usepackage{glyphwright}
+
+\title{HVDC Design}
+\subtitle{AmWatt Team Presenation}
+\author{American Terawatt}
+\date{\today}
+
+\newcommand{\slfig}[1]{\input{figures/#1}}
+
+\begin{document}
+
+\titleslide
+
+% ---- Single-line diagram ------------------------------------
+\begin{frame}{System Overview}
+  ORC generators feed a data centre through a point-to-point VSC HVDC link.
+  \vspace{2.2em}
+
+  \centering
+  \slfig{smp_level_1}
+\end{frame}
+
+% ---- Power path ---------------------------------------------
+\begin{frame}{SMP Level 1\\Power path}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.50\textwidth}
+      \begin{block}{From generation to load}
+        A.c.\ collection, conversion to d.c., d.c.\ transmission, conversion back to a.c.
+      \end{block}
+      \vspace{0.3em}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item Generation: three ORC sets on one busbar.
+        \item Sending end: transformer YNd11, VSC converter.
+        \item D.c.\ link: two poles, cable sealing ends at both ends.
+        \item Receiving end: VSC converter, transformer, data centre.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \footnotesize
+      \renewcommand{\arraystretch}{1.1}
+      \begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+        \toprule
+        \multicolumn{1}{c}{\textbf{Tag}} & \textbf{Element} \\
+        \midrule
+        GEN1--3 & ORC generator set \\
+        BUS1    & Busbar, sending end \\
+        T1      & Transformer YNd11 \\
+        U1      & VSC converter, sending end \\
+        CSE1--4 & Cable sealing ends, d.c.\ link \\
+        U2      & VSC converter, receiving end \\
+        T2      & Transformer YNd11 \\
+        BUS2    & Busbar, receiving end \\
+        DATA    & Data centre \\
+        \bottomrule
+      \end{tabularx}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\end{document}

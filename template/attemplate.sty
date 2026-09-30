@@ -5,6 +5,12 @@
 %
 %      \usepackage{../../template/attemplate}
 %
+%  From a document that is NOT two levels below the repository root,
+%  declare the path to the template folder before loading the package:
+%
+%      \providecommand{\attemplatepath}{../template/}
+%      \usepackage{../template/attemplate}
+%
 %  Public interface (provided by atreportcorporate.sty):
 %    \reporttitle \reportsubtitle \reportauthor \reportdocnumber
 %    \reportrevision \reportstatus \reportdate \reportconfidentiality
@@ -33,6 +39,12 @@
   classic, brand and house variants were archived}}
 \ProcessOptions\relax
 
-\RequirePackage{../../template/atreportcorporate}
+% Where the template folder sits, relative to the main document. The
+% default matches the usual documentation/<name>/ and specification/<name>/
+% depth; a document at another depth defines \attemplatepath before
+% loading this package (see the usage note above).
+\providecommand{\attemplatepath}{../../template/}
+\edef\at@requirestyle{\noexpand\RequirePackage{\attemplatepath atreportcorporate}}
+\at@requirestyle
 
 \endinput

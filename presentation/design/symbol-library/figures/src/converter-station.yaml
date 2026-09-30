@@ -1,0 +1,15 @@
+sld: converter-station
+title: Converter station
+instances:
+  T1: {symbol: xfmr2-YNd11-e1, at: [-40, 0]}
+  U1: {symbol: vsc2, at: [T1.lv+12.5, T1.lv], by: ac,
+       signals: [udpe_p, udpp, id_p, id_n], text: {label: VSC}}
+nets:
+  - [T1.hv, [T1.hv-10, T1.hv]]
+  - [T1.lv, U1.ac]
+  - [U1.dc1, [U1.dc1+15, U1.dc1]]
+  - [U1.dc2, [U1.dc2+15, U1.dc2]]
+labels:
+  - {at: [T1.hv-12.5, T1.hv], text: "a.c. grid", anchor: east}
+  - {at: [U1.dc1+17.5, U1.dc1], text: "pole 1", anchor: west}
+  - {at: [U1.dc2+17.5, U1.dc2], text: "pole 2", anchor: west}

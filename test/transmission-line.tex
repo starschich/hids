@@ -1,0 +1,89 @@
+% =============================================================
+%  Test document: TikZ single-line diagram of a cable link
+%  Combines the two test folders, documentation/test (plain TikZ
+%  figure in the report template) and presentation/test (circuitikz
+%  figure in a beamer frame), into one report.
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex transmission-line.tex   (run twice)
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives in the repo-level template folder. This document
+% sits one level below the repository root rather than the usual two,
+% so the template path is declared before the package is loaded.
+\providecommand{\attemplatepath}{../template/}
+\usepackage[corporate]{../template/attemplate}
+
+% The circuitikz variant of the figure needs these; the plain TikZ
+% variant needs only arrows.meta and calc.
+\usepackage{circuitikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing}
+
+\newcommand{\cmd}[1]{\texttt{\small #1}}
+
+% ---- Report metadata ----------------------------------------
+\reporttitle{Cable Link Single-Line Diagram}
+\reportsubtitle{TikZ and circuitikz renderings of the sending-end / receiving-end transmission model}
+\atEyebrow{Template test}
+\atAbstract{Test document for the shared report template, combining the
+two earlier test folders. It compiles both renderings of the single-line
+diagram of a cable transmission link (source, disconnectors, cable of
+length $L_{\mathrm{cable}}$ and load impedance $Z_{L}$) with the
+sending-end and receiving-end voltages, currents and power flows, and
+checks them against the original drawing.}
+\reportauthor{Eugen Starschich}
+\reportdocnumber{ATW-TST-TIKZ-001}
+\reportrevision{0.2}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Internal}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{Sep. 18, 2026}{Eugen Starschich}{Initial document}
+  \revrow{0.2}{Sep. 18, 2026}{Eugen Starschich}{\cmd{documentation/test} and \cmd{presentation/test} combined in \cmd{test/}; circuitikz variant added}
+}
+
+\clearpage
+
+\section{Comparison with the original}
+
+Figure~\ref{fig:transmission-line-original} reproduces the original
+drawing (\cmd{figures/image9.pdf}) that the TikZ figure was traced
+from, for a side-by-side check of geometry, colours and labels. Both
+figures are scaled to the full text width, so they can be compared
+directly.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\linewidth]{figures/image9.pdf}
+  \caption{Original drawing used as reference.}
+  \label{fig:transmission-line-original}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{\linewidth}{!}{\input{figures/transmission-line-tikz}}
+  \caption{TikZ rendering of Figure~\ref{fig:transmission-line-original} with Fable.}
+  \label{fig:transmission-line-tikz}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \resizebox{0.9\linewidth}{!}{\input{figures/transmission-line-circuitikz}}
+  \caption{TikZ rendering of Figure~\ref{fig:transmission-line-original} with qwen3.5:122b-a10b.}
+  \label{fig:transmission-line-circuitikz}
+\end{figure}
+
+The two renderings differ in what they delegate to a package rather than
+in what they show.
+
+
+
+
+
+
+\end{document}

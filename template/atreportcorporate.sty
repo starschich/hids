@@ -36,7 +36,12 @@
 % Brand typography (Archivo + Geist Mono when compiled with
 % lualatex/xelatex and the font files are installed; Helvetica
 % otherwise). See atfonts.sty.
-\RequirePackage{../../template/atfonts}
+% Template folder location; see attemplate.sty. Declared here as well so
+% this file also works when loaded directly.
+\providecommand{\attemplatepath}{../../template/}
+\providecommand{\atfontpath}{\attemplatepath fonts/}
+\edef\at@requirefonts{\noexpand\RequirePackage{\attemplatepath atfonts}}
+\at@requirefonts
 % Typography helpers this file uses from atfonts.sty, provided
 % defensively. \providecommand leaves them untouched when atfonts.sty
 % already defines them, so this costs nothing when the two files are in
@@ -78,7 +83,7 @@
 % ---- asset path ---------------------------------------------
 % Resolved relative to the main document; adjust if the template
 % folder is moved.
-\providecommand{\atcorpassetpath}{../../template/assets-corporate/}
+\providecommand{\atcorpassetpath}{\attemplatepath assets-corporate/}
 \newcommand{\atcorpasset}[1]{\atcorpassetpath#1}
 
 % ---- palette: design-system tokens ---------------------------

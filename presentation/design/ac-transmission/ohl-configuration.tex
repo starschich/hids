@@ -1,0 +1,151 @@
+% =============================================================
+%  Subsection — OHL configuration of the 500 kV reference line
+%  Part of design/ac-transmission; \input from ac-transmission.tex,
+%  between natural-power.tex and series-compensation.tex.
+%
+%  Drawings are TikZ, drawn to scale from the parameters below
+%  (1 ft = 1 mm for the tower head, 1 in = 1.6 mm for the bundle).
+%  Same line as series-compensation.tex and the notebook
+%  ac_ohl_series_compensation.ipynb:
+%    flat (horizontal) configuration, D = 35 ft phase spacing,
+%    3x Bluebird ACSR 2156 kcmil per phase, s = 18 in bundle spacing,
+%    d = 1.762 in, GMR = 0.0588 ft (Southwire 11-4), earth return neglected.
+% =============================================================
+\providecommand{\acfig}[1]{design/ac-transmission/fig/#1}
+
+\intermezzo{OHL Configuration}{Geometry of the 500\,kV reference line}
+
+% ---------------------------------------------------------------
+\begin{frame}{Tower head --- flat configuration}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.62\textwidth}\centering
+      \begin{tikzpicture}[x=1mm,y=1mm,
+          cond/.style={fill=atInk,draw=atInk},
+          dim/.style={<->,>={Stealth[length=1.6mm]},atGray,thin},
+          lbl/.style={font=\footnotesize,atInk},
+          note/.style={font=\scriptsize,atGray}]
+        % crossarm and tower body (schematic)
+        \draw[atStone,line width=1.2pt] (-40,0) -- (40,0);
+        \draw[atStone,line width=1.2pt] (-40,0) -- (-38,-3) -- (38,-3) -- (40,0);
+        \draw[atStone,line width=1pt] (-6,0) -- (-9,-30);
+        \draw[atStone,line width=1pt] ( 6,0) -- ( 9,-30);
+        \foreach \yy in {-6,-12,-18,-24} {
+          \draw[atStone,thin] ({-6-abs(\yy)/10},\yy) -- ({6+abs(\yy)/10},\yy);
+        }
+        % insulator strings
+        \foreach \xx in {-35,0,35} {
+          \draw[atGray,line width=0.9pt] (\xx,0) -- (\xx,-12);
+          \foreach \yy in {-2,-4,...,-10} {\fill[atGray] (\xx,\yy) circle (0.7);}
+          % bundle: three subconductors, 18 in = 1.5 ft on a side, apex down
+          \foreach \px/\py in {0/-0.87,-0.75/0.43,0.75/0.43} {
+            \fill[cond] ($(\xx,-13)+(\px,\py)$) circle (0.55);
+          }
+        }
+        % phase labels
+        \node[lbl] at (-35,-17) {A};
+        \node[lbl] at (  0,-17) {B};
+        \node[lbl] at ( 35,-17) {C};
+        % dimensions
+        \draw[dim] (-35,-22) -- (0,-22) node[midway,below,lbl] {$D = 35$\,ft};
+        \draw[dim] (0,-22) -- (35,-22) node[midway,below,lbl] {$D = 35$\,ft};
+        \draw[dim] (-35,-28) -- (35,-28) node[midway,below,lbl] {$2\cdot D = 70$\,ft};
+        \draw[atGray,thin,densely dotted] (-35,-13) -- (-35,-28);
+        \draw[atGray,thin,densely dotted] (  0,-13) -- (  0,-22);
+        \draw[atGray,thin,densely dotted] ( 35,-13) -- ( 35,-28);
+        % detail marker on phase C
+        \draw[atLime,line width=0.9pt] (35,-13) circle (2.4);
+        \node[note] at (35,-19.5) {detail next slide};
+        \node[note] at (0,5) {tower head, to scale (1\,ft = 1\,mm); earth return neglected};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      \renewcommand{\arraystretch}{1.1}
+      {\footnotesize
+      \begin{tabular}{@{}l l r@{}}
+        \textbf{Parameter} & & \multicolumn{1}{c}{\textbf{Value}} \\
+        \hline
+        $D$ phase spacing & ft & 35 \\
+        $D_{AC}$ outer phases & ft & 70 \\
+        Conductors per phase & & 3 \\
+        $s$ bundle spacing & in & 18 \\
+        $d$ conductor diameter & in & 1.762 \\
+        $GMR$ conductor & ft & 0.0588 \\
+        \hline
+      \end{tabular}}\\[0.3em]
+      {\color{atGray}\footnotesize Bluebird ACSR, 2156\,kcmil, 84/19,
+      single circuit.}\\[0.6em]
+      {\small
+      \begin{itemize}
+        \setlength{\itemsep}{0.3em}
+        \item Flat configuration: lowest towers, widest right-of-way; the
+              outer phases see $2\cdot D$.
+        \item $GMD$ on the next slide assumes a transposed line.
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+  \atnote{Conductor data: Southwire ACSR bare conductor tables, catalog
+  section 11-4. Tower body and insulator lengths are schematic.}
+\end{frame}
+
+% ---------------------------------------------------------------
+\begin{frame}{Bundle detail and equivalent spacings}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.38\textwidth}\centering
+      \begin{tikzpicture}[x=1.6mm,y=1.6mm,
+          dim/.style={<->,>={Stealth[length=1.6mm]},atGray,thin},
+          lbl/.style={font=\footnotesize,atInk},
+          note/.style={font=\scriptsize,atGray}]
+        % equilateral triangle, s = 18 in, apex down; circumradius 10.39 in
+        \coordinate (P1) at (0,-10.39);
+        \coordinate (P2) at (-9,5.196);
+        \coordinate (P3) at ( 9,5.196);
+        \draw[atStone,thin,densely dashed] (P1) -- (P2) -- (P3) -- cycle;
+        \draw[atStone,thin,densely dotted] (0,0) circle (10.39);
+        % conductors, d = 1.762 in
+        \foreach \P in {P1,P2,P3} {
+          \fill[atInk] (\P) circle (0.881);
+          \draw[atLime,thin] (\P) circle (0.881);
+        }
+        \fill[atGray] (0,0) circle (0.35);
+        % dimensions
+        \draw[dim] ($(P2)+(0,4)$) -- ($(P3)+(0,4)$) node[midway,above,lbl] {$s = 18$\,in};
+        \draw[atGray,thin,densely dotted] (P2) -- ($(P2)+(0,4)$);
+        \draw[atGray,thin,densely dotted] (P3) -- ($(P3)+(0,4)$);
+        \draw[dim] ($(P1)+(-0.881,-2.5)$) -- ($(P1)+(0.881,-2.5)$);
+        \node[lbl,anchor=west] at ($(P1)+(1.6,-2.5)$) {$d = 1.762$\,in};
+        \draw[atGray,thin,densely dotted] ($(P1)+(-0.881,0)$) -- ($(P1)+(-0.881,-2.5)$);
+        \draw[atGray,thin,densely dotted] ($(P1)+( 0.881,0)$) -- ($(P1)+( 0.881,-2.5)$);
+        \draw[dim] (0,0) -- (P3) node[midway,above left,lbl,xshift=-1mm] {$s/\sqrt{3}$};
+        \node[note] at (0,-15.5) {bundle, to scale (1\,in = 1.6\,mm)};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.60\textwidth}
+      \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}
+      \[ \begin{aligned}
+        GMR_b &= \sqrt[3]{GMR\cdot s^{2}} && \text{\small(bundle, $L^{\prime}$)}\\[0.1em]
+        r_b   &= \sqrt[3]{\tfrac{d}{2}\cdot s^{2}} && \text{\small(bundle, $C^{\prime}$)}\\[0.1em]
+        GMD   &= \sqrt[3]{D\cdot D\cdot 2\cdot D} = D\cdot\sqrt[3]{2} && \text{\small(phases)}
+      \end{aligned} \]
+      \[ L' = \frac{\mu_0}{2\cdot\pi}\cdot\ln\frac{GMD}{GMR_b},
+         \qquad
+         C' = \frac{2\cdot\pi\cdot\varepsilon_0}{\ln\left(GMD/r_b\right)} \]
+      \renewcommand{\arraystretch}{1.0}
+      {\footnotesize
+      \begin{tabular}{@{}l l r r@{}}
+        \textbf{Quantity} & & \multicolumn{1}{c}{\textbf{$3\times$}}
+                            & \multicolumn{1}{c}{\textbf{$2\times$}} \\
+        \hline
+        $GMR_b$ & in & 6.11 & 3.56 \\
+        $r_b$   & in & 6.58 & 3.98 \\
+        $GMD$   & ft & 44.1 & 44.1 \\
+        $L'$    & mH/km & 0.892 & 1.000 \\
+        $C'$    & nF/km & 12.68 & 11.38 \\
+        $Z_w=\sqrt{L'/C'}$ & $\Omega$ & 265 & 296 \\
+        \hline
+      \end{tabular}}
+    \end{column}
+  \end{columns}
+  \atnote{For a two-conductor bundle $GMR_b=\sqrt{GMR\cdot s}$,
+  $r_b=\sqrt{d/2\cdot s}$. The third subconductor lowers $Z_w$ by
+  $\approx10$\,\% and so raises $P_{nat}$ by $\approx11$\,\%.}
+\end{frame}

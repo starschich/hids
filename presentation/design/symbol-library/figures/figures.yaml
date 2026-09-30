@@ -1,0 +1,19 @@
+# Figures of the symbol-library chapter as TikZ snippets, drawn live in the
+# deck with the Glyphwright \pic library (glyphwright-deck.tex). Regenerate
+# from the Glyphwright repository after symbol changes (~ = home folder):
+#   python ~/AmWatt/Design/Schematics/Glyphwright/tools/deck_figures.py figures.yaml
+# 'scale' shrinks the geometry only; line widths and texts keep their size.
+
+sheets:
+  overview:      {rows: [[xfmr2-YNd11-e1-oltc, cb, vsc2-sig]], scale: 0.42, labels: false}
+  transformers:  {rows: [[xfmr2, xfmr2-Yd11, xfmr2-YNd11-e1, xfmr2-YNd11-e1-oltc, xfmr3-YNyn0d11-e1, xfmr2-YNa0-e1]], scale: 0.7}
+  switchgear:    {rows: [[cb, ds, es, sa-e, vt-e, ct, cse, bsh]], scale: 0.85}
+  converters:    {rows: [[vsc, vsc2-sig]], scale: 0.72}
+  orientation:   {rows: [[es, es-fh, cb-r90, xfmr2-YNd11-e1-fh, vsc2+udpp-r90u]], scale: 0.7}
+
+slds:
+  converter-station: {file: src/converter-station.yaml, scale: 0.6}
+  transformer-bay:
+    file: ~/AmWatt/Design/Schematics/Glyphwright/examples/sld/transformer-bay.yaml
+    parts: [[72, -23.75], [-23.75, -93.75], [-93.75, -195]]
+    scale: 0.5

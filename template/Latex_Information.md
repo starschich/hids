@@ -166,3 +166,28 @@ via `epstopdf`). Convert first:
   `Undefined control sequence … \@wr…` — delete the `.aux` and recompile.
 - `\text{...}` in math needs `amsmath`; symbols like `\lesssim` need `amssymb`
   (both loaded by the template).
+
+---
+
+## 9. Electrical symbols (Glyphwright)
+
+IEC 60617 / IEC 62747 symbols and single-line diagrams as TikZ `\pic`s live in
+`template/glyphwright/` (`glyphwright.sty` + `glyphwright-symbols.tex`, generated
+by Glyphwright, see the README there). Both files must stay together and on the
+TeX search path, so add the folder with a `.latexmkrc` next to the document
+instead of loading it as `glyphwright/glyphwright`:
+
+```perl
+ensure_path('TEXINPUTS', '../../template/glyphwright//');   # path relative to the document
+```
+
+```latex
+\usepackage{glyphwright}
+\begin{tikzpicture}[x=1mm, y=1mm]
+  \pic at (0,0) {gw/cb};
+\end{tikzpicture}
+```
+
+Example: `presentation/presentations/smp-level-1.tex` (SLD figures generated
+into `presentations/figures/`).
+

@@ -1,0 +1,46 @@
+# SMP Level 1 - single-line diagram (source of figures/smp_level_1.tex)
+# Copied from the %%sld cell of Glyphwright examples/notebooks/SMP_Level_1.ipynb.
+# Keep it in sync by adding --save to that cell (~ = home folder):
+#   %%sld --cast --save ~/hids/presentation/presentations/figures/src/smp_level_1.yaml
+
+sld: smp_level_1
+hide: [tag, label]
+# title: VSC converter, playground
+instances:
+
+  BUS1: {symbol: bus, length: 40, at: [T1.hv-5, T1.hv], rot: 90}
+  GEN1: {symbol: gen-orc-right, at: [BUS1.m-5, BUS1.m+15], by: a}
+  GEN2: {symbol: gen-orc-right, at: [BUS1.m-5, BUS1.m], by: a}
+  GEN3: {symbol: gen-orc-right, at: [BUS1.m-5, BUS1.m-15], by: a}
+
+  T1: {symbol: xfmr2-YNd11-e1, at: [0, 0], hide: [tag, label]}
+  # PIR1: {symbol: pir-ds, at: [T1.hv-5, T1.hv], by: b, hide: [tag]}
+  # CB1: {symbol: cb, at: [PIR1.a-5, PIR1.a], by: a, hide: [tag], rot: +90}
+  # U1: {symbol: vsc2, at: [0, 0], hide: [tag, label], signals: [udpp, id_p, id_n], text: {label: ""}}
+  # RCT1: {symbol: rct-e, at: [T1.lv+5, T1.lv], by: a, hide: [tag]}
+  # CVD1: {symbol: cvd, at: [T1.lv+10, T1.lv], by: a, hide: [tag]}
+  # U1: {symbol: vsc2-sig, at: [T1.lv+5, 0], by: ac, hide: [tag, label], text: {udpp: "800 kV", udpe_p: "+400 kV", udpe_n: "-400 kV"}}
+  U1: {symbol: vsc2, at: [T1.lv+5, 0], by: ac, hide: [tag, label]}
+  # CSE1: {symbol: cse, at: [U1.dc1, U1.dc1], rot: -90}
+
+  CSE1: {symbol: cse, at: [U1.dc1, U1.dc1], by: a, rot: -90}
+  CSE2: {symbol: cse, at: [U1.dc2, U1.dc2], by: a, rot: -90}
+  CSE3: {symbol: cse, at: [CSE1.a+20, CSE1.a], by: b, rot: 90}
+  CSE4: {symbol: cse, at: [CSE2.a+20, CSE2.a], by: b, rot: 90}
+  # U2: {symbol: vsc2-sig, at: [CSE3.a, CSE3.a], by: dc1, hide: [tag, label, id_p, id_n], flip: h, text: {udpp: "800 kV", udpe_p: "+400 kV", udpe_n: "-400 kV"}}
+  U2: {symbol: vsc2, at: [CSE3.a, CSE3.a], by: dc1, hide: [tag, label], flip: h}
+  T2: {symbol: xfmr2-YNd11-e1, at: [U2.ac+5, U2.ac], by: lv, flip: h}
+
+  BUS2: {symbol: bus, length: 40, at: [T2.hv+5, T2.hv], rot: 90}
+  DATA: {symbol: datacenter-left, at: [BUS2.m+5, BUS2.m], by: a}
+nets:
+  - [T1.lv, U1.ac]
+  - [T1.hv, BUS1]
+  - [T2.lv, U2.ac]
+  - [CSE1.b, CSE3.b]
+  - [CSE2.b, CSE4.b]
+  - [GEN1, BUS1]
+  - [GEN2, BUS1]
+  - [GEN3, BUS1]
+  - [T2.hv, BUS2]
+  - [DATA, BUS2]
