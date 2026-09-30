@@ -188,6 +188,6 @@ ensure_path('TEXINPUTS', '../../template/glyphwright//');   # path relative to t
 \end{tikzpicture}
 ```
 
-Example: `presentation/presentations/smp-level-1.tex` (SLD figures generated
-into `presentations/figures/`).
+Example: `presentation/amwatt_20261001/smp-level-1.tex` (SLD figures generated
+into `amwatt_20261001/figures/`).
 

@@ -3,11 +3,11 @@
 \ProvidesPackage{glyphwright}[Glyphwright symbol library]
 \RequirePackage{tikz}
 \usetikzlibrary{arrows.meta}
-%% stroke classes (ISO 128, group 0.35)
+%% stroke classes (ISO 128, line group from glyphwright/style.py LINE_GROUP)
 \tikzset{
-  gw/thin/.style={line width=0.25mm, line cap=round, line join=round},
-  gw/normal/.style={line width=0.35mm, line cap=round, line join=round},
-  gw/thick/.style={line width=0.7mm, line cap=round, line join=round},
+  gw/thin/.style={line width=0.18mm, line cap=round, line join=round},
+  gw/normal/.style={line width=0.25mm, line cap=round, line join=round},
+  gw/thick/.style={line width=0.5mm, line cap=round, line join=round},
   gw/solid/.style={draw=none},
   gw/small/.style={font=\fontsize{1.8mm}{2.2mm}\selectfont\sffamily, inner sep=0.3mm},
   gw/label/.style={font=\fontsize{2.5mm}{3mm}\selectfont\sffamily, inner sep=0.3mm},
@@ -39,10 +39,10 @@
          /gw/sel/all/.code={\gwonlyfalse},
          /gw/sel/none/.code={},
          /gw/unsel/.unknown/.code={\expandafter\def\csname gwsig@off@\pgfkeyscurrentname\endcsname{}},
-         /gw/resel/.unknown/.code={\expandafter\let\csname gwsig@off@\pgfkeyscurrentname\endcsname\gw@undefined
+         /gw/resel/.unknown/.code={\expandafter\let\csname gwsig@off@\pgfkeyscurrentname\endcsname\undefined
            \expandafter\def\csname gwsig@on@\the\gwsiggen @\pgfkeyscurrentname\endcsname{}},
          /gw/noname/.unknown/.code={\expandafter\def\csname gw@t@\pgfkeyscurrentname\endcsname{}},
-         /gw/rename/.unknown/.code={\expandafter\let\csname gw@t@\pgfkeyscurrentname\endcsname\gw@undefined}}
+         /gw/rename/.unknown/.code={\expandafter\let\csname gw@t@\pgfkeyscurrentname\endcsname\undefined}}
 \tikzset{gw/signals/.code={\advance\gwsiggen by 1\relax\gwonlytrue\pgfqkeys{/gw/sel}{#1}},
          gw/hide signals/.code={\pgfqkeys{/gw/unsel}{#1}},
          gw/show signals/.code={\pgfqkeys{/gw/resel}{#1}},

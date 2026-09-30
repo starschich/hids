@@ -37,7 +37,13 @@
   \vspace{2.2em}
 
   \centering
-  \slfig{smp_level_1}
+  % power-flow arrow drawn over the generated figure (kept out of figures/)
+  \sbox0{\slfig{smp_level_1}}%
+  \begin{tikzpicture}
+    \node[inner sep=0] (fig) {\usebox0};
+    \draw[-{Latex[length=2mm]}, violet, line width=1.2pt]
+      ([xshift=-6mm]fig.center) -- node[above] {$P$} ([xshift=6mm]fig.center);
+  \end{tikzpicture}
 \end{frame}
 
 % ---- Power path ---------------------------------------------

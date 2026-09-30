@@ -1,7 +1,7 @@
 # SMP Level 1 - single-line diagram (source of figures/smp_level_1.tex)
 # Copied from the %%sld cell of Glyphwright examples/notebooks/SMP_Level_1.ipynb.
 # Keep it in sync by adding --save to that cell (~ = home folder):
-#   %%sld --cast --save ~/hids/presentation/presentations/figures/src/smp_level_1.yaml
+#   %%sld --cast --save ~/hids/presentation/amwatt_20261001/figures/src/smp_level_1.yaml
 
 sld: smp_level_1
 hide: [tag, label]

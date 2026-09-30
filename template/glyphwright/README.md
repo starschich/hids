@@ -41,7 +41,7 @@ the Glyphwright repository:
 
 ```bash
 python -m glyphwright texlib ~/hids/template/glyphwright \
-  --sld ~/hids/presentation/presentations/figures/src/smp_level_1.yaml
+  --sld ~/hids/presentation/amwatt_20261001/figures/src/smp_level_1.yaml
 ```
 
 (add one `--sld` per diagram, or plain ids such as `cb-r90`). Signal keys
