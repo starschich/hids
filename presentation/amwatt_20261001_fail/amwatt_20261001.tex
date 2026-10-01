@@ -3,8 +3,7 @@
 %
 %  Structure:
 %    smp-level-1.tex             <- this file
-%    theme -> ../theme           <- symlink: theme/atstyle.sty and theme/fonts/
-%                                   resolve as in the main presentation
+%    ../../template/theme        <- shared beamer theme (atstyle.sty, fonts, img)
 %    .latexmkrc                  <- adds ~/hids/template/glyphwright to TEXINPUTS
 %    figures/figures.yaml        <- figure list; figures/smp_level_1.tex is
 %    figures/src/smp_level_1.yaml   generated from the diagram YAML
@@ -17,7 +16,10 @@
 %  figures/figures.yaml.
 % =============================================================
 \documentclass[aspectratio=169,11pt]{beamer}
-\usepackage{theme/atstyle}
+% The beamer theme lives in the shared template folder; \atthemepath
+% tells it where its own fonts/ and img/ are, relative to this file.
+\providecommand{\atthemepath}{../../template/theme/}
+\usepackage{../../template/theme/atstyle}
 \usepackage{glyphwright}
 
 \title{HVDC Design}

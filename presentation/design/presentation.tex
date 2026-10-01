@@ -4,7 +4,7 @@
 %
 %  Structure (this file lives in presentation/design/):
 %    presentation.tex          <- this file: metadata + orchestration
-%    theme -> ../theme         <- symlink: theme/atstyle.sty, fonts, img
+%    ../../template/theme      <- shared beamer theme (atstyle.sty, fonts, img)
 %    <topic>/*.tex             <- one file per overview item
 %
 %  Compile (latexmk runs the engine twice for nav/refs):
@@ -16,7 +16,10 @@
 %    \atsettitleimage{path/to/photo}   % before \titleslide
 % =============================================================
 \documentclass[aspectratio=169,11pt]{beamer}
-\usepackage{theme/atstyle}
+% The beamer theme lives in the shared template folder; \atthemepath
+% tells it where its own fonts/ and img/ are, relative to this file.
+\providecommand{\atthemepath}{../../template/theme/}
+\usepackage{../../template/theme/atstyle}
 
 % ---- Document metadata --------------------------------------
 

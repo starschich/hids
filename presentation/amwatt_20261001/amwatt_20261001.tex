@@ -2,8 +2,7 @@
 %
 %  Structure:
 %    amwatt_20261001.tex         <- this file
-%    theme -> ../theme           <- symlink: theme/atstyle.sty and theme/fonts/
-%                                   resolve as in the main presentation
+%    ../../template/theme        <- shared beamer theme (atstyle.sty, fonts, img)
 %    .latexmkrc                  <- selects xelatex
 %    fig/*.pdf                   <- the figures, as finished PDF drawings
 %
@@ -20,7 +19,10 @@
 %  therefore only needs those fractions adjusted, nothing else.
 % =============================================================
 \documentclass[aspectratio=169,11pt]{beamer}
-\usepackage{theme/atstyle}
+% The beamer theme lives in the shared template folder; \atthemepath
+% tells it where its own fonts/ and img/ are, relative to this file.
+\providecommand{\atthemepath}{../../template/theme/}
+\usepackage{../../template/theme/atstyle}
 
 \usetikzlibrary{arrows.meta,calc}
 

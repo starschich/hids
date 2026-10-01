@@ -4,12 +4,12 @@
   //
   //  Every document in this repository resolves its style, theme,
   //  fonts and figures through paths RELATIVE TO ITS OWN FOLDER
-  //  (e.g. \usepackage{theme/atstyle} via a `theme' symlink, or
-  //  \usepackage[corporate]{../../template/attemplate}), and the
-  //  beamer folders carry their own .latexmkrc. Both only work when
+  //  (e.g. \usepackage{../../template/theme/atstyle} with its
+  //  \atthemepath, or \usepackage[corporate]{../../template/attemplate}),
+  //  and the beamer folders carry their own .latexmkrc. Both only work when
   //  latexmk runs IN the document's directory -- hence `-cd' in
   //  every tool below. Without it the build dies with
-  //  "File `theme/atstyle.sty' not found" and leaves a
+  //  "File not found" for the style or its assets, and leaves a
   //  *.synctex(busy) behind.
   // ---------------------------------------------------------------
   "latex-workshop.latex.tools": [

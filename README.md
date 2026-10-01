@@ -19,16 +19,18 @@ The goals are simple:
 
 ## Structure
 
-The repository is organized into three top-level areas:
+The repository is organized into these top-level areas:
 
 - **`specification/`** — formal specifications and requirements: the defining
   parameters, ratings, and design bases for our HVDC systems.
 - **`documentation/`** — reference and background documentation: standards,
   methodology notes, and supporting material.
-- **`presentation/`** — the LaTeX (Beamer) presentation deck built on the
+- **`presentation/`** — the LaTeX (Beamer) presentation decks built on the
   American Terawatt template, with per-topic chapters and their figures. This is
   the training / communication layer that draws on the specification and
   documentation content.
+- **`template/`** — the shared styles: `attemplate.sty` for the reports and
+  `template/theme/` (`atstyle.sty`, brand fonts, brand images) for the decks.
 
 ## Getting started
 
@@ -37,8 +39,13 @@ Browse to the area that matches what you need. To build the presentation, open
 presentation.tex`, or run `pdflatex` twice for navigation and references --
 xelatex is what picks up the brand fonts). Each chapter lives in its own folder
 beside the main file under `presentation/design/`, with its figures in a local
-`fig/` (or `figures/`) subfolder; the shared beamer theme is reached through the
-`theme` symlink to `presentation/theme/`.
+`fig/` (or `figures/`) subfolder. The beamer theme comes from
+`template/theme/`; a deck declares where it is before loading it:
+
+```latex
+\providecommand{\atthemepath}{../../template/theme/}
+\usepackage{../../template/theme/atstyle}
+```
 
 ## Contributing
 
