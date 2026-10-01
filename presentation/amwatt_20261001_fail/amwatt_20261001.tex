@@ -1,0 +1,141 @@
+% =============================================================
+%  American Terawatt — SMP Level 1, single-line diagram
+%
+%  Structure:
+%    smp-level-1.tex             <- this file
+%    theme -> ../theme           <- symlink: theme/atstyle.sty and theme/fonts/
+%                                   resolve as in the main presentation
+%    .latexmkrc                  <- adds ~/hids/template/glyphwright to TEXINPUTS
+%    figures/figures.yaml        <- figure list; figures/smp_level_1.tex is
+%    figures/src/smp_level_1.yaml   generated from the diagram YAML
+%
+%  Compile in this folder:
+%    latexmk -xelatex smp-level-1.tex
+%
+%  The symbols come from the Glyphwright library in ~/hids/template/glyphwright
+%  (\usepackage{glyphwright}); regenerate figure and library as described in
+%  figures/figures.yaml.
+% =============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{theme/atstyle}
+\usepackage{glyphwright}
+
+\title{HVDC Design}
+\subtitle{AmWatt Team Presenation}
+\author{American Terawatt}
+\date{\today}
+
+\newcommand{\slfig}[1]{\input{figures/#1}}
+
+\tikzset{pboth/.style={{Latex[length=2mm]}-{Latex[length=2mm]}},
+         pac2dc/.style={-{Latex[length=2mm]}},
+         pdc2ac/.style={{Latex[length=2mm]}-}}
+
+\begin{document}
+
+\titleslide
+
+% ---- Single-line diagram ------------------------------------
+\begin{frame}{System Overview}
+  ORC generators feed a data centre through a point-to-point VSC HVDC link.
+  \vspace{2.2em}
+
+  \centering
+  
+  \sbox0{\slfig{smp_level_1_gen_load}}
+  
+  \begin{tikzpicture}
+    \node[inner sep=0] (fig) {\usebox0};
+    \draw[-{Latex[length=2mm]}, violet, line width=1.2pt]
+      ([xshift=-6mm]fig.center) -- node[above] {$P$} ([xshift=6mm]fig.center);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{System Overview}
+  The complete complete system consts of different elements, supplied by different companies.
+  AmWatt is reponsible for the integration of those elements.
+  
+  \vspace{2.2em}
+
+  \centering
+  % Overlays on the generated figure (kept out of figures/):
+  % section boxes in the figure's own coordinates, x from/to and colour:
+  % generation, busbar, converter station, d.c. line, converter station,
+  % busbar, data centre; then the power-flow arrow on top
+  \sbox0{\tikzset{every picture/.append style={execute at end picture={
+      \foreach \xa/\xb/\c in {-51/-20.5/atLime, -20.5/-14.5/atGray,
+                             -14.5/52/cyan, 52/95/violet, 95/162/cyan,
+                             162/168/atGray, 168/193/orange}
+        \draw[\c, fill=\c, fill opacity=0.15, rounded corners=1pt]
+          (\xa+0.4,-24) rectangle (\xb-0.4,24);
+    }}}\slfig{smp_level_1_gen_load}}%
+  \begin{tikzpicture}
+    \node[inner sep=0] (fig) {\usebox0};
+    \draw[-{Latex[length=2mm]}, violet, line width=1.2pt]
+      ([xshift=-6mm]fig.center) -- node[above] {$P$} ([xshift=6mm]fig.center);
+  \end{tikzpicture}
+\end{frame}
+
+
+% ---- VSC converter -------------------------------------------
+\begin{frame}{VSC converter}
+  \noindent The VSC converts the a.c.\ voltage $U_{ac}$ into the pole-to-pole d.c.\ voltage $U_{dc}$.
+  \vspace{1.5em}
+
+  \centering
+  \begin{tikzpicture}[x=1mm, y=1mm, scale=0.7, transform shape,
+      volt/.style={gw/thin, gw/c-voltage, -{Latex[length=2mm]}}]
+    \pic[gw/signals={none}, gw/no label] (U) at (0,0) {gw/vsc2-sig};
+    % a.c. connection with voltage to earth
+    \draw[gw/normal] (U-ac) -- ++(-12,0) coordinate (ac);
+    \fill (ac) circle (0.5);
+    \draw[volt] ($(ac)+(0,-0.75)$) -- ++(0,-16.25);
+    \foreach \y/\w in {-18.25/2.5, -19.5/1.5, -20.75/0.5}
+      \draw[gw/normal] ($(ac)+(-\w,\y)$) -- ++(2*\w,0);
+    \node[gw/c-voltage, anchor=east] at ($(ac)+(-1.25,-9)$) {$U_{ac}$};
+    % d.c. terminals with pole-to-pole voltage
+    \fill (U-dc1) circle (0.5) (U-dc2) circle (0.5);
+    \draw[volt] ($(U-dc1)+(0,-0.75)$) -- ($(U-dc2)+(0,0.75)$);
+    \node[gw/c-voltage, anchor=west] at ($(U-dc1)!0.5!(U-dc2)+(1.25,0)$) {$U_{dc}$};
+  \end{tikzpicture}
+\end{frame}
+
+% ---- VSC operating modes -------------------------------------
+\begin{frame}{Converter operating modes}
+  \noindent The same converter works as rectifier or inverter, set by the direction of $P$.
+  \vspace{0.3em}
+
+  \centering
+  \begin{tikzpicture}[x=1mm, y=1mm, scale=0.5,
+      pflow/.style={violet, line width=1.2pt},
+      mode/.style={font=\small\bfseries}]
+    \foreach \n/\x/\y/\name/\dir in {C/0/0/Converter/pboth,
+                                     I/-55/-65/Inverter/pdc2ac,
+                                     R/55/-65/Rectifier/pac2dc} {
+      \pic[transform shape, gw/signals={none}, gw/no label] (\n) at (\x,\y) {gw/vsc2-sig};
+      \node[mode, anchor=south] at (\x+5,\y+23) {\name};
+      \draw[pflow, \dir] (\x-15,\y-27) -- node[below] {$P$} (\x+25,\y-27);
+    }
+    \node[font=\scriptsize, color=atGray, anchor=east] at (C-ac) {a.c.};
+    \node[font=\scriptsize, color=atGray, anchor=west] at ($(C-dc1)!0.5!(C-dc2)$) {d.c.};
+  \end{tikzpicture}
+\end{frame}
+
+
+% \begin{frame}{System Overview}
+%   ORC generators feed a data centre through a point-to-point VSC HVDC link.
+%   \vspace{2.2em}
+
+%   \centering
+  
+%   \sbox0{\slfig{smp_level_1}}
+  
+%   \begin{tikzpicture}
+%     \node[inner sep=0] (fig) {\usebox0};
+%     \draw[-{Latex[length=2mm]}, violet, line width=1.2pt]
+%       ([xshift=-6mm]fig.center) -- node[above] {$P$} ([xshift=6mm]fig.center);
+%   \end{tikzpicture}
+% \end{frame}
+
+\end{document}
+

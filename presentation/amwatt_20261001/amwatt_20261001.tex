@@ -1,0 +1,381 @@
+%  American Terawatt — SMP Level 1, single-line diagram
+%
+%  Structure:
+%    amwatt_20261001.tex         <- this file
+%    theme -> ../theme           <- symlink: theme/atstyle.sty and theme/fonts/
+%                                   resolve as in the main presentation
+%    .latexmkrc                  <- selects xelatex
+%    fig/*.pdf                   <- the figures, as finished PDF drawings
+%
+%  Compile in this folder:
+%    latexmk -xelatex amwatt_20261001.tex
+%
+%  The figures are included as PDFs with \includegraphics -- no TikZ
+%  drawing and no Glyphwright symbol library in this document. Anything
+%  laid over a figure (power-flow arrows, section bands, voltage
+%  annotations) is positioned in FRACTIONS OF THE INCLUDED IMAGE: the
+%  image is one TikZ node named `fig', and (f) maps its bounding box to
+%  the unit square, so (f) of (0,0) is the lower left corner and (f) of
+%  (1,1) the upper right. Replacing a PDF with a differently cropped one
+%  therefore only needs those fractions adjusted, nothing else.
+% =============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{theme/atstyle}
+
+\usetikzlibrary{arrows.meta,calc}
+
+\title{HVDC Design}
+\subtitle{AmWatt Team Presentation}
+\author{American Terawatt}
+\date{\today}
+
+% ---- figure helpers -----------------------------------------
+% \figbox{<width>}{<name>} puts fig/<name>.pdf into a TikZ node called
+% `fig' and names its four bounding-box corners f-sw, f-se, f-nw, f-ne,
+% so that anything laid over the figure can be placed in fractions of
+% its width and height, e.g. ($(f-sw)!0.38!(f-se)$).
+\newcommand{\figfolder}{fig/}
+\newcommand{\figbox}[2]{%
+  \node[inner sep=0] (fig) {\includegraphics[width=#1]{\figfolder#2}};%
+  \coordinate (f-sw) at (fig.south west);%
+  \coordinate (f-se) at (fig.south east);%
+  \coordinate (f-nw) at (fig.north west);%
+  \coordinate (f-ne) at (fig.north east);%
+}
+
+\definecolor{gwvoltage}{RGB}{31,95,191}
+
+\tikzset{
+  pflow/.style={-{Latex[length=2mm]}, violet, line width=1.2pt},
+  pboth/.style={pflow, {Latex[length=2mm]}-{Latex[length=2mm]}},
+  pac2dc/.style={pflow, -{Latex[length=2mm]}},
+  pdc2ac/.style={pflow, {Latex[length=2mm]}-},
+  volt/.style={-{Latex[length=2mm]}, line width=0.8pt, draw=gwvoltage},
+  gnd/.style={draw=gwvoltage, line width=0.6pt},
+  band/.style={fill opacity=0.15, rounded corners=1pt, draw=none},
+  modelbl/.style={font=\small\bfseries},
+}
+
+  % \vscmode{node name}{position}{label}{arrow style}
+  \def\vscmode#1#2#3#4{%
+    \node[inner sep=0] (#1) at (#2)
+      {\includegraphics[width=0.15\textwidth]{\figfolder vsc_conv}};
+    \node[modelbl, anchor=south] at ($(#1.north) + (0,1.5mm)$) {#3};
+    \draw[#4] ($(#1.south) + (-10mm,-3mm)$) -- node[below] {$P$}
+              ($(#1.south) + (10mm,-3mm)$);
+  }
+
+\begin{document}
+
+\titleslide
+
+% ---- Single-line diagram ------------------------------------
+\begin{frame}{System Overview}
+  ORC generators feed a data centre through a point-to-point VSC HVDC link.
+  \vspace{2.2em}
+
+  \centering
+  \begin{tikzpicture}
+    \figbox{0.92\textwidth}{smp_level_1_gen_load}
+    \draw[pflow] ([xshift=-6mm]fig.center) -- node[above] {$P$}
+                 ([xshift=6mm]fig.center);
+  \end{tikzpicture}
+\end{frame}
+
+% \band{colour}{from}{to}: a section band spanning two positions given as
+% fractions of the figure width (defined outside the frame, since beamer
+% does not accept macro parameters inside frame bodies).
+\newcommand{\band}[3]{%
+  \fill[band, #1] ([yshift=-1.5mm]$(f-sw)!#2!(f-se)$)
+         rectangle ([yshift=1.5mm]$(f-nw)!#3!(f-ne)$);}
+
+% ---- Single-line diagram with the supply sections -----------
+\begin{frame}{System Overview}
+  \centering
+  The complete system consists of different elements, supplied by different
+  companies.\\
+  AmWatt is responsible for the integration of those elements.
+  \vspace{1.6em}
+
+  \centering
+  \begin{tikzpicture}
+    \figbox{0.92\textwidth}{smp_level_1_gen_load}
+    % The boundaries sit midway between the elements of the drawing: left
+    % busbar at 0.133, converter boxes at 0.286/0.373 and 0.647/0.734, right
+    % busbar at 0.887.
+    \band{atLime}{0.000}{0.123}   % generation
+    \band{atGray}{0.125}{0.143}   % busbar
+    \band{cyan}{0.145}{0.382}     % converter station
+    \band{violet}{0.384}{0.636}   % d.c. line
+    \band{cyan}{0.638}{0.877}     % converter station
+    \band{atGray}{0.879}{0.897}   % busbar
+    \band{orange}{0.899}{1.001}   % data centre
+    \draw[pflow] ([xshift=-6mm]fig.center) -- node[above] {$P$} ([xshift=6mm]fig.center);
+  \end{tikzpicture}
+
+\end{frame}
+
+% ---- VSC converter -------------------------------------------
+\begin{frame}{VSC converter}
+  \noindent The VSC converts the a.c.\ voltage $U_{ac}$ into the pole-to-pole
+  d.c.\ voltage $U_{dc}$.
+  \vspace{1.5em}
+
+  \centering
+  \begin{tikzpicture}
+    \figbox{0.20\textwidth}{vsc_conv}
+    % a.c. terminal: the lead leaves the left edge at mid height; its
+    % voltage is drawn against earth below the figure
+    \coordinate (acp) at ($(fig.west) + (0.6mm,0)$);
+    \fill (acp) circle (0.6pt);
+    \draw[volt] ($(acp)+(0,-1mm)$) -- ++(0,-12mm) coordinate (acg);
+    \draw[gnd] ($(acg)+(-2.2mm,-0.6mm)$) -- ++(4.4mm,0);
+    \draw[gnd] ($(acg)+(-1.3mm,-1.9mm)$) -- ++(2.6mm,0);
+    \draw[gnd] ($(acg)+(-0.5mm,-3.2mm)$) -- ++(1.0mm,0);
+    \node[anchor=east, color=gwvoltage] at ($(acp)!0.5!(acg) + (-1.5mm,0)$)
+      {$U_{ac}$};
+    % d.c. terminals: the two leads leave at the top and bottom right corner
+    \coordinate (dc1) at ($(fig.north east) + (-0.8mm,-0.4mm)$);
+    \coordinate (dc2) at ($(fig.south east) + (-0.8mm,0.4mm)$);
+    \fill (dc1) circle (0.6pt) (dc2) circle (0.6pt);
+    \draw[volt] ($(dc1)+(0,-1mm)$) -- ($(dc2)+(0,1mm)$);
+    \node[anchor=west, color=gwvoltage] at ($(dc1)!0.5!(dc2) + (1.5mm,0)$)
+      {$U_{dc}$};
+  \end{tikzpicture}
+\end{frame}
+
+% ---- Converter operating modes -------------------------------------
+\begin{frame}{Converter operating modes}
+  \noindent The same converter works as rectifier or inverter, set by the direction of $P$.
+  \vspace{1em}
+
+  \centering
+  \begin{tikzpicture}[node distance=0pt]
+    \vscmode{C}{0mm,0mm}{Converter}{pboth}
+    \vscmode{I}{-34mm,-30mm}{Inverter}{pdc2ac}
+    \vscmode{R}{34mm,-30mm}{Rectifier}{pac2dc}
+
+    \node[font=\scriptsize, color=atGray, anchor=east] at ($(C.west) + (-1mm,0)$) {AC};
+    \node[font=\scriptsize, color=atGray, anchor=west] at ($(C.east) + (1mm,0)$) {DC};
+  \end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}{DC load flow definitions}
+  \centering
+  \includegraphics[width=0.8\textwidth]{\figfolder smp_level_1_label}
+  \vspace{1em}
+  \begin{itemize}
+    \item DC equipment (incl. DC line) voltage is defined by $U_{dpe\_rec}$
+    \item Converter size is defined by $U_{dpp\_rec}$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Monopole}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.6\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.72\textheight,keepaspectratio]{\figfolder monopole}
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \textbf{DC load flow}
+      \begin{align*}
+        U_{dpp\_rec} &= U_{dpe\_rec}\\
+        I_{DC} &= \tfrac{U_{dpp\_rec}-U_{dpp\_inv}}{2 \cdot R_{DC}}\\
+        U_{dne\_rec} &= I_{d}\cdot R_{DC}
+      \end{align*}
+      \begin{itemize}
+        \item Max.\ voltage created by converter: $U_{dpp\_rec}$
+        \item Max. equipment voltage: 
+        \item \textcolor{red}{DC cables have different voltage ratings}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Monopole - extending power transmission}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.4\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.3em}
+        \item \textbf{Higher DC voltage}
+            \begin{itemize}
+              \item Limited equipment availability
+              \item No redundancy
+            \end{itemize}
+        \item \textbf{Higher DC current}
+            \begin{itemize}
+              \item Higher DC line costs
+              \item No redundancy
+            \end{itemize}
+        \item \textbf{Additional monopole}
+            \begin{itemize}
+              \item Additional converter equipment
+              \item 4 DC conductors
+              \item Increased reliability
+            \end{itemize}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.6\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.34\textheight,keepaspectratio]{\figfolder monopole}\\[0.4em]
+      \topoimg[width=\linewidth,height=0.34\textheight,keepaspectratio]{\figfolder monopole}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Monopole $\rightarrow$ Bipole (BIP)}
+  \centering
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.42\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.5\textheight,keepaspectratio]{\figfolder monopole_neg}\\[0.4em]
+      \topoimg[width=\linewidth,height=0.5\textheight,keepaspectratio]{\figfolder monopole_neg}
+    \end{column}
+    \begin{column}{0.06\textwidth}\centering $\Rightarrow$ \end{column}
+    \begin{column}{0.42\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.8\textheight,keepaspectratio]{\figfolder bip}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Bipole (BIP)}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.54\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item 3 conductors of 2 different types.
+        \item Two poles that can transmit power independently.
+        \item On a fault in one pole, the other pole still transmits power ---
+              redundancy.
+        \item In symmetrical operation (both poles equal), no current flows
+              through the DMR.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.42\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.66\textheight,keepaspectratio]{\figfolder bip_conductor}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{BIP operation modes}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.32\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.42\textheight,keepaspectratio]{\figfolder bip_balanced}\\[0.3em]
+      {\footnotesize\textbf{Bipolar --- balanced}\\ 
+      \begin{itemize}
+        \item Equal power for poles
+        \item No DMR current
+        \item Loss-optimized
+      \end{itemize}
+      }
+    \end{column}
+    \begin{column}{0.32\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.42\textheight,keepaspectratio]{\figfolder bip_monopolar}\\[0.3em]
+      {\footnotesize\textbf{Monopolar}\\
+      \begin{itemize}
+        \item Emergency mode
+        \item System-design definition
+      \end{itemize}
+      }
+    \end{column}
+    \begin{column}{0.32\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.42\textheight,keepaspectratio]{\figfolder bip_unbalanced}\\[0.3em]
+      {\footnotesize\textbf{Bipolar --- unbalanced}\\
+      \begin{itemize}
+        \item Split-busbar operation
+        \item DMR current flow
+      \end{itemize}
+      }
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---- Symmetrical Monopole -----------------------------------
+\begin{frame}{Symmetrical Monopole (SMP)}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.54\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.72\textheight,keepaspectratio]{\figfolder smp}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.25em}
+        \item High-impedance earth reference on the AC side
+        \item $U_{dpp\_Rec}= 2 \cdot \lvert U_{dpe\_Rec} \rvert$
+        \item $I_d=\frac{U_{dpp\_rec} - U_{dpp\_inv}}{2 \cdot R_d}$
+        \item Only for VSC-HVDC systems
+        \item \textcolor{green}{DC cables have the same voltage rating} 
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---- MMC comparison table -----------------------------------
+\begin{frame}{Modular Multilevel Converter (MMC)}
+  Power transmission parameters:
+  \begin{itemize}
+    \item Power: 1000\,MW
+    \item DC voltage: $\pm$ 320 kV
+    \item Max. DC current: 1563 A
+  \end{itemize}
+  \vspace{0.6em}
+
+  \centering
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}l c c c@{}}
+     & \textbf{2 $\times$ Monopole} & \textbf{1 $\times$ BIP} & \textbf{1 $\times$ SMP} \\
+    \hline
+    Transformers      & \textcolor{red}{$--$} & \textcolor{red}{$--$} & \textcolor{green}{$++$} \\
+    DC lines          & \textcolor{red}{4 lines / 2 types} & \textcolor{red}{3 lines / 2 types} & \textcolor{green}{2 lines / 1 type}\\
+    Converters        & \textcolor{red}{4 converters} & \textcolor{red}{4 converters} & \textcolor{green}{2 converters}\\
+    Converter rating ($U_{dpp}$) & \textcolor{green}{320\,kV} & \textcolor{green}{320\,kV} & \textcolor{red}{640\,kV} \\
+    Losses            & \textcolor{red}{$--$} & \textcolor{red}{$-$} & \textcolor{green}{$+$} \\
+    Reliability       & \textcolor{red}{$++$} & \textcolor{red}{$+$} & \textcolor{red}{$--$} \\
+    \hline
+  \end{tabular}
+\end{frame}
+
+% ---- DC cable -----------------------------------------------
+\begin{frame}{DC cable}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.56\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.25em}
+        \item \textbf{Insulator} --- XLPE (cross-linked polyethylene) or
+              MI (mass-impregnated).
+        \item \textbf{Conductor} --- copper or aluminium.
+        \item Balance between DC voltage and DC current for the most
+              economical design.
+        \item Insulator is generally cheaper than conductor
+              $\rightarrow$ higher voltage rating is preferred
+      \end{itemize}
+      \vspace{0.3em}
+      Project voltages: 80/200/250/\textbf{320}/400/\textbf{525}\,kV\\
+      (525\,kV is new standard for $\ge 2000$\,MW).
+    \end{column}
+    \begin{column}{0.40\textwidth}\centering
+      \topoimg[width=\linewidth,height=0.4\textheight,keepaspectratio]{\figfolder cable_crosssection}\\[0.4em]
+      \topoimg[width=0.8\linewidth,height=0.28\textheight,keepaspectratio]{\figfolder cable}\\
+      {\color{atGray}\scriptsize www.borealisgroup.com}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+% ---- Topology comparison table ------------------------------
+\begin{frame}{Topology comparison}
+  \centering
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{@{}p{4.6cm} c c c@{}}
+     & \textbf{Sym.\ Monopole} & \textbf{Rigid Bipole} & \textbf{Bipole w/ MR} \\
+    \hline
+    DC conductors                         & 2 & 2 & 3 \\
+    Power on converter fault              & 0\% & 50\% & 50\% \\
+    Power on DC conductor fault           & 0\% & 0\% & 50\% \\
+    Economical DC voltage                 & $\le 400$\,kV & $>500$\,kV & $>500$\,kV \\
+    Costs                                 & \$ & \$\$ & \$\$\$ \\
+    Max.\ power                           & \makecell{1400\,MW (320\,kV)\\1500\,MW (400\,kV)} & 2000\,MW & 3000\,MW \\
+    \hline
+  \end{tabular}
+\end{frame}
+
+
+\end{document}

@@ -33,10 +33,12 @@ The repository is organized into three top-level areas:
 ## Getting started
 
 Browse to the area that matches what you need. To build the presentation, open
-`presentation/` and compile `presentation.tex` (run `pdflatex` twice for
-navigation and references). Each chapter lives in its own folder under
-`presentation/design/`, with its figures in a local `fig/` (or `figures/`)
-subfolder.
+`presentation/design/` and compile `presentation.tex` (`latexmk -xelatex
+presentation.tex`, or run `pdflatex` twice for navigation and references --
+xelatex is what picks up the brand fonts). Each chapter lives in its own folder
+beside the main file under `presentation/design/`, with its figures in a local
+`fig/` (or `figures/`) subfolder; the shared beamer theme is reached through the
+`theme` symlink to `presentation/theme/`.
 
 ## Contributing
 

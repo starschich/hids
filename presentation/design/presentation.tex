@@ -2,10 +2,10 @@
 %  American Terawatt — Beamer Presentation (main file)
 %  Brand basis: americanterawatt.com
 %
-%  Structure:
+%  Structure (this file lives in presentation/design/):
 %    presentation.tex          <- this file: metadata + orchestration
-%    theme/atstyle.sty         <- template: palette, theme, commands
-%    design/*.tex            <- one file per overview item
+%    theme -> ../theme         <- symlink: theme/atstyle.sty, fonts, img
+%    <topic>/*.tex             <- one file per overview item
 %
 %  Compile (latexmk runs the engine twice for nav/refs):
 %    latexmk -xelatex presentation.tex       % brand fonts (Archivo etc.)
@@ -48,36 +48,36 @@
 
 
 % ---- Tooling -----------------------------------------------
-% \input{design/symbol-library/symbol-library}
+% \input{symbol-library/symbol-library}
 
 
 % ---- Projects -----------------------------------------------
 
 % Fervo
-% \input{projects/fervo/system_overview}
+% \input{../projects/fervo/system_overview}
 
 % Specification
-% \input{projects/specification/specification}
+% \input{../projects/specification/specification}
 
 % ---- Design -----------------------------------------------
-\input{design/ac-transmission/ac-transmission}
-% \input{design/loadflow/loadflow}
-% \input{design/hvdc-topologies/dc-power-transmission}
-% \input{design/hvdc-topologies/hvdc-topologies}
-% \input{design/terminal/components/components}
-% \input{design/insulation-coordination/insulation-coordination}
-% \input{design/c-and-p/c-and-p}
-% \input{design/ram/ram}
-% \input{design/short-circuit/short-circuit}
+% \input{ac-transmission/ac-transmission}
+% \input{loadflow/loadflow}
+\input{hvdc-topologies/dc-power-transmission}
+% \input{hvdc-topologies/hvdc-topologies}
+% \input{terminal/components/components}
+% \input{insulation-coordination/insulation-coordination}
+% \input{c-and-p/c-and-p}
+% \input{ram/ram}
+% \input{short-circuit/short-circuit}
 
 % ---- Standardization bodies ------------
-% \input{design/standardization/standardization}
+% \input{standardization/standardization}
 
 % ---- RAM -------------------
-% \input{design/transmission-line/DC cable/dc-cable}
+% \input{transmission-line/DC cable/dc-cable}
 
 % ---- Closing slide ------------------------------------------
-% \input{design/closing-slide.tex}
+% \input{closing-slide.tex}
 
 % ---- Projects -----------------------------------------------
 \end{document}

@@ -1,0 +1,65 @@
+{
+  // ---------------------------------------------------------------
+  //  HIDS — LaTeX Workshop build configuration
+  //
+  //  Every document in this repository resolves its style, theme,
+  //  fonts and figures through paths RELATIVE TO ITS OWN FOLDER
+  //  (e.g. \usepackage{theme/atstyle} via a `theme' symlink, or
+  //  \usepackage[corporate]{../../template/attemplate}), and the
+  //  beamer folders carry their own .latexmkrc. Both only work when
+  //  latexmk runs IN the document's directory -- hence `-cd' in
+  //  every tool below. Without it the build dies with
+  //  "File `theme/atstyle.sty' not found" and leaves a
+  //  *.synctex(busy) behind.
+  // ---------------------------------------------------------------
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk-xelatex",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-xelatex",
+        "-cd",
+        "%DOC%"
+      ],
+      "env": {}
+    },
+    {
+      "name": "latexmk-pdflatex",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-pdf",
+        "-cd",
+        "%DOC%"
+      ],
+      "env": {}
+    }
+  ],
+
+  // The beamer decks need xelatex for the brand fonts (Archivo, Geist
+  // Mono); the reports under documentation/ and specification/ compile
+  // with either, so xelatex is the default recipe for everything.
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "xelatex (decks and reports)",
+      "tools": ["latexmk-xelatex"]
+    },
+    {
+      "name": "pdflatex (reports only)",
+      "tools": ["latexmk-pdflatex"]
+    }
+  ],
+
+  // Outputs stay beside their source, as in the rest of the repo.
+  "latex-workshop.latex.outDir": "%DIR%",
+
+  // Root detection: every chapter and section fragment carries a
+  // "% !TEX root" line, so the root is taken from the file being
+  // edited rather than guessed from the workspace.
+  "latex-workshop.latex.rootFile.useSubFile": true
+}

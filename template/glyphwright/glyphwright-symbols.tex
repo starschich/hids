@@ -473,23 +473,23 @@
 %   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
 %   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
 \tikzset{gw/vsc2/.pic={
-  \draw[gw/normal] (-10.000mm,-16.250mm) -- (10.000mm,-16.250mm) -- (10.000mm,16.250mm) -- (-10.000mm,16.250mm) -- cycle;
-  \draw[gw/thin] (-10.000mm,16.250mm) -- (10.000mm,0.000mm) -- (-10.000mm,-16.250mm);
-  \draw[gw/thin] (-6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
-  \draw[gw/thin] (-4.375mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
-  \draw[gw/thin] (2.750mm,10.125mm) -- (7.250mm,10.125mm);
-  \draw[gw/thin] (2.750mm,8.625mm) -- (7.250mm,8.625mm);
-  \draw[gw/thin] (2.750mm,-8.625mm) -- (7.250mm,-8.625mm);
-  \draw[gw/thin] (2.750mm,-10.125mm) -- (7.250mm,-10.125mm);
-  \draw[gw/normal] (-10.000mm,0.000mm) -- (-15.000mm,0.000mm);
+  \draw[gw/normal] (-8.750mm,-16.250mm) -- (8.750mm,-16.250mm) -- (8.750mm,16.250mm) -- (-8.750mm,16.250mm) -- cycle;
+  \draw[gw/thin] (-8.750mm,16.250mm) -- (8.750mm,0.000mm) -- (-8.750mm,-16.250mm);
+  \draw[gw/thin] (-6.000mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
+  \draw[gw/thin] (2.125mm,10.125mm) -- (6.625mm,10.125mm);
+  \draw[gw/thin] (2.125mm,8.625mm) -- (6.625mm,8.625mm);
+  \draw[gw/thin] (2.125mm,-8.625mm) -- (6.625mm,-8.625mm);
+  \draw[gw/thin] (2.125mm,-10.125mm) -- (6.625mm,-10.125mm);
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-15.000mm,0.000mm);
   \coordinate (-ac) at (-15.000mm,0.000mm);
   \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (25.000mm,20.000mm);
   \coordinate (-dc1) at (25.000mm,20.000mm);
   \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (25.000mm,-20.000mm);
   \coordinate (-dc2) at (25.000mm,-20.000mm);
-  \node[gw/label, anchor=east] at (-12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
-  \coordinate (-label) at (-12.500mm,-8.125mm);
-  \coordinate (-tag) at (-12.500mm,8.125mm);
+  \node[gw/label, anchor=east] at (-11.250mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \coordinate (-label) at (-11.250mm,-8.125mm);
+  \coordinate (-tag) at (-11.250mm,8.125mm);
 }}
 
 % VSC HVDC converter, notation layout with signals
@@ -497,21 +497,21 @@
 %   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
 %   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
 \tikzset{gw/vsc2-sig/.pic={
-  \draw[gw/normal] (-10.000mm,-16.250mm) -- (10.000mm,-16.250mm) -- (10.000mm,16.250mm) -- (-10.000mm,16.250mm) -- cycle;
-  \draw[gw/thin] (-10.000mm,16.250mm) -- (10.000mm,0.000mm) -- (-10.000mm,-16.250mm);
-  \draw[gw/thin] (-6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
-  \draw[gw/thin] (-4.375mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
-  \draw[gw/thin] (2.750mm,10.125mm) -- (7.250mm,10.125mm);
-  \draw[gw/thin] (2.750mm,8.625mm) -- (7.250mm,8.625mm);
-  \draw[gw/thin] (2.750mm,-8.625mm) -- (7.250mm,-8.625mm);
-  \draw[gw/thin] (2.750mm,-10.125mm) -- (7.250mm,-10.125mm);
-  \draw[gw/normal] (-10.000mm,0.000mm) -- (-15.000mm,0.000mm);
+  \draw[gw/normal] (-8.750mm,-16.250mm) -- (8.750mm,-16.250mm) -- (8.750mm,16.250mm) -- (-8.750mm,16.250mm) -- cycle;
+  \draw[gw/thin] (-8.750mm,16.250mm) -- (8.750mm,0.000mm) -- (-8.750mm,-16.250mm);
+  \draw[gw/thin] (-6.000mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
+  \draw[gw/thin] (2.125mm,10.125mm) -- (6.625mm,10.125mm);
+  \draw[gw/thin] (2.125mm,8.625mm) -- (6.625mm,8.625mm);
+  \draw[gw/thin] (2.125mm,-8.625mm) -- (6.625mm,-8.625mm);
+  \draw[gw/thin] (2.125mm,-10.125mm) -- (6.625mm,-10.125mm);
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-15.000mm,0.000mm);
   \coordinate (-ac) at (-15.000mm,0.000mm);
   \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (25.000mm,20.000mm);
   \coordinate (-dc1) at (25.000mm,20.000mm);
   \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (25.000mm,-20.000mm);
   \coordinate (-dc2) at (25.000mm,-20.000mm);
-  \node[gw/label, anchor=east] at (-12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \node[gw/label, anchor=east] at (-11.250mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
   \gwsig{udpe_p}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,20.750mm) -- (0.000mm,25.000mm);}
   \gwsig{udpe_p}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,25.000mm) -- (-0.700mm,23.000mm) -- (0.700mm,23.000mm) -- cycle;}
   \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (2.500mm,26.250mm) -- (-2.500mm,26.250mm);}
@@ -528,11 +528,11 @@
   \gwsig{udpe_n}{\node[gw/label, gw/c-voltage, anchor=east, gw/sigstyle=udpe_n] at (-1.250mm,-22.500mm) {\gwtext{udpe_n}{U\textsubscript{dpe\_rec}}};}
   \gwsig{id_n}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_n] (18.750mm,-20.000mm) -- (21.250mm,-20.900mm) -- (21.250mm,-19.100mm) -- cycle;}
   \gwsig{id_n}{\node[gw/label, gw/c-current, anchor=north, gw/sigstyle=id_n] at (20.000mm,-21.250mm) {\gwtext{id_n}{I\textsubscript{d}}};}
-  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,16.250mm) -- (13.750mm,-16.250mm);}
-  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,-16.250mm) -- (14.450mm,-14.250mm) -- (13.050mm,-14.250mm) -- cycle;}
-  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpp] at (15.000mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
-  \coordinate (-label) at (-12.500mm,-8.125mm);
-  \coordinate (-tag) at (-12.500mm,8.125mm);
+  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (12.500mm,16.250mm) -- (12.500mm,-16.250mm);}
+  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (12.500mm,-16.250mm) -- (13.200mm,-14.250mm) -- (11.800mm,-14.250mm) -- cycle;}
+  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpp] at (13.750mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
+  \coordinate (-label) at (-11.250mm,-8.125mm);
+  \coordinate (-tag) at (-11.250mm,8.125mm);
 }}
 
 % VSC valve (converter arm) with half-bridge submodule
@@ -611,30 +611,30 @@
 %   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
 %   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
 \tikzset{gw/vsc2+udpp+id_p+id_n/.pic={
-  \draw[gw/normal] (-10.000mm,-16.250mm) -- (10.000mm,-16.250mm) -- (10.000mm,16.250mm) -- (-10.000mm,16.250mm) -- cycle;
-  \draw[gw/thin] (-10.000mm,16.250mm) -- (10.000mm,0.000mm) -- (-10.000mm,-16.250mm);
-  \draw[gw/thin] (-6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
-  \draw[gw/thin] (-4.375mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
-  \draw[gw/thin] (2.750mm,10.125mm) -- (7.250mm,10.125mm);
-  \draw[gw/thin] (2.750mm,8.625mm) -- (7.250mm,8.625mm);
-  \draw[gw/thin] (2.750mm,-8.625mm) -- (7.250mm,-8.625mm);
-  \draw[gw/thin] (2.750mm,-10.125mm) -- (7.250mm,-10.125mm);
-  \draw[gw/normal] (-10.000mm,0.000mm) -- (-15.000mm,0.000mm);
+  \draw[gw/normal] (-8.750mm,-16.250mm) -- (8.750mm,-16.250mm) -- (8.750mm,16.250mm) -- (-8.750mm,16.250mm) -- cycle;
+  \draw[gw/thin] (-8.750mm,16.250mm) -- (8.750mm,0.000mm) -- (-8.750mm,-16.250mm);
+  \draw[gw/thin] (-6.000mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (-3.750mm,0.000mm) ++(180.00:1.125mm) arc [start angle=180.00, end angle=360.00, radius=1.125mm];
+  \draw[gw/thin] (2.125mm,10.125mm) -- (6.625mm,10.125mm);
+  \draw[gw/thin] (2.125mm,8.625mm) -- (6.625mm,8.625mm);
+  \draw[gw/thin] (2.125mm,-8.625mm) -- (6.625mm,-8.625mm);
+  \draw[gw/thin] (2.125mm,-10.125mm) -- (6.625mm,-10.125mm);
+  \draw[gw/normal] (-8.750mm,0.000mm) -- (-15.000mm,0.000mm);
   \coordinate (-ac) at (-15.000mm,0.000mm);
   \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (25.000mm,20.000mm);
   \coordinate (-dc1) at (25.000mm,20.000mm);
   \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (25.000mm,-20.000mm);
   \coordinate (-dc2) at (25.000mm,-20.000mm);
-  \node[gw/label, anchor=east] at (-12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \node[gw/label, anchor=east] at (-11.250mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
   \gwsig{id_p}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_p] (21.250mm,20.000mm) -- (18.750mm,20.900mm) -- (18.750mm,19.100mm) -- cycle;}
   \gwsig{id_p}{\node[gw/label, gw/c-current, anchor=south, gw/sigstyle=id_p] at (20.000mm,21.250mm) {\gwtext{id_p}{I\textsubscript{d}}};}
   \gwsig{id_n}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_n] (18.750mm,-20.000mm) -- (21.250mm,-20.900mm) -- (21.250mm,-19.100mm) -- cycle;}
   \gwsig{id_n}{\node[gw/label, gw/c-current, anchor=north, gw/sigstyle=id_n] at (20.000mm,-21.250mm) {\gwtext{id_n}{I\textsubscript{d}}};}
-  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,16.250mm) -- (13.750mm,-16.250mm);}
-  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (13.750mm,-16.250mm) -- (14.450mm,-14.250mm) -- (13.050mm,-14.250mm) -- cycle;}
-  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpp] at (15.000mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
-  \coordinate (-label) at (-12.500mm,-8.125mm);
-  \coordinate (-tag) at (-12.500mm,8.125mm);
+  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (12.500mm,16.250mm) -- (12.500mm,-16.250mm);}
+  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (12.500mm,-16.250mm) -- (13.200mm,-14.250mm) -- (11.800mm,-14.250mm) -- cycle;}
+  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpp] at (13.750mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
+  \coordinate (-label) at (-11.250mm,-8.125mm);
+  \coordinate (-tag) at (-11.250mm,8.125mm);
 }}
 
 % Reactor
@@ -962,21 +962,21 @@
 %   IEC 62747 clause 4  voltage-sourced converter (VSC) for HVDC (verify against Figure 2)
 %   IEC 60617 06-14-03  converter (a.c./d.c.), general (verify)
 \tikzset{gw/vsc2-sig-fh/.pic={
-  \draw[gw/normal] (10.000mm,-16.250mm) -- (-10.000mm,-16.250mm) -- (-10.000mm,16.250mm) -- (10.000mm,16.250mm) -- cycle;
-  \draw[gw/thin] (10.000mm,16.250mm) -- (-10.000mm,0.000mm) -- (10.000mm,-16.250mm);
-  \draw[gw/thin] (6.625mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
-  \draw[gw/thin] (4.375mm,0.000mm) ++(-180.00:1.125mm) arc [start angle=-180.00, end angle=0.00, radius=1.125mm];
-  \draw[gw/thin] (-2.750mm,10.125mm) -- (-7.250mm,10.125mm);
-  \draw[gw/thin] (-2.750mm,8.625mm) -- (-7.250mm,8.625mm);
-  \draw[gw/thin] (-2.750mm,-8.625mm) -- (-7.250mm,-8.625mm);
-  \draw[gw/thin] (-2.750mm,-10.125mm) -- (-7.250mm,-10.125mm);
-  \draw[gw/normal] (10.000mm,0.000mm) -- (15.000mm,0.000mm);
+  \draw[gw/normal] (8.750mm,-16.250mm) -- (-8.750mm,-16.250mm) -- (-8.750mm,16.250mm) -- (8.750mm,16.250mm) -- cycle;
+  \draw[gw/thin] (8.750mm,16.250mm) -- (-8.750mm,0.000mm) -- (8.750mm,-16.250mm);
+  \draw[gw/thin] (6.000mm,0.000mm) ++(0.00:1.125mm) arc [start angle=0.00, end angle=180.00, radius=1.125mm];
+  \draw[gw/thin] (3.750mm,0.000mm) ++(-180.00:1.125mm) arc [start angle=-180.00, end angle=0.00, radius=1.125mm];
+  \draw[gw/thin] (-2.125mm,10.125mm) -- (-6.625mm,10.125mm);
+  \draw[gw/thin] (-2.125mm,8.625mm) -- (-6.625mm,8.625mm);
+  \draw[gw/thin] (-2.125mm,-8.625mm) -- (-6.625mm,-8.625mm);
+  \draw[gw/thin] (-2.125mm,-10.125mm) -- (-6.625mm,-10.125mm);
+  \draw[gw/normal] (8.750mm,0.000mm) -- (15.000mm,0.000mm);
   \coordinate (-ac) at (15.000mm,0.000mm);
   \draw[gw/normal] (0.000mm,16.250mm) -- (0.000mm,20.000mm) -- (-25.000mm,20.000mm);
   \coordinate (-dc1) at (-25.000mm,20.000mm);
   \draw[gw/normal] (0.000mm,-16.250mm) -- (0.000mm,-20.000mm) -- (-25.000mm,-20.000mm);
   \coordinate (-dc2) at (-25.000mm,-20.000mm);
-  \node[gw/label, anchor=west] at (12.500mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
+  \node[gw/label, anchor=west] at (11.250mm,-8.125mm) {\gwlabel{\gwtext{label}{VSC}}};
   \gwsig{udpe_p}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,20.750mm) -- (0.000mm,25.000mm);}
   \gwsig{udpe_p}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpe_p] (0.000mm,25.000mm) -- (0.700mm,23.000mm) -- (-0.700mm,23.000mm) -- cycle;}
   \gwsig{udpe_p}{\draw[gw/normal, gw/sigstyle=udpe_p] (-2.500mm,26.250mm) -- (2.500mm,26.250mm);}
@@ -993,11 +993,11 @@
   \gwsig{udpe_n}{\node[gw/label, gw/c-voltage, anchor=west, gw/sigstyle=udpe_n] at (1.250mm,-22.500mm) {\gwtext{udpe_n}{U\textsubscript{dpe\_rec}}};}
   \gwsig{id_n}{\fill[gw/solid, gw/c-current, gw/sigstyle=id_n] (-18.750mm,-20.000mm) -- (-21.250mm,-20.900mm) -- (-21.250mm,-19.100mm) -- cycle;}
   \gwsig{id_n}{\node[gw/label, gw/c-current, anchor=north, gw/sigstyle=id_n] at (-20.000mm,-21.250mm) {\gwtext{id_n}{I\textsubscript{d}}};}
-  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (-13.750mm,16.250mm) -- (-13.750mm,-16.250mm);}
-  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (-13.750mm,-16.250mm) -- (-14.450mm,-14.250mm) -- (-13.050mm,-14.250mm) -- cycle;}
-  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=east, gw/sigstyle=udpp] at (-15.000mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
-  \coordinate (-label) at (12.500mm,-8.125mm);
-  \coordinate (-tag) at (12.500mm,8.125mm);
+  \gwsig{udpp}{\draw[gw/thin, gw/c-voltage, gw/sigstyle=udpp] (-12.500mm,16.250mm) -- (-12.500mm,-16.250mm);}
+  \gwsig{udpp}{\fill[gw/solid, gw/c-voltage, gw/sigstyle=udpp] (-12.500mm,-16.250mm) -- (-13.200mm,-14.250mm) -- (-11.800mm,-14.250mm) -- cycle;}
+  \gwsig{udpp}{\node[gw/label, gw/c-voltage, anchor=east, gw/sigstyle=udpp] at (-13.750mm,0.000mm) {\gwtext{udpp}{U\textsubscript{dpp\_rec}}};}
+  \coordinate (-label) at (11.250mm,-8.125mm);
+  \coordinate (-tag) at (11.250mm,8.125mm);
 }}
 
 % Transformer, two windings, YNd11, HV neutral earthed
