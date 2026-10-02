@@ -1,0 +1,76 @@
+% =============================================================
+%  800 VDC Architecture for AI Infrastructure — Report
+%  Based on NVIDIA's 800 VDC Architecture for Next-Generation AI Infrastructure
+%  Uses the shared American Terawatt report style.
+%  Compile:  pdflatex datacenter.tex   (run twice for ToC / references)
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+% Shared style lives in the repo-level template folder
+\usepackage[corporate]{../../template/attemplate}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{rotating}
+\usepackage{longtable}
+
+% TikZ libraries used by architecture diagrams
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,fit}
+
+% ---- Shell / code listing style ----------------------------------------------
+\lstdefinestyle{atshell}{
+  basicstyle=\ttfamily\fontsize{8.5}{11}\selectfont\color{atFg},
+  backgroundcolor=\color{atBgSubtle},
+  frame=single,
+  rulecolor=\color{atBorder},
+  framesep=5pt,
+  breaklines=true,
+  breakindent=0pt,
+  postbreak=\mbox{\textcolor{atBorderStrong}{$\hookrightarrow$}\space},
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  commentstyle=\color{atFgMuted}\itshape,
+  morecomment=[l]{\#},
+  xleftmargin=0pt,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+\lstset{style=atshell}
+
+\newcommand{\cmd}[1]{\texttt{\small #1}}
+
+% ---- Report metadata ---------------------------------------------------------
+\reporttitle{800 VDC Architecture for AI Infrastructure}
+\reportsubtitle{The Architectural Imperative of 800 VDC and Integrated Energy Storage}
+\atEyebrow{Datacenter Power Systems}
+\atAbstract{Analysis of 800 VDC power distribution architectures for next-generation AI datacenter infrastructure, covering the exponential power demands driven by GPU workloads, energy storage strategies for load swing mitigation, grid interconnection requirements, and facility-level reference designs.}
+\reportauthor{Based on work by Jared Huntington \& Mike Tu (NVIDIA)}
+\reportdocnumber{ATW-REP-DC-001}
+\reportrevision{0.1}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Confidential}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{\today}{Eugen Starschich}{Initial document derived from NVIDIA whitepaper}
+}
+
+\newpage
+\tableofcontents
+\clearpage
+
+% ---- Body --------------------------------------------------------------
+\input{sections/01-introduction}
+\input{sections/02-load-sways-storage}
+\input{sections/03-grid-interconnect}
+\input{sections/04-power-distribution}
+\input{sections/05-mgx-architecture}
+\input{sections/06-reference-design}
+\input{sections/07-industry-collaboration}
+\input{sections/08-conclusion}
+
+\end{document}

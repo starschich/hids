@@ -1,0 +1,81 @@
+\section{Power Distribution Options}
+
+Traditional 415V or 480V 3-phase AC power systems have long supported data center growth. However, as compute rack power density approaches and exceeds the megawatt scale, these systems are reaching their practical limits.
+
+\begin{itemize}
+\item \textbf{Whip Size and Ampacity:} Typical AC whips are rated at 60 A or 100 A, constrained by thermal limits and connector standards such as IEC 60309.
+
+\item \textbf{Rack Power Inlets:} Higher rack power demands require more and/or larger input connections, consuming valuable rack space and complicating cable management.
+
+\item \textbf{Power Asset Coordination:} Managing and protecting multiple AC feeds adds design complexity and increases the equipment footprint.
+\end{itemize}
+
+As rack-level power rises, the use of traditional AC distribution results in greater system complexity, more components, and reduced scalability, driving up both capital and operational costs for next-generation deployments.
+
+Looking at the amount of power that can be transferred through a fixed wire gauge rated at 48A continuous vs. voltage, the table below shows that going from 415 VAC to 800 VDC allows for 157\% more power to be transmitted through the same cross-sectional area of copper. A common method to get more power out of the same infrastructure in North America is to use 480 VAC, but that only gives a 16\% improvement in infrastructure. Looking further out to 1500 VDC distribution gives a 382\% increase in power through the same conductor sizes.
+
+\begin{table}[h]
+\centering
+\caption{AC vs. DC Power Cable Comparison}
+\label{tab:ac-dc-comparison}
+\begin{tabular}{llcc}
+\toprule
+\textbf{Voltage} & \textbf{Wires} & \textbf{\begin{tabular}[c]{@{}c@{}}Power per cable\\ diameter (kW/mm\textsuperscript{2})\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Power Increase\\ ref. 415 VAC\end{tabular}} \\
+\midrule
+415 VAC   & 4 (P1,P2,P3,PE) & 0.6 & + 0\%  \\
+480 VAC   & 4 (P1,P2,P3,PE) & 0.8 & + 16\% \\
+800 VDC   & 3 (POS,RTN,PE)  & 1.7 & + 157\%\\
+1500 VDC  & 3 (POS,RTN,PE)  & 3.1 & + 382\%\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Transitioning to 800 VDC Distribution}
+
+Moving to 800 VDC facility-level distribution addresses these challenges and offers several key advantages:
+
+\begin{itemize}
+\item \textbf{Simplified Power Interface to IT:} As GPU rack power density rapidly outpaces traditional web servers, reaching megawatt levels, the existing 415/480 VAC cables and connection schemes are no longer viable. A shift to 800 VDC enables a streamlined physical interface to the rack, dramatically reducing the number of cables and components needed. This simplifies installation, minimizes space use, and improves operational agility: critical factors as power infrastructure now rivals compute in footprint and complexity.
+
+\item \textbf{Streamlined System Architecture:} Migrating AC/DC conversion upstream from the IT rack to the facility level, and ultimately to direct Medium Voltage AC-to-DC conversion, eliminates unnecessary stages. This results in a leaner, more efficient architecture that reduces equipment layers, cost, and space, while increasing reliability and deployment speed as key enablers for future-ready AI Factories.
+
+\item \textbf{Direct Compatibility with GPU Racks:} While facility-level DC distribution can be designed to support a range of voltage architectures, the final delivery to compute must maintain an 800 VDC differential. This ensures seamless interoperability between facility power infrastructure and rack-level hardware, simplifying integration, reducing customization needs, and enabling a unified deployment strategy across AI Factory deployments.
+\end{itemize}
+
+\subsection*{Adjacent Industry Blueprints for LVDC Distribution}
+
+Several adjacent industries have already proven the viability of LVDC power distribution, offering valuable reference points for AI Factory power systems:
+
+\begin{itemize}
+\item \textbf{Electric Vehicles (EV):} EV platforms have evolved from 400 VDC to 800 VDC and higher, as seen in Porsche, Hyundai, and GM vehicles. Their systems emphasize fast charging, high power density, reduced copper usage, and feature high-efficiency rectifiers, large-ampacity portable cables, advanced safety connectors, and fault-tolerant protection schemes.
+
+\item \textbf{Photovoltaics (PV):} Utility-scale PV farms typically operate at 1000-1500 VDC, supported by a mature ecosystem of DC-rated switchgear, fuses, and combiner boxes, mostly optimized for outdoor, lower-current applications.
+
+\item \textbf{Rail \& Industrial:} Long-distance LVDC distribution is widely used in transport and industrial microgrids. Examples like Mercedes-Benz Factory 56 leverage DC to integrate renewables and storage, demonstrating scalable and efficient deployment.
+\end{itemize}
+
+These industries demonstrate that proven equipment, safety strategies, and operational practices can be adapted for AI Factory use. However, even with this existing maturity, data center deployments require significant engineering adaptation to address much higher power densities and stricter electrical safety requirements unique to hyperscale computing environments.
+
+\subsection*{Facility-Level DC Distribution Options Under Evaluation}
+
+Leading data center operators and cloud service providers are currently assessing several facility-level DC architectures:
+
+\begin{description}
+\item[800 VDC (NVIDIA MGX)] Directly supports the Nvidia 800 VDC rack architecture. Benefits from the growing maturity of Gallium Nitride (GaN) and SiC devices-based conversion devices and widespread EV adoption. Enables seamless end-to-end integration for AI compute.
+
+\item[750 VDC (ODCA / VDE-SPEC 90037)] A widely adopted European industrial standard promoting a simplified 2-wire system. Offers short-term compatibility with existing 1000 V-class equipment and electronics. It is gaining traction across transportation and industrial facilities.
+
+\item[$\pm$400 VDC (OCP Standard)] Technically feasible and develops based on the previous 400V DC architecture. However, the midpoint reference creates a 4-wire system, introducing complexity in grounding, phase balancing, and fault detection especially when scaled to datacenter level distribution.
+
+\item[1500 VDC (Potential Future Target)] 1500 VDC is an established limit of the low voltage class under NEC Article 690 (photovoltaic systems) and IEC 62477-1 (industrial converter environments). It is widely used in solar and rail applications for its efficiency in power delivery and ability to reduce copper usage by supporting high power density loads.
+\end{description}
+
+However, applying 1500 VDC inside data centers, especially within compute racks, faces significant challenges. Current UL and NEC standards for IT and indoor environments are still evolving, and few certified components exist at this voltage level. In addition, device clearance and creepage distance requirements, component voltage ratings, and arc-flash safety concerns make 1500 VDC difficult to implement safely within confined rack spaces.
+
+As a result, 1500 VDC remains a potential long-term target for large-scale AI factories, while 800 VDC serves as the practical near-term solution, balancing efficiency, conversion stages, equipment availability, and regulatory compliance.
+
+A phased adoption strategy is recommended:
+\begin{itemize}
+\item \textbf{Near-term:} Deploy 800 VDC to the rack using commercially available 1000 V-class components.
+\item \textbf{Potential Long-term:} Transition to 1500 VDC as the in-rack protection device and DC/DC density increases, safety standards solidify, and supporting equipment becomes widely available.
+\end{itemize}

@@ -1,7 +1,7 @@
 # Figures of the symbol-library chapter as TikZ snippets, drawn live in the
 # deck with the Glyphwright \pic library (glyphwright-deck.tex). Regenerate
 # from the Glyphwright repository after symbol changes (~ = home folder):
-#   python ~/AmWatt/Design/Schematics/Glyphwright/tools/deck_figures.py figures.yaml
+#   python ~/Projects/glyphwright/tools/deck_figures.py figures.yaml
 # 'scale' shrinks the geometry only; line widths and texts keep their size.
 
 sheets:
@@ -14,6 +14,6 @@ sheets:
 slds:
   converter-station: {file: src/converter-station.yaml, scale: 0.6}
   transformer-bay:
-    file: ~/AmWatt/Design/Schematics/Glyphwright/examples/sld/transformer-bay.yaml
+    file: ~/Projects/glyphwright/examples/sld/transformer-bay.yaml
     parts: [[72, -23.75], [-23.75, -93.75], [-93.75, -195]]
     scale: 0.5
