@@ -1,0 +1,67 @@
+% =============================================================
+%  Figure — HVDC system design process (four study packages)
+%  Inline TikZ, sized for the 14.5 cm beamer text width.
+%  Flow: steady state -> transient -> dynamic -> RMS,
+%  with the feedback paths returning to the steady-state design.
+% =============================================================
+\begin{tikzpicture}[
+    font=\scriptsize,
+    stage/.style={draw=atStone, fill=atBox, line width=0.4pt,
+                  minimum width=3.28cm, text width=3.08cm,
+                  minimum height=2.55cm, inner sep=1mm, align=left,
+                  anchor=north west},
+    head/.style={fill=atPanel, text=atPaper, font=\footnotesize\bfseries,
+                 minimum width=3.28cm, text width=3.08cm, inner sep=1mm,
+                 minimum height=0.62cm, align=left, anchor=south west},
+    fwd/.style={-{Latex[length=2mm]}, line width=0.9pt, color=atInk},
+    back/.style={-{Latex[length=1.6mm]}, line width=0.5pt, color=atGray},
+    fblabel/.style={font=\tiny, text=atGray, fill=atPaper, inner sep=1pt},
+    tag/.style={font=\tiny\ttfamily, text=atGray}
+  ]
+  % ---- one stage: \ssstage{column}{name}{title}{scope}{time step}{tools} ----
+  \def\ssgap{0.45}
+  \def\ssstage#1#2#3#4#5#6{%
+    \pgfmathsetmacro{\ssx}{#1*(3.28+\ssgap)}
+    \node[head] (#2-h) at (\ssx,0) {#3};
+    \node[stage] (#2) at (\ssx,0) {%
+      {\color{atInk}#4}\par\vspace{0.4em}
+      {\color{atGray}\tiny TIME STEP}\par
+      {\color{atInk}\bfseries #5}\par\vspace{0.35em}
+      {\color{atGray}\tiny TOOLS}\par
+      {\color{atInk}#6}};
+    \fill[atLime] (#2-h.north west) rectangle ++(1.1,0.07);
+  }
+  \ssstage{0}{ss}{1\quad Steady state}
+    {Operating points\\Component ratings\\Losses}
+    {no time domain}{MATLAB, Python}
+  \ssstage{1}{tr}{2\quad Transient}
+    {Converter internal faults\\Equipment design\\Surge arresters}
+    {0.5--10\,µs}{PSCAD, EMTP}
+  \ssstage{2}{dy}{3\quad Dynamic}
+    {AC faults\\Grid code compliance\\(e.g.\ IEEE 2800)}
+    {10--20\,µs}{PSCAD, EMTP,\\Simulink}
+  \ssstage{3}{rm}{4\quad RMS}
+    {Integration of the\\HVDC system in the\\AC grid}
+    {$\approx$\,1\,ms}{PSS/E, PSLF,\\PowerFactory}
+
+  % ---- model type tags above the headers ----
+  \node[tag, anchor=south west] at ($(ss-h.north west)+(0,0.12)$) {calculation};
+  \draw[atGray, line width=0.4pt]
+    ($(tr-h.north west)+(0,0.22)$) -- ++(0,0.08)
+    -- ($(dy-h.north east)+(0,0.30)$) -- ++(0,-0.08);
+  \node[tag, anchor=south] at ($(tr-h.north west)!0.5!(dy-h.north east)+(0,0.42)$)
+    {EMT simulation};
+  \node[tag, anchor=south west] at ($(rm-h.north west)+(0,0.12)$) {phasor (RMS) simulation};
+
+  % ---- forward flow ----
+  \foreach \a/\b in {ss/tr, tr/dy, dy/rm}
+    \draw[fwd] ($(\a.east)+(0,0.35)$) -- ($(\b.west)+(0,0.35)$);
+
+  % ---- feedback to the steady-state design ----
+  \draw[back] (tr.south) -- ++(0,-0.3) -| ($(ss.south)+(0.9,0)$);
+  \draw[back] (dy.south) -- ++(0,-0.6) -| ($(ss.south)$);
+  \draw[back] (rm.south) -- ++(0,-0.9) -| ($(ss.south)+(-0.9,0)$);
+  \node[fblabel] at ($(ss.south)!0.5!(tr.south)+(0.45,-0.3)$) {equipment ratings};
+  \node[fblabel] at ($(tr.south)!0.5!(dy.south)+(0,-0.6)$) {control and FRT limits};
+  \node[fblabel] at ($(dy.south)!0.5!(rm.south)+(0,-0.9)$) {grid integration requirements};
+\end{tikzpicture}

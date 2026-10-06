@@ -1,0 +1,140 @@
+% !TEX root = arpa_e.tex
+% =============================================================
+%  Chapter — System Studies (HVDC design process)
+%  Four study packages in design order:
+%    steady state -> transient -> dynamic -> RMS
+%  Figures: fig/design-process.tex (inline TikZ, \input below).
+% =============================================================
+\newcommand{\ssfig}[1]{fig/#1}
+
+% \ssstudytable{tools}{time step}{main results} — key data of one study
+\newcommand{\ssstudytable}[3]{%
+  {\small\renewcommand{\arraystretch}{1.35}%
+  \begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \atrowfill\textbf{Tools}     & #1 \\
+    \textbf{Time step}           & #2 \\
+    \atrowfill\textbf{Results}   & #3 \\
+    \bottomrule
+  \end{tabularx}}%
+}
+
+\sectionslide{System Studies}{HVDC design process and simulation packages}
+
+\begin{frame}{Abbreviations}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      {\small
+      \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
+        AC    & Alternating current \\
+        DC    & Direct current \\
+        EMT   & Electromagnetic transient \\
+        EMTP  & Electromagnetic Transients Program \\
+        FRT   & Fault ride-through \\
+        HVDC  & High-voltage direct current \\
+      \end{tabularx}}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      {\small
+      \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
+        IEEE  & Institute of Electrical and Electronics Engineers \\
+        PSCAD & Power Systems Computer Aided Design \\
+        PSLF  & Positive Sequence Load Flow \\
+        PSS/E & Power System Simulator for Engineering \\
+        RMS   & Root mean square \\
+      \end{tabularx}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---- Overview -----------------------------------------------
+\begin{frame}{Design process\\System studies}
+  \noindent{\color{atGray}\small Results of each study feed back into the steady-state design.}
+  \vspace{0.6em}
+
+  \centering
+  \input{\ssfig{design-process}}
+\end{frame}
+
+% ---- 1 Steady state -----------------------------------------
+\begin{frame}{Steady state\\Operating points, ratings and losses}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.56\textwidth}
+      \begin{block}{Calculation, no simulation tool}
+        Algebraic calculation of the converter station at its steady-state operating points.
+      \end{block}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item Operating points across the power, AC voltage and DC voltage range
+        \item Steady-state rating of the components
+        \item Losses per component and for the station
+        \item Starting point for all following studies
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \ssstudytable{MATLAB, Python}{no time domain}{Operating points, component ratings, losses}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---- 2 Transient --------------------------------------------
+\begin{frame}{Transient simulation\\Converter internal faults}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.56\textwidth}
+      \begin{block}{EMT simulation, detailed model}
+        Transient behaviour of the system during converter internal faults.
+      \end{block}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item Converter internal faults, e.g.\ valve and converter bus faults
+        \item Design of the equipment for the transient stresses
+        \item Design of protective equipment such as surge arresters
+        \item Returns updated ratings to the steady-state design
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \ssstudytable{PSCAD, EMTP}{0.5--10\,µs}{Equipment stresses, arrester ratings}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---- 3 Dynamic ----------------------------------------------
+\begin{frame}{Dynamic simulation\\AC faults and grid code compliance}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.56\textwidth}
+      \begin{block}{EMT simulation, control-oriented model}
+        Dynamic behaviour of the system during AC faults.
+      \end{block}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item AC faults at and near the point of connection
+        \item Grid code compliance defined by e.g.\ IEEE~2800
+        \item FRT performance and control response
+        \item Returns control and FRT limits to the design
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \ssstudytable{PSCAD, EMTP, Simulink}{10--20\,µs}{Control performance, FRT behaviour, compliance evidence}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---- 4 RMS --------------------------------------------------
+\begin{frame}{RMS model\\Integration in the AC grid}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.56\textwidth}
+      \begin{block}{Phasor simulation, grid-level model}
+        Simulation of the integration of the HVDC system in the AC grid.
+      \end{block}
+      \begin{itemize}
+        \setlength{\itemsep}{0.4em}
+        \item HVDC system as part of the wider AC network
+        \item Model handed over to the grid operator for planning studies
+        \item Returns grid integration requirements to the design
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.40\textwidth}
+      \ssstudytable{PSS/E, PSLF, PowerFactory}{$\approx$\,1\,ms}{RMS model for grid studies}
+    \end{column}
+  \end{columns}
+\end{frame}

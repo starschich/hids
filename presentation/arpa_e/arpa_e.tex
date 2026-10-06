@@ -1,0 +1,29 @@
+% =============================================================
+%  American Terawatt — ARPA-E presentation
+%
+%  Structure:
+%    arpa_e.tex                  <- this file
+%    system-studies.tex          <- HVDC design process, four study packages
+%    fig/design-process.tex      <- inline TikZ flow chart
+%    ../../template/theme        <- shared beamer theme (atstyle.sty, fonts, img)
+%    .latexmkrc                  <- selects xelatex
+%
+%  Compile in this folder:
+%    latexmk -xelatex arpa_e.tex
+% =============================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+\providecommand{\atthemepath}{../../template/theme/}
+\usepackage{../../template/theme/atstyle}
+
+\title{HVDC System Design}
+\subtitle{ARPA-E}
+\author{American Terawatt}
+\date{\today}
+
+\begin{document}
+
+\titleslide
+
+\input{system-studies}
+
+\end{document}

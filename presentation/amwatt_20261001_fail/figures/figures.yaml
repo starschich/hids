@@ -1,9 +1,0 @@
-# Figures of the presentations in this folder, drawn live with the Glyphwright
-# symbol library from ~/hids/template/glyphwright (loaded by \usepackage{glyphwright}).
-# Regenerate after diagram or symbol changes (from the Glyphwright repository):
-#   python tools/deck_figures.py --no-library ~/hids/presentation/amwatt_20261001/figures/figures.yaml
-#   python -m glyphwright texlib ~/hids/template/glyphwright --sld ~/hids/presentation/amwatt_20261001/figures/src/smp_level_1.yaml
-# 'scale' shrinks the geometry only; line widths and texts keep their size.
-
-slds:
-  smp_level_1: {file: src/smp_level_1.yaml, scale: 0.6}

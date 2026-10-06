@@ -851,6 +851,16 @@
   \coordinate (-tag) at (0.000mm,-10.000mm);
 }}
 
+% Load, general
+%   load arrow = common single-line convention (IEEE 315 / ANSI practice); IEC 60617 has no general load symbol
+\tikzset{gw/load/.pic={
+  \draw[gw/normal] (0.000mm,7.500mm) -- (0.000mm,-5.000mm);
+  \fill[gw/solid] (0.000mm,-7.500mm) -- (1.000mm,-5.000mm) -- (-1.000mm,-5.000mm) -- cycle;
+  \coordinate (-a) at (0.000mm,7.500mm);
+  \coordinate (-label) at (2.500mm,0.000mm);
+  \coordinate (-tag) at (-2.500mm,0.000mm);
+}}
+
 % Synchronous generator
 %   IEC 60617 06-04-01  rotating machine, general; letter G = generator (verify)
 %   IEC 60617 02-02-04  alternating current (verify)
@@ -1025,4 +1035,19 @@
   \coordinate (-lv_centre) at (-3.750mm,0.000mm);
   \coordinate (-label) at (0.000mm,7.500mm);
   \coordinate (-tag) at (0.000mm,-5.000mm);
+}}
+
+% Transformer, two windings, connections not specified
+%   IEC 60617 06-09-02  transformer, two windings (form 2, circles)
+\tikzset{gw/xfmr2-r90/.pic={
+  \draw[gw/normal] (0.000mm,3.750mm) circle [radius=5.000mm];
+  \draw[gw/normal] (0.000mm,-3.750mm) circle [radius=5.000mm];
+  \draw[gw/normal] (0.000mm,8.750mm) -- (0.000mm,12.500mm);
+  \coordinate (-hv) at (0.000mm,12.500mm);
+  \draw[gw/normal] (0.000mm,-8.750mm) -- (0.000mm,-12.500mm);
+  \coordinate (-lv) at (0.000mm,-12.500mm);
+  \coordinate (-hv_centre) at (0.000mm,3.750mm);
+  \coordinate (-lv_centre) at (0.000mm,-3.750mm);
+  \coordinate (-label) at (7.500mm,0.000mm);
+  \coordinate (-tag) at (-5.000mm,0.000mm);
 }}

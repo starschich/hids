@@ -22,6 +22,64 @@ An example in Figure~\ref{fig:performance-increase} above is the performance inc
 
 This increase in power generation over generation and with NVLink domain drives a much more rapid increase in power than has been seen in the past with GPUs. A secondary goal is to remove as many power components from the NVLink domain radius as possible since this is the highest value real estate in the rack for performance. This combination of driving to higher power level and pushing the power components away from the GPUs drives requirements for a different rack power architecture.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+% Rack dimensions diagram - Front View
+\def\rackWidth{4}
+\def\rackDepth{2.5}
+\def\rackHeight{12}
+\def\unitScale{0.8}
+
+% Rack outline (front view)
+\draw[thick, fill=blue!5] (0,0) rectangle (\rackWidth*\unitScale, \rackHeight*\unitScale);
+\node[above] at (\rackWidth*\unitScale/2, \rackHeight*\unitScale) {\textbf{Front View}};
+
+% Rack dimensions labels
+\draw[<->, >=stealth] (0, -0.5) -- node[fill=white] {600 mm} (\rackWidth*\unitScale, -0.5);
+\draw[<->, >=stealth] (-0.5, 0) -- node[fill=white, rotate=90] {2,236 mm (48U)} (-0.5, \rackHeight*\unitScale);
+
+% Side view
+\begin{scope}[xshift=6cm]
+\draw[thick, fill=green!5] (0,0) rectangle (\rackDepth*\unitScale, \rackHeight*\unitScale);
+\node[above] at (\rackDepth*\unitScale/2, \rackHeight*\unitScale) {\textbf{Side View}};
+
+\draw[<->, >=stealth] (0, -0.5) -- node[fill=white] {1,068 mm} (\rackDepth*\unitScale, -0.5);
+\draw[<->, >=stealth] (-0.5, 0) -- node[fill=white, rotate=90] {2,236 mm} (-0.5, \rackHeight*\unitScale);
+\end{scope}
+
+% Notes
+\begin{scope}[yshift=-14cm]
+\node[align=center, font=\small] at (3,0) {
+Typical NVIDIA GB200 NVL72 rack dimensions (reference design)\\
+Footprint: 0.64 m$^2$ (600 mm $\times$ 1,068 mm)
+};
+\end{scope}
+\end{tikzpicture}
+\caption{Computer rack dimensions for 800 VDC AI infrastructure (NVIDIA GB200 NVL72 reference). High-density racks require reinforced floors and liquid cooling integration.}
+\label{fig:rack-dimensions}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\caption{Rack specifications for 800 VDC AI infrastructure}
+\label{tab:rack-specs}
+\begin{tabular}{ll}
+\toprule
+\textbf{Specification} & \textbf{Value} \\
+\midrule
+Rack Height & 48U (2,236 mm) \\
+Rack Width & 600 mm (23.6 in) \\
+Rack Depth & 1,068 mm (42 in) \\
+Rack Weight (loaded) & \textasciitilde1,360 kg (3,000 lbs) \\
+Floor Loading & \textasciitilde1,875 kg/m\textsuperscript{2} \\
+Mounting Standard & 19-inch (482.6 mm) \\
+Cooling & Direct-to-chip liquid cooling \\
+Power Capacity & Up to 132 kW \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 To meet these unprecedented demands, 800 VDC has emerged as the optimal architecture for next-generation power distribution. It allows for minimizing the conversion and routing volume in the compute space while minimizing datacenter distribution losses and total end to end conversion stages. 800 VDC significantly reduces current, copper use, and cable bulk compared to 54 VDC inside the rack or facility level 480 VAC systems, while remaining safe and scalable. It benefits from the growing maturity of Silicon Carbide (SiC) and Gallium Nitride (GaN) power conversion devices and the widespread adoption of 800 VDC systems in the electric vehicle (EV) industry. This enables seamless, end-to-end integration from grid to rack, higher power density beyond 1 MW.
 
 Datacenters historically consisted of thousands of servers running diverse workloads. With GPUs these workloads can be synchronous across the datacenters leading to massive load swings in very short time intervals. Energy storage can be used to mitigate these swings. This rapid shift in datacenter power infrastructure requirements puts the industry at a crossroads. To keep up with future GPU demands, we need to rethink how we deliver power. This leads us to the next-generation distribution system that is more efficient, scalable, and ready for the extremely dynamic AI workloads. Integrating 800 VDC architectures with energy storage is key to future-proofing AI Factories for the era ahead.
