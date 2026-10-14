@@ -8,6 +8,7 @@
 % Shared style lives in the repo-level template folder
 \usepackage[corporate]{../../template/attemplate}
 \usepackage{listings}
+\usepackage{float}
 
 % TikZ libraries used by the architecture and stack diagrams
 \usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,fit}
@@ -41,12 +42,7 @@
 \reporttitle{Local LLM on the Shared GPU Pool}
 \reportsubtitle{Claiming GPUs, serving an inference endpoint and answering from our own documents}
 \atEyebrow{Developer infrastructure}
-\atAbstract{End-to-end account of how a local large language model is deployed
-on the shared GPU pool --- how GPUs are borrowed, why the work happens inside a
-container, where files must live to survive, how the model runtime is installed
-into an image without package manager access, and how the resulting endpoint is
-reached from a remote machine --- followed by \textit{corpus}, the retrieval
-system that answers questions from our own documents over that endpoint.}
+
 \reportauthor{Eugen Starschich}
 \reportdocnumber{ATW-REP-GPU-001}
 \reportrevision{0.4}
@@ -77,6 +73,7 @@ system that answers questions from our own documents over that endpoint.}
 \input{sections/05-serving}
 \input{sections/06-remote-access}
 \input{sections/07-corpus}
+\input{sections/07b-ingest-pipeline}
 \input{sections/08-corpus-operation}
 \input{sections/08b-agent-integration}
 \input{sections/09-teardown}
