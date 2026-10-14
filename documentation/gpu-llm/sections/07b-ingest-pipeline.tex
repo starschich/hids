@@ -1,0 +1,184 @@
+\section{The ingest pipeline in detail}
+\label{sec:ingest-pipeline}
+
+Ingest is the part of \textit{corpus} that has needed the most hardening, and
+for one reason: it runs heavy, unpredictable, per-document work over thousands
+of heterogeneous PDFs on a machine with 7\,GB of RAM. Retrieval and answering
+are well-behaved by comparison. This section documents the pipeline as it now
+stands, including every repair and every limit, because each one exists in
+response to a specific failure rather than as a precaution.
+
+\subsection{End to end}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=center, inner sep=4pt, font=\scriptsize,
+                text width=25mm, minimum height=9mm},
+    store/.style={blk, fill=atBgSubtle},
+    comp/.style={blk, fill=atBgMuted},
+    model/.style={blk, fill=atAccent!30},
+    guard/.style={blk, fill=atAccent!12, dashed},
+    band/.style={font=\scriptsize\bfseries, text=atFgMuted, anchor=west},
+    flow/.style={-{Stealth[length=2mm]}, draw=atFgMuted, thick},
+    lbl/.style={font=\tiny, text=atFgMuted, align=center},
+  ]
+  % ---------------- band 1: discovery, once per batch
+  \node[band] at (-1.1,1.25) {PER BATCH};
+  \node[store] (raw)  at (0,0)    {\cmd{\char`~/work/raw}\\6\,284 sources};
+  \node[comp]  (zip)  at (3.3,0)  {expand archives\\\cmd{.zip}};
+  \node[comp]  (disc) at (6.6,0)  {discover\\skip venvs, \cmd{.git}};
+  \node[comp]  (pend) at (9.9,0)  {select pending\\missing, unindexed\\or newer};
+  \draw[flow] (raw) -- (zip);
+  \draw[flow] (zip) -- (disc);
+  \draw[flow] (disc) -- (pend);
+  \node[lbl, text width=34mm] at (9.9,-1.35)
+    {only pending documents count\\against the batch limit};
+
+  % ---------------- band 2: parse, per document
+  \node[band] at (-1.1,-2.35) {PER DOCUMENT};
+  \node[comp]  (open)  at (0,-3.4)     {open PDF};
+  \node[guard] (dense) at (3.3,-3.4)   {page over 1.5\,MB\\content stream?};
+  \node[comp]  (layout)at (6.8,-2.65)  {layout analysis\\\cmd{pymupdf4llm}};
+  \node[comp]  (plain) at (6.8,-4.15)  {plain text\\(posters)};
+  \node[comp]  (rep)   at (10.3,-3.4)  {character repair\\Table~\ref{tab:repairs}};
+  \node[comp]  (ttl)   at (13.6,-3.4)  {title, scan check\\guarded write};
+  \node[store] (md)    at (16.9,-3.4)  {\cmd{md/} cache\\keyed on sha256};
+  \draw[flow] (open) -- (dense);
+  \draw[flow] (dense.east) to[out=0,in=180] node[lbl,above,pos=0.6]{no} (layout.west);
+  \draw[flow] (dense.east) to[out=0,in=180] node[lbl,below,pos=0.6]{yes} (plain.west);
+  \draw[flow] (layout.east) to[out=0,in=180] (rep.west);
+  \draw[flow] (plain.east)  to[out=0,in=180] (rep.west);
+  \draw[flow] (rep) -- (ttl);
+  \draw[flow] (ttl) -- (md);
+
+  % ---------------- band 3: index, per document
+  \node[band] at (-1.1,-5.75) {PER DOCUMENT};
+  \node[comp]  (chunk) at (0,-6.8)    {chunk\\one section each\\1000 tok, 150 over};
+  \node[comp]  (tab)   at (3.3,-6.8)  {tables whole\\caption + header\\repeated on splits};
+  \node[model] (emb)   at (6.6,-6.8)  {embed\\\cmd{bge-m3} 1024-d};
+  \node[store] (lance) at (9.9,-6.8)  {LanceDB\\\cmd{replace\_doc}};
+  \node[comp]  (idx)   at (13.2,-6.8) {FTS always\\ANN over 100k rows};
+  \draw[flow] (chunk) -- (tab);
+  \draw[flow] (tab) -- (emb);
+  \draw[flow] (emb) -- (lance);
+  \draw[flow] (lance) -- (idx);
+  \node[lbl, text width=36mm] at (13.2,-8.15)
+    {search indexes built only\\on the final batch};
+
+  % ---------------- band transitions
+  \draw[flow] (pend.south) to[out=-90,in=90] (open.north);
+  \draw[flow] (md.south)   to[out=-90,in=90] (chunk.north);
+\end{tikzpicture}}
+  \caption{Ingest end to end. Discovery and selection run once per batch;
+  everything below is per document. Parsing is cached on the source's sha256,
+  so re-running only touches what changed.}
+  \label{fig:ingest}
+\end{figure}
+
+\subsection{Character repair}
+
+Four distinct corruptions arrive from PDF extraction. None announces itself:
+the text looks plausible, and only a search that should match and does not
+reveals the damage.
+
+\begin{table}[H]
+  \centering\small
+  \begin{tabular}{@{}llp{62mm}@{}}
+    \toprule
+    Damage & Appears as & Repair \\
+    \midrule
+    Symbol-font glyphs & \cmd{U+F020--F0FF} &
+      Adobe Symbol encoding table. Recovers
+      $\leq\ \geq\ \Delta\ \omega\ \partial\ \alpha\ \pi\ \mu\ \Omega\ \sum$.
+      Affected 101 of 248 documents when first measured; 3\,747 characters. \\
+    T1 ligatures & ``conrm'', ``lesystem'' &
+      Translate surviving control characters, then repair dropped ones from the
+      document's own vocabulary. Ambiguous cases are left alone. \\
+    UTF-16 surrogates & \cmd{U+D800--DFFF} &
+      Re-pair valid high/low pairs; drop orphans. A lone surrogate cannot be
+      encoded as UTF-8 and crashed the writer outright. \\
+    Maths alphanumerics & $\mathit{V}$ vs \cmd{V} &
+      NFKC folding, applied only to \cmd{U+1D400--1D7FF}, so a variable set in
+      mathematical italic matches the same letter in running text. \\
+    \bottomrule
+  \end{tabular}
+  \caption{Character-level repairs, all applied during \cmd{tidy()}.}
+  \label{tab:repairs}
+\end{table}
+
+\subsection{Why ingest is bounded}
+
+A single process walking thousands of PDFs is killed by the kernel long before
+it finishes. The cost of parsing does not correlate with anything visible in
+advance: a 1.7\,MB conference poster carries 83\,645 drawing operations on an
+A0 page and wants more memory than a 135-page brochure. Five such runs were
+OOM-killed before the controls below were in place.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{0.92\linewidth}{!}{%
+  \begin{tikzpicture}[node distance=6mm,
+    blk/.style={draw=atBorderStrong, rounded corners=2pt, fill=atBg,
+                align=left, inner sep=5pt, font=\scriptsize,
+                text width=52mm, minimum height=9mm},
+    guard/.style={blk, fill=atAccent!12},
+    flow/.style={-{Stealth[length=2mm]}, draw=atFgMuted, thick},
+    lbl/.style={font=\tiny, text=atFgMuted, align=left},
+  ]
+  \node[guard] (w) {\textbf{Watchdog} --- kills a batch silent for 900\,s};
+  \node[guard, below=of w] (b) {\textbf{Batch wrapper} --- fresh process each batch; stops after 5 consecutive failures};
+  \node[guard, below=of b] (r) {\textbf{Resident ceiling} --- parse stops at 2.5\,GB and defers the rest};
+  \node[guard, below=of r] (a) {\textbf{Address space} --- 4.5\,GiB during parse, \emph{lifted} before indexing};
+  \node[guard, below=of a] (p) {\textbf{Page density} --- $>$1.5\,MB/page read as plain text};
+  \node[guard, below=of p] (d) {\textbf{Per-document} --- corrupt files, write errors, chunking, embedding};
+
+  \node[blk, right=12mm of w, fill=atBgSubtle] (wn) {any hang, whatever the cause --- including a \cmd{MemoryError} inside LanceDB's background thread, which never propagates};
+  \node[blk, right=12mm of b, fill=atBgSubtle] (bn) {memory released between batches; one bad batch cannot end the run};
+  \node[blk, right=12mm of r, fill=atBgSubtle] (rn) {gradual accumulation across many documents};
+  \node[blk, right=12mm of a, fill=atBgSubtle] (an) {a single runaway allocation, as \cmd{MemoryError} in that document only};
+  \node[blk, right=12mm of p, fill=atBgSubtle] (pn) {posters and drawing-dense pages (11 so far)};
+  \node[blk, right=12mm of d, fill=atBgSubtle] (dn) {4 corrupt PDFs, 2 runaway allocations to date};
+
+  \foreach \a/\b in {w/wn, b/bn, r/rn, a/an, p/pn, d/dn} \draw[flow] (\a) -- (\b);
+  \end{tikzpicture}}
+  \caption{Containment layers, outermost first, and what each one catches.
+  The address-space cap is lifted before indexing on purpose: LanceDB runs on
+  a background event-loop thread, and a \cmd{MemoryError} raised there leaves
+  the caller waiting on a future that is never resolved --- a silent hang,
+  which is worse than a crash.}
+  \label{fig:guards}
+\end{figure}
+
+\subsection{Running it}
+
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+./ingest-all 400          # batches of 400, restart until done
+./rag ingest --batch 400  # one batch; exit 3 if more remain
+./rag rechunk             # re-chunk and re-embed from md/, no PDF re-parsing
+\end{lstlisting}
+
+\noindent
+Progress is durable at every level. Parsed markdown is cached on the source's
+sha256, each document's chunks are written as they are embedded, and search
+indexes are built only on the final batch. A run that dies loses the batch in
+flight and nothing else --- which is why the corpus grew from 1\,967 to over
+5\,800 documents across five OOM kills and two deadlocks.
+
+\begin{table}[H]
+  \centering\small
+  \begin{tabular}{@{}lr@{}}
+    \toprule
+    Sources on disk & 6\,284 \\
+    Documents indexed & 5\,840 \\
+    Chunks & 170\,800 \\
+    Parse cache (\cmd{md/}) & 282\,MB \\
+    Index (\cmd{index/}) & 8.7\,GB \\
+    Machine & 4 cores, 7\,GB RAM \\
+    \bottomrule
+  \end{tabular}
+  \caption{Scale at the time of writing, mid-ingest.}
+  \label{tab:scale}
+\end{table}
