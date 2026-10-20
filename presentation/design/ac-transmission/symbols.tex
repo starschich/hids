@@ -1,0 +1,40 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Symbols slide
+%  Part of ac-transmission; \input from ac-transmission.tex.
+%  Two columns, same layout as the Abbreviations frame.
+% =============================================================
+
+\begin{frame}{Symbols}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      {\small
+      \begin{tabularx}{\linewidth}{@{}p{0.9cm}>{\raggedright\arraybackslash}X@{}}
+        \textbf{Sym.} & \textbf{Description} \\
+        \hline
+        $P$      & Active power \\
+        $V_{LL}$ & Line-to-line (phase-phase) voltage \\
+        $V_{LN}$ & Line-to-neutral (phase-ground) voltage \\
+        $\delta$ & Transmission angle between the terminal voltages \\
+        $X$      & Series reactance of the path between the terminals \\
+        $L'$     & Series inductance per unit length \\
+      \end{tabularx}}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      {\small
+      \begin{tabularx}{\linewidth}{@{}p{0.9cm}>{\raggedright\arraybackslash}X@{}}
+        \textbf{Sym.} & \textbf{Description} \\
+        \hline
+        $D_m$    & Geometric mean distance between the phases \\
+        $r_b$    & Equivalent radius of the conductor bundle \\
+        $Z_w$    & Wave (surge) impedance of the line \\
+        $\beta$  & Phase constant, $\beta\cdot l$ the electrical length \\
+        $K_s$    & Synchronising power coefficient, $\partial P/\partial\delta$ \\
+        $\underline{\gamma}$ & Propagation constant, $\alpha+j\cdot\beta$ \\
+        $\alpha$ & Attenuation constant \\
+        $H$      & Inertia constant of a synchronous machine \\
+      \end{tabularx}}
+    \end{column}
+  \end{columns}
+\end{frame}

@@ -5,7 +5,9 @@
 %  directly before natural-power.tex.
 %
 %  Power exchange at the PCC, line parameters, load cases and the
-%  two-port line equations.  Figures in ./fig (image4 ... image18).
+%  load cases.  Figures in ./fig (image4 ... image16).
+%  The gamma / Z_w and line-equation frames that used to close this
+%  file now live in wave-representation.tex.
 % =============================================================
 \providecommand{\acfig}[1]{ac-transmission/fig/#1}
 
@@ -210,63 +212,6 @@
     \begin{column}{0.48\textwidth}\centering
       \topoimg[width=\linewidth,height=0.6\textheight,keepaspectratio]{\acfig{image16.png}}\\[0.3em]
       {\footnotesize AC current vs.\ active power}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{2-port units}
-  \begin{center}
-    \begin{minipage}{0.50\textwidth}
-      \input{\acfig{image18.tex}}
-    \end{minipage}
-  \end{center}
-
-The calculation of the 2-port units is based on two paratemers which are defined by the physical set-up of the transmission:
-\begin{itemize}
-  \item Propagation constant
-  \item Wave impedance
-\end{itemize}
-\end{frame}
-
-\begin{frame}{2-port units --- line constants}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.40\textwidth}\centering
-      \input{\acfig{image18.tex}}
-    \end{column}
-    \begin{column}{0.57\textwidth}
-      Propagation constant\\
-      $\begin{aligned}[t]
-        \underline{\gamma}&=\alpha+j\cdot\beta =\sqrt{\underline{Z}'\cdot\underline{Y}'}\\[0.4em]
-                          &=\sqrt{\left(R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)\right)\cdot\left(G'+j \cdot \omega \cdot C'\right)}
-       \end{aligned}$\\[2em]
-      Wave impedance\\
-      $\begin{aligned}[t]
-         \underline{Z}_w &= \sqrt{\frac{\underline{Z}'}{\underline{Y}'}} = \sqrt{\frac{R'\left(\omega \right)+ j\cdot\omega\cdot L'\left(\omega \right)}{G' + j\cdot\omega\cdot C'}}
-       \end{aligned}$\\
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{2-port units --- line equations}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.40\textwidth}\centering
-      \input{\acfig{image18.tex}}
-    \end{column}
-    \begin{column}{0.57\textwidth}
-      Voltage along line, at distance $x$ from the sending end\\
-      $\begin{aligned}[t]
-        \underline{U} &= \underline{U}_2\cosh\underline{\gamma}\left(l-x\right)
-                       + \underline{Z}_w\,\underline{I}_2\sinh\underline{\gamma}\left(l-x\right)\\[0.4em]
-        \underline{I} &= \frac{\underline{U}_2}{\underline{Z}_w}\sinh\underline{\gamma}\left(l-x\right)
-                       + \underline{I}_2\cosh\underline{\gamma}\left(l-x\right)
-       \end{aligned}$\\[2em]
-      2-port parameters, at the sending end $\left(x=0\right)$\\
-      $\begin{aligned}[t]
-        \underline{U}_1 &= \underline{U}_2\cosh\underline{\gamma}l
-                         + \underline{Z}_w\,\underline{I}_2\sinh\underline{\gamma}l\\[0.4em]
-        \underline{I}_1 &= \frac{\underline{U}_2}{\underline{Z}_w}\sinh\underline{\gamma}l
-                         + \underline{I}_2\cosh\underline{\gamma}l
-       \end{aligned}$\\
     \end{column}
   \end{columns}
 \end{frame}

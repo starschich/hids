@@ -1,9 +1,10 @@
 % !TEX root = ../../presentation.tex
 % =============================================================
-%  TikZ recreation of image18.png
-%  Transmission line as a 2-port unit: terminal quantities
-%  U1/I1 and U2/I2, and the local quantities U/I at distance x
-%  along a line of total length l.
+%  TikZ — the line as a two-port: terminals and the coordinate x
+%  Terminal quantities U_S/I_S and U_R/I_R, and the local quantities
+%  U/I at distance x along a line of total length l.
+%  The pi-equivalent of the same line is fig/pi-section.tex.
+%  Voltage arrows are inset so they do not touch the terminals.
 %  Self-contained snippet -- \input directly inside a frame.
 %  Scales to fill \linewidth, so the enclosing column (or a
 %  minipage) sets the size.
@@ -42,17 +43,17 @@
 
   % ---- terminal currents ------------------------------------
   \draw[flow] ({\xa-1.7},\yt) -- ({\xa-0.8},\yt);
-  \node[left] at ({\xa-1.9},\yt) {$\underline{I}_1$};
+  \node[left] at ({\xa-1.9},\yt) {$\underline{I}_S$};
   \draw[flow] ({\xb+0.8},\yt) -- ({\xb+1.7},\yt);
-  \node[right] at ({\xb+1.9},\yt) {$\underline{I}_2$};
+  \node[right] at ({\xb+1.9},\yt) {$\underline{I}_R$};
 
   % ---- voltages (upper conductor -> lower conductor) --------
-  \draw[flow] (\xa,\yt) -- (\xa,\yb);
-  \node[right=2pt] at (\xa,{(\yt+\yb)/2}) {$\underline{U}_1$};
-  \draw[flow] (\xm,\yt) -- (\xm,\yb);
+  \draw[flow] (\xa,{\yt-0.4}) -- (\xa,{\yb+0.4});
+  \node[right=2pt] at (\xa,{(\yt+\yb)/2}) {$\underline{U}_S$};
+  \draw[flow] (\xm,{\yt-0.4}) -- (\xm,{\yb+0.4});
   \node[right=2pt] at (\xm,{(\yt+\yb)/2}) {$\underline{U}$};
-  \draw[flow] (\xb,\yt) -- (\xb,\yb);
-  \node[right=2pt] at (\xb,{(\yt+\yb)/2}) {$\underline{U}_2$};
+  \draw[flow] (\xb,{\yt-0.4}) -- (\xb,{\yb+0.4});
+  \node[right=2pt] at (\xb,{(\yt+\yb)/2}) {$\underline{U}_R$};
 
   % ---- coordinate x and overall length l --------------------
   \node[below=1pt] at (\xm,\yb) {$x$};

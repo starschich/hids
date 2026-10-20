@@ -1,0 +1,73 @@
+% =============================================================
+%  Symbols
+%  Collects the symbols used across the report, in the notation of
+%  Section 3 (sending/receiving end, primed quantities per unit
+%  length).  Matching slide: presentation/design/ac-transmission/
+%  symbols.tex.
+% =============================================================
+\section{Symbols}
+\label{sec:symbols}
+
+Quantities per unit length carry a prime, $R'$, $L'$, $G'$, $C'$; the same
+letter without the prime is the quantity of the whole line. Complex
+quantities are underlined. Terminal quantities take the subscript $S$ at the
+sending end and $R$ at the receiving end, and voltages are line-to-line
+unless stated otherwise.
+
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+  \toprule
+  \multicolumn{1}{c}{\textbf{Symbol}} & \textbf{Description} \\
+  \midrule
+  $\underline{A}, \underline{B}, \underline{C}, \underline{D}$
+          & Two-port (ABCD) parameters of the line \\
+  $C'$    & Capacitance per unit length \\
+  $d$     & Conductor diameter \\
+  $D$     & Phase spacing of the tower head \\
+  $f$     & System frequency; $f_{er}$ the electrical resonance frequency \\
+  $G'$    & Conductance per unit length \\
+  $GMD$   & Geometric mean distance between the phases, $D_m$ \\
+  $GMR$   & Geometric mean radius of a sub-conductor; $GMR_b$ of the bundle \\
+  $H$     & Inertia constant of a synchronous machine \\
+  $I$     & Phase current; $\underline{I}_S$, $\underline{I}_R$ at the terminals \\
+  $k$     & Degree of series compensation, $X_C = k \cdot X_L$ \\
+  $K_s$   & Synchronising power coefficient, $\partial P / \partial \delta$ \\
+  $l$     & Line length; $x$ the distance from the sending end \\
+  $L'$    & Inductance per unit length \\
+  $m$     & Degree of shunt compensation \\
+  $n$     & Turns ratio of an ideal transformer; number of sections in a cascade \\
+  $P$     & Active power; $P_{nat}$ natural power, $P_{max}$ maximum transfer \\
+  $Q$     & Reactive power \\
+  $r_b$   & Equivalent radius of the bundle for the capacitance \\
+  $R'$    & Resistance per unit length \\
+  $s$     & Bundle spacing \\
+  $S_{sc}$ & Short-circuit level at a terminal \\
+  $U$     & Line-to-line voltage; $\underline{U}_S$, $\underline{U}_R$ at the
+            terminals, $U_n$ nominal \\
+  $X$     & Series reactance of the path; $X'$ per unit length, $X_C$ of the
+            series bank, $X_{tot}$ of the whole path between the internal
+            voltages \\
+  $\underline{Y}'$ & Shunt admittance per unit length, $G' + j \cdot \omega \cdot C'$ \\
+  $\underline{Z}'$ & Series impedance per unit length, $R' + j \cdot \omega \cdot L'$ \\
+  $\underline{T}$ & Chain (ABCD) matrix of a two-port \\
+  $\underline{Z}_{eq}$ & Series branch of the equivalent $\pi$;
+            $\underline{Y}_{eq}$ its shunt branch \\
+  $\underline{Z}_c$ & Image (characteristic) impedance of a two-port,
+            $\sqrt{\underline{B}/\underline{C}}$ \\
+  $\underline{Z}_{in}$ & Impedance seen at port~1 of a terminated two-port \\
+  $\underline{Z}_L$ & Impedance terminating a two-port \\
+  $\underline{Z}_w$ & Wave (surge) impedance, $\sqrt{\underline{Z}'/\underline{Y}'}$ \\
+  \midrule
+  $\alpha$   & Attenuation constant \\
+  $\beta$    & Phase constant; $\beta \cdot l$ the electrical length \\
+  $\underline{\gamma}$ & Propagation constant, $\alpha + j \cdot \beta$ \\
+  $\delta$   & Transmission angle between the terminal voltages \\
+  $\varepsilon_0$ & Permittivity of free space \\
+  $\mu_0$    & Permeability of free space \\
+  $\underline{\theta}$ & Image transfer constant of a two-port;
+            $\underline{\gamma} \cdot l$ for a line \\
+  $\varphi$  & Power-factor angle \\
+  $\omega$   & Angular frequency, $2 \cdot \pi \cdot f$ \\
+  \bottomrule
+\end{tabularx}
+
+\FloatBarrier

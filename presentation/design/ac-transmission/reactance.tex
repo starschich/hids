@@ -1,0 +1,44 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Frame — the series reactance X of the governing relation
+%  Part of ac-transmission; \input from ac-transmission.tex,
+%  directly after principles.tex.
+%
+%  No figures.  Answers what sets X once the principle is stated:
+%  length linearly, geometry only logarithmically.  Bundle table from
+%  the fig/angular_stability_figures.py constants (GMD = 13.441 m,
+%  GMR_cond = 0.0588 ft, s = 18 in, D = 35 ft, 60 Hz).  Worked values
+%  for this line are collected on reference-line.tex.
+% =============================================================
+
+\begin{frame}{The series reactance $X$}
+  \begin{block}{Where $X$ comes from}
+    {$X$ is set by the geometry of the line\\
+    Length enters linearly, the geometry only through a logarithm.}
+  \end{block}
+
+  \vspace{0.8em}
+  \[
+    X = \omega\cdot L'\cdot l
+    \qquad
+    L' = \frac{\mu_0}{2\cdot\pi}\cdot\ln\frac{D_m}{r_b}
+  \]
+
+  \vspace{0.6em}
+  \centering
+  \renewcommand{\arraystretch}{1.15}
+  {\footnotesize
+  \begin{tabular}{@{}c r r r@{}}
+    \textbf{Conductors per phase} & \multicolumn{1}{c}{\textbf{$r_b$}\,/\,m}
+      & \multicolumn{1}{c}{\textbf{$X'$}\,/\,$\Omega$km$^{-1}$}
+      & \multicolumn{1}{c}{\textbf{rel.}\,/\,\%} \\
+    \hline
+    1 & 0.018 & 0.499 & 148 \\
+    2 & 0.091 & 0.377 & 112 \\
+    \atrowhighlight 3 & 0.155 & 0.336 & 100 \\
+    4 & 0.222 & 0.310 &  92 \\
+    \hline
+  \end{tabular}}\\[0.6em]
+  {\color{atGray}\footnotesize Doubling $r_b$ --- or halving $D_m$ ---
+  removes only 15\,\% of $X$.}
+\end{frame}

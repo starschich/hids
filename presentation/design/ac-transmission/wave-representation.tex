@@ -1,0 +1,124 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Subsection — the distributed (wave) representation of the line
+%  Part of ac-transmission; \input from ac-transmission.tex,
+%  after reactance.tex and before reference-line.tex.
+%
+%  Fourth step of the chapter's argument: the pi-section is a lumped
+%  approximation; the parameters are distributed, so the line obeys a
+%  wave equation.  gamma and Z_w, the cosh/sinh solution, and the
+%  exact A, B, C, D that replace the nominal-pi entries of
+%  two-port.tex.  R', L', G', C' are defined on the chapter's opening
+%  frame, line-parameters.tex.  The three frames on gamma/Z_w and the line equations
+%  were moved here from power-transmission.tex, where they sat after
+%  the load cases.
+%  Values from fig/angular_stability_figures.py constants
+%  (R' = 56.9 mOhm/km, X' = 0.336 Ohm/km, C' = 12.7 nF/km, 60 Hz).
+% =============================================================
+\providecommand{\acfig}[1]{ac-transmission/fig/#1}
+
+\intermezzo{Wave Representation}{The line as a distributed system}
+
+% ---------------------------------------------------------------
+\begin{frame}{From the $\pi$-section to the wave equation}
+  \begin{block}{Why the lumped model runs out}
+    {The parameters are distributed along the line, not concentrated\\
+    Two quantities describe the distribution completely.}
+  \end{block}
+
+  \vspace{0.6em}
+  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}
+  \[
+    \underline{\gamma} = \alpha + j\cdot\beta
+      = \sqrt{\underline{Z}'\cdot\underline{Y}'}
+      = \sqrt{\left(R'+j\cdot\omega\cdot L'\right)\cdot
+              \left(G'+j\cdot\omega\cdot C'\right)}
+  \]
+  \[
+    \underline{Z}_w = \sqrt{\frac{\underline{Z}'}{\underline{Y}'}}
+      = \sqrt{\frac{R'+j\cdot\omega\cdot L'}{G'+j\cdot\omega\cdot C'}}
+  \]
+
+  \vspace{0.5em}
+  \centering
+  {\color{atGray}\footnotesize Reference line:
+  $\alpha = 1.07 \times 10^{-4}$\,Np/km,
+  $\beta = 1.27 \times 10^{-3}$\,rad/km,
+  $\underline{Z}_w = 266-j\,22\,\Omega$, wavelength 4936\,km.}
+\end{frame}
+
+% ---------------------------------------------------------------
+\begin{frame}{Voltage and current along the line}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.38\textwidth}\centering
+      \input{\acfig{two-port-terminals.tex}}
+    \end{column}
+    \begin{column}{0.58\textwidth}
+      {\footnotesize At distance $x$ from the sending end}\\[0.2em]
+      {\footnotesize$\begin{aligned}[t]
+        \underline{U} &= \underline{U}_R\cdot
+                         \cosh\left(\underline{\gamma}\cdot\left(l-x\right)\right)
+                       + \underline{Z}_w\cdot\underline{I}_R\cdot
+                         \sinh\left(\underline{\gamma}\cdot\left(l-x\right)\right)\\[0.5em]
+        \underline{I} &= \frac{\underline{U}_R}{\underline{Z}_w}\cdot
+                         \sinh\left(\underline{\gamma}\cdot\left(l-x\right)\right)
+                       + \underline{I}_R\cdot
+                         \cosh\left(\underline{\gamma}\cdot\left(l-x\right)\right)
+       \end{aligned}$}\\[1.2em]
+      {\footnotesize At the sending end $\left(x=0\right)$}\\[0.2em]
+      {\footnotesize$\begin{aligned}[t]
+        \underline{U}_S &= \underline{U}_R\cdot
+                           \cosh\left(\underline{\gamma}\cdot l\right)
+                         + \underline{Z}_w\cdot\underline{I}_R\cdot
+                           \sinh\left(\underline{\gamma}\cdot l\right)\\[0.5em]
+        \underline{I}_S &= \frac{\underline{U}_R}{\underline{Z}_w}\cdot
+                           \sinh\left(\underline{\gamma}\cdot l\right)
+                         + \underline{I}_R\cdot
+                           \cosh\left(\underline{\gamma}\cdot l\right)
+       \end{aligned}$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ---------------------------------------------------------------
+\begin{frame}{The exact two-port parameters}
+  \begin{block}{Closing the loop}
+    {The same $\underline{A}$, $\underline{B}$, $\underline{C}$,
+    $\underline{D}$ as before --- now exact\\
+    The nominal $\pi$ was their short-line approximation.}
+  \end{block}
+
+  \vspace{0.4em}
+  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{5pt}
+  \[
+    \underline{A} = \underline{D} = \cosh\left(\underline{\gamma}\cdot l\right),
+    \qquad
+    \underline{B} = \underline{Z}_w\cdot\sinh\left(\underline{\gamma}\cdot l\right),
+    \qquad
+    \underline{C} = \frac{\sinh\left(\underline{\gamma}\cdot l\right)}
+                         {\underline{Z}_w}
+  \]
+
+  \vspace{0.2em}
+  \centering
+  \renewcommand{\arraystretch}{1.1}
+  {\footnotesize
+  \begin{tabular}{@{}r r r r r@{}}
+    \textbf{$l$} & \multicolumn{1}{c}{\textbf{$\beta\cdot l$}}
+      & \multicolumn{1}{c}{\textbf{$\left|B\right|$ nominal $\pi$}}
+      & \multicolumn{1}{c}{\textbf{$\left|B\right|$ exact}}
+      & \multicolumn{1}{c}{\textbf{error}} \\
+    \multicolumn{1}{c}{mi} & \multicolumn{1}{c}{$^\circ$}
+      & \multicolumn{1}{c}{$\Omega$} & \multicolumn{1}{c}{$\Omega$}
+      & \multicolumn{1}{c}{\%} \\
+    \hline
+    100 & 11.7 &  54.8 &  54.5 &  $+0.7$ \\
+    200 & 23.5 & 109.7 & 106.7 &  $+2.8$ \\
+    \atrowhighlight 300 & 35.2 & 164.5 & 154.4 &  $+6.5$ \\
+    400 & 46.9 & 219.4 & 195.8 & $+12.0$ \\
+    600 & 70.4 & 329.1 & 252.9 & $+30.1$ \\
+    \hline
+  \end{tabular}}\\[0.4em]
+  {\color{atGray}\footnotesize The $\pi$-section holds to roughly 100\,mi;
+  beyond that only the wave form is usable.}
+\end{frame}

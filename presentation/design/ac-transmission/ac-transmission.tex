@@ -2,58 +2,53 @@
 % =============================================================
 %  Chapter — AC Power Transmission and PSCAD (Module 02)
 %  Figures in ./fig  (EMF & SVG converted to cropped PDF, PNG copied).
-%  Sub-files: power-transmission.tex, natural-power.tex,
+%  Sub-files: line-parameters.tex, two-port.tex, power-transfer.tex,
+%  principles.tex,
+%  reactance.tex, wave-representation.tex, reference-line.tex,
+%  power-transmission.tex,
+%  natural-power.tex,
 %  ohl-configuration.tex, transmission-limits.tex,
-%  series-compensation.tex, ohl-conductors.tex
+%  angular-stability.tex, series-compensation.tex,
+%  ohl-conductors.tex, abbreviations.tex, symbols.tex
 %  (\input below).
 % =============================================================
 \newcommand{\acfig}[1]{ac-transmission/fig/#1}
 
 \sectionslide{AC Power Transmission}{Power exchange, cables and OHL}
 
-\begin{frame}{Abbreviations}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.48\textwidth}
-      {\small
-      \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
-        AAAC  & All-aluminium alloy conductor \\
-        AAC   & All-aluminium conductor \\
-        AC    & Alternating current \\
-        ACSR  & Aluminium conductor steel reinforced \\
-        ACSS  & Aluminium conductor steel supported \\
-        CB    & Circuit breaker \\
-        DC    & Direct current \\
-        DS    & Disconnector (disconnect switch) \\
-        GMD   & Geometric mean distance \\
-        GMR   & Geometric mean radius \\
-        kcmil & Thousand circular mils \\
-        MOV   & Metal-oxide varistor \\
-      \end{tabularx}}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      {\small
-      \begin{tabularx}{\linewidth}{@{}l@{\hspace{0.8em}}X@{}}
-        OHL   & Overhead line \\
-        PCC   & Point of common coupling \\
-        RMS   & Root mean square \\
-        SCL   & Short-circuit level \\
-        SIL   & Surge-impedance loading \\
-        SSCI  & Sub-synchronous control interaction \\
-        SSR   & Sub-synchronous resonance \\
-        VSC   & Voltage-sourced converter \\
-        XLPE  & Cross-linked polyethylene \\
-        pf    & Power factor \\
-        p.u.  & Per unit \\
-      \end{tabularx}}
-    \end{column}
-  \end{columns}
-\end{frame}
+% ---- Abbreviations ----
+
+\input{ac-transmission/abbreviations}
+
+% ---- Symbols ----
+\input{ac-transmission/symbols}
+
+% ---- The line parameters R', L', G', C' ---------------------
+\input{ac-transmission/line-parameters}
+
+% ---- The line as a two-port: the pi-section -----------------
+\input{ac-transmission/two-port}
+
+% ---- The complete power transfer relation -------------------
+\input{ac-transmission/power-transfer}
+
+% ---- The simplified relation (short, lossless) --------------
+\input{ac-transmission/principles}
+
+% ---- What sets the series reactance X -----------------------
+\input{ac-transmission/reactance}
+
+% ---- The distributed (wave) representation ------------------
+\input{ac-transmission/wave-representation}
+
+% ---- Worked numbers for the 500 kV reference line -----------
+\input{ac-transmission/reference-line}
 
 % ---- Power transmission (principle definition) --------------
 \input{ac-transmission/power-transmission}
 
 % ---- Natural power (surge-impedance loading) ----------------
-% \input{ac-transmission/natural-power}
+\input{ac-transmission/natural-power}
 
 % ---- OHL configuration of the 500 kV reference line ---------
 \input{ac-transmission/ohl-configuration}
@@ -61,10 +56,19 @@
 % ---- Power transmission limits (loadability) ----------------
 \input{ac-transmission/transmission-limits}
 
+% ---- Steady-state angular stability -------------------------
+\input{ac-transmission/angular-stability}
+
 % ---- Series compensation (midpoint capacitor bank) ----------
 \input{ac-transmission/series-compensation}
 
 % ---- OHL conductors (codewords and standards) --------------
-% \input{ac-transmission/ohl-conductors}
+\input{ac-transmission/ohl-conductors}
+
+
+% ---- AC HV equipment ---------------------------------------
+\input{ac-transmission/ac-hv-equipment}
+
+
 
 

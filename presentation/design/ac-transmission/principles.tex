@@ -1,0 +1,25 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Frame — the simplified relation: the two-port at A = 1, B = jX
+%  Part of ac-transmission; \input from ac-transmission.tex,
+%  after power-transfer.tex and before reactance.tex.
+%
+%  No figures.  The short, lossless special case of the complete
+%  relation on the preceding frame, and the form the rest of the
+%  chapter works with.
+% =============================================================
+
+\begin{frame}{AC power transmission --- the simplified relation}
+  \begin{block}{Principle}
+    {Active power flows on the \emph{angle} between two voltages\\
+    Reactive power on the \emph{difference in their magnitude}.}
+  \end{block}
+
+  \vspace{1em}
+  \[
+    \begin{aligned}
+      P   &= \frac{U_S\cdot U_R}{X}\cdot\sin\delta \\[2ex]
+      Q_R &= \frac{U_S\cdot U_R\cdot\cos\delta - U_R^2}{X}
+    \end{aligned}
+  \]
+\end{frame}

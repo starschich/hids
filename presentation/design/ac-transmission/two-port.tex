@@ -1,0 +1,46 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Frame — the line as a two-port: the nominal pi-section
+%  Part of ac-transmission; \input from ac-transmission.tex,
+%  after symbols.tex -- it opens the chapter's argument.
+%
+%  First step: the line is a two-port, not one impedance.  Series R'
+%  and L', shunt C'.  power-transfer.tex then solves it.
+%  Figure fig/pi-section.tex (inline TikZ).  Worked values for this
+%  line are collected on reference-line.tex.
+% =============================================================
+\providecommand{\acfig}[1]{ac-transmission/fig/#1}
+
+\begin{frame}{The line as a two-port --- the $\pi$-section}
+  \begin{block}{Where the capacitance enters}
+    {The line also charges itself\\
+    Series $R'$ and $L'$, shunt $C'$ --- a two-port, not one impedance.}
+  \end{block}
+
+  \vspace{0.5em}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}\centering
+      \input{\acfig{pi-section.tex}}\\[0.8em]
+      \setlength{\abovedisplayskip}{2pt}\setlength{\belowdisplayskip}{2pt}
+      \[ \begin{aligned}
+           \underline{Z} &= \left(R'+j\cdot\omega\cdot L'\right)\cdot l \\
+           \underline{Y} &= \left(G'+j\cdot\omega\cdot C'\right)\cdot l
+         \end{aligned} \]
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \setlength{\abovedisplayskip}{2pt}\setlength{\belowdisplayskip}{2pt}
+      \[ \begin{bmatrix}\underline{U}_S\\[0.2em] \underline{I}_S\end{bmatrix}
+         = \begin{bmatrix}\underline{A} & \underline{B}\\[0.2em]
+                          \underline{C} & \underline{D}\end{bmatrix}
+           \cdot
+           \begin{bmatrix}\underline{U}_R\\[0.2em] \underline{I}_R\end{bmatrix} \]
+      \[ \begin{aligned}
+           \underline{A}=\underline{D} &= 1+\frac{\underline{Z}\cdot\underline{Y}}{2} \\
+           \underline{B} &= \underline{Z} \\
+           \underline{C} &= \underline{Y}\cdot
+                 \left(1+\frac{\underline{Z}\cdot\underline{Y}}{4}\right)
+         \end{aligned} \]
+    \end{column}
+  \end{columns}
+
+\end{frame}

@@ -1,0 +1,75 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Frame — the 500 kV reference line, worked numbers
+%  Part of ac-transmission; \input from ac-transmission.tex,
+%  after reactance.tex and before power-transmission.tex.
+%
+%  Collects the worked values that the preceding frames refer to, so
+%  those frames carry only the physics.  Same line as
+%  ohl-configuration.tex and series-compensation.tex.  All values from
+%  fig/angular_stability_figures.py (exact two-port) and the nominal pi
+%  of two-port.tex.  P_max of each model occurs at delta = theta_B.
+% =============================================================
+
+\begin{frame}{The 500\,kV reference line}
+  \begin{block}{Worked example}
+    {The same line carries the whole chapter\\
+    The model you choose moves $P_{max}$ by up to 20\,\%.}
+  \end{block}
+
+  \vspace{0.5em}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \renewcommand{\arraystretch}{1.05}
+      {\footnotesize
+      \begin{tabular}{@{}l l r@{}}
+        \textbf{Line} & & \multicolumn{1}{c}{\textbf{Value}} \\
+        \hline
+        $U_n$        & kV            &                500 \\
+        $f$          & Hz            &                 60 \\
+        $l$          & mi (km)       &          300 (483) \\
+        Conductor    &               & $3\times$ Bluebird \\
+        Geometry     & ft / in       &    35 flat / 18 \\
+        \hline
+        $R'$         & m$\Omega$/km  &               56.9 \\
+        $X'$         & $\Omega$/km   &              0.336 \\
+        $C'$         & nF/km         &               12.7 \\
+        \hline
+        $Z_w$        & $\Omega$      &                266 \\
+        $P_{nat}$    & MW            &                939 \\
+        \hline
+      \end{tabular}}
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      \renewcommand{\arraystretch}{1.05}
+      {\footnotesize
+      \begin{tabular}{@{}l l r@{}}
+        \textbf{At 300\,mi} & & \multicolumn{1}{c}{\textbf{Value}} \\
+        \hline
+        $\underline{Z}$     & $\Omega$ & $27.5+j\,162.2$ \\
+        $\underline{Y}$     & mS       & $j\,2.31$ \\
+        Charging at 1.0\,p.u. & MVAr   & 578 \\
+        $\beta\cdot l$      & $^\circ$ & 35.2 \\
+        \hline
+      \end{tabular}}\\[0.8em]
+      {\footnotesize
+      \begin{tabular}{@{}l r r r r@{}}
+        \textbf{Model} & \multicolumn{1}{c}{\textbf{$\left|A\right|$}}
+          & \multicolumn{1}{c}{\textbf{$\vartheta_B$}}
+          & \multicolumn{1}{c}{\textbf{$\left|B\right|$}}
+          & \multicolumn{1}{c}{\textbf{$P_{max}$}} \\
+         & & \multicolumn{1}{c}{$^\circ$}
+          & \multicolumn{1}{c}{$\Omega$} & \multicolumn{1}{c}{MW} \\
+        \hline
+        Short, lossless & 1.000 & 90.0 & 162.2 & 1541 \\
+        Nominal $\pi$   & 0.813 & 80.4 & 164.5 & 1266 \\
+        \atrowhighlight Distributed & 0.819 & 81.0 & 154.4 & 1364 \\
+        \hline
+      \end{tabular}}
+    \end{column}
+  \end{columns}
+
+  \centering
+  {\color{atGray}\footnotesize $P_{max}$ occurs at $\delta=\vartheta_B$;
+  the simplification moves it to $90^\circ$ and overstates it by 13\,\%.}
+\end{frame}

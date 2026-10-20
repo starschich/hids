@@ -1,0 +1,53 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Frame — the complete power transfer relation of the two-port
+%  Part of ac-transmission; \input from ac-transmission.tex,
+%  between two-port.tex and principles.tex.
+%
+%  Second step of the chapter's argument: solve the two-port for the
+%  receiving-end current, form S_R, and separate real and imaginary
+%  parts.  The following frame (principles.tex) is this relation at
+%  A = 1, B = jX.  Worked values are collected on reference-line.tex.
+% =============================================================
+
+\begin{frame}{Power transfer of the two-port}
+  \begin{block}{The complete relation}
+    {Everything the line does sits in $\underline{A}$ and $\underline{B}$\\
+    Magnitudes set the amplitude, the angles set the shape.}
+  \end{block}
+
+  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{4pt}
+  \[
+    \underline{U}_S = U_S\cdot e^{\,j\cdot\delta}, \quad
+    \underline{U}_R = U_R, \quad
+    \underline{A} = \left|A\right|\cdot e^{\,j\cdot\vartheta_A}, \quad
+    \underline{B} = \left|B\right|\cdot e^{\,j\cdot\vartheta_B}
+  \]
+  \[
+    \underline{I}_R = \frac{\underline{U}_S - \underline{A}\cdot\underline{U}_R}
+                           {\underline{B}}
+    \qquad
+    \underline{S}_R = \underline{U}_R\cdot\underline{I}_R^{*}
+  \]
+  {\footnotesize
+  \[
+    \begin{aligned}
+      P_R &= \frac{U_S\cdot U_R}{\left|B\right|}
+             \cdot\cos\left(\vartheta_B-\delta\right)
+           - \frac{\left|A\right|\cdot U_R^2}{\left|B\right|}
+             \cdot\cos\left(\vartheta_B-\vartheta_A\right) \\[0.3em]
+      Q_R &= \frac{U_S\cdot U_R}{\left|B\right|}
+             \cdot\sin\left(\vartheta_B-\delta\right)
+           - \frac{\left|A\right|\cdot U_R^2}{\left|B\right|}
+             \cdot\sin\left(\vartheta_B-\vartheta_A\right)
+    \end{aligned}
+  \]}
+
+  \centering
+  {\footnotesize Short and lossless: $\underline{A}=1$,
+  $\underline{B}=j\cdot X$ $\;\Rightarrow\;$
+  $\cos\left(\vartheta_B-\delta\right)=\sin\delta$ and the second term
+  vanishes.}\\[0.05em]
+  {\color{atGray}\footnotesize $\underline{U}_R$ is the phase reference ---
+  $\delta$ is the angle by which the sending end leads it.}
+\end{frame}

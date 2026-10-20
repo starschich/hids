@@ -1,0 +1,69 @@
+% =============================================================
+%  Cables — what changes against an overhead line
+%  Indicative ranges; the example values are the 230 kV XLPE cable
+%  used on the power-exchange slides.
+% =============================================================
+\subsection{Cables}
+\label{sec:cable}
+
+A cable carries the same four parameters and the same representation, but
+the geometry inverts the shunt branch. Conductor and screen are separated by
+a few centimetres of solid dielectric rather than by metres of air, so the
+capacitance per unit length rises by more than an order of magnitude while
+the inductance falls, Table~\ref{tab:cable-ranges}.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{@{}l l r r@{}}
+    \toprule
+    \textbf{Parameter} & & \multicolumn{1}{c}{\textbf{OHL}}
+      & \multicolumn{1}{c}{\textbf{Cable}} \\
+    \midrule
+    $R'$ & $\Omega$/km  & 0.1--1    & 0.1--1 \\
+    $L'$ & mH/km        & $\approx 1$ & 0.31--1.42 \\
+    $G'$ & \textmu S/km & 0.05      & $\approx 1$ \\
+    $C'$ & nF/km        & $\approx 10$ & 180--420 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Indicative per-unit-length parameters, overhead line against
+           XLPE cable~[17]}
+  \label{tab:cable-ranges}
+\end{table}
+
+Three consequences follow, and they are what make a cable a different design
+problem rather than a shorter overhead line.
+
+\paragraph{The wave impedance collapses.} With $C'$ up and $L'$ down,
+$\underline{Z}_w$ falls from a few hundred ohms to under a hundred. For a
+230\,kV XLPE cable with $L' = 1.35$\,mH/km and $C' = 190$\,nF/km,
+$\underline{Z}_w = 84\,\Omega$ against $266\,\Omega$ for the overhead line
+of Section~\ref{sec:reference-line}. The natural power rises in proportion,
+but it is not a loading anyone reaches: the limit arrives from the charging
+current first.
+
+\paragraph{The line charges itself heavily.} The charging reactive power per
+unit length is $Q_c' = U^2 \cdot \omega \cdot C'$. For the same example
+cable $\omega \cdot C' = 71.6$\,\textmu S/km, giving 3.79\,MVAr/km and a
+charging current of 9.5\,A/km at 230\,kV. That current flows whether or not
+the cable is loaded, it is drawn from both ends, and it consumes conductor
+ampacity that is then unavailable for useful load. Beyond a critical length
+the cable carries nothing but its own charging current. Shunt reactors at
+the ends --- and, for long routes, at intermediate points --- are therefore
+not an optimisation but a condition of operation.
+
+\paragraph{The electrical length runs out sooner.} The phase constant
+$\beta = \omega \cdot \sqrt{L' \cdot C'}$ rises with the capacitance, so a
+cable reaches a given $\beta \cdot l$ in a fraction of the route length an
+overhead line needs. The example cable has a wavelength of 1041\,km against
+4936\,km for the reference overhead line: one kilometre of this cable is
+electrically worth nearly five of that line. The lumped $\pi$ of
+Section~\ref{sec:ac-two-port} therefore loses accuracy at a few tens of
+kilometres rather than a few hundred, and the distributed form
+of~\eqref{eq:ac-abcd-exact} has to be used much earlier.
+
+Where intermediate compensation is impossible --- a submarine crossing, or a
+long cable with no accessible landing point --- these three together are
+what rule out AC and leave DC as the only option. The comparison is then not
+between a cable and an overhead line but between an AC and a DC scheme.
+
+\FloatBarrier

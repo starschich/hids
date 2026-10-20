@@ -10,7 +10,8 @@
 %  (numpy + matplotlib only).  Same model as the worked example in
 %  the notebook ac_ohl_series_compensation.ipynb.
 %
-%  Reference line throughout: 500 kV, 60 Hz, 300 mi (483 km), flat,
+%  Reference line throughout, given in full on reference-line.tex:
+%    500 kV, 60 Hz, 300 mi (483 km), flat,
 %    3x Bluebird ACSR 2156 kcmil per phase, 18 in bundle, 35 ft phase
 %    spacing, R at 75 C:
 %    R' = 56.9 m$\Omega$/km, X' = 0.336 $\Omega$/km, C' = 12.7 nF/km,
@@ -119,7 +120,7 @@
 \end{frame}
 
 % ---------------------------------------------------------------
-\begin{frame}{Series compensation --- reference line}
+\begin{frame}{Series compensation --- model and cases}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.50\textwidth}
       {\small The two-port model of the natural-power slides is reused; the
@@ -129,10 +130,6 @@
       {\small
       \begin{itemize}
         \setlength{\itemsep}{0.3em}
-        \item Line constants from the conductor and tower geometry:
-              $L'=\frac{\mu_0}{2\cdot\pi}\cdot\ln\frac{D_m}{r_{b}}$,
-              $C'=\frac{2\cdot\pi\cdot\varepsilon_0}{\ln\left(D_m/r_{b\_c}\right)}$
-              with the bundle equivalent radii.
         \item $\beta\cdot l = 35.2^\circ$: at 300\,mi the line is well
               beyond the thermal plateau of the loadability curve.
         \item The compensation degree is swept over
@@ -145,23 +142,15 @@
       \begin{tabular}{@{}l l r@{}}
         \textbf{Quantity} & & \multicolumn{1}{c}{\textbf{Value}} \\
         \hline
-        $U_n$ & kV & 500 \\
-        $f$ & Hz & 60 \\
-        $l$ & mi (km) & 300 (483) \\
-        Conductor & & $3\times$ Bluebird ACSR \\
-        $R'$ (75\,$^\circ$C) & m$\Omega$/km & 56.9 \\
-        $X'$ & $\Omega$/km & 0.336 \\
-        $C'$ & nF/km & 12.7 \\
-        \hline
         $X_L$ & $\Omega$ & 162.4 \\
         $R$ & $\Omega$ & 27.5 \\
         $Z_w$ & $\Omega$ & 266 \\
         $P_{nat}$ & MW & 939 \\
         \hline
       \end{tabular}}\\[0.4em]
-      {\color{atGray}\footnotesize Flat configuration, 35\,ft phase
-      spacing, 18\,in bundle spacing. Conductor data: Southwire ACSR
-      tables, section 11-4.}
+      {\color{atGray}\footnotesize The line and its geometry are given on
+      the reference-line slide; only the quantities the compensation uses
+      are repeated here.}
     \end{column}
   \end{columns}
 \end{frame}

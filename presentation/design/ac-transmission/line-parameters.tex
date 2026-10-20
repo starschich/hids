@@ -1,0 +1,53 @@
+% !TEX root = ../presentation.tex
+% =============================================================
+%  Frame — definition and physical origin of R', L', G', C'
+%  Part of ac-transmission; \input from ac-transmission.tex,
+%  the opening frame of the chapter.
+%
+%  Defines the four per-unit-length parameters that Z' and Y' are
+%  built from, and names the physical effect behind each.  Figure
+%  fig/line-parameters.tex (inline TikZ) is the nominal pi-section
+%  written in those parameters; two-port.tex then abstracts it.
+%  Values: 500 kV reference line, 3x Bluebird ACSR at 75 C, 60 Hz.
+%  G' is the order of magnitude quoted for OHL in
+%  power-transmission.tex; it is negligible against omega*C'.
+% =============================================================
+\providecommand{\acfig}[1]{ac-transmission/fig/#1}
+
+\begin{frame}{The line parameters $R'$, $L'$, $G'$ and $C'$}
+  \begin{block}{Per unit length}
+    {Four parameters describe the whole line\\
+    Two in series, two in shunt --- each a distinct physical effect.}
+  \end{block}
+
+  \vspace{0.3em}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}\centering
+      \input{\acfig{line-parameters.tex}}\\[1.0em]
+      \setlength{\abovedisplayskip}{2pt}\setlength{\belowdisplayskip}{2pt}
+      {\small
+      \[ \begin{aligned}
+           \underline{Z}' &= R'+j\cdot\omega\cdot L' \\
+           \underline{Y}' &= G'+j\cdot\omega\cdot C'
+         \end{aligned} \]}
+    \end{column}
+    \begin{column}{0.53\textwidth}
+      \renewcommand{\arraystretch}{1.1}
+      {\footnotesize
+      \begin{tabularx}{\linewidth}{@{}l l X r@{}}
+        & \textbf{Parameter} & \textbf{Effect}
+          & \multicolumn{1}{c}{\textbf{Value}} \\
+        \hline
+        $R'$ & Resistance  & Ohmic loss      & 56.9\,m$\Omega$/km \\
+        $L'$ & Inductance  & Magnetic field  & 0.891\,mH/km \\
+        $G'$ & Conductance & Leakage         & 0.05\,\textmu S/km \\
+        $C'$ & Capacitance & Electric field  & 12.7\,nF/km \\
+        \hline
+      \end{tabularx}}\\[0.6em]
+      {\color{atGray}\footnotesize From the same geometry as $X$:
+      $L'=\frac{\mu_0}{2\cdot\pi}\cdot\ln\frac{D_m}{r_b}$,
+      $C'=\frac{2\cdot\pi\cdot\varepsilon_0}{\ln\left(D_m/r_{b\_c}\right)}$.
+      On an OHL $G'\ll\omega\cdot C'=4.79$\,\textmu S/km.}
+    \end{column}
+  \end{columns}
+\end{frame}

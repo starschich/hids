@@ -1,0 +1,659 @@
+% =============================================================
+%  Two-port networks — the general theory
+%  Placed before the AC chapter: the line is one application of
+%  this algebra, not its origin.  Section 4 (AC Power
+%  Transmission) refers back here.
+%  Figures are inline TikZ in the report colours.
+% =============================================================
+\section{Two-Port Networks}
+\label{sec:two-port}
+
+This appendix is background. Section~\ref{sec:ac-chapter} is self-contained
+and nothing here is needed to follow it; what follows is for the reader who
+wants to know where its equations come from and how far they reach.
+
+The chain of matrices that Section~\ref{sec:ac-chapter} uses to describe a
+transmission line is not a power-transmission construction. It is the
+standard description of any linear network reached through two terminal
+pairs, and it was in use for telephone repeaters and filters before it was
+applied to power lines. Setting it out on its own terms shows the line to be
+one instance of it rather than a special theory, and shows which of its
+results are properties of a line and which are properties of any two-port at
+all.
+
+Two properties make the description worth the abstraction. The first is that
+it hides everything inside the network: two ports and four complex numbers
+describe the terminal behaviour completely, whatever the internal
+arrangement. The second is that networks in cascade multiply, so a chain of
+elements of any length collapses to one matrix of the same size.
+
+\subsection{The port concept}
+\label{sec:tp-ports}
+
+A \emph{port} is a pair of terminals through which the current entering one
+terminal equals the current leaving the other. That equality is the port
+condition, and it is an assumption about how the network is connected, not a
+property of the network itself: it fails if a third path --- a stray
+capacitance to earth, a shared return, a ground loop --- carries current
+between the two sides. A two-port is a network with exactly two such pairs,
+Figure~\ref{fig:tp-generic}.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[
+      x=0.62cm, y=0.62cm, line width=0.8pt,
+      every node/.style={inner sep=1.5pt, font=\small},
+      rail/.style={atFg, line width=0.8pt},
+      nbox/.style={draw=atFg, fill=atBgSubtle, line width=0.8pt,
+                   minimum width=2.108cm, minimum height=1.984cm},
+      term/.style={circle, draw=atFg, fill=atBg, line width=0.8pt,
+                   minimum size=4.2pt, inner sep=0pt},
+      flow/.style={atFg, -{Triangle[length=2.4mm,width=2.0mm]},
+                   line width=0.8pt},
+    ]
+    \node[nbox] at (5,1.6) {$N$};
+    % rails
+    \draw[rail] (0,3.2) -- (3.3,3.2);   \draw[rail] (6.7,3.2) -- (10,3.2);
+    \draw[rail] (0,0)   -- (3.3,0);     \draw[rail] (6.7,0)   -- (10,0);
+    % terminals
+    \node[term] at (0,3.2) {};  \node[term] at (0,0) {};
+    \node[term] at (10,3.2) {}; \node[term] at (10,0) {};
+    % port currents: both drawn into the upper terminal
+    \draw[flow] (-1.8,3.2) -- (-0.9,3.2);
+    \node[left] at (-2.0,3.2) {$\underline{I}_1$};
+    \draw[flow] (11.8,3.2) -- (10.9,3.2);
+    \node[right] at (12.0,3.2) {$\underline{I}_2$};
+    % port voltages
+    \draw[flow] (0,2.8) -- (0,0.4);
+    \node[right=2pt] at (0,1.6) {$\underline{U}_1$};
+    \draw[flow] (10,2.8) -- (10,0.4);
+    \node[left=2pt] at (10,1.6) {$\underline{U}_2$};
+    % port brackets
+    \node[font=\scriptsize, atFgMuted] at (0.1,-1.1) {port 1};
+    \node[font=\scriptsize, atFgMuted] at (9.9,-1.1) {port 2};
+  \end{tikzpicture}
+  \caption{A two-port and its terminal quantities, drawn in the convention
+           in which both port currents enter the network}
+  \label{fig:tp-generic}
+\end{figure}
+
+Four quantities appear at the terminals: $\underline{U}_1$,
+$\underline{I}_1$, $\underline{U}_2$ and $\underline{I}_2$. The network
+imposes two linear relations between them, so any two may be chosen as
+independent and the other two follow. Which two are chosen is the only
+difference between the parameter sets below.
+
+\subsection{Parameter sets}
+\label{sec:tp-parameters}
+
+Table~\ref{tab:tp-sets} lists the six choices. The impedance, admittance and
+the two hybrid sets are drawn in the convention of
+Figure~\ref{fig:tp-generic}, with both currents entering the network. The
+chain sets reverse the reference direction at port 2, so that
+$\underline{I}_2$ leaves the network towards whatever is connected next ---
+without that reversal, cascading would alternate in sign at every junction.
+Comparing results from two sources that differ only in this convention is
+the most common error in using them.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabularx}{\linewidth}{@{}l l X@{}}
+    \toprule
+    \textbf{Set} & \multicolumn{1}{c}{\textbf{Relation}} & \textbf{Typical use} \\
+    \midrule
+    Impedance $\underline{Z}$
+      & $\underline{U} = \underline{Z} \cdot \underline{I}$
+      & Networks joined in series; open-circuit measurements \\
+    Admittance $\underline{Y}$
+      & $\underline{I} = \underline{Y} \cdot \underline{U}$
+      & Networks joined in parallel; nodal analysis \\
+    Hybrid $\underline{h}$
+      & $\left(\underline{U}_1, \underline{I}_2\right)$ from
+        $\left(\underline{I}_1, \underline{U}_2\right)$
+      & Amplifying devices, where the input is a current and the output a
+        voltage \\
+    Inverse hybrid $\underline{g}$
+      & $\left(\underline{I}_1, \underline{U}_2\right)$ from
+        $\left(\underline{U}_1, \underline{I}_2\right)$
+      & The dual of the above \\
+    Chain $\underline{T}$ (ABCD)
+      & port 1 from port 2
+      & Elements in cascade; transmission paths \\
+    Inverse chain
+      & port 2 from port 1
+      & The same, traversed in the other direction \\
+    \bottomrule
+  \end{tabularx}
+  \caption{The six parameter sets of a two-port, distinguished only by which
+           two terminal quantities are taken as independent~[19], [20]}
+  \label{tab:tp-sets}
+\end{table}
+
+The sets are equivalent wherever they all exist, and each is undefined for
+some networks: an ideal transformer has no impedance matrix, an ideal
+series element no admittance matrix. The chain matrix exists unless the
+network cannot transfer anything between the ports at all.
+
+\subsection{Chain parameters and cascading}
+\label{sec:tp-chain}
+
+The chain form writes port 1 in terms of port 2,
+\begin{equation}
+  \begin{bmatrix} \underline{U}_1 \\ \underline{I}_1 \end{bmatrix}
+  =
+  \underline{T} \cdot
+  \begin{bmatrix} \underline{U}_2 \\ \underline{I}_2 \end{bmatrix},
+  \qquad
+  \underline{T} =
+  \begin{bmatrix} \underline{A} & \underline{B} \\
+                  \underline{C} & \underline{D} \end{bmatrix}
+  \label{eq:tp-chain}
+\end{equation}
+with $\underline{I}_2$ leaving the network. The four entries have a meaning
+one at a time. With port 2 open, $\underline{I}_2 = 0$ and $\underline{A} =
+\underline{U}_1/\underline{U}_2$ is the reciprocal voltage ratio, while
+$\underline{C} = \underline{I}_1/\underline{U}_2$ is a transfer admittance.
+With port 2 shorted, $\underline{U}_2 = 0$ and $\underline{B} =
+\underline{U}_1/\underline{I}_2$ is a transfer impedance, $\underline{D} =
+\underline{I}_1/\underline{I}_2$ the reciprocal current ratio. So
+$\underline{A}$ and $\underline{D}$ are dimensionless, $\underline{B}$ is an
+impedance and $\underline{C}$ an admittance --- which is why the four cannot
+be compared with each other as magnitudes.
+
+The reason this set is the one used for transmission is cascading. If two
+two-ports are connected so that port 2 of the first is port 1 of the second,
+Figure~\ref{fig:tp-cascade}, the intermediate quantities are shared and
+eliminate, leaving
+\begin{equation}
+  \underline{T} = \underline{T}_a \cdot \underline{T}_b,
+  \qquad\text{and in general}\qquad
+  \underline{T} = \prod_{i=1}^{n} \underline{T}_i
+  \label{eq:tp-cascade}
+\end{equation}
+in the order the elements are traversed. The product does not commute:
+reversing two elements of a chain generally changes the result, which is the
+algebraic statement that it matters where in a path an element sits. A
+compensating element at the middle of a line and the same element at its end
+are different networks, and~\eqref{eq:tp-cascade} is what distinguishes
+them.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[
+      x=0.62cm, y=0.62cm, line width=0.8pt,
+      every node/.style={inner sep=1.5pt, font=\small},
+      rail/.style={atFg, line width=0.8pt},
+      nbox/.style={draw=atFg, fill=atBgSubtle, line width=0.8pt,
+                   minimum width=1.736cm, minimum height=1.86cm},
+      term/.style={circle, draw=atFg, fill=atBg, line width=0.8pt,
+                   minimum size=4.2pt, inner sep=0pt},
+      flow/.style={atFg, -{Triangle[length=2.4mm,width=2.0mm]},
+                   line width=0.8pt},
+    ]
+    \node[nbox] at (3.4,1.5) {$\underline{T}_a$};
+    \node[nbox] at (9.6,1.5) {$\underline{T}_b$};
+    % left block
+    \draw[rail] (0,3.0) -- (2.0,3.0);  \draw[rail] (4.8,3.0) -- (8.2,3.0);
+    \draw[rail] (0,0)   -- (2.0,0);    \draw[rail] (4.8,0)   -- (8.2,0);
+    % right block
+    \draw[rail] (11.0,3.0) -- (13.0,3.0);
+    \draw[rail] (11.0,0)   -- (13.0,0);
+    % intermediate port terminals
+    \node[term] at (6.5,3.0) {};  \node[term] at (6.5,0) {};
+    % terminals
+    \node[term] at (0,3.0) {};   \node[term] at (0,0) {};
+    \node[term] at (13,3.0) {};  \node[term] at (13,0) {};
+    % currents
+    \draw[flow] (-1.7,3.0) -- (-0.9,3.0);
+    \node[left] at (-1.9,3.0) {$\underline{I}_1$};
+    \draw[flow] (13.9,3.0) -- (14.7,3.0);
+    \node[right] at (14.9,3.0) {$\underline{I}_2$};
+    \draw[flow] (5.1,3.0) -- (5.9,3.0);
+    \node[above=1pt] at (5.5,3.1) {$\underline{I}_m$};
+    % voltages
+    \draw[flow] (0,2.6) -- (0,0.4);
+    \node[right=2pt] at (0,1.5) {$\underline{U}_1$};
+    \draw[flow] (6.5,2.6) -- (6.5,0.4);
+    \node[right=2pt] at (6.5,1.5) {$\underline{U}_m$};
+    \draw[flow] (13,2.6) -- (13,0.4);
+    \node[left=2pt] at (13,1.5) {$\underline{U}_2$};
+  \end{tikzpicture}
+  \caption{Two two-ports in cascade: the intermediate quantities are common
+           to both and eliminate, so the chain matrices multiply}
+  \label{fig:tp-cascade}
+\end{figure}
+
+\subsection{Other interconnections}
+\label{sec:tp-interconnection}
+
+Cascade is one of five ways two two-ports can be joined, and each has its
+own parameter set in which the combination is a simple sum,
+Table~\ref{tab:tp-interconnection}. The pattern is the same throughout: pick
+the set whose independent variables are the ones the connection forces to be
+shared, and the matrices add.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabularx}{\linewidth}{@{}l l l X@{}}
+    \toprule
+    \textbf{Connection} & \multicolumn{1}{c}{\textbf{Shared}}
+      & \multicolumn{1}{c}{\textbf{Rule}} & \textbf{Where it is met} \\
+    \midrule
+    Cascade & port 2 of one is port 1 of the next
+      & $\underline{T} = \underline{T}_a \cdot \underline{T}_b$
+      & Line sections, a series bank between two half-lines, a transformer
+        ahead of a line \\
+    Series & both currents
+      & $\underline{Z} = \underline{Z}_a + \underline{Z}_b$
+      & Windings in series, impedances in a common current path \\
+    Parallel & both voltages
+      & $\underline{Y} = \underline{Y}_a + \underline{Y}_b$
+      & Parallel circuits of a double-circuit line, transformers in
+        parallel \\
+    Series-parallel & $\underline{I}_1$ and $\underline{U}_2$
+      & $\underline{h} = \underline{h}_a + \underline{h}_b$
+      & Feedback arrangements in amplifiers \\
+    Parallel-series & $\underline{U}_1$ and $\underline{I}_2$
+      & $\underline{g} = \underline{g}_a + \underline{g}_b$
+      & The dual of the above \\
+    \bottomrule
+  \end{tabularx}
+  \caption{The five interconnections of two two-ports and the parameter set
+           in which each is additive~[19], [20]}
+  \label{tab:tp-interconnection}
+\end{table}
+
+Cascade is the odd one out, and the difference is worth stating plainly
+because the word ``series'' is used loosely for both. In a cascade the
+networks are passed through one after another and the matrices
+\emph{multiply}; in a series connection they sit side by side with their
+ports stacked, both carry the same currents, and the matrices \emph{add},
+Figure~\ref{fig:tp-connections}.
+A capacitor bank inserted in a line is a cascade, not a series connection of
+two-ports, even though the capacitor is in series with the conductor: what
+is in series there is a circuit element within one port, not two ports with
+each other.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[
+      x=0.52cm, y=0.52cm, line width=0.8pt,
+      every node/.style={inner sep=1.5pt, font=\small},
+      rail/.style={atFg, line width=0.8pt},
+      wbox/.style={draw=atFg, fill=atBgSubtle, line width=0.8pt,
+                   minimum width=1.25cm, minimum height=2.184cm},
+      sbox/.style={draw=atFg, fill=atBgSubtle, line width=0.8pt,
+                   minimum width=1.25cm, minimum height=1.664cm},
+      term/.style={circle, draw=atFg, fill=atBg, line width=0.8pt,
+                   minimum size=3.6pt, inner sep=0pt},
+      plab/.style={font=\scriptsize, atFgMuted},
+    ]
+    % ---------------- (a) cascade -------------------------------
+    \begin{scope}[shift={(0,0)}]
+      \draw[rail] (0,2.1) -- (1.9,2.1);   \draw[rail] (4.3,2.1) -- (7.7,2.1);
+      \draw[rail] (0,-2.1) -- (1.9,-2.1); \draw[rail] (4.3,-2.1) -- (7.7,-2.1);
+      \draw[rail] (10.1,2.1) -- (12,2.1); \draw[rail] (10.1,-2.1) -- (12,-2.1);
+      \node[wbox] at (3.1,0) {$a$};
+      \node[wbox] at (8.9,0) {$b$};
+      \node[term] at (0,2.1) {};  \node[term] at (0,-2.1) {};
+      \node[term] at (12,2.1) {}; \node[term] at (12,-2.1) {};
+      \node[plab] at (6,-4.4)
+        {(a) cascade: $\underline{T} = \underline{T}_a \cdot \underline{T}_b$};
+    \end{scope}
+    % ---------------- (b) series --------------------------------
+    \begin{scope}[shift={(15.5,0)}]
+      \draw[rail] (0,4.0) -- (3.8,4.0);   \draw[rail] (6.2,4.0) -- (10,4.0);
+      \draw[rail] (3.8,0.8) -- (0,0.8) -- (0,-0.8) -- (3.8,-0.8);
+      \draw[rail] (6.2,0.8) -- (10,0.8) -- (10,-0.8) -- (6.2,-0.8);
+      \draw[rail] (0,-4.0) -- (3.8,-4.0); \draw[rail] (6.2,-4.0) -- (10,-4.0);
+      \node[sbox] at (5,2.4) {$a$};
+      \node[sbox] at (5,-2.4) {$b$};
+      \node[term] at (0,4.0) {};  \node[term] at (0,-4.0) {};
+      \node[term] at (10,4.0) {}; \node[term] at (10,-4.0) {};
+      \node[plab] at (5,-6.0)
+        {(b) series: $\underline{Z} = \underline{Z}_a + \underline{Z}_b$};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{Cascade against series connection. In the cascade the networks
+           are passed through one after the other and the chain matrices
+           multiply; in the series connection the ports are stacked, both
+           networks carry the same currents, and the impedance matrices add}
+  \label{fig:tp-connections}
+\end{figure}
+
+The addition rules carry a condition that the cascade does not. Stacking two
+networks can destroy the port condition inside them: current that entered
+one terminal of a sub-network may return through the other sub-network
+rather than through its partner terminal, and then the sub-network no longer
+has the matrix it was given alone, so the sum is wrong. Whether a particular
+pairing is safe is settled by a test due to Brune, applied to the two
+networks as connected~[20]. Two cases are safe without testing: either
+sub-network having an isolating transformer at one port, and --- in power
+work the common case --- two networks that share a common return and are
+each symmetric about it. The cascade needs no such test, because it adds no
+new connection between terminals that were not already a port.
+
+The parallel rule is the one met most often in transmission. Two identical
+circuits on the same route, each with parameters $\underline{A} \ldots
+\underline{D}$, give
+\begin{equation}
+  \underline{A}_{\parallel} = \underline{A},
+  \qquad
+  \underline{B}_{\parallel} = \frac{\underline{B}}{2},
+  \qquad
+  \underline{C}_{\parallel} = 2 \cdot \underline{C},
+  \qquad
+  \underline{D}_{\parallel} = \underline{D}
+  \label{eq:tp-parallel}
+\end{equation}
+which is the statement that two circuits halve the transfer impedance and so
+double the maximum transfer, while the voltage ratio is unchanged. Losing
+one of them restores $\underline{B}$, which is the contingency case of
+Section~\ref{sec:as-contingency}. Equation~\eqref{eq:tp-parallel} follows
+from the admittance rule, and is quicker to use than converting twice.
+
+\subsection{Elementary two-ports}
+\label{sec:tp-elements}
+
+Every ladder network is built from two elements: an impedance in series with
+one rail and an admittance across the rails, Figure~\ref{fig:tp-elements}(a)
+and~(b). Their chain matrices are
+\begin{equation}
+  \underline{T}_{series} =
+  \begin{bmatrix} 1 & \underline{Z} \\ 0 & 1 \end{bmatrix},
+  \qquad
+  \underline{T}_{shunt} =
+  \begin{bmatrix} 1 & 0 \\ \underline{Y} & 1 \end{bmatrix}
+  \label{eq:tp-elements}
+\end{equation}
+and everything else in Table~\ref{tab:tp-matrices} is a product of these
+two, taken in the order the elements are met.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[
+      x=0.62cm, y=0.62cm, line width=0.8pt,
+      every node/.style={inner sep=1.5pt, font=\small},
+      rail/.style={atFg, line width=0.8pt},
+      box/.style={draw=atFg, fill=atBgSubtle, line width=0.8pt,
+                  minimum width=1.0cm, minimum height=0.42cm},
+      vbox/.style={draw=atFg, fill=atBgSubtle, line width=0.8pt,
+                   minimum width=0.5cm, minimum height=1.0cm},
+      term/.style={circle, draw=atFg, fill=atBg, line width=0.8pt,
+                   minimum size=3.6pt, inner sep=0pt},
+      plab/.style={font=\scriptsize, atFgMuted},
+    ]
+    % ---- (a) series impedance ----------------------------------
+    \begin{scope}[shift={(0,0)}]
+      \draw[rail] (0,2.6) -- (1.79,2.6);
+      \node[box] at (2.6,2.6) {$\underline{Z}$};
+      \draw[rail] (3.41,2.6) -- (5.2,2.6);
+      \draw[rail] (0,0) -- (5.2,0);
+      \node[term] at (0,2.6) {}; \node[term] at (0,0) {};
+      \node[term] at (5.2,2.6) {}; \node[term] at (5.2,0) {};
+      \node[plab] at (2.6,-1.1) {(a) series impedance};
+    \end{scope}
+    % ---- (b) shunt admittance ----------------------------------
+    \begin{scope}[shift={(7.8,0)}]
+      \draw[rail] (0,2.6) -- (5.2,2.6);
+      \draw[rail] (0,0) -- (5.2,0);
+      \draw[rail] (2.6,2.6) -- (2.6,2.10);
+      \node[vbox] at (2.6,1.3) {$\underline{Y}$};
+      \draw[rail] (2.6,0.50) -- (2.6,0);
+      \node[term] at (0,2.6) {}; \node[term] at (0,0) {};
+      \node[term] at (5.2,2.6) {}; \node[term] at (5.2,0) {};
+      \node[plab] at (2.6,-1.1) {(b) shunt admittance};
+    \end{scope}
+    % ---- (c) T-section -----------------------------------------
+    \begin{scope}[shift={(0,-5.6)}]
+      \draw[rail] (0,2.6) -- (0.59,2.6);
+      \node[box] at (1.4,2.6) {$\underline{Z}_1$};
+      \draw[rail] (2.21,2.6) -- (2.99,2.6);
+      \node[box] at (3.8,2.6) {$\underline{Z}_2$};
+      \draw[rail] (4.61,2.6) -- (5.2,2.6);
+      \draw[rail] (0,0) -- (5.2,0);
+      \draw[rail] (2.6,2.6) -- (2.6,2.10);
+      \node[vbox] at (2.6,1.3) {$\underline{Y}$};
+      \draw[rail] (2.6,0.50) -- (2.6,0);
+      \node[term] at (0,2.6) {}; \node[term] at (0,0) {};
+      \node[term] at (5.2,2.6) {}; \node[term] at (5.2,0) {};
+      \node[plab] at (2.6,-1.1) {(c) T-section};
+    \end{scope}
+    % ---- (d) pi-section ----------------------------------------
+    \begin{scope}[shift={(7.8,-5.6)}]
+      \draw[rail] (0,2.6) -- (1.79,2.6);
+      \node[box] at (2.6,2.6) {$\underline{Z}$};
+      \draw[rail] (3.41,2.6) -- (5.2,2.6);
+      \draw[rail] (0,0) -- (5.2,0);
+      \draw[rail] (1.0,2.6) -- (1.0,2.10);
+      \node[vbox] at (1.0,1.3) {$\underline{Y}_1$};
+      \draw[rail] (1.0,0.50) -- (1.0,0);
+      \draw[rail] (4.2,2.6) -- (4.2,2.10);
+      \node[vbox] at (4.2,1.3) {$\underline{Y}_2$};
+      \draw[rail] (4.2,0.50) -- (4.2,0);
+      \node[term] at (0,2.6) {}; \node[term] at (0,0) {};
+      \node[term] at (5.2,2.6) {}; \node[term] at (5.2,0) {};
+      \node[plab] at (2.6,-1.1) {(d) $\pi$-section};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{The two elementary two-ports and the two ladder sections built
+           from them}
+  \label{fig:tp-elements}
+\end{figure}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabularx}{\linewidth}{@{}l l X@{}}
+    \toprule
+    \textbf{Network} & \multicolumn{1}{c}{$\underline{A}$ \ldots $\underline{D}$}
+      & \textbf{Remark} \\
+    \midrule
+    Series $\underline{Z}$
+      & $1,\; \underline{Z},\; 0,\; 1$
+      & $\underline{A} = 1$: no shunt path, so the open-circuit voltage
+        ratio is unity \\
+    Shunt $\underline{Y}$
+      & $1,\; 0,\; \underline{Y},\; 1$
+      & $\underline{B} = 0$: the ports are directly connected \\
+    Symmetric $\pi$
+      & $1 + \frac{\underline{Z} \cdot \underline{Y}}{2},\;
+         \underline{Z},\;
+         \underline{Y} \cdot \left(1 + \frac{\underline{Z} \cdot
+         \underline{Y}}{4}\right),\;
+         1 + \frac{\underline{Z} \cdot \underline{Y}}{2}$
+      & $\underline{Y}/2$ at each end; the nominal line section
+        of~\eqref{eq:ac-abcd-pi} \\
+    Ideal transformer
+      & $n,\; 0,\; 0,\; 1/n$
+      & $\underline{B} = \underline{C} = 0$: a pure scaling of both
+        quantities \\
+    Uniform line
+      & $\cosh \underline{\theta},\;
+         \underline{Z}_w \cdot \sinh \underline{\theta},\;
+         \sinh \underline{\theta} / \underline{Z}_w,\;
+         \cosh \underline{\theta}$
+      & $\underline{\theta} = \underline{\gamma} \cdot l$; the limit of
+        infinitely many $\pi$-sections \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Chain matrices of the elementary two-ports and of the uniform
+           line~[19], [21]}
+  \label{tab:tp-matrices}
+\end{table}
+
+The last row is the one that matters for a transmission line and is derived
+in Section~\ref{sec:ac-wave}; it is included here to show that it is the
+same object as the others, not a separate theory.
+
+\subsection{Reciprocity, symmetry and losslessness}
+\label{sec:tp-properties}
+
+Three structural properties of a network show themselves directly in the
+four entries.
+
+\paragraph{Reciprocity.} A network built only from impedances, whatever
+their arrangement, satisfies
+\begin{equation}
+  \underline{A} \cdot \underline{D} - \underline{B} \cdot \underline{C} = 1
+  \label{eq:tp-reciprocity}
+\end{equation}
+Physically: a source at port 1 and an ammeter at port 2 read the same as the
+source and the ammeter exchanged. It fails for networks containing an
+independent source or a non-reciprocal element such as a gyrator or a
+magnetised ferrite. Because the determinant is unity, the product
+in~\eqref{eq:tp-cascade} preserves it, so any cascade of reciprocal
+networks is reciprocal.
+
+\paragraph{Symmetry.} If the network looks the same from both ports then
+\begin{equation}
+  \underline{A} = \underline{D}
+  \label{eq:tp-symmetry}
+\end{equation}
+Every uniform line is symmetric; a $\pi$-section with unequal shunt branches
+is not, and neither is a bank placed anywhere other than at the midpoint.
+Symmetry is the condition under which the image impedance of
+Section~\ref{sec:tp-terminated} is the same at both ends.
+
+\paragraph{Losslessness.} A network of pure reactances has $\underline{A}$
+and $\underline{D}$ real and $\underline{B}$ and $\underline{C}$ purely
+imaginary. The departure of $\underline{A}$ from a real number is therefore
+a direct measure of the loss in a line, and is why the lossless
+approximations of Section~\ref{sec:ac-chapter} can be stated by dropping
+real parts rather than by rebuilding the model.
+
+\subsection{Terminating a two-port}
+\label{sec:tp-terminated}
+
+A two-port on its own is not a circuit. Closing port 2 with an impedance
+$\underline{Z}_L$ makes $\underline{U}_2 = \underline{Z}_L \cdot
+\underline{I}_2$, and~\eqref{eq:tp-chain} gives the impedance the source at
+port 1 sees:
+\begin{equation}
+  \underline{Z}_{in}
+    = \frac{\underline{U}_1}{\underline{I}_1}
+    = \frac{\underline{A} \cdot \underline{Z}_L + \underline{B}}
+           {\underline{C} \cdot \underline{Z}_L + \underline{D}}
+  \label{eq:tp-zin}
+\end{equation}
+This is the single most used result of the whole description: every
+statement about what a network does to the thing behind it is a special case
+of it. With port 2 open it gives $\underline{A}/\underline{C}$, with port 2
+shorted $\underline{B}/\underline{D}$.
+
+One termination is distinguished. On a symmetric network there is a value of
+$\underline{Z}_L$ for which $\underline{Z}_{in} = \underline{Z}_L$, so that
+the network is invisible to its surroundings and may be repeated any number
+of times without changing anything. Setting $\underline{Z}_{in} =
+\underline{Z}_L$ in~\eqref{eq:tp-zin} with $\underline{A} = \underline{D}$
+gives the \emph{image} or \emph{characteristic} impedance
+\begin{equation}
+  \underline{Z}_c = \sqrt{\frac{\underline{B}}{\underline{C}}},
+  \qquad
+  \underline{\theta} = \operatorname{arcosh} \underline{A}
+  \label{eq:tp-image}
+\end{equation}
+with $\underline{\theta}$ the image transfer constant, the complex number by
+which a quantity is scaled and shifted in passing through the network.
+Substituting the uniform-line row of Table~\ref{tab:tp-matrices} returns
+$\underline{Z}_c = \underline{Z}_w$ and $\underline{\theta} =
+\underline{\gamma} \cdot l$: the wave impedance of a line and its electrical
+length are not line-specific quantities but this general pair, evaluated for
+that network. The natural power of Section~\ref{sec:natural-power} is the
+same statement in power terms --- a line closed in its own image impedance.
+
+\subsection{The same algebra in other domains}
+\label{sec:tp-domains}
+
+Nothing above used the fact that the quantities were electrical. The
+derivation needs only a pair of variables at each port whose product is
+power: one that is common to the elements in parallel and one that is common
+to the elements in series. Table~\ref{tab:tp-domains} lists the pairs for
+which the identical algebra is standard practice.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabularx}{\linewidth}{@{}l l l X@{}}
+    \toprule
+    \textbf{Domain} & \multicolumn{1}{c}{\textbf{Across}}
+      & \multicolumn{1}{c}{\textbf{Through}} & \textbf{Where the chain form is used} \\
+    \midrule
+    Electrical & Voltage & Current
+      & Lines, filters, matching networks, machine equivalents \\
+    Translational & Velocity & Force
+      & Vibration isolators, drive trains, transducer chains \\
+    Rotational & Angular velocity & Torque
+      & Shaft lines, gearboxes, torsional models of a turbine set \\
+    Acoustic & Sound pressure & Volume velocity
+      & Ducts, horns, mufflers, loudspeaker enclosures~[22] \\
+    Thermal & Temperature difference & Heat flow
+      & Layered walls, heat sinks, cable thermal ratings \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Domains in which the two-port algebra is used unchanged, with the
+           pair of port variables whose product is power~[20], [22]}
+  \label{tab:tp-domains}
+\end{table}
+
+A transducer is simply a two-port whose ports lie in two different rows of
+that table: a loudspeaker is an electrical port and an acoustic one, a motor
+an electrical port and a rotational one, a piezoelectric stack an electrical
+port and a translational one. Cascading them is the same matrix product, and
+it is how a complete electro-mechanical chain is reduced to one matrix.
+
+Two further uses are worth naming because they are reached from a different
+starting point and arrive at the same matrix.
+
+\paragraph{Ray and beam optics.} A sequence of lenses, mirrors and free
+spaces is handled by a $2 \times 2$ \emph{ray transfer matrix} acting on the
+ray height and its slope, multiplied in the order the light meets the
+elements~[23]. A thin lens is $\left[1, 0; -1/f, 1\right]$ --- the shunt
+element of~\eqref{eq:tp-elements} with $\underline{Y} = -1/f$ --- and a free
+space of length $d$ is $\left[1, d; 0, 1\right]$, the series element. The
+resonator condition that the beam reproduce itself after one round trip is
+the image-impedance condition~\eqref{eq:tp-image} in another vocabulary.
+
+\paragraph{High-frequency networks.} Above a few hundred megahertz a
+terminal voltage is not measurable and the scattering parameters are used in
+place of the chain matrix. They are a change of variables, not a different
+theory: the scattering matrix is the same network expressed in incident and
+reflected waves against a reference impedance, and converts back to
+$\underline{A} \ldots \underline{D}$ in closed form. Cascading in that
+vocabulary uses the transfer-scattering matrix, which multiplies exactly
+as~\eqref{eq:tp-cascade} does.
+
+\subsection{What the description assumes}
+\label{sec:tp-limits}
+
+The generality has a boundary, and the assumptions are easy to leave
+unstated because they hold without comment in most of this report.
+
+\begin{itemize}
+  \setlength{\itemsep}{0.35em}
+  \item \textbf{Linear and time-invariant.} The relations are linear with
+        constant coefficients. A saturating transformer core, a switching
+        converter or a thyristor-controlled bank is not described by one
+        matrix; it is described by one matrix per operating point, or by a
+        model outside this framework.
+  \item \textbf{One frequency.} The entries are complex numbers at a stated
+        frequency. A chain evaluated at 60\,Hz says nothing about its
+        behaviour at 20\,Hz, which is why the sub-synchronous screening of
+        Section~\ref{sec:sc-ssr} re-evaluates the same network over a range
+        of frequencies rather than scaling one result.
+  \item \textbf{The port condition holds.} Current entering a terminal
+        leaves its partner. Earth-return paths and inter-circuit coupling
+        break it, and a line with a significant zero-sequence path is a
+        multi-port, not a two-port.
+  \item \textbf{No internal sources.} Independent sources inside the network
+        add a constant term that no $2 \times 2$ matrix carries. They are
+        handled by superposition, or by moving them outside the two-port.
+  \item \textbf{Balanced three-phase, for the power case.} The single-line
+        two-port of Section~\ref{sec:ac-chapter} is the positive-sequence
+        network. Unbalance requires the sequence networks separately.
+\end{itemize}
+
+Within those bounds the description is exact, and the exactness is the
+point: the equations of Section~\ref{sec:ac-chapter} are not an engineering
+approximation to a line but the general two-port result with the line's
+own $\underline{A} \ldots \underline{D}$ substituted.
+
+\FloatBarrier
