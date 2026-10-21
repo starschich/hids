@@ -1,0 +1,260 @@
+% =============================================================
+%  Overhead lines — what sets R', L', G', C' on an OHL
+%  The general representation is fundamentals.tex; the worked
+%  numbers for the 500 kV reference line are in reference-line.tex.
+% =============================================================
+\subsection{Overhead Lines}
+\label{sec:ohl}
+
+\subsubsection{Geometry and the line parameters}
+\label{sec:ohl-geometry}
+
+On an overhead line the conductors are bare and the insulation is air, so
+the inductance and the capacitance follow from the geometry of the tower and
+of the conductor bundle alone:
+\begin{equation}
+  L' = \frac{\mu_0}{2 \cdot \pi} \cdot \ln\frac{D_m}{r_b}
+  \qquad
+  C' = \frac{2 \cdot \pi \cdot \varepsilon_0}{\ln\left(D_m / r_{b\_c}\right)}
+  \label{eq:ohl-lc}
+\end{equation}
+with $D_m$ the geometric mean distance between the phases and $r_b$,
+$r_{b\_c}$ the equivalent radii of the bundle for the inductance and the
+capacitance respectively. The two differ because the inductance is referred
+to the geometric mean radius of the sub-conductors and the capacitance to
+their physical radius.
+
+Both parameters depend on the geometry only through a logarithm, and on the
+same ratio $D_m / r_b$. That makes the geometry a weak lever: the phase
+spacing and the bundle radius have to be changed by a factor to move $L'$ or
+$C'$ by a fraction. Length, by contrast, enters linearly, so on an overhead
+line the series reactance of~\eqref{eq:ac-x} is set by the route rather
+than by the tower.
+
+The flat (horizontal) configuration used throughout this report is drawn to
+scale in Figure~\ref{fig:ohl-tower}: three phases on one crossarm at a
+spacing $D$, so that the outer phases see $2 \cdot D$, each phase a bundle
+of three sub-conductors. Table~\ref{tab:ohl-geometry} gives its dimensions.
+It gives the lowest towers and the widest right-of-way of the common
+arrangements.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[x=1.15mm, y=1.15mm,
+      cond/.style={fill=atFg, draw=atFg},
+      steel/.style={atBorderStrong},
+      dim/.style={atFgMuted, {Stealth[length=1.6mm]}-{Stealth[length=1.6mm]},
+                  line width=0.5pt},
+      lbl/.style={font=\footnotesize, atFg},
+      note/.style={font=\scriptsize, atFgMuted}]
+    % crossarm and tower body, schematic
+    \draw[steel, line width=1.1pt] (-40,0) -- (40,0);
+    \draw[steel, line width=1.1pt] (-40,0) -- (-38,-3) -- (38,-3) -- (40,0);
+    \draw[steel, line width=0.9pt] (-6,0) -- (-7.8,-18);
+    \draw[steel, line width=0.9pt] ( 6,0) -- ( 7.8,-18);
+    \foreach \yy in {-6,-12} {
+      \draw[steel, line width=0.4pt] ({-6-abs(\yy)/10},\yy) -- ({6+abs(\yy)/10},\yy);
+    }
+    % insulator strings and bundles
+    \foreach \xx in {-35,0,35} {
+      \draw[atFgMuted, line width=0.8pt] (\xx,0) -- (\xx,-12);
+      \foreach \yy in {-2,-4,...,-10} {\fill[atFgMuted] (\xx,\yy) circle (0.7);}
+      \foreach \px/\py in {0/-0.87,-0.75/0.43,0.75/0.43} {
+        \fill[cond] ($(\xx,-13)+(\px,\py)$) circle (0.55);
+      }
+    }
+    \node[lbl] at (-35,-17) {A};
+    \node[lbl] at (  0,-17) {B};
+    \node[lbl] at ( 35,-17) {C};
+    % extension lines
+    \draw[atFgMuted, line width=0.4pt, densely dotted] (-35,-15.5) -- (-35,-30);
+    \draw[atFgMuted, line width=0.4pt, densely dotted] (  0,-15.5) -- (  0,-24);
+    \draw[atFgMuted, line width=0.4pt, densely dotted] ( 35,-15.5) -- ( 35,-30);
+    % dimensions
+    \draw[dim] (-35,-22) -- (0,-22) node[midway,below=1pt,lbl] {$D = 35$\,ft};
+    \draw[dim] (0,-22) -- (35,-22) node[midway,below=1pt,lbl] {$D = 35$\,ft};
+    \draw[dim] (-35,-28) -- (35,-28) node[midway,below=1pt,lbl] {$2 \cdot D = 70$\,ft};
+    % detail marker on phase C
+    \draw[atAccentFg, line width=0.8pt] (35,-13) circle (2.4);
+    \node[note] at (0,4) {to scale, 1\,ft = 1.15\,mm; earth return neglected};
+  \end{tikzpicture}
+  \caption{Tower head of the reference line, flat configuration; the marked
+           phase is drawn in detail in Figure~\ref{fig:ohl-bundle-detail}.
+           Tower body and insulator lengths are schematic}
+  \label{fig:ohl-tower}
+\end{figure}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{@{}l l r@{}}
+    \toprule
+    \textbf{Parameter} & & \multicolumn{1}{c}{\textbf{Value}} \\
+    \midrule
+    $D$ phase spacing & ft & 35 \\
+    $2 \cdot D$ outer phases & ft & 70 \\
+    Sub-conductors per phase & & 3 \\
+    $s$ bundle spacing & in & 18 \\
+    $d$ conductor diameter & in & 1.762 \\
+    $GMR$ of a sub-conductor & ft & 0.0588 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Tower-head geometry of the reference line, Bluebird ACSR
+           2156\,kcmil 84/19, single circuit~[10]}
+  \label{tab:ohl-geometry}
+\end{table}
+
+Bundling is the geometric change with the largest electrical effect. Dividing the phase current between sub-conductors raises the
+equivalent radius $r_b$ well above that of a single conductor, and with it
+reduces $L'$; it also reduces the surface gradient and so the corona loss.
+Table~\ref{tab:ohl-bundle} shows the effect for one configuration: going
+from one sub-conductor to three removes a third of the reactance, while
+doubling $r_b$ again --- or halving $D_m$ --- removes only a further
+15\,\%.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{@{}c r r r@{}}
+    \toprule
+    \textbf{Sub-conductors per phase} & \multicolumn{1}{c}{\textbf{$r_b$}}
+      & \multicolumn{1}{c}{\textbf{$X'$}}
+      & \multicolumn{1}{c}{\textbf{relative}} \\
+    & \multicolumn{1}{c}{m} & \multicolumn{1}{c}{$\Omega$/km}
+      & \multicolumn{1}{c}{\%} \\
+    \midrule
+    1 & 0.018 & 0.499 & 148 \\
+    2 & 0.091 & 0.377 & 112 \\
+    3 & 0.155 & 0.336 & 100 \\
+    4 & 0.222 & 0.310 &  92 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Effect of bundling on the series reactance, 35\,ft flat
+           configuration with 18\,in bundle spacing at 60\,Hz}
+  \label{tab:ohl-bundle}
+\end{table}
+
+The shunt branch of an overhead line is effectively a pure capacitance. The
+conductance $G'$ comprises the leakage across the insulator strings and the
+corona loss. In normal weather it is about a hundred times smaller than the
+susceptance $\omega \cdot C'$ and is set to zero in load-flow work. It is
+not negligible for loss studies in foul weather, where corona dominates
+it.
+
+Because the conductor spacing is large and the insulation is air, $C'$
+stays small. The wave impedance $\underline{Z}_w = \sqrt{\underline{Z}' /
+\underline{Y}'}$ is correspondingly high --- a few hundred ohms --- and the
+charging current per unit length is low enough that an overhead line can run
+for hundreds of kilometres before it has to be compensated.
+
+\subsubsection{Bundle and phase equivalents}
+\label{sec:ohl-bundle}
+
+The two radii of~\eqref{eq:ohl-lc} and the mean phase distance follow from
+the tower head and the bundle. For a three-conductor bundle of spacing $s$
+made of sub-conductors of diameter $d$ and geometric mean radius $GMR$,
+Figure~\ref{fig:ohl-bundle-detail}, and a flat configuration of phase
+spacing $D$ in which the outer phases see $2 \cdot D$,
+\begin{equation}
+  GMR_b = \sqrt[3]{GMR \cdot s^{2}},
+  \qquad
+  r_b = \sqrt[3]{\frac{d}{2} \cdot s^{2}},
+  \qquad
+  GMD = \sqrt[3]{D \cdot D \cdot 2 \cdot D} = D \cdot \sqrt[3]{2}
+  \label{eq:ohl-equivalents}
+\end{equation}
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[x=1.65mm, y=1.65mm,
+      dim/.style={atFgMuted, {Stealth[length=1.4mm]}-{Stealth[length=1.4mm]},
+                  line width=0.5pt},
+      lbl/.style={font=\footnotesize, atFg},
+      note/.style={font=\scriptsize, atFgMuted}]
+    % equilateral triangle, s = 18 in, apex down; circumradius 10.39 in
+    \coordinate (P1) at (0,-10.39);
+    \coordinate (P2) at (-9,5.196);
+    \coordinate (P3) at ( 9,5.196);
+    \draw[atBorderStrong, line width=0.5pt, densely dashed] (P1) -- (P2) -- (P3) -- cycle;
+    \draw[atBorderStrong, line width=0.4pt, densely dotted] (0,0) circle (10.39);
+    \foreach \P in {P1,P2,P3} {
+      \fill[atFg] (\P) circle (0.881);
+    }
+    \fill[atFgMuted] (0,0) circle (0.35);
+    \draw[dim] ($(P2)+(0,4)$) -- ($(P3)+(0,4)$) node[midway,above,lbl] {$s = 18$\,in};
+    \draw[atFgMuted, line width=0.4pt, densely dotted] (P2) -- ($(P2)+(0,4)$);
+    \draw[atFgMuted, line width=0.4pt, densely dotted] (P3) -- ($(P3)+(0,4)$);
+    \draw[dim] ($(P1)+(-0.881,-2.8)$) -- ($(P1)+(0.881,-2.8)$);
+    \node[lbl,anchor=west] at ($(P1)+(1.8,-2.8)$) {$d = 1.762$\,in};
+    \draw[atFgMuted, line width=0.4pt, densely dotted] ($(P1)+(-0.881,0)$) -- ($(P1)+(-0.881,-2.8)$);
+    \draw[atFgMuted, line width=0.4pt, densely dotted] ($(P1)+( 0.881,0)$) -- ($(P1)+( 0.881,-2.8)$);
+    \draw[dim] (0,0) -- (P3) node[midway,above left,lbl,xshift=-1mm] {$s/\sqrt{3}$};
+    \node[note] at (0,-16) {to scale, 1\,in = 1.9\,mm};
+  \end{tikzpicture}
+  \caption{Three-conductor bundle of the reference line, apex down, with the
+           circle of radius $s/\sqrt{3}$ on which the sub-conductors sit}
+  \label{fig:ohl-bundle-detail}
+\end{figure}
+
+with $GMR_b$ the radius entering $L'$ and $r_b$ the one entering $C'$. For a
+two-conductor bundle the same construction gives $GMR_b = \sqrt{GMR \cdot
+s}$ and $r_b = \sqrt{d/2 \cdot s}$. The $GMD$ above assumes a transposed
+line.
+
+Table~\ref{tab:ohl-equivalents} evaluates them for the reference tower head
+of Section~\ref{sec:reference-line} --- 35\,ft flat, 18\,in bundle spacing,
+Bluebird ACSR 2156\,kcmil with $d = 1.762$\,in and $GMR = 0.0588$\,ft ---
+with three and with two sub-conductors per phase.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{@{}l l r r@{}}
+    \toprule
+    \textbf{Quantity} & & \multicolumn{1}{c}{\textbf{$3\times$}}
+      & \multicolumn{1}{c}{\textbf{$2\times$}} \\
+    \midrule
+    $GMR_b$ & in & 6.11 & 3.56 \\
+    $r_b$   & in & 6.58 & 3.98 \\
+    $GMD$   & ft & 44.1 & 44.1 \\
+    \midrule
+    $L'$ & mH/km & 0.892 & 1.000 \\
+    $C'$ & nF/km & 12.68 & 11.38 \\
+    $Z_w = \sqrt{L'/C'}$ & $\Omega$ & 265 & 296 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Bundle equivalents and the resulting parameters, three against
+           two sub-conductors per phase}
+  \label{tab:ohl-equivalents}
+\end{table}
+
+The third sub-conductor lowers $Z_w$ by about 10\,\% and so raises the
+natural power of Section~\ref{sec:natural-power} by about 11\,\%. A flat
+configuration gives the lowest towers and the widest right-of-way; the outer
+phases see twice the phase spacing, which is what the cube root
+in~\eqref{eq:ohl-equivalents} averages.
+
+\subsubsection{Conductor codewords}
+\label{sec:ohl-codewords}
+
+A conductor size does not define a conductor. ACSR of 795\,kcmil exists in
+four standard strandings --- Cuckoo 24/7, Drake 26/7, Mallard 30/19 and
+Condor 54/7 --- each with a different steel content and therefore different
+strength, weight and sag. The codeword fixes area, stranding and core in one
+word.
+
+The names began as Alcoa product nomenclature in the 1920s and 1930s and
+were later adopted into the ASTM standards~[13]. The family identifies the
+construction: ACSR and ACSS take bird names (Drake, Falcon, Rail, Cardinal),
+AAC flowers (Rose, Iris, Tulip, Peony)~[14] and AAAC US city names (Akron,
+Amherst, Anaheim)~[15]. The name carries no size information --- Bluebird is
+2156\,kcmil, Condor only 795.
+
+Other systems use the same idea with different animals. BS 215 and Indian
+practice use mammals: Dog, Wolf, Lynx, Panther, Zebra, Moose~[16]. A 400\,kV
+Indian line specified as ``twin Moose'' is the equivalent of a North
+American ``bundled Drake''. Metric designs in continental Europe usually
+drop codewords altogether and quote the aluminium and steel areas directly,
+for example 490/65\,mm$^2$.
+
+The practical consequence is that a conductor has to be quoted with its
+standard as well as its codeword, since the same name can appear in more
+than one national system.
+
+\FloatBarrier

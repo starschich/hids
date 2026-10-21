@@ -1,0 +1,43 @@
+% =============================================================
+%  Chapter — AC power transmission
+%  This file holds the chapter heading and its introduction only; the
+%  content is one file per subsection, \input below in reading order:
+%    fundamentals.tex         the general two-port representation
+%    overhead-lines.tex       what sets R', L', G', C' on an OHL
+%    cables.tex               what changes against an overhead line
+%    reference-line.tex       the 500 kV worked example
+%    natural-power.tex        surge-impedance loading
+%    transmission-limits.tex  thermal, voltage drop, stability
+%    angular-stability.tex    synchronising power and the margin
+%    series-compensation.tex  shortening the electrical length
+%  Figures of this chapter are in fig/ next to this file; their
+%  generating scripts are named in the sub-file header comments.
+%  Matching slides: presentation/design/ac-transmission/
+% =============================================================
+\section{AC Power Transmission}
+\label{sec:ac-chapter}
+
+The familiar statement that active power flows on the angle between two
+voltages, $P = U_S \cdot U_R / X \cdot \sin\delta$, is a special case. It
+holds for a short, lossless line, and its error grows with length.
+
+This chapter builds the representation from the line parameters upwards and
+then applies it. Section~\ref{sec:ac-transmission} gives the general form:
+the four per-unit-length quantities, the two-port that follows from them,
+the exact power transfer relation, the conditions under which it collapses
+to the simple form, and the distributed solution that replaces the lumped
+one on long lines. Sections~\ref{sec:ohl} and~\ref{sec:cable} give the
+parameters of an overhead line and of a cable, and
+Section~\ref{sec:reference-line} carries the chain through on one worked
+example. Sections~\ref{sec:natural-power} to~\ref{sec:series-compensation}
+apply the representation: the natural power, the three transmission limits,
+the angular stability margin and the effect of series compensation.
+
+\input{ac-transmission/fundamentals}
+\input{ac-transmission/overhead-lines}
+\input{ac-transmission/cables}
+\input{ac-transmission/reference-line}
+\input{ac-transmission/natural-power}
+\input{ac-transmission/transmission-limits}
+\input{ac-transmission/angular-stability}
+\input{ac-transmission/series-compensation}
