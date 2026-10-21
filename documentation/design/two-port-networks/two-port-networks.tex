@@ -8,24 +8,21 @@
 \section{Two-Port Networks}
 \label{sec:two-port}
 
-This appendix is background. Section~\ref{sec:ac-chapter} is self-contained
-and nothing here is needed to follow it; what follows is for the reader who
-wants to know where its equations come from and how far they reach.
+This appendix is background material. Section~\ref{sec:ac-chapter} is
+self-contained and does not depend on it; it records the origin of that
+section's equations and the conditions under which they hold.
 
-The chain of matrices that Section~\ref{sec:ac-chapter} uses to describe a
-transmission line is not a power-transmission construction. It is the
-standard description of any linear network reached through two terminal
-pairs, and it was in use for telephone repeaters and filters before it was
-applied to power lines. Setting it out on its own terms shows the line to be
-one instance of it rather than a special theory, and shows which of its
-results are properties of a line and which are properties of any two-port at
-all.
+The chain of matrices used in Section~\ref{sec:ac-chapter} is not a
+power-transmission construction. It is the standard description of any
+linear network reached through two terminal pairs, and it was in use for
+telephone repeaters and filters before it was applied to power lines. Stated
+on its own terms, it separates the results that are properties of a
+transmission line from those that hold for any two-port.
 
-Two properties make the description worth the abstraction. The first is that
-it hides everything inside the network: two ports and four complex numbers
-describe the terminal behaviour completely, whatever the internal
-arrangement. The second is that networks in cascade multiply, so a chain of
-elements of any length collapses to one matrix of the same size.
+The description has two properties that account for its use. Two ports and
+four complex numbers describe the terminal behaviour completely, whatever
+the internal arrangement; and networks in cascade multiply, so a chain of
+elements of any length reduces to one matrix of the same size.
 
 \subsection{The port concept}
 \label{sec:tp-ports}
@@ -263,8 +260,8 @@ shared, and the matrices add.
   \label{tab:tp-interconnection}
 \end{table}
 
-Cascade is the odd one out, and the difference is worth stating plainly
-because the word ``series'' is used loosely for both. In a cascade the
+The cascade differs from the other four, and the word ``series'' is applied
+to both arrangements in ordinary use. In a cascade the
 networks are passed through one after another and the matrices
 \emph{multiply}; in a series connection they sit side by side with their
 ports stacked, both carry the same currents, and the matrices \emph{add},
@@ -314,10 +311,9 @@ each other.
         {(b) series: $\underline{Z} = \underline{Z}_a + \underline{Z}_b$};
     \end{scope}
   \end{tikzpicture}
-  \caption{Cascade against series connection. In the cascade the networks
-           are passed through one after the other and the chain matrices
-           multiply; in the series connection the ports are stacked, both
-           networks carry the same currents, and the impedance matrices add}
+  \caption{Cascade and series connection of two two-ports: in the cascade
+           the networks are traversed in sequence, in the series connection
+           their ports are stacked}
   \label{fig:tp-connections}
 \end{figure}
 
@@ -535,15 +531,15 @@ port 1 sees:
            {\underline{C} \cdot \underline{Z}_L + \underline{D}}
   \label{eq:tp-zin}
 \end{equation}
-This is the single most used result of the whole description: every
-statement about what a network does to the thing behind it is a special case
-of it. With port 2 open it gives $\underline{A}/\underline{C}$, with port 2
-shorted $\underline{B}/\underline{D}$.
+Every statement about the effect of a network on the source behind it is a
+case of~\eqref{eq:tp-zin}. With port 2 open it gives
+$\underline{A}/\underline{C}$, with port 2 shorted
+$\underline{B}/\underline{D}$.
 
 One termination is distinguished. On a symmetric network there is a value of
-$\underline{Z}_L$ for which $\underline{Z}_{in} = \underline{Z}_L$, so that
-the network is invisible to its surroundings and may be repeated any number
-of times without changing anything. Setting $\underline{Z}_{in} =
+$\underline{Z}_L$ for which $\underline{Z}_{in} = \underline{Z}_L$. The
+network then presents its own termination impedance to its surroundings and
+may be repeated any number of times without changing them. Setting $\underline{Z}_{in} =
 \underline{Z}_L$ in~\eqref{eq:tp-zin} with $\underline{A} = \underline{D}$
 gives the \emph{image} or \emph{characteristic} impedance
 \begin{equation}
@@ -561,7 +557,7 @@ length are not line-specific quantities but this general pair, evaluated for
 that network. The natural power of Section~\ref{sec:natural-power} is the
 same statement in power terms --- a line closed in its own image impedance.
 
-\subsection{The same algebra in other domains}
+\subsection{Analogues in other domains}
 \label{sec:tp-domains}
 
 Nothing above used the fact that the quantities were electrical. The
@@ -594,14 +590,13 @@ which the identical algebra is standard practice.
   \label{tab:tp-domains}
 \end{table}
 
-A transducer is simply a two-port whose ports lie in two different rows of
-that table: a loudspeaker is an electrical port and an acoustic one, a motor
+A transducer is a two-port whose ports lie in two different rows of that
+table: a loudspeaker is an electrical port and an acoustic one, a motor
 an electrical port and a rotational one, a piezoelectric stack an electrical
 port and a translational one. Cascading them is the same matrix product, and
 it is how a complete electro-mechanical chain is reduced to one matrix.
 
-Two further uses are worth naming because they are reached from a different
-starting point and arrive at the same matrix.
+Two further uses reach the same matrix from a different starting point.
 
 \paragraph{Ray and beam optics.} A sequence of lenses, mirrors and free
 spaces is handled by a $2 \times 2$ \emph{ray transfer matrix} acting on the
@@ -621,11 +616,11 @@ $\underline{A} \ldots \underline{D}$ in closed form. Cascading in that
 vocabulary uses the transfer-scattering matrix, which multiplies exactly
 as~\eqref{eq:tp-cascade} does.
 
-\subsection{What the description assumes}
+\subsection{Assumptions}
 \label{sec:tp-limits}
 
-The generality has a boundary, and the assumptions are easy to leave
-unstated because they hold without comment in most of this report.
+The description rests on five assumptions. All five hold throughout this
+report and are therefore not restated where it applies them.
 
 \begin{itemize}
   \setlength{\itemsep}{0.35em}
@@ -641,7 +636,7 @@ unstated because they hold without comment in most of this report.
         of frequencies rather than scaling one result.
   \item \textbf{The port condition holds.} Current entering a terminal
         leaves its partner. Earth-return paths and inter-circuit coupling
-        break it, and a line with a significant zero-sequence path is a
+        break it, and a line that carries zero-sequence current is a
         multi-port, not a two-port.
   \item \textbf{No internal sources.} Independent sources inside the network
         add a constant term that no $2 \times 2$ matrix carries. They are
@@ -651,9 +646,9 @@ unstated because they hold without comment in most of this report.
         network. Unbalance requires the sequence networks separately.
 \end{itemize}
 
-Within those bounds the description is exact, and the exactness is the
-point: the equations of Section~\ref{sec:ac-chapter} are not an engineering
-approximation to a line but the general two-port result with the line's
-own $\underline{A} \ldots \underline{D}$ substituted.
+Within those bounds the description is exact. The equations of
+Section~\ref{sec:ac-chapter} are not an approximation to a line but the
+general two-port result with the line's own $\underline{A} \ldots
+\underline{D}$ substituted.
 
 \FloatBarrier

@@ -18,7 +18,7 @@
 
 \reportauthor{Eugen Starschich}
 \reportdocnumber{ATW-REP-DES-001}
-\reportrevision{0.8}
+\reportrevision{1.0}
 \reportstatus{Draft}
 \reportdate{\today}
 \reportconfidentiality{Internal}
@@ -36,6 +36,9 @@
   \revrow{0.6}{Oct. 20, 2026}{Eugen Starschich}{Added the general two-port chapter; transferred the remaining presentation drawings and the symbols list}
   \revrow{0.7}{Oct. 20, 2026}{Eugen Starschich}{Two-port theory moved to Appendix A as background material}
   \revrow{0.8}{Oct. 20, 2026}{Eugen Starschich}{Full comparison of the lumped and exact two-port parameters against length; cascaded sections and the equivalent pi; interconnection of two-ports in Appendix A}
+  \revrow{0.9}{Oct. 20, 2026}{Eugen Starschich}{Wording revised throughout to technical-report register}
+  \revrow{1.0}{Oct. 21, 2026}{Eugen Starschich}{Sources reorganised: one folder per chapter, each with its own heading file and figures}
+  \revrow{1.0}{Oct. 21, 2026}{Eugen Starschich}{Added DC fault ride-through: recovery sequence, records and design alternatives of the Pugalur--Thrissur link}
 }
 
 \newpage
@@ -43,18 +46,15 @@
 \clearpage
 
 % ---- Body ---------------------------------------------------
+% Front matter and references are single files in sections/; every
+% chapter is a folder of its own, whose <name>.tex holds the chapter
+% heading and \input s the subsections.
 \input{sections/00-abbreviations}
 \input{sections/00-symbols}
 \input{sections/01-introduction}
-% \input{sections/02-creepage-distance}
-\input{sections/03-ac-power-transmission}
-\input{sections/04-overhead-lines}
-\input{sections/05-cables}
-\input{sections/06-reference-line}
-\input{sections/07-natural-power}
-\input{sections/08-transmission-limits}
-\input{sections/09-angular-stability}
-\input{sections/10-series-compensation}
+\input{creepage-distance/creepage-distance}
+\input{ac-transmission/ac-transmission}
+\input{dc-fault-ride-through/dc-fault-ride-through}
 \input{sections/99-references}
 
 % ---- Appendices ---------------------------------------------
@@ -64,6 +64,6 @@
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
 \counterwithin{equation}{section}
-\input{sections/A1-two-port-networks}
+\input{two-port-networks/two-port-networks}
 
 \end{document}
