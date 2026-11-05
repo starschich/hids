@@ -1,0 +1,60 @@
+% =============================================================
+%  Chapter — Harmonic and high-frequency interference
+%  This file holds the chapter heading and its introduction only; the
+%  content is one file per subsection, \input below in reading order.
+%    regulatory-basis.tex       US regulatory status of PLC and RI, how the
+%                               limits are set, adaptations to the western US
+%    plc.tex                    power line carrier band: coupling paths,
+%                               form of the requirement, indicative values
+%    telephone-interference.tex equivalent disturbing current of the DC line
+%    radio-interference.tex     RI of the converter station: sources, limits,
+%                               measurement conventions, altitude correction
+%    dc-line-corona.tex         corona RI and audible noise of the DC line
+%    verification.tex           design, factory and site verification
+%  Sources: [27] 47 CFR Part 15; [28] UTC PLC database; [29] CIGRE TB 139;
+%           [30] CIGRE TB 553; [31] CISPR TR 18-2; [32] CISPR 16-1-1;
+%           [33] ITU-T O.41; [34] IEEE 1124; [35] CISPR 11; [36] NEMA 107;
+%           [37] EPRI HVDC Transmission Line Reference Book; [38] IEEE 430.
+%  The chapter has no figures yet; fig/ is reserved for them.
+% =============================================================
+\section{Harmonic and High-Frequency Interference}
+\label{sec:interference}
+
+A VSC HVDC converter station emits conducted and radiated disturbances from
+the fundamental frequency up to the VHF range. The low-order harmonics below
+3\,kHz are the subject of the harmonic performance specification of a
+project and are not treated here. This chapter covers the bands above them:
+the power line carrier (PLC) band from 30\,kHz to 500\,kHz, where converter
+noise disturbs the carrier channels that utilities run over their
+transmission lines, and the radio interference (RI) band from 150\,kHz to
+30\,MHz, where corona and converter switching disturb broadcast and radio
+services. Table~\ref{tab:interference-bands} lists the bands with their
+dominant source and coupling path. For each band the chapter gives the
+regulatory position in the United States, the form in which a project
+specification states the requirement, the measurement conventions that make
+the requirement verifiable, and indicative values with their basis.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\linewidth}{@{}l l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X l@{}}
+    \toprule
+    \textbf{Band} & \multicolumn{1}{c}{\textbf{Frequency}} & \textbf{Dominant source} & \textbf{Coupling path} & \multicolumn{1}{c@{}}{\textbf{Section}} \\
+    \midrule
+    Harmonics & 60\,Hz -- 3\,kHz & Converter switching & Conducted, AC and DC terminals & --- \\
+    Telephone interference & 60\,Hz -- 5\,kHz & Harmonic currents on the DC line & Inductive coupling to telecommunication circuits & \ref{sec:tif} \\
+    PLC band & 30\,kHz -- 500\,kHz & Converter switching & Conducted on the AC and DC lines; inductive coupling to parallel lines & \ref{sec:plc} \\
+    Radio interference & 150\,kHz -- 30\,MHz & Converter switching; corona on high-voltage apparatus & Radiated from valve hall, buswork and switchyards & \ref{sec:ri} \\
+    VHF/UHF interference & 30\,MHz -- 1\,GHz & Converter switching; gap discharges & Radiated & \ref{sec:ri} \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Emission bands of a converter station, their dominant source and coupling path, and the section that treats them.}
+  \label{tab:interference-bands}
+\end{table}
+
+\input{interference/regulatory-basis}
+\input{interference/plc}
+\input{interference/telephone-interference}
+\input{interference/radio-interference}
+\input{interference/dc-line-corona}
+\input{interference/verification}

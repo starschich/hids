@@ -1,0 +1,104 @@
+% =============================================================
+%  Fault zones and selectivity — zone identifiers, the two identifier
+%  algorithms and the changeover to STATCOM operation. Figure: fault
+%  zone allocation as inline TikZ. Principles; the recorded changeover
+%  is in pugalur-thrissur.tex.
+% =============================================================
+\subsection{Fault Zones and Selectivity}
+\label{sec:dcf-zones}
+
+\subsubsection{Zone identification}
+\label{sec:dcf-zones-identification}
+
+A restart is permitted only for a fault on the overhead line; a fault in a
+cable, a converter station or the AC network is permanent by nature or is
+cleared by other protection. On a hybrid DC circuit the reliable
+identification of the zone in which the fault occurred is therefore the
+prerequisite for an automatic recovery~[24]. The protection of each link is
+divided into the fault zones AC network, converter station, DC overhead
+line and DC cable at each end, Figure~\ref{fig:dcf-zones}, with the HVDC
+link zone spanning both converters and the DC circuit~[24], [25].
+
+Voltage and current measurements at the zone boundaries --- current
+transformers at the transition station separate the overhead line from the
+cable --- produce fault zone identifiers that state on which side of the
+measuring point the fault lies. A logic combines the identifiers from all
+locations while the fault clearing is in progress, so that the zone is known
+before the recovery sequence is released~[24]. Since the blocking of
+Section~\ref{sec:dcf-faults-converter} does not depend on the zone, the
+detection and the selectivity are separate functions with separate time
+budgets: microseconds for the first, the fault clearing time for the
+second.
+
+Two identifier algorithms cover the range of fault impedances an overhead
+line produces~[24]. Faults of low impedance are detected by a wave-front
+logic that evaluates the polarity of the instantaneous changes of the direct
+current. Faults of high impedance are detected by a residual-current logic
+acting on the discharge currents of the DC cable; it extends the coverage to
+fault impedances of several k$\Omega$.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[font=\footnotesize, >=Latex, line width=0.7pt]
+    % AC networks
+    \draw[pattern=north east lines, pattern color=atBorderStrong] (0,-0.5) rectangle (0.9,0.5);
+    \draw[pattern=north east lines, pattern color=atBorderStrong] (12.1,-0.5) rectangle (13.0,0.5);
+    % station A
+    \draw (0.9,0) -- (1.6,0);
+    \draw (1.6,0) -- (2.1,0.25);
+    \draw (2.15,0) -- (2.6,0);
+    \draw (2.85,0) circle (0.25); \draw (3.2,0) circle (0.25);
+    \draw (3.45,0) -- (3.8,0);
+    \draw (3.8,-0.6) rectangle (4.9,0.6); \draw (3.8,-0.6) -- (4.9,0.6);
+    \node at (4.05,0.3) {$\approx$}; \node at (4.65,-0.3) {$=$};
+    % DC circuit
+    \draw (4.9,0.35) -- (8.1,0.35); \draw (4.9,-0.35) -- (8.1,-0.35);
+    \draw[line width=2.2pt] (6.9,0.35) -- (8.1,0.35);
+    \draw[line width=2.2pt] (6.9,-0.35) -- (8.1,-0.35);
+    % station B
+    \draw (8.1,-0.6) rectangle (9.2,0.6); \draw (8.1,-0.6) -- (9.2,0.6);
+    \node at (8.35,0.3) {$\approx$}; \node at (8.95,-0.3) {$=$};
+    \draw (9.2,0) -- (9.55,0);
+    \draw (9.8,0) circle (0.25); \draw (10.15,0) circle (0.25);
+    \draw (10.4,0) -- (10.9,0);
+    \draw (10.9,0) -- (11.4,0.25);
+    \draw (11.45,0) -- (12.1,0);
+    % zone boundaries
+    \foreach \x in {1.3, 5.6, 6.9, 8.6, 11.7} {
+      \draw[atDanger, dashed, line width=0.6pt] (\x,-1.0) -- (\x,1.0);
+    }
+    % zone labels
+    \draw[<->, atFgMuted] (0.0,-1.25) -- (1.3,-1.25) node[midway, below, text=atFg] {AC network A};
+    \draw[<->, atFgMuted] (1.3,-1.25) -- (5.6,-1.25) node[midway, below, text=atFg] {converter station A};
+    \draw[<->, atFgMuted] (5.6,-1.25) -- (6.9,-1.25) node[midway, below, text=atFg] {DC OHL};
+    \draw[<->, atFgMuted] (6.9,-1.25) -- (8.6,-1.25) node[midway, below, text=atFg] {DC cable};
+    \draw[<->, atFgMuted] (8.6,-1.25) -- (11.7,-1.25) node[midway, below, text=atFg] {converter station B};
+    \draw[<->, atFgMuted] (11.7,-1.25) -- (13.0,-1.25) node[midway, below, text=atFg] {AC network B};
+    \draw[<->, atFgMuted] (1.3,1.25) -- (11.7,1.25) node[midway, above, text=atFg] {HVDC link zone};
+  \end{tikzpicture}
+  \caption{Fault zones of one link with a hybrid DC circuit, after~[24],
+           [25]; the thick section is the DC cable between the transition
+           station and station~B}
+  \label{fig:dcf-zones}
+\end{figure}
+
+\subsubsection{Changeover to STATCOM operation}
+\label{sec:dcf-zones-statcom}
+
+When a sequence ends unsuccessfully, Section~\ref{sec:dcf-sequence-classification},
+both stations change over to STATCOM operation after the fault clearing:
+the DC disconnect switches separate each converter from the DC circuit and
+each station restarts independently~[24]. The changeover time is the sum of
+the operating time of the slow DC disconnect switches and, when the link was
+running at rated voltage, of the tap-changer movement to the STATCOM
+position; with slow disconnects it ranges from about 15\,s to about a
+minute~[24]. The converters are therefore unavailable for the transient
+voltage support in the first seconds after the loss of transmission and
+available for the steady-state support afterwards.
+
+The same changeover is started directly, without any restart attempt, when
+the fault zone is the DC cable~[24], [25]. A fault in one converter station
+prohibits the changeover for that station, and only the other one
+reconfigures to STATCOM operation~[24].
+
+\FloatBarrier

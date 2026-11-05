@@ -1,0 +1,43 @@
+% =============================================================
+%  Design alternatives — topologies and devices that shorten the
+%  recovery: full-bridge sub-modules, DC circuit breaker, fixed no-load
+%  voltage, fast disconnect switches. Principles and trade-offs; the
+%  decision taken on one project is in pugalur-thrissur.tex.
+% =============================================================
+\subsection{Design Alternatives}
+\label{sec:dcf-alternatives}
+
+The recovery times of the half-bridge symmetrical monopole are set by
+mechanical operations: the AC circuit breaker, the bypass and discharge
+switches, the tap-changer and the DC disconnect switches. A substantial
+reduction requires a converter topology or a device that makes some of these
+operations unnecessary~[24]. Four alternatives are known; each trades
+investment or operating losses against recovery time.
+
+\begin{itemize}[itemsep=0.2em]
+  \item \textbf{Full-bridge sub-modules.} A full-bridge MMC is an open
+        circuit when blocked, so the AC circuit breaker need not open and
+        the AC network is less disturbed, and it operates at a modulation
+        index above one, so it recovers to a reduced direct voltage without
+        the tap-changer. Both remove mechanical operations from the sequence
+        and shorten the recoveries and changeovers. The cost is a higher
+        investment and higher operating losses, and fewer bidders offer it.
+  \item \textbf{DC circuit breaker.} Clears the fault in the DC circuit and
+        may keep the converters in service. Precautions for the DC
+        overvoltage and the cable inrush remain and enter the achievable
+        recovery time. The cost is the investment and, again, the number of
+        bidders.
+  \item \textbf{Fixed no-load voltage.} A converter-side no-load voltage
+        chosen for the minimum direct voltage at the maximum modulation
+        index allows recovery to any direct voltage within the time of the
+        first restart, without tap-changer movement. The converter then
+        operates at a higher AC current at rated voltage, with operating
+        losses about 20\,\% higher~[24].
+  \item \textbf{Fast disconnect switches.} Reduce the changeover to STATCOM
+        operation to the few seconds of the fault clearing, but only when
+        the link was already at reduced voltage, since otherwise the
+        tap-changer sets the time. Their price is 5 to 10 times that of
+        slow disconnects~[24].
+\end{itemize}
+
+\FloatBarrier

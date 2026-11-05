@@ -1,0 +1,59 @@
+\subsection{Radio Interference of the Converter Station}
+\label{sec:ri}
+
+\subsubsection{Sources}
+Two sources radiate from a converter station in the band 150\,kHz to 30\,MHz.
+Corona on the high-voltage apparatus of the AC and DC switchyards, on
+bushings, connectors, corona rings and busbar hardware, has the spectrum of
+an AC or DC line and falls with frequency, so that it is characterised at a
+reference frequency of 0.5\,MHz (1\,MHz in older North American practice).
+Valve switching radiates from the valve hall through its openings, the
+wall bushings and the connections to the switchyards, with a spectrum set by
+the switching edges and the resonances of the hall and buswork; it extends
+beyond 30\,MHz and is the source of the VHF/UHF emission in
+Table~\ref{tab:interference-bands}. Corona is controlled at the source, by
+the design of the hardware for the site air density; switching emission is
+controlled by the shielding of the valve hall.
+
+\subsubsection{Form of the requirement and indicative values}
+The requirement is a field-strength limit at a stated distance outside the
+station fence, with a quasi-peak detector and the bandwidths of
+CISPR~16-1-1~[32], in fair weather, with the converter at the operating point
+of maximum emission. Table~\ref{tab:ri-limits} gives indicative values at
+30\,m. In the band 150\,kHz to 30\,MHz the limit is referred to 0.5\,MHz and
+follows the frequency characteristic of CISPR TR~18-2~[31] elsewhere in the
+band; 50\,dB($\mu$V/m) leaves a signal-to-noise ratio
+of 24\,dB against a broadcast field strength of 5\,mV/m, equal to
+74\,dB($\mu$V/m), the city-grade service contour of an AM station in FCC
+practice, which is within the range CISPR TR~18-2 associates with acceptable
+to good reception. Above 30\,MHz the limits of
+CISPR~11~[35], Group~1, Class~A, apply, since no transmission-line standard
+covers that band.
+
+\begin{table}[!ht]
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}l c r@{}}
+    \toprule
+    \textbf{Frequency range} & \multicolumn{1}{c}{\textbf{Reference}} & \multicolumn{1}{c@{}}{\textbf{Limit}} \\
+    \midrule
+    150\,kHz -- 30\,MHz   & 0.5\,MHz, CISPR TR~18-2 characteristic & 50\,dB($\mu$V/m) \\
+    30\,MHz -- 230\,MHz   & CISPR~11 Group~1 Class~A                & 30\,dB($\mu$V/m) \\
+    230\,MHz -- 1\,GHz    & CISPR~11 Group~1 Class~A                & 37\,dB($\mu$V/m) \\
+    \bottomrule
+  \end{tabular}
+  \caption{Indicative radio interference field-strength limits at 30\,m outside the station fence, quasi-peak detector, fair weather.}
+  \label{tab:ri-limits}
+\end{table}
+
+\subsubsection{Apparatus and altitude}
+The corona contribution is specified per item of apparatus as a radio
+interference voltage (RIV) measured according to NEMA~107~[36] at a test
+voltage of $1.1 \cdot U_m / \sqrt{3}$ for AC apparatus and $1.1 \cdot
+U_{DC\_max}$ for DC apparatus, together with the absence of visible corona at
+the same voltage. The product standards state the RIV limits at standard
+atmosphere; for a station at 1500\,m the test voltage is corrected to the
+relative air density of 0.84, which raises the required corona onset of the
+hardware by the same factor as the creepage and clearance corrections of
+Section~\ref{sec:creepage}.
+\FloatBarrier

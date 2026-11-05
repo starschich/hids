@@ -1,0 +1,64 @@
+% =============================================================
+%  Ratings affected by the recovery — short-circuit level, cable
+%  stresses, repetitive thermal duty, voltage grading. Principles; the
+%  measured cable stresses are in pugalur-thrissur.tex.
+% =============================================================
+\subsection{Ratings Affected by the Recovery}
+\label{sec:dcf-ratings}
+
+\subsubsection{Short-circuit level and power flow}
+\label{sec:dcf-ratings-scl}
+
+The short-circuit level of the AC networks acts in opposite directions on
+the two fault types~[24]: the pole-to-pole fault current rises with the
+short-circuit level, whereas the pole-to-ground overvoltage rises as the
+short-circuit level falls, because the load rejection of the faulted link
+raises the AC voltage more in a weak network. The pre-fault active and
+reactive power have no comparable influence on the fault behaviour beyond
+this overvoltage effect. The equipment ratings and the protection settings
+are fixed against a defined relation of network overvoltage to
+short-circuit level, so that the extreme network conditions are covered
+without over-rating~[24].
+
+\subsubsection{Cable stresses}
+\label{sec:dcf-ratings-cable}
+
+A hybrid DC circuit raises the fault rate, since the overhead line is
+exposed, while it is the cable that has to carry the fault currents and the
+overvoltages~[24]. The currents through the cable screens and the grounding
+system, the overvoltages across the main insulation and the polarity
+reversals of a pole-to-pole fault enter the cable rating. The cable
+impedance reduces the $\mathrm{d}u/\mathrm{d}t$ of the initial voltage
+collapse as seen at its far termination, and the termination impedance in
+the converter station damps the response; steep fronts lie outside the
+bandwidth of the installed fault recorders and are covered in the design
+studies~[24]. The overvoltage of the healthy pole is not uniform along the
+cable: travelling waves and the arresters at the cable ends put the peak
+away from the terminals, near the middle of the route in the benchmark of
+Section~\ref{sec:dcf-faults-transient}~[26], so the insulation is rated
+against the profile along the route. The discharge resistor of Section~\ref{sec:dcf-switchgear}
+is part of the same consideration: a resistance well above the surge
+impedance keeps the discharge of the healthy pole from launching travelling
+waves of its own.
+
+\subsubsection{Repetitive recoveries}
+\label{sec:dcf-ratings-thermal}
+
+Each fault and recovery is a thermal event. The devices with long thermal
+time constants --- arresters, insertion and discharge resistors, and the
+star-point unit --- are rated for the number of recovery sequences the
+specification requires within a given period, and their thermal state is
+monitored by the protection~[24].
+
+\subsubsection{Voltage grading}
+\label{sec:dcf-ratings-grading}
+
+The star-point unit also sets the steady-state grading of the two pole
+voltages. The unsymmetrical leakage of a DC overhead line, from insulator
+and corona currents, is specified as a maximum grading current unbalance;
+for considerably longer overhead sections the supplier states that the
+present grading devices may not remain an economic solution, and that
+alternative devices or a different main-circuit design would be
+needed~[24].
+
+\FloatBarrier

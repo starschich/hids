@@ -1,0 +1,143 @@
+% =============================================================
+%  Recovery sequence — the restart attempts, how their outcomes are
+%  classified, the steps of one restart, the restart at reduced
+%  voltage and the power compensation by a parallel link. Principles;
+%  the specified times and the recorded durations of one project are
+%  in pugalur-thrissur.tex.
+% =============================================================
+\subsection{Recovery Sequence}
+\label{sec:dcf-sequence}
+
+\subsubsection{Restart attempts}
+\label{sec:dcf-sequence-attempts}
+
+A recovery sequence is a series of up to three restart attempts, each with
+its own target state~[24], [25]:
+
+\begin{enumerate}[itemsep=0.2em]
+  \item \textbf{First restart} at the pre-fault direct voltage and power
+        transfer. Its time limit covers fault clearing, discharge and
+        deionisation, and is set separately for pole-to-ground and
+        pole-to-pole faults, the latter longer because of the current decay
+        of Section~\ref{sec:dcf-faults-types}.
+  \item \textbf{Second restart} at a reduced direct voltage, with the power
+        curtailed accordingly. Its duration is governed by the on-load
+        tap-changer and the recharging of the switchgear drives,
+        Section~\ref{sec:dcf-sequence-reduced}, and is specified only as
+        slow.
+  \item \textbf{Changeover to STATCOM operation} if the second restart fails:
+        the DC line is de-energised permanently and both converter stations
+        reconfigure to reactive power support of the AC network,
+        Section~\ref{sec:dcf-zones-statcom}.
+\end{enumerate}
+
+The STATCOM requirement comes from the AC network. The loss of the
+transmission changes the load flows and raises the need for reactive power,
+and a VSC supplies it independently of the active power, so no additional
+FACTS equipment is needed for the contingency. The same requirement applies
+after a permanent fault in the DC cable or in one of the converter
+stations~[24].
+
+\subsubsection{Classification of faults and attempts}
+\label{sec:dcf-sequence-classification}
+
+The outcome of each attempt is classified by the passive charging of the DC
+circuit and by a waiting time after a successful restart~[24]. A fault
+detected anywhere in the link during a restart attempt makes the fault
+\emph{permanent}, and no further attempt follows. An attempt is
+\emph{successful} when the power is restored; a fault within a set interval
+after that point is \emph{consecutive} and starts the next attempt of the
+same sequence. When the interval passes without a fault the sequence is
+complete and the next fault opens a new one with all attempts. The
+specification also fixes how many complete sequences the equipment has to
+withstand within a longer period, which sets the thermal ratings of
+Section~\ref{sec:dcf-ratings-thermal}.
+
+A sequence ends unsuccessfully either by a permanent fault or by a third
+consecutive fault. In both cases both stations change over to STATCOM
+operation after the fault clearing.
+
+\subsubsection{Steps of one restart}
+\label{sec:dcf-sequence-steps}
+
+The first restart after a pole-to-ground fault runs in eight steps,
+coordinated between the two converter stations and, on a hybrid line, the
+transition station over the HVDC telecontrol; without telecontrol the
+sequence cannot start~[25].
+
+\begin{enumerate}[itemsep=0.2em]
+  \item \textbf{Fault isolation.} The converters block on fault detection
+        and the AC circuit breakers of both stations open. Until they open,
+        the fault current flows through the diode path.
+  \item \textbf{Fault current decay.} With the breakers open the fault
+        current decays with the $L/R$ time constant of the loop, set mainly
+        by the star-point units. The overvoltage of the healthy pole, limited
+        by the arresters, discharges slightly.
+  \item \textbf{Discharge and deionisation.} The discharge unit of the lead
+        station closes and removes the charge of the healthy pole; the
+        bypass switch of the insertion resistor opens. The arc at the fault
+        location deionises.
+  \item \textbf{Condition verification.} Both stations check breaker and
+        bypass-switch positions, arm, DC and star-point currents and DC
+        voltages against their thresholds.
+  \item \textbf{Tap-changer adjustment.} Only for a restart at reduced
+        voltage: the tap-changers move to the start position given by the
+        sequence counter.
+  \item \textbf{Restart initiation.} The restart release closes the AC
+        circuit breaker of the rectifier station first, then of the inverter
+        station.
+  \item \textbf{Passive charging.} The DC circuit charges through the
+        insertion resistor and the diodes. The build-up of the voltages and
+        the decay of the charging current confirm the integrity of the DC
+        circuit before the resistor is bypassed or the converter is
+        deblocked~[24]. Since the sub-module capacitors are still charged,
+        this step is shorter than a cold start.
+  \item \textbf{Converter deblocking.} The converters deblock and ramp to the
+        reference direct voltage. The rectifier station restores its reactive
+        power first; the inverter station then restores active and reactive
+        power to the pre-fault values.
+\end{enumerate}
+
+The restart after a pole-to-pole fault omits the discharge step, since there
+is no trapped charge, but has to wait for the freewheeling current to reach
+zero and for the deionisation time after it before the circuit breakers
+reclose~[24]. Passive charging is also the test for a permanent fault: on a
+persisting pole-to-ground fault the direct voltage builds up in one pole
+only after the circuit breaker closes, the current stays limited by the
+insertion resistor, the protection detects the condition, the start-up is
+aborted and the healthy pole is discharged~[24].
+
+\subsubsection{Restart at reduced direct voltage}
+\label{sec:dcf-sequence-reduced}
+
+A half-bridge MMC has a narrow direct-voltage range: to avoid
+over-modulation, the direct voltage to ground has to stay above the peak of
+the AC voltage the converter produces at its terminals, so the AC-side
+voltage has to be lowered with the direct voltage. The ratio of the
+interface transformer is changed with its on-load tap-changer, before the
+circuit breaker recloses, since the link has to recover to the reduced
+voltage immediately after deblocking. Depending on the number of taps this
+takes up to a minute~[24]. The operator preselects the reduced voltage
+within a range the design allows, and a link already running below the
+preselected level is kept from being raised to it by the recovery~[24]. In
+every case the sequence has to respect the charging state of the drives of
+the breakers and fast switches, that is of the discharge switch and the
+insertion-resistor bypass switch~[24].
+
+\subsubsection{Power compensation by a parallel link}
+\label{sec:dcf-sequence-compensation}
+
+Where a project consists of two independent links, the specification can
+require the active power of the faulted link to be transferred to the
+healthy one, as far as its rating allows, within a few tens of
+milliseconds~[24]. The healthy link then carries the power until the faulted
+link has deblocked, and the original sharing is restored afterwards with a
+long time constant, so that the AC network sees no second disturbance; this
+slow return applies only to the share the healthy link took over, and a
+share it could not take over is restored immediately after
+deblocking~[24]. A scheme with a single link has no such path: the loss of
+transmission until deblocking and the ramp to pre-fault power act on the AC
+network at both ends, and other measures to limit that impact become a
+requirement of the project~[24].
+
+\FloatBarrier

@@ -1,0 +1,43 @@
+\subsection{Regulatory Basis and the Form of the Requirement}
+\label{sec:interference-basis}
+
+In the United States no numerical emission limit applies to high-voltage
+transmission equipment in the PLC and RI bands. Overhead lines and converter
+stations are incidental radiators under 47~CFR Part~15, \S\,15.5 and
+\S\,15.13~[27]: the operator is obliged not to cause harmful interference to
+licensed radio services and to apply good engineering practice, and must
+correct interference once it occurs, but no field strength or noise voltage
+is prescribed. PLC systems themselves operate unlicensed under \S\,15.113 in
+the band 9\,kHz to 490\,kHz on the utility's own lines; their frequency
+assignments are coordinated between utilities through the PLC database of
+the Utilities Technology Council (UTC)~[28]. In Europe the position is the
+same in substance, with CISPR TR~18~[31] as the technical basis and no binding
+limit for high-voltage installations.
+
+The limits in a project specification are therefore design values set by the
+owner. The methodology for converter-generated noise is that of CIGRE
+TB~139~[29] and its successor TB~553~[30], which treat PLC and RI noise as
+part of the AC filter design; the methodology for radio interference from
+high-voltage installations, including the measurement procedure and the
+derivation of limits from the protection of broadcast reception, is that of
+CISPR TR~18-2~[31]. A clause written on this basis has five elements: the
+frequency range, the limit, the measuring point and distance, the weather
+condition and statistic, and the detector and bandwidth. A clause that omits
+one of them cannot be verified against the supplier's design or on site.
+
+Three conditions of the western United States change the values relative to
+a European or eastern-US template. The corona onset of high-voltage hardware
+falls with air density: at 1500\,m the relative air density is 0.84, and a
+bundle or a fitting that meets a corona criterion at sea level does not meet
+it at that elevation, so every corona-related value is calculated and
+verified at the site or route elevation. The climate is dry, and for DC
+corona the fair-weather emission of the positive pole is the governing case,
+so the limits are stated for fair weather rather than for the foul-weather
+case that AC line specifications emphasise. The population along a route is
+sparse, with a small number of communities, while the interconnection areas
+carry a dense set of third-party transmission lines on which carrier
+protection remains in service; the PLC requirement is therefore written to
+protect those third-party carriers, and the RI requirement is referred to the
+station boundary and the edge of the right-of-way rather than to the nearest
+dwelling.
+\FloatBarrier

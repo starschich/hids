@@ -14,10 +14,11 @@ quantities are underlined. Terminal quantities take the subscript $S$ at the
 sending end and $R$ at the receiving end, and voltages are line-to-line
 unless stated otherwise.
 
-\begin{tabularx}{\linewidth}{@{}l X@{}}
+\begin{longtable}{@{}l p{0.82\linewidth}@{}}
   \toprule
   \multicolumn{1}{c}{\textbf{Symbol}} & \textbf{Description} \\
   \midrule
+  \endhead
   $\underline{A}, \underline{B}, \underline{C}, \underline{D}$
           & Two-port (ABCD) parameters of the line \\
   $C'$    & Capacitance per unit length \\
@@ -29,6 +30,7 @@ unless stated otherwise.
   $GMR$   & Geometric mean radius of a sub-conductor; $GMR_b$ of the bundle \\
   $H$     & Inertia constant of a synchronous machine \\
   $I$     & Phase current; $\underline{I}_S$, $\underline{I}_R$ at the terminals \\
+  $I_{eq}$ & Equivalent disturbing current of the DC line, psophometrically weighted \\
   $k$     & Degree of series compensation, $X_C = k \cdot X_L$ \\
   $K_s$   & Synchronising power coefficient, $\partial P / \partial \delta$ \\
   $l$     & Line length; $x$ the distance from the sending end \\
@@ -42,7 +44,8 @@ unless stated otherwise.
   $s$     & Bundle spacing \\
   $S_{sc}$ & Short-circuit level at a terminal \\
   $U$     & Line-to-line voltage; $\underline{U}_S$, $\underline{U}_R$ at the
-            terminals, $U_n$ nominal \\
+            terminals, $U_n$ nominal; $U_m$ highest voltage for equipment \\
+  $U_{DC\_max}$ & Maximum continuous DC pole-to-ground voltage \\
   $X$     & Series reactance of the path; $X'$ per unit length, $X_C$ of the
             series bank, $X_{tot}$ of the whole path between the internal
             voltages \\
@@ -68,6 +71,6 @@ unless stated otherwise.
   $\varphi$  & Power-factor angle \\
   $\omega$   & Angular frequency, $2 \cdot \pi \cdot f$ \\
   \bottomrule
-\end{tabularx}
+\end{longtable}
 
 \FloatBarrier

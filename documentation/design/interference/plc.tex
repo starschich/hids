@@ -1,0 +1,52 @@
+\subsection{Power Line Carrier Band}
+\label{sec:plc}
+
+\subsubsection{Sources and coupling paths}
+Converter noise in the PLC band originates in the switching of the valves. In
+a line-commutated converter the commutation notches excite the stray
+capacitances and inductances of the valve hall and buswork into oscillations
+in the range of tens to hundreds of kilohertz; in a modular multilevel
+converter the individual submodule switchings are small steps, and the
+emission in this band is lower by one to two orders of magnitude, but it is
+not zero and still depends on the switching frequency of the control and on
+the layout of the valve hall. The noise leaves the station on three paths: as
+a conducted current on the AC lines through the converter transformers and
+the AC switchyard, as a conducted current on the DC line, and by inductive
+coupling from the DC line into any transmission line that runs parallel to or
+crosses it. The third path is the one a station-terminal measurement does not
+capture.
+
+\subsubsection{Form of the requirement}
+A PLC clause has two parts. The first is an absolute limit on the noise
+injected into each connected line, stated as a noise voltage in a 3\,kHz
+bandwidth, the channel bandwidth of a carrier receiver, measured with a
+quasi-peak detector according to CISPR~16-1-1~[32] at the line side of the
+switchyard. The second is a signal-to-noise criterion for each carrier
+frequency in service on a protected line: the noise coupled into that line
+may not reduce the carrier signal-to-noise ratio at the receiver below a
+stated margin, with the minimum received carrier level and the receiver
+bandwidth given by the line owner and the coupling calculated from the
+geometry of the parallel or crossing section. The second part governs
+wherever it is stricter. The list of protected lines and carrier frequencies
+is compiled by the owner from the UTC database~[28] and from the owners of the
+lines within a stated corridor of the route, and is handed to the supplier
+with the DC line data. The supplier's response is the PLC filter on the AC
+and DC side, tuned to the protected frequencies, and a demonstration that the
+limits hold with any redundant filter branch out of service and, in a dual
+symmetrical monopole, with one converter out of service.
+
+\subsubsection{Indicative values}
+A margin of 20\,dB on the carrier signal-to-noise ratio is the value in common
+use for teleprotection channels. For the absolute limit, 60\,dB($\mu$V),
+equal to 1\,mV in 3\,kHz, is representative of the values specified for
+line-commutated schemes~[29]; whether it protects a given carrier channel
+follows from the signal-to-noise criterion, which is why that criterion
+governs. A VSC station meets it with a wide margin; the clause is nevertheless kept so
+that the supplier must demonstrate it. A corridor of 2\,km for the survey of
+protected lines covers the distance within which inductive coupling from a
+DC line is calculable above the natural noise of the coupled line. For a
+private network that is not connected to the wider AC grid and runs its
+teleprotection over fibre, the PLC clause protects third-party lines through
+the DC route only, and the AC-side part reserves carrier capability for a
+later buildout.
+\FloatBarrier
