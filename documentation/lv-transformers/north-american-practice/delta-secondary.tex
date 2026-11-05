@@ -1,0 +1,44 @@
+\subsection{Delta secondary}
+\label{sec:na-delta}
+
+A 480\,V delta primary with a 240\,V delta secondary has no phase shift.
+The secondary is operated in one of three ways, Figure~\ref{fig:na-delta}:
+ungrounded, with one corner grounded, or with a centre tap on one winding.
+
+\begin{figure}[!ht]
+  \centering
+  \input{north-american-practice/fig/na_delta_secondary}
+  \caption{480\,V delta -- 240\,V delta: (a) ungrounded, (b) corner-grounded
+  at X3, (c) centre tap on the winding X3--X1 with the high leg X2.}
+  \label{fig:na-delta}
+\end{figure}
+
+\subsubsection{Ungrounded delta}
+No conductor is grounded, and a first ground fault does not interrupt the
+supply. Ungrounded systems of 120 to 1000\,V require ground detectors at the
+source~[3, 250.21(B)], and the fault has to be located and cleared before
+a second fault on another phase produces a phase-to-phase short circuit.
+An intermittent arcing ground fault can raise the phase-to-ground voltage
+above the line-to-line value~[4].
+
+\subsubsection{Corner-grounded delta}
+One phase, X3 in Figure~\ref{fig:na-delta}(b), is solidly grounded. The
+other two phases are at 240\,V to ground. The grounded phase is identified
+white or gray~[3, 200.6] and carries no overcurrent device unless that
+device opens all conductors of the circuit together~[3, 240.22].
+
+\subsubsection{Centre-tapped delta (high-leg delta)}
+One winding, X3--X1, has a centre tap that is brought out as the neutral X0
+and grounded, Figure~\ref{fig:na-delta}(c). The secondary supplies
+240\,V three-phase and 120/240\,V single-phase from X1 and X3. The third
+phase X2 is at
+\begin{equation}
+  U_{x2\_x0} = \frac{\sqrt{3}}{2} \cdot U_{ll} = \frac{\sqrt{3}}{2} \cdot 240\,\mathrm{V} = 207.8\,\mathrm{V}
+  \label{eq:na-highleg}
+\end{equation}
+to neutral. This high leg is marked orange~[3, 110.15] and occupies the B
+position in panelboards~[3, 408.3(E)]; it does not supply 120\,V loads.
+The centre-tapped winding carries the single-phase load in addition to its
+share of the three-phase load, so the permissible single-phase load is set
+by the rating of that winding and is stated in the manufacturer's data.
+\FloatBarrier

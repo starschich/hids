@@ -1,0 +1,38 @@
+\subsection{Wye connections}
+\label{sec:na-wye}
+
+Figure~\ref{fig:na-wye} shows the three connections with a wye winding. All
+three have the phase shift of 30\,$^{\circ}$ of Section~\ref{sec:na-terms}.
+
+\begin{figure}[!ht]
+  \centering
+  \input{north-american-practice/fig/na_wye_connections}
+  \caption{Connections with a wye winding: (a) 480\,V delta -- 240Y/139\,V,
+  (b) 480Y/277\,V -- 240\,V delta with the primary neutral not connected,
+  (c) 480\,V delta -- 208Y/120\,V for comparison.}
+  \label{fig:na-wye}
+\end{figure}
+
+\subsubsection{480\,V delta -- 240Y/139\,V}
+The secondary is a solidly grounded wye with 240\,V between lines and,
+from Equation~\eqref{eq:na-uln}, 138.6\,V line to neutral. This voltage is
+not a nominal system voltage of ANSI~C84.1~[5]; the neutral serves the
+grounding of the system, not the supply of line-to-neutral loads.
+
+\subsubsection{480Y/277\,V -- 240\,V delta}
+On a 480Y/277\,V supply the primary is connected in wye with the neutral H0
+left unconnected. If H0 is connected to the grounded supply neutral, the
+delta secondary provides a closed path for zero-sequence current, and the
+transformer becomes a grounding source for the 480\,V system: it carries
+the zero-sequence part of the unbalanced 480\,V load and supplies current
+into ground faults on the 480\,V system~[4]. The secondary is
+operated in any of the ways of Section~\ref{sec:na-delta}.
+
+\subsubsection{480\,V delta -- 208Y/120\,V}
+The 208Y/120\,V secondary supplies 120\,V on all three phases from a solidly
+grounded neutral and is the usual secondary when three-phase and 120\,V
+loads are supplied together. A motor nameplated 230\,V operates at
+$208/230 = 0.904$ of its rated voltage on this system, at the limit of the
+$\pm$10\,\% voltage variation of NEMA~MG~1~[6]. Equipment rated 230 or
+240\,V only is therefore supplied from a 240\,V secondary.
+\FloatBarrier

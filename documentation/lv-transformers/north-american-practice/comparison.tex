@@ -1,0 +1,32 @@
+\subsection{Summary of the connections}
+\label{sec:na-summary}
+
+Table~\ref{tab:na-summary} compares the connections of
+Sections~\ref{sec:na-single} to~\ref{sec:na-open}.
+
+\begin{table}[!ht]
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.21\linewidth}
+                                 >{\raggedright\arraybackslash}p{0.19\linewidth}
+                                 c c
+                                 >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \multicolumn{1}{c}{\textbf{Connection}} & \multicolumn{1}{c}{\textbf{Secondary}}
+      & \textbf{Wires} & \textbf{Shift} & \textbf{Secondary grounding} \\
+    \midrule
+    1-phase 240$\times$480 -- 120/240\,V & 240\,V l-l, 120\,V l-n & 3 & 0\,$^{\circ}$ & centre tap X2--X3 \\
+    $\Delta$--$\Delta$ ungrounded         & 240\,V l-l              & 3 & 0\,$^{\circ}$ & none; ground detectors \\
+    $\Delta$--$\Delta$ corner-grounded    & 240\,V l-l              & 3 & 0\,$^{\circ}$ & one phase solidly grounded \\
+    $\Delta$--$\Delta$ centre-tapped      & 240\,V l-l; 120, 120, 208\,V l-n & 4 & 0\,$^{\circ}$ & centre tap of one winding \\
+    $\Delta$--Y 240Y/139\,V              & 240\,V l-l, 139\,V l-n  & 4 & 30\,$^{\circ}$ & solidly grounded neutral \\
+    Y--$\Delta$ 480Y/277 -- 240\,V        & 240\,V l-l              & 3 or 4 & 30\,$^{\circ}$ & as $\Delta$--$\Delta$; H0 not connected \\
+    Open delta, two units                & 240\,V l-l (centre tap optional) & 3 or 4 & 0\,$^{\circ}$ & centre tap or corner \\
+    $\Delta$--Y 208Y/120\,V              & 208\,V l-l, 120\,V l-n  & 4 & 30\,$^{\circ}$ & solidly grounded neutral \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Connections for 480\,V to 240\,V and the 208Y/120\,V reference;
+  phase shift of the lower-voltage side, lagging.}
+  \label{tab:na-summary}
+\end{table}
+\FloatBarrier

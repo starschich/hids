@@ -1,0 +1,48 @@
+% =============================================================
+%  LV distribution transformers -- connections (report)
+%  480 V to 240 V connections in North American practice and the
+%  corresponding 400/230 V practice in Germany.
+%  Uses the shared American Terawatt report style.
+%  Figures: TikZ written by north-american-practice/fig/connection_figures.py
+%  Compile:  latexmk -xelatex lv-transformers.tex
+% =============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[corporate]{../../template/attemplate}
+\usepackage{placeins}
+\usepackage{longtable}
+\usetikzlibrary{arrows.meta}
+\input{sections/00-tikz-styles}
+
+% ---- Report metadata ----------------------------------------
+\reporttitle{LV Distribution Transformers}
+\reportsubtitle{Connections for 480\,V to 240\,V in North America and 400/230\,V in Germany}
+\atEyebrow{Transformer Connections}
+
+\reportauthor{Eugen Starschich}
+\reportdocnumber{ATW-REP-LVT-001}
+\reportrevision{0.1}
+\reportstatus{Draft}
+\reportdate{\today}
+\reportconfidentiality{Internal}
+
+\begin{document}
+
+\makecover
+
+\revisionhistory{
+  \revrow{0.1}{Nov. 5, 2026}{Eugen Starschich}{Initial document: 480\,V to 240\,V connections, German practice and earthing systems}
+}
+
+\newpage
+\tableofcontents
+\clearpage
+
+% ---- Body ---------------------------------------------------
+\input{sections/00-abbreviations}
+\input{sections/01-introduction}
+\input{north-american-practice/north-american-practice}
+\input{german-practice/german-practice}
+\input{sections/99-references}
+
+\end{document}

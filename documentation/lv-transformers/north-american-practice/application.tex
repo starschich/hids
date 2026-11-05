@@ -1,0 +1,33 @@
+\subsection{Taps, reverse feed, autotransformers and standards}
+\label{sec:na-application}
+
+\subsubsection{Taps}
+The 480\,V winding of a general-purpose dry-type transformer has two taps
+of 2.5\,\% above and two below the rated voltage; some designs have two
+above and four below~[7]. The taps are set off-circuit.
+
+\subsubsection{Reverse feed}
+A unit energised from its 240\,V winding to supply 480\,V operates as a
+step-up transformer. The inrush current is higher than in the rated
+direction, and the taps then act on the output voltage; reverse feed
+therefore needs the manufacturer's approval or a unit designed for it.
+
+\subsubsection{Autotransformer}
+Where isolation is not required, an autotransformer changes the voltage
+with a winding power of
+\begin{equation}
+  S_{w} = S_{load} \cdot \left(1 - \frac{U_{2}}{U_{1}}\right)
+  \label{eq:na-auto}
+\end{equation}
+with $U_{1}$ the higher and $U_{2}$ the lower voltage. For 480\,V to
+240\,V, $S_{w} = 0.5 \cdot S_{load}$; for a buck-boost connection with a
+small voltage change, $S_{w}$ is a few per cent of the load. The secondary is
+not a separately derived system, and the restrictions on autotransformers
+of~[3, 210.9 and 450.4] apply.
+
+\subsubsection{Standards}
+General-purpose dry-type transformers are built to IEEE~C57.12.01~[8]
+and listed to UL~1561~[9]. Their minimum efficiency is set by
+10~CFR~431~[10]. For non-linear loads the rating is specified as a
+K-factor, and the derating follows IEEE~C57.110~[11].
+\FloatBarrier

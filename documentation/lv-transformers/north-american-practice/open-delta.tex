@@ -1,0 +1,29 @@
+\subsection{Open delta}
+\label{sec:na-open}
+
+Two single-phase units connected as two sides of a delta supply a
+three-phase load, Figure~\ref{fig:na-open}; the third side carries no
+winding. With a centre tap on one unit the secondary is a high-leg delta as
+in Section~\ref{sec:na-delta}. The connection has no phase shift.
+
+\begin{figure}[!ht]
+  \centering
+  \input{north-american-practice/fig/na_open_delta}
+  \caption{Open-delta bank of two single-phase units, secondary with centre
+  tap on the winding X3--X1.}
+  \label{fig:na-open}
+\end{figure}
+
+Each unit carries the full line current. With $S_{1}$ the rating of one unit
+and $I_{r} = S_{1} / U_{ll}$ its rated current, the three-phase capacity of
+the bank is
+\begin{equation}
+  S_{v} = \sqrt{3} \cdot U_{ll} \cdot I_{r} = \sqrt{3} \cdot S_{1}
+        = 0.866 \cdot (2 \cdot S_{1})
+  \label{eq:na-open}
+\end{equation}
+which is $\sqrt{3}/3 = 57.7$\,\% of the capacity $3 \cdot S_{1}$ of a closed
+delta of three units. The two units are loaded asymmetrically, so the
+secondary voltages become unbalanced under load. A third unit added later
+closes the delta.
+\FloatBarrier

@@ -1,0 +1,55 @@
+\subsection{Transformers between two low-voltage levels}
+\label{sec:de-lvlv}
+
+\subsubsection{690\,V to 400/230\,V}
+Industrial installations with large motors distribute at 690\,V, the
+line-to-line voltage of the 400/690\,V system of DIN~EN~60038~[12]:
+$400\,\mathrm{V} \cdot \sqrt{3} = 692.8\,\mathrm{V}$. A Dyn5 transformer
+derives the 400/230\,V supply for auxiliaries and lighting,
+Figure~\ref{fig:de-lvlv}(a). The same arrangement occurs in wind turbines
+and drive systems.
+
+\begin{figure}[!ht]
+  \centering
+  \input{german-practice/fig/de_lv_lv}
+  \caption{Transformers between two low-voltage levels, vector group Dyn5:
+  (a) 690\,V -- 400/230\,V, (b) 400\,V -- 480Y/277\,V for equipment built
+  to North American ratings.}
+  \label{fig:de-lvlv}
+\end{figure}
+
+\subsubsection{Supply of equipment built to North American ratings}
+A 400\,V -- 480Y/277\,V transformer, Figure~\ref{fig:de-lvlv}(b), or one
+with a 208Y/120\,V or 240\,V delta secondary, adapts the voltage; the
+frequency remains 50\,Hz. Motors run at $50/60 = 0.833$ of their 60\,Hz
+speed. Magnetic equipment rated 480\,V at 60\,Hz operates at
+$480\,\mathrm{V} / 50\,\mathrm{Hz} = 9.6\,\mathrm{V/Hz}$ instead of
+$8.0\,\mathrm{V/Hz}$, a flux 20\,\% above rated. The voltage at 50\,Hz that
+keeps the rated flux is
+\begin{equation}
+  U_{50} = U_{60} \cdot \frac{50\,\mathrm{Hz}}{60\,\mathrm{Hz}}
+         = 480\,\mathrm{V} \cdot \frac{50}{60} = 400\,\mathrm{V}
+  \label{eq:de-vhz}
+\end{equation}
+so that motors rated 480\,V at 60\,Hz are connected to the 400\,V system
+directly when the reduced speed is acceptable. The 480\,V transformer
+applies to equipment rated for 480\,V at 50\,Hz; equipment that requires
+60\,Hz is supplied through a frequency converter.
+
+\subsubsection{Isolating transformer for an IT system}
+Group~2 medical locations, such as operating theatres and intensive care,
+are supplied through a single-phase isolating transformer whose secondary
+is not earthed, Figure~\ref{fig:de-it}~[18]. An insulation
+monitoring device to IEC~61557-8~[19] measures the insulation
+resistance of the secondary to earth. A first insulation fault raises an
+alarm and does not interrupt the supply. DIN~VDE~0100-710 limits the rated
+output of the transformer to 0.5 to 10\,kVA~[18].
+
+\begin{figure}[!ht]
+  \centering
+  \input{german-practice/fig/de_it_isolating}
+  \caption{Single-phase isolating transformer 400\,V -- 230\,V supplying an
+  IT system with insulation monitoring device (IMD).}
+  \label{fig:de-it}
+\end{figure}
+\FloatBarrier

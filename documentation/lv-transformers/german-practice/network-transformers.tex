@@ -1,0 +1,41 @@
+\subsection{MV/LV network transformers}
+\label{sec:de-network}
+
+Figure~\ref{fig:de-network} shows the vector groups of the network
+transformer. The clock between the two diagrams gives the vector-group hour
+of Equation~\eqref{eq:de-clock}.
+
+\begin{figure}[!ht]
+  \centering
+  \input{german-practice/fig/de_network_transformers}
+  \caption{Vector groups of MV/LV network transformers 20\,kV --
+  400/230\,V: (a) Dyn5, (b) Yzn5, (c) Dyn11. Clock: higher-voltage phasor
+  of phase U at 12, lower-voltage phasor at the clock hour.}
+  \label{fig:de-network}
+\end{figure}
+
+\subsubsection{Dyn5}
+Dyn5 is the vector group of German MV/LV network transformers,
+Figure~\ref{fig:de-network}(a). The wye secondary is solidly earthed at 2N
+and supplies 230\,V from line to neutral. The delta primary provides a
+closed path for the zero-sequence current of unbalanced load and of earth
+faults on the low-voltage side, so that the zero-sequence impedance seen
+from the low-voltage side is low and no zero-sequence current flows in the
+medium-voltage network. Network transformers up to 36\,kV are specified to
+EN~50588-1~[15], and their losses are limited by the Ecodesign
+regulation~[16].
+
+\subsubsection{Yzn5}
+In the zigzag secondary of Figure~\ref{fig:de-network}(b), each phase
+consists of two half-windings on two different limbs. A single-phase load
+then magnetises two limbs, and its ampere-turns are balanced on the primary
+side without a delta winding. Yzn5 is used for small network transformers
+that supply predominantly single-phase load.
+
+\subsubsection{Dyn11}
+Dyn11 has the same windings as Dyn5, connected for a lower-voltage side
+leading by 30\,$^{\circ}$, Figure~\ref{fig:de-network}(c). It is the usual
+vector group in a number of other countries and occurs in German industrial
+installations. A Dyn5 and a Dyn11 transformer are operated in parallel only
+after two phases are interchanged on both sides of one of them~[17].
+\FloatBarrier

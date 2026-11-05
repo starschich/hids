@@ -1,0 +1,66 @@
+\subsection{Earthing systems}
+\label{sec:de-earthing}
+
+DIN~VDE~0100-100 designates the earthing system by two
+letters~[20]. The first gives the relation of the source to
+earth: T, one point (normally the neutral) directly earthed; I, all live
+parts isolated from earth or one point earthed through a high impedance. The
+second gives the earthing of the exposed conductive parts of the
+installation: N, connected to the earthed point of the source through
+protective conductors; T, connected to an earth electrode independent of
+the source earth. For TN systems, C denotes a combined protective earth and
+neutral conductor (PEN) and S separate N and PE conductors.
+Figure~\ref{fig:de-earthing} shows the five systems.
+
+\begin{figure}[!ht]
+  \centering
+  \input{german-practice/fig/de_earthing_systems}
+  \caption{Earthing systems: source on the left, equipment with its exposed
+  conductive part on the right. Blue: neutral; green-yellow: protective
+  earth; green dashed on blue: PEN.}
+  \label{fig:de-earthing}
+\end{figure}
+
+\subsubsection{TN-S}
+N and PE are separate from the transformer onwards and are connected only
+at the earthed neutral point of the source. No operating current flows on
+the PE, which is the reason TN-S is required or recommended for
+installations with extensive information technology
+equipment~[21].
+
+\subsubsection{TN-C}
+A combined PEN conductor serves as neutral and protective conductor. A PEN
+conductor requires a cross-section of at least 10\,mm$^2$ copper or
+16\,mm$^2$ aluminium in fixed installations~[22]; inside
+buildings TN-C is limited to such conductors.
+
+\subsubsection{TN-C-S}
+The PEN conductor of the network is split into N and PE at a point of the
+installation, normally the service entrance, where the PE is earthed again;
+beyond the split, N and PE are not reconnected. Public low-voltage networks
+in Germany are operated as TN-C systems up to the customer's service
+entrance and continue as TN-S inside the installation, which makes the
+combination TN-C-S~[13].
+
+\subsubsection{TT}
+The source neutral is earthed at the transformer, and the exposed
+conductive parts are connected to a local earth electrode of the
+installation. The earth-fault current returns through the soil, and
+protection by automatic disconnection uses residual current devices with
+\begin{equation}
+  R_{a} \cdot I_{\Delta n} \le 50\,\mathrm{V}
+  \label{eq:de-tt}
+\end{equation}
+where $R_{a}$ is the resistance of the local earth electrode and the
+protective conductor, and $I_{\Delta n}$ the rated residual operating
+current of the RCD~[23]. Some rural networks are operated as TT
+systems.
+
+\subsubsection{IT}
+The source is isolated from earth or earthed through a high impedance, and
+the exposed conductive parts are earthed locally. A first fault to earth
+draws only the capacitive current of the system and does not require
+disconnection; it is signalled by an insulation monitoring device. A
+second fault on another phase is a short circuit and is disconnected as in
+a TN or TT system~[23].
+\FloatBarrier

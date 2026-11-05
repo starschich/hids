@@ -1,0 +1,35 @@
+% =============================================================
+%  Chapter -- 480 V to 240 V connections in North America
+%  This file holds the chapter heading and its introduction only; the
+%  content is one file per subsection, \input below in reading order:
+%    terminology.tex      terminal markings, phase shift, grounding
+%    single-phase.tex     240x480 - 120/240 V dual-voltage unit
+%    delta-secondary.tex  ungrounded, corner-grounded, centre-tapped delta
+%    wye-connections.tex  240Y/139, wye primary, 208Y/120 reference
+%    open-delta.tex       two-unit bank
+%    application.tex      taps, reverse feed, autotransformers, standards
+%    comparison.tex       summary table of the connections
+%  Figures: fig/na_*.tex, written by fig/connection_figures.py
+% =============================================================
+\section{480\,V to 240\,V Connections in North America}
+\label{sec:na}
+
+North American commercial and industrial buildings are supplied at
+480Y/277\,V or 480\,V delta. Motors take 480\,V and lighting 277\,V; a
+dry-type transformer inside the building derives the lower utilization
+voltage, 240\,V three-phase, 120/240\,V single-phase or 208Y/120\,V.
+
+Section~\ref{sec:na-terms} gives the terminal markings, the phase shift and
+the grounding of the derived system. Sections~\ref{sec:na-single}
+to~\ref{sec:na-open} describe the connections: the single-phase unit, the
+three-phase connections with a delta and with a wye winding, and the open
+delta. Section~\ref{sec:na-application} lists the checks common to all of
+them, and Section~\ref{sec:na-summary} compares the connections.
+
+\input{north-american-practice/terminology}
+\input{north-american-practice/single-phase}
+\input{north-american-practice/delta-secondary}
+\input{north-american-practice/wye-connections}
+\input{north-american-practice/open-delta}
+\input{north-american-practice/application}
+\input{north-american-practice/comparison}

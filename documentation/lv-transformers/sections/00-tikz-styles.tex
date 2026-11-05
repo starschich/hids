@@ -1,0 +1,23 @@
+% =============================================================
+%  Line styles of the connection diagrams.  Used by the generated
+%  pictures in */fig/*.tex; colours from atreportcorporate.
+%  hv/lv  windings of the higher / lower voltage side
+%  miss   position of a missing winding (open delta)
+%  high   high-leg voltage of the centre-tapped delta
+%  ph/nl  phase and neutral conductors; pey+peg  PE (green-yellow)
+% =============================================================
+\tikzset{
+  hv/.style   = {atInfo, line width=1.1pt},
+  lv/.style   = {atAccentFg, line width=1.1pt},
+  miss/.style = {atFgMuted, line width=0.6pt, dash pattern=on 2pt off 1.6pt},
+  high/.style = {atDanger, line width=0.6pt, dash pattern=on 1.6pt off 1.2pt},
+  aux/.style  = {atFgMuted, line width=0.4pt, dash pattern=on 0.8pt off 1.2pt},
+  gnd/.style  = {atFg, line width=0.6pt},
+  core/.style = {atFg, line width=0.6pt},
+  arr/.style  = {atFgMuted, line width=0.6pt, -{Latex[length=1.6mm]}},
+  ph/.style   = {atFg, line width=0.6pt},
+  nl/.style   = {atInfo, line width=0.9pt},
+  pey/.style  = {atWarning, line width=1.1pt},
+  peg/.style  = {atSuccess, line width=1.1pt, dash pattern=on 2.4pt off 2pt},
+  box/.style  = {draw=atFgMuted, fill=atBgSubtle, line width=0.5pt},
+}
