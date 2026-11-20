@@ -1,0 +1,68 @@
+\subsection{Internal Voltage and Arm Quantities}
+\label{sec:converter-arm}
+
+\subsubsection{Internal voltage and modulation index}
+
+The upper and lower arm reactors of a phase act in parallel for the AC current, so the equivalent reactance per
+phase is $X = \omega \cdot L_{arm} / 2$. With the valve-side phase voltage $U_{ph} = U_{valve} / \sqrt{3}$ as phase
+reference, the AC current towards the grid and the internal voltage behind the arm reactors are
+\begin{equation}
+  \underline{I} = \frac{\left( P_{ac} + \mathrm{j} \cdot Q_{ac} \right)^{*}}{3 \cdot U_{ph}} , \qquad
+  \underline{E} = U_{ph} + \mathrm{j} \cdot X \cdot \underline{I} , \qquad
+  U_{conv} = \sqrt{3} \cdot |\underline{E}| .
+\end{equation}
+The arm reactance carries no active power; it absorbs $Q_{arm} = 3 \cdot X \cdot I^2$. The modulation index is the
+peak phase voltage in per unit of half the DC voltage:
+\begin{equation}
+  m = \frac{2 \cdot \sqrt{2} \cdot U_{conv}}{\sqrt{3} \cdot U_{dc}} .
+\end{equation}
+
+\subsubsection{Arm voltages and currents}
+
+Over one period, with $e(t) = \sqrt{2} \cdot |\underline{E}| \cdot \cos(\omega t)$ and the AC current $i_{ac}(t)$,
+the arms of phase a carry
+\begin{align}
+  u_{upper}(t) &= \frac{U_{dc}}{2} - \left( e(t) + e_3(t) \right) , &
+  i_{upper}(t) &= -\frac{I_{dc}}{3} - \frac{i_{ac}(t)}{2} , \\
+  u_{lower}(t) &= \frac{U_{dc}}{2} + \left( e(t) + e_3(t) \right) , &
+  i_{lower}(t) &= -\frac{I_{dc}}{3} + \frac{i_{ac}(t)}{2} ,
+\end{align}
+with the arm currents in their physical direction (upper arm towards the positive terminal) and $I_{dc} > 0$ into
+the positive terminal (inverter). Each arm carries a third of the DC current and half of the AC current:
+\begin{equation}
+  I_{arm\_rms} = \sqrt{\left( \frac{I_{dc}}{3} \right)^2 + \left( \frac{I_{ac}}{2} \right)^2} , \qquad
+  I_{arm\_peak} = \frac{|I_{dc}|}{3} + \frac{\sqrt{2} \cdot I_{ac}}{2} .
+\end{equation}
+The arm reactor losses are $P_{loss\_arm} = 6 \cdot R_{arm} \cdot I_{arm\_rms}^2$. The inserted submodules of an arm
+follow its voltage, $n_{ins}(t) = u_{arm}(t) / u_{sm}$, bounded by 0 and $N$.
+
+\subsubsection{Third harmonic injection}
+
+With third harmonic injection the arm voltages contain the zero-sequence component
+$e_3(t) = -\tfrac{\sqrt{2} \cdot |\underline{E}|}{6} \cdot \cos(3 \omega t)$. It cancels between the phases and does
+not change the AC side; it lowers the peak of $e + e_3$ to $\sqrt{3}/2$ of the fundamental peak. The peak factor is
+$k_3 = 1$ without and $k_3 = \sqrt{3}/2$ with injection.
+
+\subsubsection{Limits}
+
+A half-bridge arm cannot produce a negative voltage, and its voltage cannot exceed the sum of its capacitor
+voltages:
+\begin{equation}
+  k_3 \cdot m \le 1 , \qquad
+  U_{arm\_max} = \frac{U_{dc}}{2} \cdot \left( 1 + k_3 \cdot m \right) \le N \cdot u_{sm} .
+\end{equation}
+The highest modulation index at a given DC voltage is therefore
+$m_{max} = \min\left( 1, \, 2 \cdot N \cdot u_{sm} / U_{dc} - 1 \right) / k_3$. An exceeded limit is a warning of
+the result; the calculation is not stopped. The reactive power the converter can provide at a given active power is
+the circle $|\underline{E}| \le E_{max}$ in the $PQ$ plane, with centre $Q = -U_{valve}^2 / X$ and radius
+$U_{valve} \cdot E_{max} / X$, $E_{max} = m_{max} \cdot \sqrt{3} \cdot U_{dc} / (2 \cdot \sqrt{2})$ line-to-line.
+
+\subsubsection{DC side}
+
+The DC power is the AC power plus the losses, and the DC current follows from the DC voltage:
+\begin{equation}
+  P_{dc} = P_{ac} + P_{loss\_cv} , \qquad I_{dc} = \frac{P_{dc}}{U_{dc}} ,
+\end{equation}
+both in the convention of Section~\ref{sec:conventions} ($P_{dc} < 0$ for a rectifier). The converter can also be
+calculated with $P_{dc}$ or $I_{dc}$ given; then $P_{ac} = P_{dc} - P_{loss\_cv}(P_{ac})$ is iterated to a change
+below $10^{-10}$ of $|P_{dc}|$.

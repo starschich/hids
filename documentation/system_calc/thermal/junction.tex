@@ -1,0 +1,28 @@
+\subsection{Junction Temperature}
+\label{sec:junction}
+
+The junction temperature of a die is the case temperature plus the rise across the Foster network of
+Section~\ref{sec:semiconductor}, driven by the die losses $p(t)$ of Section~\ref{sec:die-losses}. The losses are
+periodic, so the temperatures are as well, and the network is linear. Each Foster element $R_i = r_i \cdot R_{th\_jc}$,
+$\tau_i$ is solved exactly for losses that are constant within each of the $M$ samples of length
+$\Delta t = 1 / (f \cdot M)$:
+\begin{equation}
+  \vartheta_i(n+1) = a_i \cdot \vartheta_i(n) + (1 - a_i) \cdot R_i \cdot p(n) , \qquad
+  a_i = \mathrm{e}^{-\Delta t / \tau_i} .
+\end{equation}
+The periodic steady state requires $\vartheta_i(M) = \vartheta_i(0)$, which gives the start value directly:
+\begin{equation}
+  \vartheta_i(0) = \frac{\sum_{n=0}^{M-1} a_i^{M-1-n} \cdot (1 - a_i) \cdot R_i \cdot p(n)}{1 - a_i^M} .
+\end{equation}
+One pass over the period from this start value gives the temperature rise; no transient has to settle. The
+junction temperature is
+\begin{equation}
+  T_j(n) = T_{case} + \sum_{i=1}^{4} \vartheta_i(n) .
+\end{equation}
+Its mean over the period is $T_{case} + R_{th\_jc} \cdot \overline{p}$. The two short time constants (0.1\,ms and
+5.8\,ms) set the ripple over the 16.7\,ms period at 60\,Hz; the long ones (60\,ms, 351\,ms) mainly add to the mean.
+A junction temperature above $T_{jop}$ is a warning.
+
+The model holds the loss data at the junction temperature of the semiconductor data (125\,$^{\circ}$C); the
+dependence of the losses on the calculated junction temperature is not iterated. $R_{th\_jc}$ is a maximum value of
+the datasheet, so the junction temperatures are upper values for the given losses.

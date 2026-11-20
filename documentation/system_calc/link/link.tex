@@ -1,0 +1,150 @@
+% =============================================================
+%  Chapter -- Link
+%  Subsections: Operating point and direction, DC circuit, Solution
+%  procedures, Link totals and checks, Worked example (Table points).
+%  Tables and values: fig/points_table.tex, fig/link_values.tex, generated
+%  by fig/link_example.py from tools/example_data.py.
+%  Sources: [1] hvdc_lf, src/hvdc_lf/link/case.py, link/solver.py.
+% =============================================================
+\section{Link}
+\label{sec:link}
+
+A link consists of two stations A and B, each calculated as in Section~\ref{sec:station}, and the DC line of
+Section~\ref{sec:dc-line} between their DC terminals. The link configuration holds the two stations, the DC line and
+the topology; the rectifier and the inverter are not part of it. Both stations may have the same design or different
+ones.
+
+\subsection{Operating Point and Direction}
+\label{sec:link-point}
+
+The operating point of a link gives, at both PCCs, the voltage, frequency, reactive power, tap position and auxiliary
+power, the DC voltage $U_{dpe\_rec}$ at the rectifier DC terminal, the conductor temperature and the cooling data of
+both converters. The active power is given at exactly one of four points, signed as for a single station:
+$P_{pcc\_a}$, $P_{pcc\_b}$ (PCC of station A or B) or $P_{dc\_a}$, $P_{dc\_b}$ (DC terminal of station A or B, all
+poles). The station at which the power is given is the rectifier if the power is negative, the inverter if it is
+positive; the other station takes the other role. Seen from the power flow, the given point is one of four
+references, which select the solution procedure of Section~\ref{sec:link-procedures}, Table~\ref{tab:link-reference}.
+
+\begin{table}[!ht]
+  \centering
+  \small
+  \begin{tabular}{@{}l l l l@{}}
+    \toprule
+    \textbf{Given} & \multicolumn{1}{c}{\textbf{Sign}} & \multicolumn{1}{c}{\textbf{Rectifier}}
+      & \multicolumn{1}{c}{\textbf{Reference}} \\
+    \midrule
+    $P_{pcc\_a}$ & $< 0$ & A & sending AC \\
+    $P_{pcc\_a}$ & $> 0$ & B & receiving AC \\
+    $P_{pcc\_b}$ & $< 0$ & B & sending AC \\
+    $P_{pcc\_b}$ & $> 0$ & A & receiving AC \\
+    $P_{dc\_a}$  & $< 0$ & A & sending DC \\
+    $P_{dc\_a}$  & $> 0$ & B & receiving DC \\
+    $P_{dc\_b}$  & $< 0$ & B & sending DC \\
+    $P_{dc\_b}$  & $> 0$ & A & receiving DC \\
+    \bottomrule
+  \end{tabular}
+  \caption{Rectifier and power reference from the point and the sign of the given active power}
+  \label{tab:link-reference}
+\end{table}
+
+\subsection{DC Circuit}
+\label{sec:link-dc}
+
+The DC circuit of one pole runs from the converter terminals of the rectifier through its DC reactor, the DC line
+and the DC reactor of the inverter to the converter terminals of the inverter. For the current $I_d$ and the given
+$U_{dpe\_rec}$,
+\begin{align}
+  U_{dpe\_conv\_rec} &= U_{dpe\_rec} + R_{dcr\_rec} \cdot I_d , \\
+  U_{dpe\_inv} &= U_{dpe\_rec} - R_{pole} \cdot I_d , \\
+  U_{dpe\_conv\_inv} &= U_{dpe\_inv} - R_{dcr\_inv} \cdot I_d ,
+\end{align}
+with $U_{dpe\_inv}$ the voltage at the inverter DC terminal (line end). The converters see
+$U_{dc} = k \cdot U_{dpe\_conv}$ and carry $|P_{dc\_cv}| = k \cdot U_{dpe\_conv} \cdot I_d$ each.
+
+\subsection{Solution Procedures}
+\label{sec:link-procedures}
+
+The four procedures use the station chain and the secant search on $P_{pcc}$ of
+Section~\ref{sec:station-procedures} for a station whose converter DC power is known. The link secants have the
+tolerance $10^{-6}$\,MW and at most 50 iterations.
+
+\paragraph{Sending AC.} $P_{pcc}$ of the rectifier is given.
+\begin{enumerate}
+  \item Rectifier chain with the given $P_{pcc}$ and the fixed point on $U_{dpe\_conv\_rec}$ of
+        Section~\ref{sec:station-procedures}, giving $I_d$.
+  \item DC circuit, giving $U_{dpe\_conv\_inv}$.
+  \item Inverter: secant on its $P_{pcc}$ until its converter DC power is $k \cdot U_{dpe\_conv\_inv} \cdot I_d$.
+\end{enumerate}
+
+\paragraph{Sending DC.} $P_{dc}$ at the rectifier DC terminal is given.
+\begin{enumerate}
+  \item $I_d = |P_{dc}| / (n_{conv} \cdot k \cdot U_{dpe\_rec})$ and the DC circuit, giving both converter voltages.
+  \item Rectifier: secant on its $P_{pcc}$ until its converter DC power is $-k \cdot U_{dpe\_conv\_rec} \cdot I_d$.
+  \item Inverter: secant as for sending AC, independent of step 2.
+\end{enumerate}
+
+\paragraph{Receiving DC.} $P_{dc}$ at the inverter DC terminal is given.
+\begin{enumerate}
+  \item Secant on $I_d$ until $n_{conv} \cdot k \cdot U_{dpe\_inv}(I_d) \cdot I_d = P_{dc}$, starting from
+        $I_d = P_{dc} / (n_{conv} \cdot k \cdot U_{dpe\_rec})$ and 1.01 times that value. This is the receiving end
+        current of Section~\ref{sec:dc-line}, solved numerically through the DC circuit.
+  \item Both stations as for sending DC.
+\end{enumerate}
+
+\paragraph{Receiving AC.} $P_{pcc}$ of the inverter is given.
+\begin{enumerate}
+  \item Inverter chain with the given $P_{pcc}$ at the converter voltage $U_{dpe\_conv\_inv}$, starting with
+        $U_{dpe\_conv\_inv} = U_{dpe\_rec}$, giving $I_d$.
+  \item DC circuit with this $I_d$, giving a new $U_{dpe\_conv\_inv}$; repeat from step 1 until the change is below
+        $10^{-6}$\,kV.
+  \item Rectifier: secant as for sending DC.
+\end{enumerate}
+
+\subsection{Link Totals and Checks}
+\label{sec:link-totals}
+
+The powers at the DC terminals are the converter DC powers of all converters plus the DC reactor losses of all pole
+conductors, both in the sign convention of Section~\ref{sec:conventions}. The link losses and the efficiency are
+\begin{equation}
+  P_{loss\_link} = -\left( P_{pcc\_rec} + P_{pcc\_inv} \right) , \qquad
+  \eta = \frac{P_{pcc\_inv}}{-P_{pcc\_rec}} .
+\end{equation}
+The losses must equal the sum of the station losses of both stations and the losses of the $n_{pc}$ pole conductors;
+a difference above $10^{-3}$\,MW is a warning. The limit warnings of both stations (Section~\ref{sec:station}) are
+collected in the link result.
+
+\subsection{Worked Example}
+\label{sec:link-example}
+
+Two stations of the design of Table~\ref{tab:example-data} are joined by the cable of
+Section~\ref{sec:dc-line-example}, with the station operating point of Section~\ref{sec:example-data} at both PCCs and
+$U_{dpe\_rec} = 400$\,kV. With $P_{pcc\_a} = -1000$\,MW station A is the rectifier; $I_d = \lkId$\,kA, the inverter DC
+terminal voltage is $\lkUinv$\,kV, the line losses are $\lkLine$\,MW and the link losses $\lkLoss$\,MW, at an
+efficiency of $\lkEta$\,\%. Table~\ref{tab:link-points} gives this operating point with the power given at each of
+the four points, rows 1 to 4, and two further points. Rows 1 to 4 give the same operating point, with the power taken
+from row 1. In row 5 the power at the PCC of station A is positive, so station B is the rectifier; the DC voltage of
+400\,kV is then given at station B, and the current and the losses are higher than in row 1 for the same power at
+PCC A, because 1000\,MW are now delivered to grid A instead of taken from it. Row 6 is row 1 mirrored: station B takes
+1000\,MW from its grid.
+
+\begin{table}[!ht]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}l c r r r r r r r@{}}
+    \toprule
+    \textbf{Power given} & \multicolumn{1}{c}{\textbf{Rect.}} & \multicolumn{1}{c}{\textbf{$P_{pcc\_a}$}}
+      & \multicolumn{1}{c}{\textbf{$P_{dc\_a}$}} & \multicolumn{1}{c}{\textbf{$P_{dc\_b}$}}
+      & \multicolumn{1}{c}{\textbf{$P_{pcc\_b}$}} & \multicolumn{1}{c}{\textbf{$I_d$}}
+      & \multicolumn{1}{c}{\textbf{Losses}} & \multicolumn{1}{c}{\textbf{Iter.}} \\
+    & & \multicolumn{1}{c}{[MW]} & \multicolumn{1}{c}{[MW]} & \multicolumn{1}{c}{[MW]} & \multicolumn{1}{c}{[MW]}
+      & \multicolumn{1}{c}{[kA]} & \multicolumn{1}{c}{[MW]} & \\
+    \midrule
+    \tablerows{link/fig/points_table}
+    \bottomrule
+  \end{tabular}
+  \caption{Link operating points with the active power given at different points, $U_{dpe\_rec} = 400$\,kV,
+           $U_{pcc} = 345$\,kV and $Q_{pcc} = 0$ at both stations}
+  \label{tab:link-points}
+\end{table}
+\FloatBarrier

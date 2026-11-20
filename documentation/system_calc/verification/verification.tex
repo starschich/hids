@@ -1,0 +1,65 @@
+% =============================================================
+%  Chapter -- Verification
+%  Subsections: Component contracts, Plausibility checks, Thermal model,
+%  Test suite.
+%  Sources: [1] hvdc_lf, src/hvdc_lf/*/tests, src/hvdc_lf/services
+%  (plausibility), examples/*.ipynb.
+% =============================================================
+\section{Verification}
+\label{sec:verification}
+
+The calculation is verified on three levels: contracts that every calculation method of a component must fulfil,
+plausibility checks of a calculated operating point, and the automated test suite of \texttt{hvdc\_lf}~[1].
+
+\subsection{Component Contracts}
+
+Every calculation method of a component is tested against the same contract, independent of its model:
+\begin{itemize}
+  \item power balance of the element: the power at the grid-side port minus the power at the other port equals the
+        losses, in the sign convention of Section~\ref{sec:conventions};
+  \item losses $\geq 0$ for rectifier and inverter operation;
+  \item DC line: $U_{send} - U_{recv} = R_{pole} \cdot I_d$ and $P_{send} - P_{recv} = R_{pole} \cdot I_d^2$; the
+        resistance at $T_{ref}$ equals the catalogue value times the length divided by $n_{sub}$, and increases with
+        temperature;
+  \item converter: no active power in the arm reactance; $I_{dc} = P_{dc} / U_{dc}$; the loss parts add up to the
+        converter losses.
+\end{itemize}
+
+\subsection{Plausibility Checks}
+
+Each component, the station and the link have a plausibility check that calculates an operating point and tests
+physical relations on the result, each with the result pass or FAIL:
+\begin{itemize}
+  \item \textbf{Converter:} power balance, $I_{dc} = P_{dc}/U_{dc}$, internal voltage and modulation index, higher
+        modulation index with more capacitive reactive power, no-load point, arm current RMS value from the waveform
+        against $(I_{dc}/3)^2 + (I_{ac}/2)^2$, Kirchhoff's current law at the phase node, each arm absorbing one sixth
+        of the losses, the submodule voltage limit, symmetry of the upper and lower arm losses.
+  \item \textbf{Station:} operation from the sign of the given power, the given values reached, continuity of
+        voltage and power between the elements, balance of each element and of the station,
+        $I_d = P_{dc\_cv} / (2 \cdot U_{dpe\_conv})$.
+  \item \textbf{Link:} direction from the sign, the given power reached at its point, signs at the four points,
+        the DC voltage at the rectifier terminal equal to the line sending end, $U_{dpe\_rec} - U_{dpe\_inv} =
+        R_{pole} \cdot I_d$, DC line balance, station balances, link balance, and the same operating point when the
+        power is given at each of the other three points (current, both PCC powers and inverter DC voltage within a
+        relative $10^{-6}$).
+\end{itemize}
+The last link check is the one shown in rows 1 to 4 of Table~\ref{tab:link-points}.
+
+\subsection{Thermal Model}
+
+The closed-form periodic steady state of Section~\ref{sec:junction} is compared with a time integration of the same
+Foster network: half-sine losses of 2\,kW peak in 360 samples per period at 60\,Hz, $R_{th\_jc} = 10$\,K/kW and the
+Foster data of Section~\ref{sec:semiconductor}, integrated over 500 periods from zero. The temperature rise at the
+start of the period agrees within a relative $10^{-6}$, the mean rise equals $R_{th\_jc} \cdot \overline{p}$ within
+a relative $10^{-3}$, and constant losses give no ripple and the rise $R_{th\_jc} \cdot p$. In the worked example the
+mean junction temperatures satisfy $\overline{T_j} = T_{case} + R_{th\_jc} \cdot \overline{p}$
+(Table~\ref{tab:thermal-dies}, e.g.\ T1: $62.7 + 10.0 \cdot 0.870 = 71.4\,^{\circ}$C), and the die losses of all
+$6 \cdot 240 \cdot 2$ modules add up to 5.557\,MW, the conduction and switching losses of the converter
+(Table~\ref{tab:converter-losses}).
+
+\subsection{Test Suite}
+
+The test suite of \texttt{hvdc\_lf} 0.52.0 holds 27 test modules with the contracts above, the plausibility checks,
+the solvers of station and link, the catalogue and the database. It gives 460 passed and 2 skipped tests. The
+notebooks of the components, the station and the link in \texttt{examples/} run the plausibility checks on the
+example data of Section~\ref{sec:example-data}.

@@ -1,0 +1,27 @@
+\subsection{Cold Plate and Water Path}
+\label{sec:cooling}
+
+Each submodule sits on one liquid-cooled cold plate. The heat capacity of the plate and the water keeps the heat sink
+temperature constant over one period, so the cooling path is calculated with the mean losses of the period. The
+$n_{par}$ modules in parallel at a switch position have parallel water paths with the flow $Q_w / n_{par}$ each,
+$Q_w$ the flow per cold plate. Along one path the water passes the module of one switch position and then the module
+of the other (T1/D1 first in the example), so the second module sees water warmed by the first.
+
+The thermal resistance heat sink to water under one module is one value of the converter design, $R_{th\_hw\_ref}$
+at the reference flow $Q_{ref}$, with the flow dependence of the heat transfer coefficient in turbulent flow~[3]:
+\begin{equation}
+  R_{th\_hw}(Q_w) = R_{th\_hw\_ref} \cdot \left( \frac{Q_{ref}}{Q_w} \right)^{0.8} .
+\end{equation}
+The example uses $R_{th\_hw\_ref} = 6$\,K/kW at $Q_{ref} = 10$\,l/min, a value to be replaced by the data of the
+cold plate. For module $j$ along the path with the mean losses $P_j$ (IGBT and diode),
+\begin{align}
+  \Delta T_{w\_j} &= \frac{P_j}{\rho \cdot c_p \cdot Q_w / n_{par}} , &
+  T_{w\_j} &= T_{w\_in} + \sum_{i<j} \Delta T_{w\_i} + \frac{\Delta T_{w\_j}}{2} , \\
+  T_{hs\_j} &= T_{w\_j} + P_j \cdot R_{th\_hw}(Q_w) , &
+  T_{case\_j} &= T_{hs\_j} + P_j \cdot R_{th\_cs} ,
+\end{align}
+with $\rho \cdot c_p = 4.13$\,kJ/(l$\cdot$K) for water at about 50\,$^{\circ}$C ($988\,\mathrm{kg/m^3} \cdot
+4.18\,\mathrm{kJ/(kg \cdot K)}$) and $T_{w\_j}$ the mean water temperature along the module. The water inlet
+temperature $T_{w\_in}$ (default 50\,$^{\circ}$C) and the flow per cold plate $Q_w$ (default $Q_{ref}$) are part of the
+operating point. The water outlet temperature follows from the losses of the cold plate,
+$T_{w\_out} - T_{w\_in} = P_{plate} / (\rho \cdot c_p \cdot Q_w)$.

@@ -1,0 +1,31 @@
+\subsection{Submodule Capacitors}
+\label{sec:converter-capacitors}
+
+\subsubsection{Capacitor voltage ripple}
+
+With the submodule capacitance $C_{sm}$ given, the variation of the capacitor voltages over one period is calculated.
+An arm takes the power $p(t) = -u_{arm}(t) \cdot i_{arm}(t)$ (charging current). Its mean is the share of the
+losses of the arm; the remainder charges and discharges the inserted capacitors. The energy variation of an arm is
+\begin{equation}
+  \Delta W(t) = \int_0^t \left( p(t') - \overline{p} \right) \mathrm{d}t' ,
+\end{equation}
+evaluated over the $M$ samples. Around the stored energy $W_0 = N \cdot C_{sm} \cdot u_{sm}^2 / 2$ of an arm,
+with the capacitors of an arm balanced and $u_{sm}$ their average voltage,
+\begin{equation}
+  W(t) = W_0 + \Delta W(t) - \overline{\Delta W} , \qquad
+  u_c(t) = \sqrt{\frac{2 \cdot W(t)}{N \cdot C_{sm}}} .
+\end{equation}
+The result gives the stored energy of the six arms, per MV$\cdot$A of $|\underline{S}_{ac}|$, the peak-to-peak
+energy variation of an arm, the lowest and highest capacitor voltage and the ripple in per cent of $u_{sm}$. The
+ripple does not change $P$ and $Q$ of the load flow. A capacitance so small that $W(t) \le 0$ is rejected.
+
+\subsubsection{Inner modulation index}
+
+The inner modulation index relates the voltage an arm produces to the sum of its capacitor voltages:
+\begin{equation}
+  a = \max_t \frac{u_{arm}(t)}{N \cdot u_c(t)} \le 1 ,
+\end{equation}
+with $u_c = u_{sm}$ when no capacitance is given, $a = U_{arm\_max} / (N \cdot u_{sm})$. The margin
+$\min_t \left( N \cdot u_c(t) - u_{arm}(t) \right)$ is the voltage reserve of the arm; $a > 1$ is a warning. The
+capacitor ripple shifts $a$ in either direction: $a$ rises if the capacitors of an arm are below average when the
+arm voltage is highest and falls if they are above average, depending on the operating point.

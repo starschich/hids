@@ -1,0 +1,48 @@
+\subsection{Semiconductor Data}
+\label{sec:semiconductor}
+
+The example module is the Mitsubishi Electric CM1000HG-130XA, 6.5\,kV, 1000\,A, with the data at
+$T_j = 125\,^{\circ}$C~[2]. The on-state voltage of IGBT and diode is modelled per module as
+\begin{equation}
+  v_{CE} = v_{0\_igbt} + r_{igbt} \cdot i_C , \qquad v_{EC} = v_{0\_diode} + r_{diode} \cdot i_E ,
+\end{equation}
+fitted through the datasheet values at 1000\,A ($V_{CE\_sat} = 3.25$\,V, $V_{EC} = 2.80$\,V, typical, $T_j = 125\,^{\circ}$C)
+and the typical output characteristics at 500\,A. This gives $v_{0\_igbt} = 1.45$\,V, $r_{igbt} = 1.80$\,m$\Omega$,
+$v_{0\_diode} = 1.60$\,V and $r_{diode} = 1.20$\,m$\Omega$. Table~\ref{tab:onstate} compares the model with the
+datasheet: the deviation is at most 0.1\,V from 250\,A to 1000\,A, which covers the module currents of the converter
+(up to 0.69\,kA per module in the example), and reaches 0.5\,V at 2000\,A. The points other than 1000\,A are read
+from the characteristics with an accuracy of about $\pm 0.1$\,V.
+
+\begin{table}[!ht]
+  \centering
+  \small
+  \begin{tabular}{@{}l r r r r@{}}
+    \toprule
+    \textbf{Device} & \multicolumn{1}{c}{\textbf{$i$ [kA]}} & \multicolumn{1}{c}{\textbf{Datasheet [V]}}
+      & \multicolumn{1}{c}{\textbf{Model [V]}} & \multicolumn{1}{c}{\textbf{Deviation [V]}} \\
+    \midrule
+    \tablerows{thermal/fig/onstate_table}
+    \bottomrule
+  \end{tabular}
+  \caption{On-state model of the CM1000HG-130XA against the datasheet, $T_j = 125\,^{\circ}$C~[2]}
+  \label{tab:onstate}
+\end{table}
+
+The switching energies per pulse are those of the datasheet at $V_{CC} = 3600$\,V, $I_C = 1000$\,A,
+$R_{G\_on} = 4.3\,\Omega$, $R_{G\_off} = 39\,\Omega$, $L_s = 150$\,nH and $T_j = 125\,^{\circ}$C, as defined in
+IEC 60747: $E_{on} = 11.0$\,J, $E_{off} = 7.5$\,J, $E_{rec} = 5.1$\,J~[2]. The converter scales them linearly with
+voltage and current (Section~\ref{sec:converter-losses}). The datasheet curves of the energies against current are
+not linear; below 1000\,A the linear scaling gives lower energies than the curves.
+
+The thermal data are $R_{th\_jc} = 10.0$\,K/kW (IGBT) and 16.0\,K/kW (diode), maximum values, the contact resistance
+case to heat sink $R_{th\_cs} = 5.0$\,K/kW per module (typical, grease $\lambda = 1$\,W/(m$\cdot$K), 80\,$\mu$m), the
+highest operating junction temperature $T_{jop} = 150\,^{\circ}$C, and the Foster model of the transient thermal
+impedance junction to case, the same for IGBT and diode:
+\begin{equation}
+  Z_{th\_jc}(t) = R_{th\_jc} \cdot \sum_{i=1}^{4} r_i \cdot \left( 1 - \mathrm{e}^{-t/\tau_i} \right) ,
+\end{equation}
+with $r_i = 0.0096$, 0.1893, 0.4044, 0.3967 and $\tau_i = 0.1$\,ms, 5.8\,ms, 60.2\,ms, 351.2\,ms~[2].
+
+With the ratings given, the converter warns when the highest submodule capacitor voltage reaches the blocking
+voltage $V_{CES}$ and when the peak current per module $I_{arm\_peak} / n_{par}$ exceeds the rated collector current
+$I_C$. With one module per switch position the example exceeds $I_C$ (1.38\,kA); with two it does not.

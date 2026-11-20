@@ -1,0 +1,47 @@
+\subsection{Solution Procedures}
+\label{sec:station-procedures}
+
+\subsubsection{Active power given at the PCC}
+
+With $P_{pcc}$ given, the AC network, the AC line, the transformer and the converter are calculated once in this
+order. The converter needs its DC voltage, which depends on the DC current through the DC reactor
+(Section~\ref{sec:station-dc}), and the DC current follows from the converter. This loop is solved by a fixed-point
+iteration on $U_{dpe\_conv}$:
+\begin{enumerate}
+  \item start with $U_{dpe\_conv} = U_{dpe}$;
+  \item calculate the chain with $U_{dc} = k \cdot U_{dpe\_conv}$, giving $I_d$;
+  \item update $U_{dpe\_conv} = U_{dpe} \pm R_{dcr} \cdot I_d$ and repeat from step 2 until the change is below
+        $10^{-10}$\,kV.
+\end{enumerate}
+Without a DC reactor one pass is enough. The losses of the converter depend on its DC current
+$I_{dc} = (P_{ac} + P_{loss\_cv}) / U_{dc}$; inside the converter they are found by a fixed-point iteration as
+well (Section~\ref{sec:converter-losses}).
+
+\subsubsection{Active power given at the DC terminal}
+
+With $P_{dc}$ given at the station DC terminal (all poles), the DC side is known directly:
+\begin{equation}
+  I_d = \frac{|P_{dc}|}{n_{conv} \cdot k \cdot U_{dpe}} , \qquad
+  U_{dpe\_conv} = U_{dpe} \pm R_{dcr} \cdot I_d , \qquad
+  P_{dc\_cv}^{target} = \mp k \cdot U_{dpe\_conv} \cdot I_d ,
+\end{equation}
+upper signs for a rectifier ($P_{dc} < 0$). The PCC power is the root of
+\begin{equation}
+  F(P_{pcc}) = P_{dc\_cv}(P_{pcc}) - P_{dc\_cv}^{target} ,
+\end{equation}
+where $P_{dc\_cv}(P_{pcc})$ is the converter DC power from the AC chain at the fixed converter voltage. The root is
+found by the secant method, starting from $P_{pcc} = n_{conv} \cdot P_{dc\_cv}^{target}$ and 1.01 times that value,
+with the tolerance $10^{-9}$\,MW and at most 50 iterations.
+
+\subsubsection{Station totals and checks}
+
+The station losses are
+\begin{equation}
+  P_{loss\_st} = n_{conv} \cdot \left( P_{loss\_tr} + P_{aux}/n_{conv} + P_{loss\_cv} \right)
+                 + 2 \cdot R_{dcr} \cdot I_d^2 + P_{loss\_line} ,
+\end{equation}
+and the efficiency is the output power divided by the input power: $|P_{dc}| / |P_{pcc}|$ for a rectifier,
+$P_{pcc} / P_{dc}$ for an inverter. The result carries the operation that follows from the sign of the given power
+and warnings for a PCC voltage outside its band, an AC line or transformer loading above 100\,\% and every exceeded
+limit of the converter. A rectifier whose converter would not deliver DC power, or the reverse for an inverter, is
+rejected.

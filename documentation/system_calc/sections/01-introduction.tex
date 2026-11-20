@@ -1,0 +1,93 @@
+% =============================================================
+%  Introduction: scope, structure of the calculation, conventions,
+%  example data.  Sources: [1] hvdc_lf repository.
+% =============================================================
+\section{Introduction}
+\label{sec:introduction}
+
+This report describes the calculation procedures of the steady-state load flow of a voltage-sourced converter
+(VSC) HVDC transmission with modular multilevel converters (MMC), as implemented in the load flow framework
+\texttt{hvdc\_lf}~[1]. It states for every element the model, the equations and the order in which they are
+solved, for a single converter station and for a point-to-point link of two stations. The procedures refer to
+\texttt{hvdc\_lf} 0.52.0; every number of the worked examples is produced by the scripts named in the chapter
+header comments from the example data of Section~\ref{sec:example-data}.
+
+\subsection{Structure of the calculation}
+\label{sec:structure}
+
+The calculation has three levels:
+
+\begin{itemize}
+  \item \textbf{Components.} AC network at the point of common coupling (PCC), AC line, converter transformer,
+        converter with its arm reactors and its semiconductor, DC reactor, DC line. Each component has a data model
+        and one or more calculation methods; the method of a component is part of its data.
+  \item \textbf{Station.} The components of one station, calculated in a chain from the PCC to the station DC
+        terminal (Section~\ref{sec:station}).
+  \item \textbf{Link.} Two stations and the DC line between their DC terminals (Section~\ref{sec:link}).
+\end{itemize}
+
+The data of a calculation fall into three groups: the component data (design values, stored once per version in
+the component catalogue), the configuration (which components form a station or a link, and its topology) and the
+operating point (case). Values that change with the operation of the system --- active and reactive power, PCC
+voltage, frequency, tap position, DC voltage, auxiliary power demand, cooling water temperature and flow --- belong
+to the operating point and not to the components. A configuration holds no operating values.
+
+The topology sets two factors: $n_{conv}$, the converters per station, and $k$, the DC voltage across one converter
+in multiples of the pole-to-ground voltage $U_{dpe}$. A symmetrical monopole has $n_{conv} = 1$, $k = 2$; a bipole
+has $n_{conv} = 2$, $k = 1$. Both topologies carry the DC current $I_d$ in two pole conductors, and
+$n_{conv} \cdot k = 2$. The worked examples use a symmetrical monopole.
+
+\subsection{Sign convention and units}
+\label{sec:conventions}
+
+Active power, reactive power and current are positive in the direction towards the AC grid, at every port of a
+station and on the AC and the DC side alike:
+
+\begin{itemize}
+  \item a rectifier has $P < 0$ at its PCC and at its DC terminal, an inverter $P > 0$ at both;
+  \item $Q > 0$ is reactive power supplied by the station to the AC grid;
+  \item losses are positive: the loss of an element is the power at its grid-side port minus the power at its other
+        port, both in this convention, e.g.\ $P_{loss\_cv} = P_{dc} - P_{ac}$ for the converter.
+\end{itemize}
+
+The operating mode of a station is not part of its data. The sign of the given active power decides whether it
+works as rectifier or inverter, and for a link which station is the rectifier.
+
+The units are metric: kV, kA, MW, Mvar, MV$\cdot$A, $\Omega$, mH, mF, km, $^{\circ}$C, l/min. AC voltages are
+line-to-line RMS values, DC voltages pole-to-ground unless stated as the voltage across a converter. With kV and kA,
+$\mathrm{kV} \cdot \mathrm{kA} = \mathrm{MW}$ and $\mathrm{kA}^2 \cdot \Omega = \mathrm{MW}$; with V and kA,
+$\mathrm{V} \cdot \mathrm{kA} = \mathrm{kW}$.
+
+\subsection{Example data}
+\label{sec:example-data}
+
+The worked examples use one station design, given in Table~\ref{tab:example-data}; the link joins two stations of this
+design by a 300\,km cable (Section~\ref{sec:dc-line}). The data are placeholders except the semiconductor, which is
+the module of the datasheet~[2]. The station operating point is $U_{pcc} = 345$\,kV, $P_{pcc} = -1000$\,MW (rectifier),
+$Q_{pcc} = 0$, tap 0, $U_{dpe} = 400$\,kV and 500\,kW auxiliary power.
+
+\begin{table}[!ht]
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Component} & \textbf{Data} \\
+    \midrule
+    AC network      & 345\,kV, 60\,Hz, voltage band 0.90 to 1.10\,pu \\
+    AC line         & 40\,km OHL, 2 circuits, nominal $\pi$; per circuit $R' = 0.075\,\Omega$/km per sub-conductor,
+                      2 sub-conductors, $X' = 0.360\,\Omega$/km, $C' = 12.5$\,nF/km \\
+    Transformer     & 1150\,MV$\cdot$A, 345/420\,kV, $u_k = 15$\,\%, $P_{cu} = 2500$\,kW, $P_{fe} = 400$\,kW,
+                      $i_0 = 0.2$\,\%, tap $\pm 10$ steps of 1.25\,\% on the line side \\
+    Converter       & half-bridge MMC, $N = 240$ submodules per arm, $u_{sm} = 3.6$\,kV, $C_{sm} = 3.7$\,mF,
+                      2 modules in parallel per switch position, $f_{sw} = 150$\,Hz, 150\,W constant losses per
+                      submodule; cold plate 6\,K/kW per module at 10\,l/min \\
+    Semiconductor   & Mitsubishi Electric CM1000HG-130XA, 6.5\,kV, 1000\,A, data at $T_j = 125\,^{\circ}$C~[2]
+                      (Section~\ref{sec:thermal}) \\
+    Arm reactor     & 50\,mH, 0.1\,$\Omega$ \\
+    DC reactor      & 100\,mH, 0.05\,$\Omega$ per pole \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Example station design of the worked examples (file \texttt{tools/example\_data.py})}
+  \label{tab:example-data}
+\end{table}
+\FloatBarrier

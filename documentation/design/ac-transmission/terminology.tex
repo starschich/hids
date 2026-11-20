@@ -1,0 +1,175 @@
+% =============================================================
+%  Terminology — system, AC line, circuit, phase, bundle, conductor
+%  Defines the terms for the elements of an AC transmission path
+%  in the sense used throughout this chapter.
+%  Figure: fig:ac-terms, inline TikZ (schematic, not to scale);
+%  no generating script.  Reference-line data: Table tab:ohl-geometry.
+% =============================================================
+\subsection{Terminology}
+\label{sec:ac-terms}
+
+The elements of an AC transmission path are named at six levels, each
+contained in the one above it: system, AC line, circuit, phase, bundle and
+conductor. Figure~\ref{fig:ac-terms} shows the six levels on one
+double-circuit line, and Table~\ref{tab:ac-terms} gives the definition of
+each level and the quantities assigned to it. This report uses the terms in
+this sense only.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[x=1mm, y=1mm,
+      panel/.style={atBorderStrong, line width=0.4pt, densely dashed,
+                    rounded corners=2mm},
+      steel/.style={atBorderStrong},
+      ss/.style={draw=atFg, fill=atBgSubtle, line width=0.5pt,
+                 minimum width=22mm, minimum height=8mm,
+                 font=\footnotesize, text=atFg},
+      cond/.style={fill=atFg},
+      circ/.style={atAccentFg, line width=0.6pt, densely dashed,
+                   rounded corners=1.5mm},
+      lbl/.style={font=\footnotesize, text=atFg},
+      note/.style={font=\scriptsize, text=atFgMuted},
+      ttl/.style={font=\footnotesize\bfseries, text=atFg, anchor=north west}]
+    % ---- (a) system ------------------------------------------
+    \draw[panel] (0,0) rectangle (150,-26);
+    \node[ttl] at (2,-1.5) {(a) System};
+    \node[ss] (A) at ( 22,-13) {Substation A};
+    \node[ss] (B) at ( 75,-13) {Substation B};
+    \node[ss] (C) at (128,-13) {Substation C};
+    \draw[atAccentFg, line width=1.6pt] (A.east) -- (B.west)
+      node[midway, below=1.2mm, lbl] {AC line A--B};
+    \draw[atFg, line width=0.8pt] (B.east) -- (C.west)
+      node[midway, below=1.2mm, lbl] {AC line B--C};
+    % ---- (b) AC line: double-circuit tower -------------------
+    \draw[panel] (0,-36) rectangle (82,-112);
+    \node[ttl] at (2,-37.5) {(b) AC line, double circuit};
+    \draw[steel, line width=1.0pt] (41,-49) -- (41,-106);
+    \draw[steel, line width=0.6pt] (33,-106) -- (49,-106);
+    \draw[steel, line width=0.6pt] (35,-49) -- (47,-49);
+    \draw[atFg, line width=0.5pt] (41,-48) circle (0.9);
+    \node[note, anchor=west] at (43,-46) {shield wire};
+    \foreach \yy in {-58,-72,-86} {
+      \draw[steel, line width=1.0pt] (21,\yy) -- (61,\yy);
+      \foreach \xx in {23,59} {
+        \draw[atFgMuted, line width=0.7pt] (\xx,\yy) -- (\xx,\yy-5);
+        \foreach \px/\py in {0/-0.9,-0.8/0.45,0.8/0.45}
+          \fill[cond] ($(\xx,\yy-6.5)+(\px,\py)$) circle (0.5);
+      }
+    }
+    \draw[circ] (18.5,-61) rectangle (27.5,-95.5);
+    \draw[circ] (54.5,-61) rectangle (63.5,-95.5);
+    \foreach \yy/\pp in {-58/L1,-72/L2,-86/L3} {
+      \node[lbl, anchor=east] at (17.5,\yy-6.5) {\pp};
+      \node[lbl, anchor=west] at (64.5,\yy-6.5) {\pp};
+    }
+    \node[lbl] at (23,-100) {Circuit 1};
+    \node[lbl] at (59,-100) {Circuit 2};
+    % leader from phase L1 of circuit 2 to the bundle detail
+    \draw[atFgMuted, line width=0.4pt, densely dotted] (61,-64.5) -- (88,-56);
+    % ---- (c) bundle ------------------------------------------
+    \draw[panel] (88,-36) rectangle (150,-72);
+    \node[ttl] at (90,-37.5) {(c) Bundle, one phase};
+    \coordinate (P1) at (105,-62);
+    \coordinate (P2) at (98.07,-50);
+    \coordinate (P3) at (111.93,-50);
+    \draw[atBorderStrong, line width=0.8pt] (P1) -- (P2) -- (P3) -- cycle;
+    \foreach \P in {P1,P2,P3} \fill[cond] (\P) circle (1.8);
+    \node[lbl, anchor=west] at (118,-50) {3 sub-conductors};
+    \node[lbl, anchor=west] at (118,-56) {spacer};
+    \draw[atFgMuted, line width=0.4pt] (117.5,-56) -- (109,-56);
+    % ---- (d) conductor ---------------------------------------
+    \draw[panel] (88,-76) rectangle (150,-112);
+    \node[ttl] at (90,-77.5) {(d) Conductor, ACSR};
+    \coordinate (O) at (105,-96);
+    \foreach \a in {0,30,...,330}
+      \draw[atFg, fill=atBg, line width=0.4pt] ($(O)+(\a:5.6)$) circle (1.8);
+    \foreach \a in {0,60,...,300}
+      \draw[atFg, fill=atBorderStrong, line width=0.4pt] ($(O)+(\a:2.4)$) circle (1.2);
+    \draw[atFg, fill=atBorderStrong, line width=0.4pt] (O) circle (1.2);
+    \node[lbl, anchor=west] at (118,-91) {aluminium strands};
+    \node[lbl, anchor=west] at (118,-100) {steel core};
+    \draw[atFgMuted, line width=0.4pt] (117.5,-91) -- (110.6,-93.5);
+    \draw[atFgMuted, line width=0.4pt] (117.5,-100) -- (107.5,-97.5);
+  \end{tikzpicture}
+  \caption{Levels of an AC transmission path: (a) system of substations and
+           AC lines, (b) double-circuit AC line with two three-phase circuits
+           on one tower, (c) one phase as a bundle of three sub-conductors,
+           (d) cross-section of one ACSR conductor. Schematic, not to scale;
+           strand count reduced}
+  \label{fig:ac-terms}
+\end{figure}
+
+\begin{table}[!ht]
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X
+                                    >{\raggedright\arraybackslash}p{0.27\linewidth}@{}}
+    \toprule
+    \multicolumn{1}{c}{\textbf{Term}} & \textbf{Definition}
+    & \multicolumn{1}{c}{\textbf{Assigned quantities}} \\
+    \midrule
+    System    & Interconnected network of generation, substations,
+                transformers, AC lines and loads, operated synchronously at
+                one frequency
+              & $f$, voltage levels, short-circuit level at each node \\
+    AC line   & Physical connection between two substations, or between a
+                substation and a tap point: route, towers, foundations,
+                insulators, conductors and shield wires. Carries one or more
+                circuits
+              & Route length $l$, right-of-way, tower type, number of
+                circuits \\
+    Circuit   & One three-phase set L1, L2, L3, switched and protected as a
+                unit by its own circuit breakers at both ends
+              & $U_n$, thermal rating, $R'$, $L'$, $G'$, $C'$, two-port
+                parameters \\
+    Phase     & One of the three current paths of a circuit, formed by a
+                single conductor or by a bundle
+              & Phase current, phase-to-earth voltage, $GMD$ \\
+    Bundle    & Group of two or more sub-conductors that together form one
+                phase, held at a fixed spacing by spacers
+              & Number of sub-conductors, $s$, $GMR_b$, $r_b$ \\
+    Conductor & Single stranded wire, for example ACSR or AAAC; called a
+                sub-conductor when it is part of a bundle
+              & Type, $d$, $GMR$, $R'$ of the wire, ampacity \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Terms for the elements of an AC transmission path, from the
+           largest to the smallest}
+  \label{tab:ac-terms}
+\end{table}
+
+\subsubsection{Circuits and lines}
+\label{sec:ac-terms-circuits}
+
+The number of circuits on a line and the number of lines between two
+substations are independent. A double-circuit line, Figure~\ref{fig:ac-terms}\,(b),
+carries two circuits on common towers. Each circuit has its own circuit
+breakers and is a separate branch of the load-flow model, so the outage of
+one circuit leaves the other in service. A tower failure removes both
+circuits at once and is treated as a single contingency of the line.
+
+The rating, the line parameters and the two-port of
+Section~\ref{sec:ac-transmission} belong to one circuit. Where a line
+carries two circuits, the mutual coupling between them is a property of the
+line and enters the zero-sequence parameters; the positive-sequence values
+used in this chapter are per circuit.
+
+The reference line of Section~\ref{sec:reference-line} is a single-circuit
+line with three phases in flat configuration, each phase a bundle of three
+Bluebird ACSR sub-conductors at 18\,in spacing, Table~\ref{tab:ohl-geometry}.
+
+\subsubsection{Usage of the term system}
+\label{sec:ac-terms-system}
+
+In German and in European transmission system operator (TSO) practice,
+\emph{System} also denotes one three-phase circuit: a
+\emph{380-kV-Leitung mit zwei Systemen} is a 380\,kV double-circuit line.
+In this report, system denotes only the interconnected network, and a
+three-phase set is a circuit.
+
+In line-parameter calculations the term phase conductor denotes the bundle
+as a whole, represented by its equivalent radii $GMR_b$ and $r_b$ of
+Section~\ref{sec:ohl-bundle}. Conductor without qualifier denotes the single
+wire.
+
+\FloatBarrier

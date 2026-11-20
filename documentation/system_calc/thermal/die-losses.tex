@@ -1,0 +1,32 @@
+\subsection{Losses of the Dies}
+\label{sec:die-losses}
+
+The junction temperatures need the losses of each of the four dies T1, D1, T2, D2 of a submodule separately. The
+losses of Section~\ref{sec:converter-losses} are assigned to the dies of the average submodule of an arm, which is
+inserted for the share $n_{ins}(t) / N$ of the time. With the current of one module $i_m = |i_{arm}| / n_{par}$,
+\begin{equation}
+  p_{cond\_igbt} = v_{0\_igbt} \cdot i_m + r_{igbt} \cdot i_m^2 , \qquad
+  p_{cond\_diode} = v_{0\_diode} \cdot i_m + r_{diode} \cdot i_m^2 ,
+\end{equation}
+and the switching powers of one module
+\begin{equation}
+  p_{sw\_igbt} = f_{sw} \cdot (E_{on} + E_{off}) \cdot \frac{u_{sm}}{U_{sw\_ref}} \cdot \frac{i_m}{I_{sw\_ref}} , \qquad
+  p_{sw\_diode} = f_{sw} \cdot E_{rec} \cdot \frac{u_{sm}}{U_{sw\_ref}} \cdot \frac{i_m}{I_{sw\_ref}} ,
+\end{equation}
+the dies of one module carry, for each sample of the period,
+\begin{center}
+  \begin{tabular}{@{}l l l@{}}
+    \toprule
+    & \textbf{Charging current ($-i_{arm} > 0$)} & \textbf{Discharging current} \\
+    \midrule
+    T1 & 0 & $\frac{n_{ins}}{N} \cdot p_{cond\_igbt} + p_{sw\_igbt}$ \\
+    D1 & $\frac{n_{ins}}{N} \cdot p_{cond\_diode} + p_{sw\_diode}$ & 0 \\
+    T2 & $\left( 1 - \frac{n_{ins}}{N} \right) \cdot p_{cond\_igbt} + p_{sw\_igbt}$ & 0 \\
+    D2 & 0 & $\left( 1 - \frac{n_{ins}}{N} \right) \cdot p_{cond\_diode} + p_{sw\_diode}$ \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+With charging current the IGBT T2 switches and the diode D1 recovers; with discharging current T1 switches and D2
+recovers. The sum over the dies of all $6 \cdot N \cdot n_{par}$ modules equals the conduction and switching losses
+of the converter. The upper and lower arms of a phase are calculated both; the temperatures are reported for the
+hotter one.

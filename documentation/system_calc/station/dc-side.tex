@@ -1,0 +1,17 @@
+\subsection{DC Side}
+\label{sec:station-dc}
+
+The DC voltage $U_{dpe}$ is given at the station DC terminal, the interface to the DC line. The DC reactor of each
+pole lies between the converter terminal and the station DC terminal. With $R_{dcr}$ the resistance of one DC reactor
+and $I_d$ the DC current of a pole,
+\begin{equation}
+  U_{dpe\_conv} = U_{dpe} + R_{dcr} \cdot I_d \quad \text{(rectifier)} , \qquad
+  U_{dpe\_conv} = U_{dpe} - R_{dcr} \cdot I_d \quad \text{(inverter)} ,
+\end{equation}
+since the DC current flows out of the rectifier and into the inverter. The converter sees the voltage
+$U_{dc} = k \cdot U_{dpe\_conv}$ across its terminals. The power at the station DC terminal, all poles, is
+\begin{equation}
+  P_{dc\_terminal} = n_{conv} \cdot P_{dc\_cv} + 2 \cdot R_{dcr} \cdot I_d^2 ,
+\end{equation}
+with $P_{dc\_cv}$ the DC power of one converter in the sign convention of Section~\ref{sec:conventions}. In steady
+state the inductance of the DC reactor has no effect. Without a DC reactor, $U_{dpe\_conv} = U_{dpe}$.

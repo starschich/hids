@@ -1,0 +1,70 @@
+\subsection{AC Side}
+\label{sec:station-ac}
+
+\subsubsection{AC network at the PCC}
+
+The voltage is defined at the PCC, so the AC network behind it needs no impedance. The PCC holds the boundary
+values $U_{pcc}$, $f$, $P_{pcc}$ and $Q_{pcc}$ of the operating point; its current is
+\begin{equation}
+  I_{pcc} = \frac{\left| \underline{S}_{pcc} \right|}{\sqrt{3} \cdot U_{pcc}} ,
+  \qquad \underline{S}_{pcc} = P_{pcc} + \mathrm{j} \cdot Q_{pcc} .
+\end{equation}
+The PCC voltage is reported in per unit of the nominal voltage and checked against the voltage band of the network.
+
+\subsubsection{AC line}
+
+The AC line between the PCC and the transformer is a nominal $\pi$ section: series impedance $\underline{Z}$ and
+half the line capacitance at each end. With $n_c$ circuits in parallel, $n_b$ sub-conductors per phase of an OHL
+and $n_k$ cables per phase of a cable line,
+\begin{equation}
+  \underline{Z} = \left( \frac{R'}{n_b} + \mathrm{j} \cdot X' \cdot \frac{f}{f_r} \right) \cdot \frac{l}{n_k \cdot n_c} ,
+  \qquad B = \omega \cdot C' \cdot l \cdot n_k \cdot n_c .
+\end{equation}
+The charging power of one end and the absorbed power of a shunt reactor at that end are
+\begin{equation}
+  Q_c(U) = \frac{U^2 \cdot B}{2} , \qquad Q_r(U) = Q_{r\_n} \cdot \left( \frac{U}{U_n} \right)^2 .
+\end{equation}
+The calculation starts at the PCC, where voltage and power are known, and ends at the station end:
+\begin{align}
+  \underline{S}_{ser} &= \underline{S}_{pcc} - \mathrm{j} \cdot \left( Q_c(U_{pcc}) - Q_{r\_pcc} \right) , \\
+  \underline{I} &= \left( \frac{\underline{S}_{ser}}{\sqrt{3} \cdot U_{pcc}} \right)^{*} , \\
+  \underline{U}_{st} &= U_{pcc} + \sqrt{3} \cdot \underline{Z} \cdot \underline{I} , \\
+  \underline{S}_{st} &= \sqrt{3} \cdot \underline{U}_{st} \cdot \underline{I}^{*}
+                        - \mathrm{j} \cdot \left( Q_c(|\underline{U}_{st}|) - Q_{r\_st} \right) .
+\end{align}
+$\underline{I}$ is the series current towards the grid, with the PCC voltage as phase reference. The losses are
+$P_{loss\_line} = P_{st} - P_{pcc}$; the loading is the highest of the series, PCC and station-end currents in
+per cent of the rated current of all circuits. The method \texttt{series} omits the capacitance.
+
+\subsubsection{Converter transformer}
+
+The transformer model (method \texttt{simplified}) has the no-load branch on the line side, an ideal ratio with the
+tap changer and the short-circuit impedance on the valve side. Referred to the valve side,
+\begin{equation}
+  Z_{base} = \frac{U_{r\_valve}^2}{S_r} , \quad
+  Z_k = \frac{u_k}{100} \cdot Z_{base} , \quad
+  R = \frac{P_{cu}}{S_r} \cdot Z_{base} , \quad
+  X = \sqrt{Z_k^2 - R^2} \cdot \frac{f}{f_r} .
+\end{equation}
+The ratio $n = U_{line} / U_{valve}$ with the tap position $t$ and the step $\Delta_t$ in per cent is
+\begin{equation}
+  n = \frac{U_{r\_line} \cdot (1 + t \cdot \Delta_t / 100)}{U_{r\_valve}} \quad \text{(tap on the line side)} ,
+  \qquad
+  n = \frac{U_{r\_line}}{U_{r\_valve} \cdot (1 + t \cdot \Delta_t / 100)} \quad \text{(valve side)} .
+\end{equation}
+The no-load power scales with the square of the line voltage,
+$\underline{S}_0 = \left( P_{fe} + \mathrm{j} \cdot \tfrac{i_0}{100} \cdot S_r \right) \cdot (U_{line} / U_{r\_line})^2$.
+The auxiliary power of the station $P_{aux}$ (cooling, control, building services) is part of the operating point
+and a constant load at the line side, $1/n_{conv}$ of it per transformer. The valve-side quantities follow from the
+line side:
+\begin{align}
+  \underline{S}_{ser} &= \underline{S}_{line} + P_{aux} / n_{conv} + \underline{S}_0 , \qquad
+  U_1' = U_{line} / n , \\
+  \underline{I}_2 &= \left( \frac{\underline{S}_{ser}}{\sqrt{3} \cdot U_1'} \right)^{*} , \qquad
+  \underline{U}_2 = U_1' + \sqrt{3} \cdot \underline{Z} \cdot \underline{I}_2 , \qquad
+  \underline{S}_{valve} = \sqrt{3} \cdot \underline{U}_2 \cdot \underline{I}_2^{*} .
+\end{align}
+The losses are $P_{loss\_tr} = P_{valve} - P_{line} - P_{aux} / n_{conv}$, the loading is
+$\left| \underline{S}_{line} + P_{aux}/n_{conv} \right| / S_r$. A tap outside its range is rejected; a tap at the end
+of the range and a loading above 100\,\% are warnings. The method \texttt{ideal} keeps the ratio and the auxiliary
+power and omits losses and voltage drop.

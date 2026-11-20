@@ -1,0 +1,47 @@
+\subsection{Losses}
+\label{sec:converter-losses}
+
+\subsubsection{Loss model \texttt{percent\_losses}}
+
+The losses are a fixed share of the throughput plus the arm reactors:
+$P_{loss\_cv} = \tfrac{p_{loss}}{100} \cdot |P_{ac}| + 6 \cdot R_{arm} \cdot I_{arm\_rms}^2$.
+
+\subsubsection{Loss model \texttt{detailed}}
+
+The detailed model calculates the semiconductor losses from the arm voltages and currents of one period, sampled at
+$M = 360$ points. In every arm the current flows through one switch position of each submodule: through the upper
+switch position (T1/D1) of an inserted submodule and through the lower switch position (T2/D2) of a bypassed one. In
+the upper position the diode D1 conducts the charging current ($-i_{arm} > 0$, into the capacitor) and the IGBT T1
+the discharging current; in the lower position T2 conducts the charging and D2 the discharging current. With
+$n_{par}$ modules in parallel at each switch position, the current shares equally and the conduction losses of one
+switch position are, with the on-state model $v = v_0 + r \cdot i$ of Section~\ref{sec:semiconductor},
+\begin{equation}
+  p_{cond}(i) = v_0 \cdot |i| + \frac{r \cdot i^2}{n_{par}} .
+\end{equation}
+The conduction losses of an arm are the mean over the period of
+\begin{equation}
+  n_{ins}(t) \cdot p_{ins}\!\left( i_{arm}(t) \right) + \left( N - n_{ins}(t) \right) \cdot p_{byp}\!\left( i_{arm}(t) \right) ,
+\end{equation}
+with $p_{ins}$ the diode (charging) or the IGBT (discharging) of the inserted position and $p_{byp}$ the IGBT
+(charging) or the diode (discharging) of the bypassed position. The switching losses scale the datasheet energies
+linearly with the submodule voltage and the current:
+\begin{equation}
+  P_{sw\_arm} = N \cdot f_{sw} \cdot \left( E_{on} + E_{off} + E_{rec} \right) \cdot \frac{u_{sm}}{U_{sw\_ref}}
+                \cdot \frac{\overline{|i_{arm}|}}{I_{sw\_ref}} ,
+\end{equation}
+with $f_{sw}$ the average switching frequency of a submodule and $\overline{|i_{arm}|}$ the mean of the absolute arm
+current. Each switching event at a switch position is shared by its $n_{par}$ modules, so $P_{sw\_arm}$ does not
+depend on $n_{par}$; the slope part of the conduction losses decreases with $1/n_{par}$ and the threshold part does
+not. Constant losses per submodule $p_{sm}$ (gate unit supply, capacitor, bleeder resistor) add $6 \cdot N \cdot p_{sm}$.
+The converter losses are
+\begin{equation}
+  P_{loss\_cv} = \sum_{6\ \mathrm{arms}} \left( P_{cond\_arm} + P_{sw\_arm} \right) + 6 \cdot N \cdot p_{sm}
+                 + 6 \cdot R_{arm} \cdot I_{arm\_rms}^2 .
+\end{equation}
+The upper and lower arms of a phase have the same losses; the three phases are equal.
+
+\subsubsection{Loss iteration}
+
+The arm currents contain $I_{dc} / 3$, and $I_{dc} = (P_{ac} + P_{loss\_cv}) / U_{dc}$ depends on the losses. The
+losses are found by a fixed-point iteration on $P_{loss\_cv}$, starting from zero, until the change is below
+$10^{-12} \cdot \max(1, |P_{ac}|)$.
